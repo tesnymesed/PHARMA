@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="product_pharma_pf_dest_view_tree" model="ir.ui.view">
+        <field name="name">product.pharmaceutical.pf.dest.tree</field>
+        <field name="model">product.pharmaceutical.pf.dest</field>
+        <field name="arch" type="xml">
+            <tree string="PF Destination">
+                <field name="name"/>
+                <field name="description"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_product_pharmaceutical_pf_dest" model="ir.actions.act_window">
+        <field name="name">PF destination</field>
+        <field name="res_model">product.pharmaceutical.pf.dest</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No destination found. Let's create one!
+            </p>
+        </field>
+    </record>
+    <record id="product_pharma_network_view_tree" model="ir.ui.view">
+        <field name="name">product.pharmaceutical.network.tree</field>
+        <field name="model">product.pharmaceutical.network</field>
+        <field name="arch" type="xml">
+            <tree string="Network">
+                <field name="name"/>
+                <field name="description"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_product_pharmaceutical_network" model="ir.actions.act_window">
+        <field name="name">Products network</field>
+        <field name="res_model">product.pharmaceutical.network</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No network found. Let's create one!
+            </p>
+        </field>
+    </record>
+    <record id="product_pharma_form_view_form" model="ir.ui.view">
+        <field name="name">product.pharmaceutical.form.form</field>
+        <field name="model">product.pharmaceutical.form</field>
+        <field name="arch" type="xml">
+            <form string="Form">
+                <div class="oe_title">
+                    <div>
+                        <label for="name"/>
+                    </div>
+                    <h1 class="mb32">
+                        <field name="name" placeholder="e.g. Form .." class="mb16"/>
+                    </h1>
+                    <field name="code"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="active" invisible="1"/>
+                </div>
+                <notebook>
+                    <page string="SubForm">
+                        <field name="subform_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="name"/>
+                                <field name="code"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="product_pharma_form_view_tree" model="ir.ui.view">
+        <field name="name">product.pharmaceutical.form.tree</field>
+        <field name="model">product.pharmaceutical.form</field>
+        <field name="arch" type="xml">
+            <tree string="Form">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_product_pharmaceutical_form" model="ir.actions.act_window">
+        <field name="name">Products form</field>
+        <field name="res_model">product.pharmaceutical.form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No form found. Let's create one!
+            </p>
+        </field>
+    </record>
+    <record id="product_pharma_family_view_form" model="ir.ui.view">
+        <field name="name">product.pharmaceutical.family.form</field>
+        <field name="model">product.pharmaceutical.family</field>
+        <field name="arch" type="xml">
+            <form string="Family">
+                <div class="oe_title">
+                    <div>
+                        <label for="name"/>
+                    </div>
+                    <h1 class="mb32">
+                        <field name="name" placeholder="e.g. Family .." class="mb16"/>
+                    </h1>
+                    <field name="active" invisible="1"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </div>
+                <notebook>
+                    <page string="SubFamily">
+                        <field name="subfamily_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="name"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="product_pharma_family_view_tree" model="ir.ui.view">
+        <field name="name">product.pharmaceutical.family.tree</field>
+        <field name="model">product.pharmaceutical.family</field>
+        <field name="arch" type="xml">
+            <tree string="Family">
+                <field name="name"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_product_pharmaceutical_family" model="ir.actions.act_window">
+        <field name="name">Products family</field>
+        <field name="res_model">product.pharmaceutical.family</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No family found. Let's create one!
+            </p>
+        </field>
+    </record>
+    <record id="product_pharma_subclass_view_tree" model="ir.ui.view">
+        <field name="name">product.pharmaceutical.subclass.tree</field>
+        <field name="model">product.pharmaceutical.subclass</field>
+        <field name="arch" type="xml">
+            <tree string="SubClass" editable="top">
+                <field name="name"/>
+                <field name="class_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_product_pharmaceutical_subclass" model="ir.actions.act_window">
+        <field name="name">Products Subclass</field>
+        <field name="res_model">product.pharmaceutical.subclass</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No subclass found. Let's create one!
+            </p>
+        </field>
+    </record>
+    <record id="product_pharma_class_view_form" model="ir.ui.view">
+        <field name="name">product.pharmaceutical.class.form</field>
+        <field name="model">product.pharmaceutical.class</field>
+        <field name="arch" type="xml">
+            <form string="Class">
+                <div class="oe_title">
+                    <div>
+                        <label for="name"/>
+                    </div>
+                    <h1 class="mb32">
+                        <field name="name" placeholder="e.g. Class .." class="mb16"/>
+                    </h1>
+                    <field name="code"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                    <field name="active" invisible="1"/>
+                </div>
+                <notebook>
+                    <page string="SubClass">
+                        <field name="subclass_ids" nolabel="1">
+                            <tree editable="bottom">
+                                <field name="name"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="product_pharma_class_view_tree" model="ir.ui.view">
+        <field name="name">product.pharmaceutical.class.tree</field>
+        <field name="model">product.pharmaceutical.class</field>
+        <field name="arch" type="xml">
+            <tree string="Class">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_product_pharmaceutical_class" model="ir.actions.act_window">
+        <field name="name">Products class</field>
+        <field name="res_model">product.pharmaceutical.class</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No class found. Let's create one!
+            </p>
+        </field>
+    </record>
+    <record id="product_pharma_dosage_view_tree" model="ir.ui.view">
+        <field name="name">product.pharmaceutical.dosage.tree</field>
+        <field name="model">product.pharmaceutical.dosage</field>
+        <field name="arch" type="xml">
+            <tree string="Dosage" editable="top">
+                <field name="name"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_product_pharmaceutical_dosage" model="ir.actions.act_window">
+        <field name="name">Products dosage</field>
+        <field name="res_model">product.pharmaceutical.dosage</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No dosage found. Let's create one!
+            </p>
+        </field>
+    </record>
+</odoo>

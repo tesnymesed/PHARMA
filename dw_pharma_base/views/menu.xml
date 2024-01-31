@@ -1,0 +1,32 @@
+<odoo>
+    <menuitem id="menu_product_config_product_pharma" name="Products pharma" parent="stock.menu_stock_config_settings"
+              sequence="8"/>
+
+    <menuitem id="menu_product_pharmaceutical_dosage" parent="menu_product_config_product_pharma"
+              action="dw_pharma_base.action_product_pharmaceutical_dosage"
+              sequence="50"/>
+
+    <menuitem id="menu_product_pharmaceutical_class" parent="menu_product_config_product_pharma"
+              action="dw_pharma_base.action_product_pharmaceutical_class"
+              sequence="50"/>
+
+    <menuitem id="menu_product_pharmaceutical_subclass" parent="menu_product_config_product_pharma"
+              action="dw_pharma_base.action_product_pharmaceutical_subclass"
+              sequence="50"/>
+
+    <menuitem id="menu_product_pharmaceutical_family" parent="menu_product_config_product_pharma"
+              action="dw_pharma_base.action_product_pharmaceutical_family"
+              sequence="50"/>
+
+    <menuitem id="menu_product_pharmaceutical_form" parent="menu_product_config_product_pharma"
+              action="dw_pharma_base.action_product_pharmaceutical_form"
+              sequence="50"/>
+
+    <menuitem id="menu_product_pharmaceutical_network" parent="menu_product_config_product_pharma"
+              action="dw_pharma_base.action_product_pharmaceutical_network"
+              sequence="50"/>
+
+    <menuitem id="menu_product_pharmaceutical_pf_dest" parent="menu_product_config_product_pharma"
+              action="dw_pharma_base.action_product_pharmaceutical_pf_dest"
+              sequence="50"/>
+</odoo>

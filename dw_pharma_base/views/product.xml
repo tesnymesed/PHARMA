@@ -36,6 +36,29 @@
                     </group>
                 </page>
             </xpath>
+            <xpath expr="//div[@name='standard_price_uom']" position="after">
+                <label for="dw_price_ppa"/>
+                <div name="dw_price_ppa_price_uom">
+                    <field name="dw_price_ppa" class="oe_inline" widget="monetary"/>
+                    <span groups="uom.group_uom">per
+                        <field name="uom_name" class="oe_inline"/>
+                    </span>
+                </div>
+                <label for="dw_price_pua"/>
+                <div name="dw_price_pua_ppa_price_uom">
+                    <field name="dw_price_pua" class="oe_inline" widget="monetary"/>
+                    <span groups="uom.group_uom">per
+                        <field name="uom_name" class="oe_inline"/>
+                    </span>
+                </div>
+                <label for="dw_price_wholesaler"/>
+                <div name="dw_price_wholesaler_price_uom">
+                    <field name="dw_price_wholesaler" class="oe_inline" widget="monetary"/>
+                    <span groups="uom.group_uom">per
+                        <field name="uom_name" class="oe_inline"/>
+                    </span>
+                </div>
+            </xpath>
         </field>
     </record>
 </odoo>

@@ -18,3 +18,7 @@ class DwProductTemplate(models.Model):
     dw_pharma_subform_id = fields.Many2one('product.pharmaceutical.subform', string="Subform")
     dw_pharma_network_id = fields.Many2one('product.pharmaceutical.network', string="Network")
     dw_pharma_pf_dest_id = fields.Many2one('product.pharmaceutical.pf.dest', string="PF Destination")
+
+    dw_price_ppa = fields.Monetary(string="Algerian public price",)
+    dw_price_pua = fields.Monetary(string="Unit Purchase Price",)
+    dw_price_wholesaler = fields.Monetary(string="wholesale price",)

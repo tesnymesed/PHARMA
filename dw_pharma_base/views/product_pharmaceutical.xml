@@ -4,7 +4,7 @@
         <field name="name">product.pharmaceutical.pf.dest.tree</field>
         <field name="model">product.pharmaceutical.pf.dest</field>
         <field name="arch" type="xml">
-            <tree string="PF Destination">
+            <tree string="PF Destination" editable="top">
                 <field name="name"/>
                 <field name="description"/>
                 <field name="company_id" groups="base.group_multi_company"/>
@@ -25,7 +25,7 @@
         <field name="name">product.pharmaceutical.network.tree</field>
         <field name="model">product.pharmaceutical.network</field>
         <field name="arch" type="xml">
-            <tree string="Network">
+            <tree string="Network" editable="top">
                 <field name="name"/>
                 <field name="description"/>
                 <field name="company_id" groups="base.group_multi_company"/>

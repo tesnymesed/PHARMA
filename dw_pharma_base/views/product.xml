@@ -12,11 +12,13 @@
                             <field name="dw_pharma_dci"/>
                             <field name="dw_pharma_regis_num"/>
                             <field name="dw_pharma_network_id" options="{'no_create':True}"/>
-<!--                            <label for="dw_pharma_duration"/>-->
-<!--                            <div name="dw_pharma_duration_div">-->
-<!--                                <field name="dw_pharma_duration" class="oe_inline"/>-->
-<!--                                <span><field name="dw_pharma_duration_unit" class="oe_inline"/></span>-->
-<!--                            </div>-->
+                            <label for="dw_pharma_duration"/>
+                            <div name="dw_pharma_duration_div">
+                                <field name="dw_pharma_duration" class="oe_inline"/>
+                                <span>
+                                    <field name="dw_pharma_duration_unit" class="oe_inline"/>
+                                </span>
+                            </div>
                         </group>
                         <group>
                             <field name="dw_pharma_date_de"/>

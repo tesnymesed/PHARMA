@@ -96,3 +96,13 @@ class DwProductPharmaceuticalPfDest(models.Model):
     active = fields.Boolean(default=True)
     company_id = fields.Many2one('res.company', string='Company', )
     description = fields.Text(string="Description")
+
+
+class DwProductPharmaceuticalNature(models.Model):
+    _name = 'product.pharmaceutical.nature'
+    _description = 'Nature article'
+
+    name = fields.Char(string="Name")
+    active = fields.Boolean(default=True)
+    company_id = fields.Many2one('res.company', string='Company', )
+    description = fields.Text(string="Description")

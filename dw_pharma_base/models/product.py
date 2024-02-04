@@ -28,3 +28,4 @@ class DwProductTemplate(models.Model):
     dw_price_ppa = fields.Monetary(string="Algerian public price", )
     dw_price_pua = fields.Monetary(string="Unit Purchase Price", )
     dw_price_wholesaler = fields.Monetary(string="wholesale price", )
+    dw_pharma_nature_product_id = fields.Many2one('product.pharmaceutical.nature', string="Nature")

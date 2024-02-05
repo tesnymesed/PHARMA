@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
-from odoo import fields, models
+from odoo import fields, models, _
+from odoo.exceptions import UserError
 
 
 class DwProductPharmaceuticalDosage(models.Model):
@@ -17,10 +18,47 @@ class DwProductPharmaceuticalFamily(models.Model):
     _description = 'Family'
     _inherit = ['mail.thread.main.attachment', 'mail.activity.mixin']
 
+    def _compute_product_count(self):
+        self.product_count = len(self.mapped('product_ids'))
+
     name = fields.Char(string="Name")
     active = fields.Boolean(default=True)
+    product_categ_id = fields.Many2one(
+        'product.category',
+        string='Product Category'
+    )
     company_id = fields.Many2one('res.company', string='Company', )
     subfamily_ids = fields.One2many('product.pharmaceutical.subfamily', 'family_id', string='Subfamily')
+    product_count = fields.Integer(compute="_compute_product_count")
+    product_ids = fields.One2many('product.template', 'dw_pharma_family_id', string='Products')
+
+    def action_view_product(self):
+        """
+             This method is used by the Purchase Orders smart button. It opens a form view or a tree view
+             :return: Action Dict
+             """
+
+        product = self.mapped('product_ids')
+        if not product:
+            raise UserError(
+                _('There is no Product to view.')
+            )
+        tree_view = self.env.ref('dw_pharma_base.product_pharma_family_view_tree')
+        form_view = self.env.ref('dw_pharma_base.product_pharma_family_view_form')
+        action = {
+            'name': _('Purchase Order(s)'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'purchase.order',
+            'context': {'default_purchase_order_ids': [(4, self.id)]}
+        }
+        if len(product) == 1:
+            action['views'] = [(form_view.id, 'form')]
+            action['res_id'] = product.id
+            action['view_mode'] = 'form'
+        else:
+            action['views'] = [(tree_view.id, 'tree'), (form_view.id, 'form')]
+            action['domain'] = [('id', 'in', product.ids)]
+        return action
 
 
 class DwProductPharmaceuticalSubfamily(models.Model):
@@ -28,6 +66,7 @@ class DwProductPharmaceuticalSubfamily(models.Model):
     _description = 'Subfamily'
 
     name = fields.Char(string="Name")
+    code = fields.Char(string="Code")
     active = fields.Boolean(default=True)
     company_id = fields.Many2one('res.company', string='Company', )
     family_id = fields.Many2one('product.pharmaceutical.family', string='Family')

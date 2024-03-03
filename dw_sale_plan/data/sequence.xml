@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="sequence_sale_plan_documents" model="ir.sequence">
+            <field name="name">Sale Plan Sequence Documents</field>
+            <field name="code">sale.plan.sequence.documents</field>
+            <field name="prefix">SalePlan/%(year)s/</field>
+            <field name="padding">3</field>
+        </record>
+
+    </data>
+</odoo>

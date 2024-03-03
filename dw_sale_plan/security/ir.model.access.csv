@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_plan,Sale Plan,model_sale_plan,base.group_user,1,1,1,1
+access_product_sale_plan,Product Sale Plan,model_product_sale_plan,base.group_user,1,1,1,1
+access_product_sale_plan_monthly,Product Sale Plan monthly,model_product_sale_plan_monthly,base.group_user,1,1,1,1
+
+
+

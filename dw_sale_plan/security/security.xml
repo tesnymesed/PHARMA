@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="sale_plan_comp_rule" model="ir.rule">
+            <field name="name">Sale Plan multi company rule</field>
+            <field name="model_id" ref="model_sale_plan"/>
+            <field eval="True" name="global"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+        <record id="product_sale_plan_comp_rule" model="ir.rule">
+            <field name="name">Product Sale Plan multi company rule</field>
+            <field name="model_id" ref="model_product_sale_plan"/>
+            <field eval="True" name="global"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+        <record id="product_sale_plan_monthly_comp_rule" model="ir.rule">
+            <field name="name">Product Sale Plan monthly multi company rule</field>
+            <field name="model_id" ref="model_product_sale_plan_monthly"/>
+            <field eval="True" name="global"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+    </data>
+
+</odoo>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+    <menuitem id="menu_sale_plan"
+              parent="sale.sale_menu_root"
+              action="sale_plan_action"/>
+
+
+    </data>
+</odoo>

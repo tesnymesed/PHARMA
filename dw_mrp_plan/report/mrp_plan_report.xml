@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <template id="mrp_plan_report_document">
+            <t t-call="web.html_container">
+                <t t-call="web.basic_layout">
+                    <t t-foreach="docs" t-as="o">
+                        <div class="page">
+                            <table class="table table bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Prévision U.V</th>
+                                        <t t-set="dates" t-value="o.get_month_year()"/>
+                                        <t t-foreach="dates" t-as="date">
+                                            <th>
+                                                <span t-esc="date"/>
+                                            </th>
+                                        </t>
+                                    </tr>
+                                </thead>
+                                <t t-foreach="o.product_plan_ids" t-as="product_plan">
+                                    <tr>
+                                        <td>
+                                            <span t-field="product_plan.product_id.display_name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="product_plan.quantity"/>
+                                        </td>
+                                        <t t-foreach="product_plan.monthly_plan_ids" t-as="monthly_plan">
+                                            <td>
+                                                <span t-field="monthly_plan.quantity"/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </t>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <template id="mrp_plan_monthly_report_document">
+            <t t-call="web.html_container">
+                <t t-call="web.basic_layout">
+                    <t t-foreach="docs" t-as="o">
+                        <div class="page">
+                            <table class="table table-striped bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Element</th>
+                                        <t t-set="dates" t-value="o.plan_id.get_month_year()"/>
+                                        <t t-foreach="dates" t-as="date">
+                                            <th>
+                                                <span t-esc="date"/>
+                                            </th>
+                                        </t>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span t-field="o.product_id.name"/>
+                                        </td>
+                                        <td>
+                                            Initial stock
+                                        </td>
+                                        <t t-foreach="o.monthly_plan_ids" t-as="record">
+                                            <td>
+                                                <span t-field="record.expected_start_quantity"/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span t-field="o.product_id.name"/>
+                                        </td>
+                                        <td>
+                                            MIP
+                                        </td>
+                                        <t t-foreach="o.monthly_plan_ids" t-as="record">
+                                            <td>
+                                                <span t-field="record.mip_quantity"/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span t-field="o.product_id.name"/>
+                                        </td>
+                                        <td>
+                                            Production
+                                        </td>
+                                        <t t-foreach="o.monthly_plan_ids" t-as="record">
+                                            <td>
+                                                <span t-field="record.quantity"/>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                    <!--                                    <tr>-->
+                                    <!--                                        <td>-->
+                                    <!--                                            <span t-field="o.product_id.name"/>-->
+                                    <!--                                        </td>-->
+                                    <!--                                        <td>-->
+                                    <!--                                            Planned sales-->
+                                    <!--                                        </td>-->
+                                    <!--                                        <t t-foreach="o.monthly_plan_ids" t-as="record">-->
+                                    <!--                                            <td>-->
+                                    <!--                                                <span t-field="record.sale_planned_quantity"/>-->
+                                    <!--                                            </td>-->
+                                    <!--                                        </t>-->
+                                    <!--                                    </tr>-->
+                                    <!--                                    <tr>-->
+                                    <!--                                        <td>-->
+                                    <!--                                            <span t-field="o.product_id.name"/>-->
+                                    <!--                                        </td>-->
+                                    <!--                                        <td>-->
+                                    <!--                                            Sales capacity-->
+                                    <!--                                        </td>-->
+                                    <!--                                        <t t-foreach="o.monthly_plan_ids" t-as="record">-->
+                                    <!--                                            <td>-->
+                                    <!--                                                <span t-field="record.sale_capacity"/>-->
+                                    <!--                                            </td>-->
+                                    <!--                                        </t>-->
+                                    <!--                                    </tr>-->
+                                    <!--                                    <tr>-->
+                                    <!--                                        <td>-->
+                                    <!--                                            <span t-field="o.product_id.name"/>-->
+                                    <!--                                        </td>-->
+                                    <!--                                        <td>-->
+                                    <!--                                            Autonomy-->
+                                    <!--                                        </td>-->
+                                    <!--                                        <t t-foreach="o.monthly_plan_ids" t-as="record">-->
+                                    <!--                                            <td>-->
+                                    <!--                                                <span t-field="record.autonomy"/>-->
+                                    <!--                                            </td>-->
+                                    <!--                                        </t>-->
+                                    <!--                                    </tr>-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+
+        <record id="action_mrp_plan_report" model="ir.actions.report">
+            <field name="name">Mrp Plan Report</field>
+            <field name="model">mrp.plan</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">dw_mrp_plan.mrp_plan_report_document</field>
+            <field name="report_file">dw_mrp_plan.mrp_plan_report_document</field>
+            <field name="print_report_name">'Mrp Plan Report - %s ' % object.name</field>
+            <field name="binding_model_id" ref="dw_mrp_plan.model_mrp_plan"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_mrp_plan_monthly_report" model="ir.actions.report">
+            <field name="name">Mrp Plan Report</field>
+            <field name="model">mrp.plan.lines</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">dw_mrp_plan.mrp_plan_monthly_report_document</field>
+            <field name="report_file">dw_mrp_plan.mrp_plan_monthly_report_document</field>
+            <field name="print_report_name">'Summary Monthly Plan Report - %s ' % object.name</field>
+            <field name="binding_model_id" ref="dw_mrp_plan.model_mrp_plan_lines"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

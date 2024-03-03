@@ -1,0 +1,115 @@
+<odoo>
+    <!--    Form -->
+    <record id="view_mrp_roadmap_form" model="ir.ui.view">
+        <field name="name">mrp.roadmap.form</field>
+        <field name="model">mrp.roadmap</field>
+        <field name="arch" type="xml">
+            <form create="0">
+                <header>
+                    <button type="object" name="create_mrp_production" string="Create OF" class="oe_highlight"
+                              invisible="state != 'draft'"/>
+                    <button type="object" name="create_mrp_production" context="{'additional_quantity': True}"
+                            string="Create Additional OF (s)" class="oe_highlight" invisible="state != 'done'"/>
+
+                    <button type="object" name="action_mark_as_done" string="Mark as done" class="oe_highlight"
+                            invisible="state != 'draft'"/>
+                    <button type="object" name="action_cancel" string="Cancel"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_productions" type="object" class="oe_stat_button"
+                                string="Productions(s)"
+                                icon="fa-files-o" invisible="state != 'done'"/>
+
+                    </div>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="product_id"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <label for="quantity" string="Quantity"/>
+                            <div class="o_row">
+                                <field name="quantity"/>
+                                <field name="uom_id" options="{'no_open':True,'no_create':True}"
+                                       groups="uom.group_uom"/>
+                            </div>
+                        </group>
+                        <group>
+                            <field name="bom_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="quantity_per_lot"/>
+                        </group>
+                        <group>
+                            <field name="first_lot" required="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="additional_quantity"/>
+                            <field name="production_ratio" widget="percentpie"/>
+                        </group>
+                        <group>
+                            <field name="lot_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="OF (s)" name="manufacturing_orders">
+                            <field name="production_ids">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="product_tmpl_id"/>
+                                    <field name="product_qty" sum="Total Quantity"/>
+                                    <field name="lot_producing_id"/>
+                                    <field name="state" widget="badge" decoration-muted="state == 'cancel'"
+                                           decoration-warning="state in ('confirmed', 'progress')"
+                                           decoration-info="state == 'draft'" decoration-success="state == 'done'"
+                                           decoration-danger="state == 'to_close'"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!--    Tree-->
+    <record id="view_mrp_roadmap_tree" model="ir.ui.view">
+        <field name="name">mrp.roadmap.tree</field>
+        <field name="model">mrp.roadmap</field>
+        <field name="arch" type="xml">
+            <tree create="0">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="product_id"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--    Action-->
+    <record id="mrp_roadmap_action" model="ir.actions.act_window">
+        <field name="name">Mrp Roadmap</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">mrp.roadmap</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create new Mrp Roadmap.
+            </p>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,32 @@
+<templates xml:space="preserve">
+    <t t-name="module_name.MonthlyMrpPlan">
+        <div class="container" id="product_monthly_plan">
+            <table class="table table-bordered justify-content-center">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Product</th>
+                        <th>Expected Start Quantity</th>
+                        <th>Sale Planned Quantity</th>
+                        <th>Lot Size</th>
+                        <th>Quantity</th>
+                        <th>Expected Final Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="values['field_values']" t-as="item" t-key="item.label" class="col-6 p-2">
+                        <tr>
+                            <td><div class="h4 m-0" t-esc="item.date"/></td>
+                            <td><div class="h4 m-0" t-esc="item.product"/></td>
+                            <td><div class="h4 m-0" t-esc="item.expected_start_quantity"/></td>
+                            <td><div class="h4 m-0" t-esc="item.sale_planned_quantity"/></td>
+                            <td><div class="h4 m-0" t-esc="item.lot_size"/></td>
+                            <td><div class="h4 m-0" t-esc="item.quantity"/></td>
+                            <td><div class="h4 m-0" t-esc="item.expected_final_quantity"/></td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+    </t>
+</templates>

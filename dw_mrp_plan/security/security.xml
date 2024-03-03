@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="mrp_plan_comp_rule" model="ir.rule">
+            <field name="name">MRP Plan multi company rule</field>
+            <field name="model_id" ref="model_mrp_plan"/>
+            <field eval="True" name="global"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+        <record id="mrp_plan_line_comp_rule" model="ir.rule">
+            <field name="name">Product MRP Plan Lines multi company rule</field>
+            <field name="model_id" ref="model_mrp_plan_lines"/>
+            <field eval="True" name="global"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+        <record id="product_mrp_plan_comp_rule" model="ir.rule">
+            <field name="name">Product MRP Plan multi company rule</field>
+            <field name="model_id" ref="model_product_mrp_plan"/>
+            <field eval="True" name="global"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+        <record id="mrp_roadmap_comp_rule" model="ir.rule">
+            <field name="name">MRP RoadMap multi company rule</field>
+            <field name="model_id" ref="model_mrp_roadmap"/>
+            <field eval="True" name="global"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+
+
+    </data>
+
+</odoo>

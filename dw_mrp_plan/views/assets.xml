@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="genericlab_assets_backend" name="Mrp Plan assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/dw_mrp_plan/static/src/js/ListController.js"/>
+        </xpath>
+    </template>
+
+
+</odoo>

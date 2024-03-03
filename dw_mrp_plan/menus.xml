@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <menuitem
+                id="menu_mrp_production"
+                name="Production"
+                parent="mrp.menu_mrp_root"
+                sequence="5"
+        />
+        <menuitem
+                id="menu_mrp_plan"
+                parent="dw_mrp_plan.menu_mrp_production"
+                action="dw_mrp_plan.mrp_plan_action"
+        />
+        <menuitem
+                id="menu_mrp_roadmap"
+                parent="dw_mrp_plan.menu_mrp_production"
+                action="dw_mrp_plan.mrp_roadmap_action"
+        />
+
+    </data>
+</odoo>

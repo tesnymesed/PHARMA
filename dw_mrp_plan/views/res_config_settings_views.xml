@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.mrp.dw</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="35"/>
+            <field name="inherit_id" ref="mrp.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form//app[@name='mrp']" position="inside">
+
+                    <block name="dw_additional_parameters" title="Additional Parameters">
+                        <setting id="roadmap_sequence" help="Choose the roadmap sequence"
+                                 title="Add the roadmap sequence to every generated roadmap">
+                            <field name="dw_mrp_roadmap_sequence_id"/>
+                        </setting>
+                    </block>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,236 @@
+.track_container
+{
+    position:absolute;
+    left:30%;
+    top:10%;
+    width:35%;
+    height:80%;
+    margin-left:30%; /* -1/2 width */
+    border-radius: 20px 70px 20px 70px;
+    align: center;
+    color: white;
+}
+.track_container h1 {
+  margin: 0 0 0.25em;
+}
+/* Reset Select */
+.track_container select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 0 !important;
+  background: #2c3e50;
+  background-image: none;
+}
+/* Remove IE arrow */
+.track_container select::-ms-expand {
+  display: none;
+}
+/* Custom Select */
+.select {
+  position: relative;
+  display: flex;
+  width: 20em;
+  height: 3em;
+  line-height: 3;
+  background: #2c3e50;
+  overflow: hidden;
+  border-radius: .25em;
+}
+.track_container select {
+  flex: 1;
+  padding: 0 .5em;
+  color: #fff;
+  cursor: pointer;
+}
+/* Arrow */
+.select::after {
+  content: '\25BC';
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 1em;
+  background: #34495e;
+  cursor: pointer;
+  pointer-events: none;
+  -webkit-transition: .25s all ease;
+  -o-transition: .25s all ease;
+  transition: .25s all ease;
+}
+/* Transition */
+.select:hover::after {
+  color: #f39c12;
+}
+.icon-button {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+    border: 0;
+    background: transparent;
+    font-size: 18px;
+}
+
+
+
+/*=== 3. Text Outside the Box ===*/
+.etc-login-form {
+  color: #919191;
+  padding: 10px 20px;
+}
+.etc-login-form p {
+  margin-bottom: 5px;
+}
+/*=== 4. Main Form ===*/
+.login-form-1 {
+    max-width: 40%;
+    border-radius: 20px 70px 20px 70px;
+    display: inline-block;
+    position:absolute;
+    left:60%;
+    top:20%;
+    height:55%;
+    margin-left:-20%; /* -1/2 width */
+    align: center;
+    color: white;
+}
+.main-login-form {
+  position: relative;
+}
+.login-form-1 .form-control {
+  border: 0;
+  box-shadow: 0 0 0;
+  border-radius: 0;
+  background: transparent;
+  color: #555555;
+  padding: 7px 0;
+  font-weight: bold;
+  height:auto;
+}
+.login-form-1 .form-control::-webkit-input-placeholder {
+  color: #999999;
+}
+.login-form-1 .form-control:-moz-placeholder,
+.login-form-1 .form-control::-moz-placeholder,
+.login-form-1 .form-control:-ms-input-placeholder {
+  color: #999999;
+}
+.login-form-1 .form-group {
+  margin-bottom: 0;
+  border-bottom: 2px solid #f9f9f9;
+  padding-right: 20px;
+  padding-bottom: 8px;
+  padding-top: 8px;
+  position: relative;
+}
+.login-form-1 .form-group:last-child {
+}
+.login-group {
+  background: #ffffff;
+  color: #999999;
+  border-radius: 8px;
+  padding: 10px 20px;
+}
+.login-group-checkbox {
+  padding: 5px 0;
+}
+/*=== 5. Login Button ===*/
+.login-form-1 .toggle-state-button {
+  position: absolute;
+  right: -25px;
+  top: 50%;
+  background: #ffffff;
+  color: #999999;
+  padding: 11px 0;
+  width: 50px;
+  height: 50px;
+  margin-top: -25px;
+  border: 5px solid #f9f9f9;
+  border-radius: 50%;
+  transition: all ease-in-out 500ms;
+}
+.login-form-1 .toggle-state-button:hover {
+  color: #555555;
+  transform: rotate(450deg);
+}
+.login-form-1 .toggle-state-button.clicked {
+  color: #555555;
+}
+.login-form-1 .toggle-state-button.clicked:hover {
+  transform: none;
+}
+.login-form-1 .toggle-state-button.clicked.success {
+  color: #2ecc71;
+}
+.login-form-1 .toggle-state-button.clicked.error {
+  color: #e74c3c;
+}
+/*=== 6. Form Invalid ===*/
+label.form-invalid {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
+  display: block;
+  margin-top: -25px;
+  padding: 7px 9px;
+  background: #777777;
+  color: #ffffff;
+  border-radius: 5px;
+  font-weight: bold;
+  font-size: 11px;
+}
+label.form-invalid:after {
+  top: 100%;
+  right: 10px;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: transparent;
+  border-top-color: #777777;
+  border-width: 6px;
+}
+/*=== 7. Form - Main Message ===*/
+.login-form-main-message {
+  background: #ffffff;
+  color: #999999;
+  border-left: 3px solid transparent;
+  border-radius: 3px;
+  margin-bottom: 8px;
+  font-weight: bold;
+  height: 0;
+  padding: 0 20px 0 17px;
+  opacity: 0;
+  transition: all ease-in-out 200ms;
+}
+.login-form-main-message.show {
+  height: auto;
+  opacity: 1;
+  padding: 10px 20px 10px 17px;
+}
+.login-form-main-message.success {
+  border-left-color: #2ecc71;
+}
+.login-form-main-message.error {
+  border-left-color: #e74c3c;
+}
+.form-group .o_field_widget {
+width: 100%;
+}
+/*=== 9. Misc ===*/
+.logo {
+  padding: 8px 0;
+  font-size: 25px;
+  color: #aaaaaa;
+  font-weight: bold;
+}
+.o_form_view.o_xxl_form_view.login-form-1.tracking-form.o_form_nosheet.o_form_editable {
+    height: 65%;
+    min-height: 65%;
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_mrp_plan_months_form_inherit" model="ir.ui.view">
+            <field name="name">product.mrp.plan.tree.inherit</field>
+            <field name="model">product.mrp.plan</field>
+            <field name="inherit_id" ref="dw_mrp_plan.view_mrp_plan_months_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <field name="expected_final_quantity" position="after">
+                    <field name="sale_capacity"/>
+                    <field name="autonomy"/>
+                </field>
+                <field name="mip_quantity" position="after">
+                    <field name="sale_planned_quantity" readonly="product_plan_id != False"/>
+                    <field name="real_sale_quantity" optional="hide"/>
+                </field>
+            </field>
+        </record>
+        <record id="view_mrp_plan_form_inherit" model="ir.ui.view">
+            <field name="name">mrp.plan.form.inherit</field>
+            <field name="model">mrp.plan</field>
+            <field name="inherit_id" ref="dw_mrp_plan.view_mrp_plan_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='season_date_grp']" position="inside">
+                    <group>
+                        <field name="sale_plan_id"/>
+                        <field name="company_id" invisible="1"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

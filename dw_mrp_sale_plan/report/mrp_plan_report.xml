@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <template id="mrp_plan_monthly_report_document_inherit"
+                  inherit_id="dw_mrp_plan.mrp_plan_monthly_report_document">
+            <xpath expr="//tbody" position="replace">
+                <tbody>
+                    <tr>
+                        <td>
+                            <span t-field="o.product_id.name"/>
+                        </td>
+                        <td>
+                            Initial stock
+                        </td>
+                        <t t-foreach="o.monthly_plan_ids" t-as="record">
+                            <td>
+                                <span t-field="record.expected_start_quantity"/>
+                            </td>
+                        </t>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span t-field="o.product_id.name"/>
+                        </td>
+                        <td>
+                            MIP
+                        </td>
+                        <t t-foreach="o.monthly_plan_ids" t-as="record">
+                            <td>
+                                <span t-field="record.mip_quantity"/>
+                            </td>
+                        </t>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span t-field="o.product_id.name"/>
+                        </td>
+                        <td>
+                            Production
+                        </td>
+                        <t t-foreach="o.monthly_plan_ids" t-as="record">
+                            <td>
+                                <span t-field="record.quantity"/>
+                            </td>
+                        </t>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span t-field="o.product_id.name"/>
+                        </td>
+                        <td>
+                            Planned sales
+                        </td>
+                        <t t-foreach="o.monthly_plan_ids" t-as="record">
+                            <td>
+                                <span t-field="record.sale_planned_quantity"/>
+                            </td>
+                        </t>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span t-field="o.product_id.name"/>
+                        </td>
+                        <td>
+                            Sales capacity
+                        </td>
+                        <t t-foreach="o.monthly_plan_ids" t-as="record">
+                            <td>
+                                <span t-field="record.sale_capacity"/>
+                            </td>
+                        </t>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span t-field="o.product_id.name"/>
+                        </td>
+                        <td>
+                            Autonomy
+                        </td>
+                        <t t-foreach="o.monthly_plan_ids" t-as="record">
+                            <td>
+                                <span t-field="record.autonomy"/>
+                            </td>
+                        </t>
+                    </tr>
+                </tbody>
+
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

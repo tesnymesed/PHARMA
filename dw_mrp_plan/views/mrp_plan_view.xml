@@ -90,7 +90,21 @@
                 <field name="no_manufacturing" optional="hide"/>
                 <button name="action_create_roadmap_wizard" type="object" class="oe_stat_button"
                         icon="fa-wrench" invisible="roadmap_id != False or mrp_state == 'done'"/>
+                <button name="action_view_quantity_by_week" type="object" class="oe_stat_button"
+                        icon="oi-view-pivot"/>
             </tree>
+        </field>
+    </record>
+
+    <record id="view_mrp_plan_weekly_tree" model="ir.ui.view">
+        <field name="name">product.mrp.plan.weekly.tree.inherit</field>
+        <field name="model">product.mrp.plan.weekly</field>
+        <field name="inherit_id" ref="dw_mrp_plan.view_mrp_plan_months_form"/>
+        <field name="priority" eval="5"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_quantity_by_week']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
         </field>
     </record>
 
@@ -115,6 +129,5 @@
             </p>
         </field>
     </record>
-
 
 </odoo>

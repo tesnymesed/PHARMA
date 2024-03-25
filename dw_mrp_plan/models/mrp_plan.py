@@ -189,12 +189,7 @@ class MrpPlanLines(models.Model):
     def create(self, vals):
         result = super().create(vals)
         for res in result:
-            mrp_plan_interval_type = self.env['ir.config_parameter'].sudo().get_param('mrp.mrp_plan_interval')
-            if mrp_plan_interval_type == "weekly":
-                res.monthly_plan_ids = res.get_weeks()
-
-            else:
-                res.monthly_plan_ids = res.get_months()
+            res.monthly_plan_ids = res.get_months()
         return result
 
     @api.depends('bom_id')

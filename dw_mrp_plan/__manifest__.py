@@ -24,6 +24,7 @@
         'views/mrp_roadmap_view.xml',
         'views/product_category.xml',
         'views/res_config_settings_views.xml',
+        'views/mainDashboard.xml',
         # wizard
         'wizard/roadmap_wizard_views.xml',
 

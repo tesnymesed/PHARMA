@@ -13,6 +13,7 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button string="Monthly Product QTY" name="run_action" type="object"/>
                     <button type="object" name="action_done" string="Mark as Done" class="oe_highlight"
                             invisible="state == 'done'"/>
                     <!--                    <button name="action_import_excel_view" string="Import Excel" type="object"/>-->

@@ -34,6 +34,8 @@
         'web.assets_backend': [
             'static/src/js/ListController.js',
             'static/src/xml/monthly_mrp_plan_widget_button.xml',
+            'dw_mrp_plan/static/src/components/tab/main_dashboard.js',
+            'dw_mrp_plan/static/src/components/tab/main_dashboard.xml',
         ],
     },
 

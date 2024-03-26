@@ -64,6 +64,12 @@ class MrpPlan(models.Model):
             'Dec-' + self.create_date.strftime('%y'),
         ]
 
+    def run_action(self):
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'owl.main_dashboard'
+        }
+
     def action_print(self):
         return self.env.ref('dw_mrp_plan.action_mrp_plan_report').report_action(self)
 

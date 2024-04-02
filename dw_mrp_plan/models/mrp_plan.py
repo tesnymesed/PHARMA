@@ -2,7 +2,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 from odoo import fields, api, models, _
 from odoo.exceptions import ValidationError
-from datetime import date
+from datetime import date, timedelta
 
 cnt = 10
 list1 = []
@@ -64,6 +64,12 @@ class MrpPlan(models.Model):
             'Dec-' + self.create_date.strftime('%y'),
         ]
 
+    def run_action(self):
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'owl.main_dashboard'
+        }
+
     def action_print(self):
         return self.env.ref('dw_mrp_plan.action_mrp_plan_report').report_action(self)
 
@@ -106,7 +112,6 @@ class MrpPlan(models.Model):
 
 class MrpPlanLines(models.Model):
     _name = "mrp.plan.lines"
-
     product_id = fields.Many2one(
         'product.product',
         required=True,
@@ -143,7 +148,6 @@ class MrpPlanLines(models.Model):
     def get_months(self):
         datas = []
         current_year = int(self.plan_id.get_the_year())
-
         for month in range(1, 13):
             start_date = date(current_year, month, 1)
             datas.append(
@@ -214,10 +218,14 @@ class MrpPlanLines(models.Model):
     def print_plan_summary_report(self):
         return self.env.ref('dw_mrp_plan.action_mrp_plan_monthly_report').report_action(self)
 
-
 class ProductMrpPlan(models.Model):
     _name = 'product.mrp.plan'
     _order = 'date asc'
+
+    product_plan_weekly_ids = fields.One2many(
+            'product.mrp.plan.weekly',
+            'mrp_plan_monthly_id',
+    )
 
     product_id = fields.Many2one(
         'product.product',
@@ -303,8 +311,9 @@ class ProductMrpPlan(models.Model):
     @api.constrains('quantity', 'product_id')
     def _check_quantity(self):
         for record in self:
-            if record.quantity % record.lot_size > 0:
-                raise ValidationError(_("You cannot set a quantity that doesn't multiply the lot size"))
+            if record.lot_size > 0:
+                if record.quantity % record.lot_size > 0:
+                    raise ValidationError(_("You cannot set a quantity that doesn't multiply the lot size"))
 
 
 
@@ -324,7 +333,6 @@ class ProductMrpPlan(models.Model):
                 record.expected_start_quantity = self.search([
                     ('date', '=', record.date + relativedelta(months=-1)),
                     ('product_id', '=', record.product_id.id)]).mapped('expected_final_quantity')[0]
-
 
     def _prepare_datas_to_roadmap(self):
         datas = {
@@ -360,6 +368,56 @@ class ProductMrpPlan(models.Model):
 
         return action
 
+    def create(self, vals):
+        result = super(ProductMrpPlan, self).create(vals)
+        class_name = self.__class__.__name__
+        if class_name == 'product.mrp.plan':
+            for res in result:
+                weeks = res.get_weeks(res.date)
+                weekly_objs = [self.env['product.mrp.plan.weekly'].create(week) for week in weeks]
+                res.product_plan_weekly_ids = [(6, 0, [obj.id for obj in weekly_objs])]
+        return result
+
+    def get_weeks(self,date):
+        dates = []
+        week_dates = self.generate_week_dates(date)
+        for index, week in enumerate(week_dates):
+            dates.append(
+                {
+                    'date': week,
+                    'mrp_plan_monthly_id': self.id,
+                    'product_plan_id': self.product_plan_id.id,
+                    'product_id': self.product_id.id,
+                    'start_quantity': self.product_id.product_tmpl_id.qty_available if index == 0 else 0
+                }
+            )
+
+        return dates
+    def generate_week_dates(self,date):
+        first_day_of_month = date
+        days_to_first_sunday = (first_day_of_month.weekday() + 1)
+        days_to_next_sunday = (7 - days_to_first_sunday) % 7
+        first_week_start_date = first_day_of_month - datetime.timedelta(days=days_to_next_sunday)
+        week_dates = [first_week_start_date + datetime.timedelta(weeks=week) for week in range(5)
+                      if (first_week_start_date + datetime.timedelta(weeks=week)).month == date.month]
+        return week_dates
+
+    def action_view_quantity_by_week(self):
+        tree_view = self.env.ref('dw_mrp_plan.view_mrp_plan_weekly_tree')
+        return {
+            'name': _('Weekly Plan'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'product.mrp.plan.weekly',
+            'views': [(tree_view.id, 'tree')],
+            'view_mode': 'tree',
+            'context': {
+                'default_product_plan_id': self.id,
+                'default_product_id': self.product_id.id,
+            },
+            'domain': [('mrp_plan_monthly_id', '=', self.id)],
+            'target': 'new',
+        }
+
     @api.depends('free_qty', 'qty_available')
     def _compute_quantity_estimation(self):
         for record in self:
@@ -371,3 +429,51 @@ class ProductMrpPlan(models.Model):
             record.qty_available = record.product_plan_id.product_id.product_tmpl_id.qty_available
             record.free_qty = record.product_plan_id.product_id.free_qty
             record.virtual_available = record.product_plan_id.product_id.product_tmpl_id.virtual_available
+
+class ProductMrpPlanWeekly(models.Model):
+    _name = 'product.mrp.plan.weekly'
+    _description = 'Weekly Mrp Plan Product'
+    _inherit = 'product.mrp.plan'
+    _inherit_exclude = ['product_plan_weekly_ids']
+    _order = 'date asc'
+
+    mrp_plan_monthly_id = fields.Many2one(
+            'product.mrp.plan'
+    )
+
+    test = fields.Float()
+
+    def create(self, vals):
+        return super(ProductMrpPlanWeekly, self).create(vals)
+
+    def write(self, vals):
+        result = super(ProductMrpPlanWeekly, self).write(vals)
+        # update monthly Qty
+        if 'quantity' in vals:
+            month_qty = sum((self.env['product.mrp.plan.weekly']
+                         .search([('mrp_plan_monthly_id.id', '=', self.mrp_plan_monthly_id.id)]))
+                         .mapped('quantity'))
+            self.mrp_plan_monthly_id.quantity = month_qty
+        return result
+
+    def compute_expected_start_quantity(self):
+        for record in self:
+            # expected quantities
+            if record.date.day < 8:
+                record.expected_start_quantity = record.start_quantity
+            else:
+                record.expected_start_quantity = self.search([
+                    ('date', '=', record.date + relativedelta(weeks=-1)),
+                    ('product_id', '=', record.product_id.id)]).mapped('expected_final_quantity')[0]
+
+    def _prepare_datas_to_roadmap(self):
+        datas = {
+            'product_id': self.product_id.id,
+            'company_id': self.company_id.id,
+            'date': self.date,
+            'mrp_line_weekly_plan_id': self.id,
+            'quantity': self.quantity,
+            'bom_id': self.product_plan_id.bom_id.id,
+            'quantity_per_lot': self.product_plan_id.bom_id.product_qty
+        }
+        return datas

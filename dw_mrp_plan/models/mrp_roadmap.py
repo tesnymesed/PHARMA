@@ -80,6 +80,11 @@ class MrpRoadmap(models.Model):
         compute='_compute_production_ratio'
     )
 
+    mrp_line_weekly_plan_id = fields.Many2one(
+        'product.mrp.plan.weekly',
+        readonly=True,
+    )
+
     @api.depends('quantity', 'production_ids.state', 'production_ids.qty_producing')
     def _compute_production_ratio(self):
         for record in self:

@@ -18,14 +18,19 @@ export class OwlMainDashboard extends Component {
          onMounted(async ()=>{
             var [original_data, data] = await this.data_nest()
             this.state.original_data = original_data
-            var cols = Object.keys(data[0])
-            var columns = Object.keys(data[0]).map(key => ({
-                title: key,
-                field: key,
-                editor: 'number',
-                cellEdited: this.cellEdited.bind(this)
-            }));
-            await this.setupTabulator(data,columns);
+            if (data.length > 0){
+                var cols = Object.keys(data[0])
+                var columns = Object.keys(data[0]).map(key => ({
+                    title: key,
+                    field: key,
+                    editor: 'number',
+                    cellEdited: this.cellEdited.bind(this)
+                }));
+                await this.setupTabulator(data,columns);
+            }else{
+                await this.setupTabulator(data,[]);
+            }
+
         })
 
 
@@ -78,28 +83,32 @@ async cellEdited(cell){
 
 async data_nest(){
         var data = await this.get_data()
-        data.forEach(dict => {
-            for (const key in dict) {
-                dict['product'] = dict['product_id'][1]
-                dict['productID'] = dict['product_id'][0]
-            }
-        });
-
-        const groupedData = d3.nest()
-            .key(d => d['product']) // Group by product
-            .entries(data);
-        var res = []
-        var r = {}
-        groupedData.forEach(row => {
-            r["Product"] = row.key
-            row.values.forEach(row1 => {
-                r[row1["date"]] =  row1["quantity"]
+        if(data.length === 0 ){
+            return [[],[]]
+        }else{
+            data.forEach(dict => {
+                for (const key in dict) {
+                    dict['product'] = dict['product_id'][1]
+                    dict['productID'] = dict['product_id'][0]
+                }
             });
-            res.push(r)
-            r = {}
-        });
-                return [data, res]
-    }
+
+            const groupedData = d3.nest()
+                .key(d => d['product']) // Group by product
+                .entries(data);
+            var res = []
+            var r = {}
+            groupedData.forEach(row => {
+                r["Product"] = row.key
+                row.values.forEach(row1 => {
+                    r[row1["date"]] =  row1["quantity"]
+                });
+                res.push(r)
+                r = {}
+            });
+                    return [data, res]
+            }
+        }
 }
 OwlMainDashboard.template = "owl.OwlMainDashboard"
 registry.category("actions").add("owl.main_dashboard", OwlMainDashboard)

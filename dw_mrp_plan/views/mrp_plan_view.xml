@@ -35,17 +35,17 @@
                             string="Roadmaps"
                     />
                 </div>
+                <group>
                     <group>
-                        <group>
-                            <field name="name"/>
-                        </group>
-                        <group name="season_date_grp">
-                            <field name="season_date" required="1"/>
-                        </group>
-                        <!--                    <group>-->
-                        <!--                        <field name="sale_plan_id"/>-->
-                        <!--                    </group>-->
+                        <field name="name"/>
                     </group>
+                    <group name="season_date_grp">
+                        <field name="season_date" required="1"/>
+                    </group>
+                    <group>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                </group>
 
                 <notebook>
                     <page name="product_plan" string="Product Plan">
@@ -115,6 +115,8 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="name"/>
+                <field name="season_date"/>
+                <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
     </record>

@@ -2,7 +2,7 @@
 from odoo import _, api, fields, models
 
 
-class SmartestResCompany(models.Model):
+class DwResCompany(models.Model):
     _inherit = 'res.company'
 
     dw_mrp_roadmap_sequence_id = fields.Many2one(

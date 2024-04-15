@@ -188,13 +188,13 @@ class MrpRoadmap(models.Model):
 
         productions = self.env['mrp.production'].create(datas)
 
-        move_lines = [self._prepare_move_line_data(production) for production in productions]
+        # move_lines = [self._prepare_move_line_data(production) for production in productions]
 
-        productions.write({
-            'move_finished_ids': [(0, 0, move_line) for move_line in move_lines],
+        # productions.write({
+        #     'move_finished_ids': [(0, 0, move_line) for move_line in move_lines],
             # 'location_src_id': productions.mapped('picking_type_id.default_location_src_id.id'),
             # 'location_dest_id': productions.mapped('picking_type_id.default_location_dest_id.id'),
-        })
+        # })
 
         productions._compute_move_raw_ids()
         self.action_mark_as_done()

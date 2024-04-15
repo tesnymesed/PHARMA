@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="dw_quality_check_view_tree_inherit" model="ir.ui.view">
+        <field name="name">quality.check.view.list.inherit</field>
+        <field name="model">quality.check</field>
+        <field name="inherit_id" ref="quality_control.quality_check_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <header>
+                    <button name="compute_lot_id" string="Affecter Le lot"
+                            type="object" class="oe_highlight" groups="base.group_user"/>
+                    <button name="compute_lot_domain_reception" string="Ramener les lots de réception"
+                            type="object" class="oe_highlight" groups="base.group_no_one"/>
+                </header>
+            </xpath>
+
+            <field name="product_id" position="after">
+                <field name="production_id"/>
+                <field name="lot_domain" invisible="1" widget="many2many_tags"/>
+                <field name="picking_id" invisible="1"/>
+                <field name="quality_state" invisible="1"/>
+                <field name="dw_reception_id"/>
+                <field name="lot_domain_reception" invisible="0" widget="many2many_tags"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="dw_quality_check_view_search_inherit" model="ir.ui.view">
+        <field name="name">quality.check.view.search.inherit</field>
+        <field name="model">quality.check</field>
+        <field name="inherit_id" ref="quality_control.quality_check_view_search"/>
+        <field name="arch" type="xml">
+            <field name="lot_id" position="after">
+                <field name="dw_reception_id" string="Transfert"
+                       filter_domain="['|','|', ('lot_id', 'ilike', self), ('dw_reception_id', 'ilike', self), ('lot_domain_reception',
+                        'ilike',self)]"/>
+                <field name="dw_num_supplier" string="Référence Fournisseur"
+                       filter_domain="[ ('dw_num_supplier', 'ilike', self)]"/>
+                <field name="production_id" string="Ordre de Fabrication"
+                       filter_domain="[ ('production_id.name', 'ilike', self)]"/>
+            </field>
+            <field name="lot_id" position="attributes">
+                <attribute name="filter_domain">['|', ('lot_id', 'ilike', self), ('lot_domain_reception',
+                    'ilike',self)]
+                </attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="quality_check_view_form_inherit" model="ir.ui.view">
+        <field name="name">quality.check.view.form.inherit</field>
+        <field name="model">quality.check</field>
+        <field name="inherit_id" ref="quality_control.quality_check_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='picking_id']" position="attributes">
+                <attribute name="required">context.get('raw_material')</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="product_tracking"/>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <field name="count_dw_check_ids" invisible="1"/>
+                <button name="action_open_extra_check_ids" string="Extra Checks" type="object" class="oe_stat_button"
+                        invisible="count_dw_check_ids == 0"
+                        icon="fa-arrows-v"/>
+            </xpath>
+            <xpath expr="//field[@name='product_id']" position="before">
+                <field name="create_date" string="Date de Réception"/>
+                <field name="check_number" required="1"/>
+            </xpath>
+            <xpath expr="//field[@name='lot_id']" position="before">
+                <field name="picking_id" invisible="0"/>
+                <field name="lot_id" invisible="0"/>
+                <field name="lot_domain" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='lot_id']" position="attributes">
+                <attribute name="required">[('product_tracking', '=', 'lot')]</attribute>
+                <attribute name="domain">[('id', 'in', lot_domain)]</attribute>
+            </xpath>
+            <button name="do_pass" position="before">
+                <field name="dw_route_no_origin" invisible="1"/>
+                <button name="dw_recompute_state" type="object" class="btn-primary"
+                        string="Corriger Réservation"
+                        invisible="dw_route_no_origin == False"/>
+                <field name="quality_state" invisible="1"/>
+                <button name="action_reload" type="object" class="btn-primary"
+                        string="Reload"
+                        invisible="dw_quality_id != False or picking_id == False or quality_state not in ['none'] or lot_id == False"/>
+            </button>
+            <field name="team_id" position="after">
+                <field name="dw_quality_id" invisible="dw_quality_id == False"/>
+            </field>
+            <field name="lot_id" position="after">
+                <field name="dw_num_supplier"/>
+                <field name="use_expiration_date" invisible="1"/>
+                <field name="expiration_date" invisible="use_expiration_date == False"/>
+            </field>
+            <xpath expr="//notebook" position="before">
+                <group>
+                    <group string="Reception Information">
+                        <field name="dw_reception_id" readonly="1" force_save="1"/>
+                        <field name="dw_purchase_id" readonly="1" force_save="1"/>
+                        <field name="partner_supplier_id" readonly="1" force_save="1"/>
+                    </group>
+                    <group string="Picking Information">
+                        <field name="location_id"/>
+                        <field name="picking_lot_quantity"/>
+                    </group>
+                </group>
+                <group>
+                    <group string="Verdict">
+                        <field name="verdict" widget="radio"/>
+                    </group>
+                </group>
+            </xpath>
+            <xpath expr="//page[@name='notes']" position="after">
+                <page string="Checks" name="checks">
+                    <field name="line_ids">
+                        <tree editable="bottom">
+                            <field name="name" readonly="1" force_save="1"/>
+                            <field name="reference" readonly="1" force_save="1"/>
+                            <field name="standards" readonly="1" force_save="1"/>
+                            <field name="result"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="quality_control.quality_check_action_main" model="ir.actions.act_window">
+        <field name="context">{'default_raw_material' : True, 'raw_material' : True}</field>
+    </record>
+    <record id="quality_control.quality_check_action_main" model="ir.actions.act_window">
+        <field name="context">{'default_raw_material' : True, 'raw_material' : True}</field>
+    </record>
+    <!--  Quality control on Final products  -->
+    <record id="quality_check_action_main_final_product" model="ir.actions.act_window">
+        <field name="name">Quality Checks</field>
+        <field name="res_model">quality.check</field>
+        <field name="context">{'default_final_product' : True, 'final_product' : True}</field>
+        <field name="view_mode">tree,kanban,form,pivot,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No quality check found
+            </p>
+            <p>
+                Define Quality Control Points in order to automatically generate
+                quality checks at the right logistic operation: transfers, manufacturing orders.
+            </p>
+        </field>
+    </record>
+</odoo>

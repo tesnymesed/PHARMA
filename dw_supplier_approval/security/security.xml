@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="ir_rule_dw_market_multi_company" model="ir.rule">
+    <field name="name">Dw Market: Multi Company</field>
+    <field name="model_id" ref="model_dw_market"/>
+    <field eval="True" name="global"/>
+    <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+</record>
+
+
+        <record id="ir_rule_dw_homologation_multi_company" model="ir.rule">
+    <field name="name">Dw Homologation: Multi Company</field>
+    <field name="model_id" ref="model_dw_homologation"/>
+    <field eval="True" name="global"/>
+    <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+</record>
+    </data>
+</odoo>

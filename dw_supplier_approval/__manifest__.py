@@ -8,7 +8,7 @@
     'author': 'DIGIWAVES - ALGERIA',
     'website': 'www.digiwaves.io',
     'depends': ['base',
-      'project','purchase'
+      'project','purchase','documents'
     ],
     'data': [
         # data

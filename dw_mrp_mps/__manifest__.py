@@ -14,8 +14,15 @@
     'data': [
         'views/res_config_settings_views.xml',
     ],
+
+    'assets': {
+        'web.assets_backend': [
+            'dw_mrp_mps/static/src/components/line_patch.js'
+        ],
+    },
     'installable': True,
     'application': False,
     'auto_install': False,
     'license': 'LGPL-3',
+
 }

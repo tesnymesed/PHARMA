@@ -21,8 +21,8 @@
         # views
 
         'views/product.xml',
-        'views/market.xml',
         'views/homologation.xml',
+        'views/market.xml',
         'menus.xml',
         # 'views/assets.xml',
 

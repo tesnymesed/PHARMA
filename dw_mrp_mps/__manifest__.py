@@ -17,7 +17,7 @@
 
     'assets': {
         'web.assets_backend': [
-            'dw_mrp_mps/static/src/components/line_patch.js'
+            'dw_mrp_mps/static/src/**/*'
         ],
     },
     'installable': True,

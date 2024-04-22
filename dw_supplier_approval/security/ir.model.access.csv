@@ -2,7 +2,8 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_dw_market,Dw Market,model_dw_market,base.group_user,1,1,1,1
 access_dw_market_type,Dw Market Type,model_dw_market_type,base.group_user,1,1,1,1
 access_dw_homologation,Dw Homologation,model_dw_homologation,base.group_user,1,1,1,1
-access_dw_document_line,Dw Document Line,model_dw_document_line,base.group_user,1,1,1,1
+access_dw_document_wizard,DW document wizard,model_dw_document_wizard,base.group_user,1,1,1,1
+
 
 
 

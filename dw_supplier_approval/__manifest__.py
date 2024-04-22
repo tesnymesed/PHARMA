@@ -8,27 +8,28 @@
     'author': 'DIGIWAVES - ALGERIA',
     'website': 'www.digiwaves.io',
     'depends': ['base',
-      'project','purchase','documents'
-    ],
+                'project', 'purchase', 'documents'
+                ],
     'data': [
         # data
-     'data/documents_data.xml',
+        'data/documents_data.xml',
+        'data/homologation_data.xml',
         # report
 
         # security
-           'security/ir.model.access.csv',
-            'security/security.xml',
+        'security/security.xml',
+        'security/ir.model.access.csv',
         # views
 
         'views/product.xml',
-        'views/market.xml',
         'views/homologation.xml',
+        'views/market.xml',
+
         'menus.xml',
         # 'views/assets.xml',
 
         # wizard
-             'wizard/document_wizard.xml',
-
+        'wizard/document_wizard.xml',
 
     ],
     'qweb': [

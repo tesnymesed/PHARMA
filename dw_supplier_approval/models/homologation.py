@@ -90,7 +90,7 @@ class DwHomologation(models.Model):
     @api.depends('market_id')
     def _compute_product(self):
         for rec in self:
-            if rec.market_id:
+            if rec.market_id and rec.market_id.product_ids:
                 rec.product_id = rec.market_id.product_ids[0]
             else:
                 rec.product_id = False

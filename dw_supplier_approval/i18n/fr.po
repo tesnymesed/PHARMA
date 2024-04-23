@@ -53,7 +53,7 @@ msgstr "<span class=\"o_stat_text\">BC Echantillon</span>"
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
 msgid "<span class=\"o_stat_text\">Purchase Orders</span>"
-msgstr "<span class=\"o_stat_text\">Bons de commande</span>"
+msgstr "<span class=\"o_stat_text\">Consultations</span>"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
@@ -174,7 +174,7 @@ msgstr ""
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
 msgid "Create Purchase order"
-msgstr "Créer bon de commande"
+msgstr "BC Echantillon"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__create_uid

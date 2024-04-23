@@ -77,7 +77,6 @@ class MrpWorkorder(models.Model):
     def create(self, vals):
         result = super().create(vals)
         for res in result:
-            print('res.operation_id:', res.operation_id)
             if res.operation_id:
                 lines = []
                 for consumption in res.operation_id.consumption_model_ids:

@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_quality.check.product.model,quality check product model,model_quality_check_product_model,base.group_user,1,1,1,1
+access_quality.check.model,quality check model,model_quality_check_model,base.group_user,1,1,1,1
+access_quality.check.line,quality check line,model_quality_check_line,base.group_user,1,1,1,1
+access_quality.dw.quality.reload,dw quality reload,model_dw_quality_reload,base.group_user,1,1,1,1
+access_quality.dw.quality.reload.location,dw quality reload location,model_dw_quality_reload_location,base.group_user,1,1,1,1
+access_quality.dw.quality.lot.approval,dw.quality.lot.approval,model_dw_quality_lot_approval,base.group_user,1,1,1,1
+

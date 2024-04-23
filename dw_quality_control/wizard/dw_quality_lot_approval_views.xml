@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="dw_quality_lot_approval_form_wizard" model="ir.ui.view">
+        <field name="name">dw.quality.lot.approval.form</field>
+        <field name="model">dw.quality.lot.approval</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <h1>
+                        <field name="check_quality_id" invisible="1"/>
+                        <field name="lot_ids" invisible="1"/>
+                        <field name="lot_id" string="Lot à libérer" readonly="0" required="1"/>
+                    </h1>
+                    <group>
+                        <field name="check_number" required="1"/>
+                        <field name="verdict" required="1"/>
+                    </group>
+
+                    <footer>
+                        <button name="action_lot_approval" string="Submit" class="oe_highlight" type="object"
+                                invisible="not lot_id or not check_number or not verdict"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

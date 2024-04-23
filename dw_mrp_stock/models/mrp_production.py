@@ -12,8 +12,6 @@ class MrpProduction(models.Model):
     dw_leftover_done = fields.Boolean(string='leftover Done', default=False)
 
     def _prepare_picking_transfer_pf_datas(self, group_id, location_id, location_dest_id, operation_id):
-        print(location_id.name,'location_idok')
-        print(location_dest_id.name,'location_dest_idok')
         lines = []
         product_id = self.product_id
         lines.append([0, 0, {

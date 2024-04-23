@@ -60,7 +60,7 @@
                         <button
                                 name="action_cancel" string="Cancel"
                                 type="object" class="btn-primary" data-hotkey="q"
-                                invisible="state in ['prospection','cancel'] "
+                                invisible="state in ['prospection','cancel','homologue'] "
                         />
                         <field name="state" widget="statusbar"
                                statusbar_visible="prospection,analyse,audit,lot_validation,qualification"/>
@@ -91,6 +91,8 @@
 
                                 <field name="supplier_id" readonly="state == 'homologue'"></field>
                                 <field name="dw_supplier_nature" readonly="state == 'homologue'" required="1"></field>
+                                <field name="state_market" readonly="state == 'homologue'" required="1"></field>
+
 
 
                                 <label for="street"/>

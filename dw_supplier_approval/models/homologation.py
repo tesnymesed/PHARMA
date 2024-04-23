@@ -6,6 +6,7 @@ from odoo.exceptions import UserError, ValidationError
 
 class DwHomologation(models.Model):
     _name = 'dw.homologation'
+    _description = "supplier approval"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(string='Name', default=lambda self: _('New'))
@@ -22,6 +23,8 @@ class DwHomologation(models.Model):
         ],
         string="State",
         default="prospection",
+        store="1",
+        group_expand='_expand_states'
     )
     company_id = fields.Many2one(
         'res.company',
@@ -46,7 +49,19 @@ class DwHomologation(models.Model):
         'product.product',
         related="market_id.product_ids"
     )
-    email = fields.Char('Email')
+    state_market = fields.Selection(
+        selection= [
+            ('draft', 'Identification of the need'),
+            ('homologation_cosultation','Approval/consultation'),
+            ('done', 'Assigned'),
+            ('cancel','Canceled')
+        ],
+        string="State",
+        related="market_id.state"
+    )
+
+    email= fields.Char('Email')
+
     phone = fields.Char('Phone')
     # address fields
     street = fields.Char(string="Address")
@@ -69,6 +84,8 @@ class DwHomologation(models.Model):
 
     fichier_stabilite_attachment = fields.Binary(string="Fichier de stabilité")
     fichier_stabilite_file_name = fields.Char(string='File name')
+    def _expand_states(self, states, domain, order):
+        return [key for key, dummy in self._fields['state'].selection]
 
     @api.depends('market_id')
     def _compute_product(self):

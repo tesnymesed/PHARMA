@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-   <record id="action_supplier_approval" model="ir.actions.act_window">
+        <record id="action_supplier_approval" model="ir.actions.act_window">
             <field name="name">Market</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">dw.market</field>
@@ -9,7 +9,22 @@
             <field name="context">{}</field>
 
         </record>
-         <record id="action_market_type" model="ir.actions.act_window">
+        <record id="action_identification_besoin" model="ir.actions.act_window">
+            <field name="name">Identification of the need</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product</field>
+            <field name="view_mode">tree,form</field>
+          <field name="domain">['|', '|',('homologue', '=', True), ('categ_id.homologue', '=', True),
+                ('product_tmpl_id.homologue', '=', True), ('purchase_ok', '=', True), ('number_fournisseur', '&lt;',2)]</field>
+
+
+
+
+
+            <field name="context">{}</field>
+
+        </record>
+        <record id="action_market_type" model="ir.actions.act_window">
             <field name="name">Market</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">dw.market.type</field>
@@ -40,18 +55,19 @@
                   parent="menu_supplier_approval_root"
                   sequence="10"
         />
+        <menuitem id="menu_identification_besoin_root"
+                  name="Identification of the need"
+                  parent="menu_market_root"
+                  action="action_identification_besoin"
+                  sequence="11"
+        />
         <menuitem id="menu_market"
                   name="Market"
                   parent="menu_market_root"
                   action="action_supplier_approval"
                   sequence="10"
         />
-          <menuitem id="menu_market_type"
-                  name="Market Type"
-                  parent="menu_market_root"
-                  action="action_market_type"
-                  sequence="11"
-        />
+
         <menuitem id="menu_homologation_root"
                   name="approval"
                   parent="menu_supplier_approval_root"
@@ -63,7 +79,6 @@
                   action="action_dw_homologation"
                   sequence="11"
         />
-
 
 
     </data>

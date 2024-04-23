@@ -19,6 +19,16 @@
         </record>
 
 
+          <record model="ir.rule" id="dw_homologation_create_button">
+            <field name="name">Approval</field>
+            <field name="model_id" ref="model_dw_homologation"/>
+            <field eval="0" name="perm_unlink"/>
+            <field eval="0" name="perm_write"/>
+            <field eval="1" name="perm_read"/>
+            <field eval="0" name="perm_create"/>
+            <field name="domain_force">[ ('state_market','not in',['cancel','done'])]</field>
+        </record>
+
 
         <record id="ir_rule_dw_market_multi_company" model="ir.rule">
             <field name="name">Dw Market: Multi Company</field>

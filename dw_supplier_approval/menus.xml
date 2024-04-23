@@ -30,8 +30,9 @@
         </record>
         <menuitem id="menu_supplier_approval_root"
                   name="homologation fournisseur"
-                  web_icon="dw_supplier_approval,/home/mraissa/PycharmProjects/odoo17/SAIDAL/DW_PHARMA/dw_supplier_approval/static/description/icon.png"
+                  web_icon="dw_supplier_approval,static/description/icon.png"
                   sequence="10"
+                   groups="dw_supplier_approval.group_user_dw_homologation"
         />
 
         <menuitem id="menu_market_root"

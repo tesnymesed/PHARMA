@@ -10,9 +10,10 @@
                     <field name="market_id" optional="show"/>
                     <field name="state" optional="show"/>
                     <field name="supplier_id" optional="show"/>
-                     <field name="dw_supplier_nature" optional="show"/>
+                    <field name="dw_supplier_nature" optional="show"/>
                     <field name="product_id" optional="show"/>
                     <field name="lot_validation" optional="show"/>
+                    <field name="company_id" optional="show"   />
 
 
                 </tree>
@@ -25,7 +26,7 @@
             <field name="arch" type="xml">
                 <form string="Homologation">
                     <header>
-                         <button name="button_prospection" string="return to draft"
+                        <button name="button_prospection" string="return to draft"
                                 class="btn-primary"
                                 invisible="state != 'cancel' "
                                 type="object"/>
@@ -46,7 +47,7 @@
                                 invisible="state != 'lot_validation'"
                                 type="object"/>
 
-                        <button name="action_homologuer" string="Homologuer"
+                        <button name="action_homologate" string="Homologuer"
                                 class="btn-primary"
                                 invisible="state in ['cancel','prospection','audit','lot_validation']"
                                 type="object"/>
@@ -56,7 +57,7 @@
                                 invisible="state != 'analyse' or purchase_id != False"
                                 type="object"/>
 
-                           <button
+                        <button
                                 name="action_cancel" string="Cancel"
                                 type="object" class="btn-primary" data-hotkey="q"
                                 invisible="state in ['prospection','cancel'] "
@@ -115,13 +116,13 @@
 
                             </group>
                             <group>
-                                <field name="market_id" readonly="state == 'homologue'"/>
-                                <field name="product_id" readonly="state == 'homologue'"/>
-                                <field name="product_ids" invisible="1"></field>
-                                <field name="company_id"></field>
+                                <field name="market_id" readonly="state == 'homologue' or market_id"/>
+                                <field name="product_id" readonly="state != 'prospection'"/>
+                                <field name="product_ids" invisible="1"/>
+                                <field name="company_id" readonly="market_id"  />
                                 <field name="lot_validation" readonly="state not in ['analyse','prospection','audit']"/>
-                                 <field name="phone" widget="phone" required="1" readonly="state == 'homologue'" />
-                                 <field name="email" widget="email" required="1" readonly="state == 'homologue'" />
+                                <field name="phone" widget="phone" required="1" readonly="state == 'homologue'"/>
+                                <field name="email" widget="email" required="1" readonly="state == 'homologue'"/>
                                 <field name="purchase_id" invisible="1"/>
                                 <field name="rapport_expertise_file_name" invisible="1"/>
                                 <field name="rapport_expertise_attachment" widget="binary"

@@ -99,7 +99,7 @@
                     <field name="name" optional="show"/>
                     <field name="state" optional="show"/>
                     <field name="description" optional="show"/>
-                    <field name="company_id" optional="show"/>
+                    <field name="company_id" optional="show"  />
                     <field name="user_id" optional="show"/>
                     <field name="product_ids" optional="show" widget="many2many_tags"/>
                     <field name="market_type_id"/>
@@ -188,6 +188,7 @@
                                 <field name="company_id" readonly="state != 'draft'"/>
                                 <field name="product_ids" options='{"no_create":True}' widget="many2many_tags" readonly="state != 'draft'"/>
                                 <field name="description" readonly="state != 'draft'"/>
+
 
                             </group>
                             <group>

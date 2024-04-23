@@ -3,17 +3,18 @@
 from odoo import fields, models,api,_
 
 
+
 class DwMarket(models.Model):
     _name = 'dw.market'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Supplier Approval"
     name = fields.Char(string="Name", required=True)
     state = fields.Selection(
-        selection= [
+        selection=[
             ('draft', 'Identification of the need'),
-            ('homologation_cosultation','Approval/consultation'),
+            ('homologation_cosultation', 'Approval/consultation'),
             ('done', 'Assigned'),
-            ('cancel','Canceled')
+            ('cancel', 'Canceled')
         ],
         string="State",
         default="draft",
@@ -32,10 +33,11 @@ class DwMarket(models.Model):
         'product.product',
         check_company=True,
     domain=['|','|',('homologue', '=', True), ('categ_id.homologue', '=', True), ('product_tmpl_id.homologue', '=', True),('purchase_ok','=',True)],
+
     )
-    market_type_id = fields.Many2one('dw.market.type',string="Market type")
-    purchase_ids = fields.Many2many("purchase.order",string="Purchase Order")
-    homologation_ids = fields.Many2many("dw.homologation",'market_id',string="Homologation")
+    market_type_id = fields.Many2one('dw.market.type', string="Market type")
+    purchase_ids = fields.Many2many("purchase.order", string="Purchase Order")
+    homologation_ids = fields.Many2many("dw.homologation", 'market_id', string="Homologation")
 
     supplier_homologuer_ids = fields.Many2many(
         'res.partner',
@@ -47,11 +49,14 @@ class DwMarket(models.Model):
         return [key for key, dummy in self._fields['state'].selection]
     def button_draft(self):
         self.write({"state": "draft"})
+
     @api.depends('homologation_ids')
     def _compute_supplier_homologuer(self):
-            search = self.homologation_ids.search([('state','=','homologue')])
+        for record in self :
+            search = record.homologation_ids.search([('state', '=', 'homologue'),('market_id','=',record.id)])
             supplier_ids = search.mapped('supplier_id')
-            self.supplier_homologuer_ids = supplier_ids
+            record.supplier_homologuer_ids = supplier_ids
+
     def action_homologation(self):
 
         return {
@@ -65,6 +70,7 @@ class DwMarket(models.Model):
                 'default_market_id': self.id
             }
         }
+        self.write({"state": "homologation_cosultation"})
 
     def action_done(self):
         return {
@@ -98,7 +104,3 @@ class DwMarket(models.Model):
 
     def action_cancel(self):
         self.write({"state": "cancel"})
-
-
-
-

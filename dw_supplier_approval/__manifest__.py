@@ -30,6 +30,7 @@
 
         # wizard
         'wizard/document_wizard.xml',
+        'wizard/document_market_wizard.xml',
 
     ],
     'qweb': [

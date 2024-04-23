@@ -9,7 +9,7 @@
             <field name="inherit_id" ref="purchase.purchase_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="supplier_homologuer_ids" widget="many2many_tags"/>
+                    <field name="supplier_homologuer_ids" widget="many2many_tags" invisible="1"/>
                     <field name="market_id"/>
 
                 </xpath>
@@ -144,7 +144,7 @@
                         <button
                                 name="action_cancel" string="Cancel"
                                 type="object" class="btn-primary" data-hotkey="q"
-                                invisible="state in ['draft','cancel'] "
+                                invisible="state in ['draft','cancel','done'] "
                         />
 
 
@@ -154,7 +154,13 @@
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
+                            <button name="show_documents" type="object" class="oe_stat_button"
+                                    icon="fa-list-alt">
+                                <div class="o_stat_info">
 
+                                    <span class="o_stat_text">Documents</span>
+                                </div>
+                            </button>
                             <button name="%(dw_supplier_approval.action_purchase_order_list)d" type="action"
                                     class="oe_stat_button"
                                     invisible="state == 'draft' "
@@ -179,14 +185,18 @@
                         </h1>
                         <group>
                             <group>
-                                <field name="company_id"/>
-                                <field name="product_ids" options='{"no_create":True}' widget="many2many_tags"/>
-                                <field name="description"/>
+                                <field name="company_id" readonly="state != 'draft'"/>
+                                <field name="product_ids" options='{"no_create":True}' widget="many2many_tags" readonly="state != 'draft'"/>
+                                <field name="description" readonly="state != 'draft'"/>
 
                             </group>
                             <group>
-                                <field name="user_id"/>
-                                <field name="market_type_id" invisible="1"/>
+                                <field name="user_id" readonly="state != 'draft'"/>
+                                <field name="cahier_charge_name" invisible="1"/>
+                                <field name="cahier_charge_attachment" widget="binary"
+                                       invisible="state != 'draft'"
+                                       filename="cahier_charge_name"/>
+                                <field name="market_type_id" invisible="1" readonly="state != 'draft'"/>
                                 <field name="supplier_homologuer_ids" widget="many2many_tags" invisible="1"/>
 
                             </group>

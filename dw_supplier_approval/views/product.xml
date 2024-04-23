@@ -19,7 +19,10 @@
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='categ_id']" position="after">
+                    <field name="number_fournisseur" />
                     <field name="homologue"/>
+
+
                 </xpath>
             </field>
         </record>
@@ -32,6 +35,23 @@
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='first']" position="inside">
                     <field name="homologue"/>
+                </xpath>
+            </field>
+        </record>
+
+          <record id="view_identification_besoin_product_tree" model="ir.ui.view">
+            <field name="name">product.identification.besoin.tree.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="arch" type="xml">
+                           <xpath expr="//button[@name='action_open_label_layout']" position="after">
+
+                     <button name="action_launch_market" string="launch market"
+
+
+                                type="object"/>
+
+
                 </xpath>
             </field>
         </record>

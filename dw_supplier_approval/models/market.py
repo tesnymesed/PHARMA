@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from odoo import fields, models,api
+from odoo import fields, models,api,_
 
 
 class DwMarket(models.Model):
@@ -17,6 +17,9 @@ class DwMarket(models.Model):
         ],
         string="State",
         default="draft",
+        store=True,
+
+        group_expand='_expand_states'
     )
 
     description = fields.Text(string="Description")
@@ -28,7 +31,7 @@ class DwMarket(models.Model):
     product_ids = fields.Many2many(
         'product.product',
         check_company=True,
-    domain=['|', '|', ('homologue', '=', True), ('categ_id.homologue', '=', True), ('product_tmpl_id.homologue', '=', True)],
+    domain=['|','|',('homologue', '=', True), ('categ_id.homologue', '=', True), ('product_tmpl_id.homologue', '=', True),('purchase_ok','=',True)],
     )
     market_type_id = fields.Many2one('dw.market.type',string="Market type")
     purchase_ids = fields.Many2many("purchase.order",string="Purchase Order")
@@ -38,7 +41,10 @@ class DwMarket(models.Model):
         'res.partner',
         compute="_compute_supplier_homologuer"
     )
-
+    cahier_charge_attachment = fields.Binary(string="Specification document")
+    cahier_charge_name = fields.Char(string='File name')
+    def _expand_states(self, states, domain, order):
+        return [key for key, dummy in self._fields['state'].selection]
     def button_draft(self):
         self.write({"state": "draft"})
     @api.depends('homologation_ids')
@@ -47,11 +53,48 @@ class DwMarket(models.Model):
             supplier_ids = search.mapped('supplier_id')
             self.supplier_homologuer_ids = supplier_ids
     def action_homologation(self):
-        self.write({"state": "homologation_cosultation"})
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Market Document',
+            'res_model': 'dw.document.market.wizard',
+            'views': [[self.env.ref('dw_supplier_approval.view_document_market_wizard').id, 'form']],
+            'target': 'new',
+
+            'context': {
+                'default_market_id': self.id
+            }
+        }
+
     def action_done(self):
-        self.write({"state": "done"})
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Market Document',
+            'res_model': 'dw.document.market.wizard',
+            'views': [[self.env.ref('dw_supplier_approval.view_document_market_wizard').id, 'form']],
+            'target': 'new',
 
+            'context': {
+                'default_market_id': self.id
+            }
+        }
 
+    def show_documents(self):
+        self.ensure_one()
+        return {
+            'res_model': 'documents.document',
+            'type': 'ir.actions.act_window',
+            'name': _("%(market_name)s 's Documents", market_name=self.name),
+
+            'domain': [
+                ('res_model', '=', 'dw.market'), ('res_id', '=', self.id),
+            ],
+            'view_mode': 'kanban,tree,form',
+
+            'context': {'default_res_model': 'dw.market', 'default_res_id': self.id,
+
+                        'limit_folders_to_lead': True},
+        }
 
     def action_cancel(self):
         self.write({"state": "cancel"})

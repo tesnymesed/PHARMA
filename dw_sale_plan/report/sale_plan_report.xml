@@ -48,7 +48,7 @@
             <field name="report_type">qweb-html</field>
             <field name="report_name">dw_sale_plan.sale_plan_report_document</field>
             <field name="report_file">dw_sale_plan.sale_plan_report_document</field>
-            <field name="print_report_name">'Sale Plan Report - %s' % (object.employee_id.display_name)</field>
+            <field name="print_report_name">'Sale Plan Report - %s' % (object.display_name)</field>
             <field name="binding_model_id" ref="dw_sale_plan.model_sale_plan"/>
             <field name="binding_type">report</field>
         </record>

@@ -83,9 +83,9 @@
                         string="Corriger Réservation"
                         invisible="dw_route_no_origin == False"/>
                 <field name="quality_state" invisible="1"/>
-                <button name="action_reload" type="object" class="btn-primary"
-                        string="Reload"
-                        invisible="dw_quality_id != False or picking_id == False or quality_state not in ['none'] or lot_id == False"/>
+<!--                <button name="action_reload" type="object" class="btn-primary"-->
+<!--                        string="Reload"-->
+<!--                        invisible="dw_quality_id != False or picking_id == False or quality_state not in ['none'] or lot_id == False"/>-->
             </button>
             <field name="team_id" position="after">
                 <field name="dw_quality_id" invisible="dw_quality_id == False"/>

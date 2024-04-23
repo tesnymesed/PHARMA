@@ -66,12 +66,7 @@
                   action="action_supplier_approval"
                   sequence="10"
         />
-        <menuitem id="menu_market_type"
-                  name="Market Type"
-                  parent="menu_market_root"
-                  action="action_market_type"
-                  sequence="11"
-        />
+
         <menuitem id="menu_homologation_root"
                   name="approval"
                   parent="menu_supplier_approval_root"

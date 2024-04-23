@@ -192,10 +192,7 @@
                             </group>
                             <group>
                                 <field name="user_id" readonly="state != 'draft'"/>
-                                <field name="cahier_charge_name" invisible="1"/>
-                                <field name="cahier_charge_attachment" widget="binary"
-                                       invisible="state != 'draft'"
-                                       filename="cahier_charge_name"/>
+
                                 <field name="market_type_id" invisible="1" readonly="state != 'draft'"/>
                                 <field name="supplier_homologuer_ids" widget="many2many_tags" invisible="1"/>
 

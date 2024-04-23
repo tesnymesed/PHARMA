@@ -7,6 +7,8 @@ class DwHomologation(models.Model):
     _name = 'dw.homologation'
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
+    name = fields.Char(string='Name',default=lambda self: _('New'))
+
     state = fields.Selection(
         selection=[
             ('prospection', 'Prospection'),
@@ -14,7 +16,8 @@ class DwHomologation(models.Model):
             ('audit', 'Audit'),
             ('lot_validation', 'Lot Validation'),
             ('qualification', 'Qualification'),
-            ('homologue', 'Homologué'),
+            ('homologue', 'approved'),
+            ('cancel','Canceled')
         ],
         string="State",
         default="prospection",
@@ -23,11 +26,11 @@ class DwHomologation(models.Model):
         'res.company',
         default=lambda self: self.env.company,
     )
-    market_id = fields.Many2one('dw.market', string='Market')
+    market_id = fields.Many2one('dw.market', string='Market' , domain="[('state','=','homologation_cosultation')]")
     product_id = fields.Many2one(
         'product.product',
         check_company=True,
-     related='market_id.product_id'
+     compute="_compute_product" ,readonly=False,store=True , domain="[('id','in',product_ids)]"
     )
     lot_validation = fields.Boolean('Lot Validation')
     documents_line_ids = fields.Many2many('dw.document.line', 'homologation_id')
@@ -35,6 +38,16 @@ class DwHomologation(models.Model):
         'res.partner',
         domain='[("is_supplier","=", True)]'
     )
+    dw_supplier_nature = fields.Selection(
+        [('fabricant', 'Fabricant'), ('regroupeur', 'Regroupeur')],
+        string="Supplier nature", related="supplier_id.dw_supplier_nature"
+    )
+    product_ids = fields.Many2many(
+        'product.product',
+        related="market_id.product_ids"
+    )
+    email= fields.Char('Email')
+    phone = fields.Char('Phone')
     # address fields
     street = fields.Char(string="Address")
     street2 = fields.Char()
@@ -56,31 +69,38 @@ class DwHomologation(models.Model):
 
     fichier_stabilite_attachment = fields.Binary(string="Fichier de stabilité")
     fichier_stabilite_file_name = fields.Char(string='File name')
-
+    @api.depends('market_id')
+    def _compute_product(self):
+      if self.market_id:
+          self.product_id = self.market_id.product_ids[0]
+      else :
+          self.product_id = False
     @api.onchange("supplier_id")
     def onchange_address(self):
        for homologation in self :
-           homologation.street = homologation.supplier_id.street
-           homologation.street2 = homologation.supplier_id.street2
-           homologation.zip = homologation.supplier_id.zip
-           homologation.city = homologation.supplier_id.city
-           homologation.country_id = homologation.supplier_id.country_id
-           homologation.state_id = homologation.supplier_id.state_id
+           homologation.street = homologation.supplier_id.street if homologation.supplier_id else False
+           homologation.street2 = homologation.supplier_id.street2 if homologation.supplier_id else False
+           homologation.zip = homologation.supplier_id.zip if homologation.supplier_id else False
+           homologation.city = homologation.supplier_id.city if homologation.supplier_id else False
+           homologation.country_id = homologation.supplier_id.country_id if homologation.supplier_id else False
+           homologation.state_id = homologation.supplier_id.state_id if homologation.supplier_id else False
+           homologation.phone = homologation.supplier_id.phone if homologation.supplier_id else False
+           homologation.email = homologation.supplier_id.email if homologation.supplier_id else False
 
 
     def action_to_analyse(self):
-        for hom in self :
-            if hom.supplier_id.dw_supplier_nature=='regroupeur':
+
+        if self.supplier_id.dw_supplier_nature=='regroupeur':
                 return {
                     'type': 'ir.actions.act_window',
                     'name': 'Manufacturing Document',
-                    'res_model': 'dw.homologation',
+                    'res_model': 'dw.document.wizard',
                     'views': [[self.env.ref('dw_supplier_approval.view_manufacturing_document_wizard').id, 'form']],
                     'target': 'new',
-                    'res_id': self.id,
-                    # 'context': {
-                    #     'default_id': self.id
-                    # }
+
+                    'context': {
+                        'default_homologation_id': self.id
+                    }
                 }
         else : self.write({"state": "analyse"})
     def show_purchase_order(self):
@@ -116,21 +136,21 @@ class DwHomologation(models.Model):
                                                })]
             }
         }
-    def action_confirm(self):
-        active_id = self.env.context.get('active_id')
-        record = self.env['dw.homologation'].browse(active_id)
-        if record.manufacturing_document_attachment and record.manufacturing_file_name:
+    def button_prospection(self):
+        self.write({"state": "prospection"})
 
-                pg_recorded = record.env['documents.document'].create({
-                    'res_model': 'dw.homologation',
-                    'res_id': record.id,
-                    'name': record.manufacturing_file_name,
-                    'type': 'binary',
-                    'partner_id': record.supplier_id.id if record.supplier_id else False ,
-                    'datas': record.manufacturing_document_attachment,
-                    'folder_id': record.env.ref('dw_supplier_approval.folder_homologation').id,
-                })
-        self.write({"state": "analyse"})
+
+    @api.model
+    def create(self, vals):
+        if vals.get('name', _('New')) == _('New'):
+            t = self.env['ir.sequence'].next_by_code('dw.homologation') or _('New')
+            vals['name'] = t + "/" + str(fields.Date.today().year)
+
+        res = super(DwHomologation, self).create(vals)
+
+
+        return res
+
 
     def action_to_audit(self):
         if self.purchase_id:
@@ -139,15 +159,15 @@ class DwHomologation(models.Model):
                 pg_recorded = self.env['documents.document'].create({
                     'res_model': 'dw.homologation',
                     'res_id': self.id,
-                    'name': self.manufacturing_file_name,
+                    'name': self.rapport_expertise_file_name,
                     'type': 'binary',
+                    'product_id': self.product_id.id if self.product_id else False,
                     'partner_id': self.supplier_id.id if self.supplier_id else False,
-                    'datas': self.manufacturing_document_attachment,
+                    'datas': self.rapport_expertise_attachment,
                     'folder_id': self.env.ref('dw_supplier_approval.folder_homologation').id,
                 })
             self.write({"state": "audit"})
-        else :
-         raise ValidationError(_("Aucun bon de commande n'a été créé"))
+
     def action_to_lot_validation_or_qualification(self):
         if self.rapport_audit_attachment and self.rapport_audit_file_name:
             pg_recorded = self.env['documents.document'].create({
@@ -155,6 +175,7 @@ class DwHomologation(models.Model):
                 'res_id': self.id,
                 'name': self.rapport_audit_file_name,
                 'type': 'binary',
+                'product_id': self.product_id.id if self.product_id else False,
                 'partner_id': self.supplier_id.id if self.supplier_id else False,
                 'datas': self.rapport_audit_attachment,
                 'folder_id': self.env.ref('dw_supplier_approval.folder_homologation').id,
@@ -171,6 +192,7 @@ class DwHomologation(models.Model):
                 'res_id': self.id,
                 'name': self.fichier_stabilite_file_name,
                 'type': 'binary',
+                'product_id': self.product_id.id if self.product_id else False,
                 'partner_id': self.supplier_id.id if self.supplier_id else False,
                 'datas': self.fichier_stabilite_attachment,
                 'folder_id': self.env.ref('dw_supplier_approval.folder_homologation').id,
@@ -179,18 +201,18 @@ class DwHomologation(models.Model):
     def action_homologuer(self):
         self.write({"state": "homologue"})
     def action_cancel(self):
-        pass
+        self.write({"state": "cancel"})
     def show_documents(self):
         self.ensure_one()
         return {
             'res_model': 'documents.document',
             'type': 'ir.actions.act_window',
-            'name': _("%(market_name)s homologations's Documents", market_name=self.market_id.name),
+            'name': _("%(market_name)s homologations's Documents", market_name=self.name),
             'domain': [
                 ('res_model', '=', 'dw.homologation'), ('res_id', '=', self.id),
             ],
             'view_mode': 'kanban,tree,form',
 
-            'context': {'default_res_model': 'dw.homologation', 'default_res_id': self.id,'default_partner_id':self.supplier_id.id if self.supplier_id else False ,'limit_folders_to_lead': True},
+            'context': {'default_res_model': 'dw.homologation', 'default_res_id': self.id,'default_partner_id':self.supplier_id.id if self.supplier_id else False ,'default_product_id':self.product_id.id if self.product_id else False ,'limit_folders_to_lead': True},
         }
 

@@ -9,8 +9,8 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="state_homologation"/>
-                        <field name="homologation_id"/>
+                        <field name="state_homologation" invisible="1"/>
+                        <field name="homologation_id" invisible="1"/>
                         <field name="manufacturing_file_name" invisible="1"/>
 
                         <field name="manufacturing_document_attachment" widget="binary"

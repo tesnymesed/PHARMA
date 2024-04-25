@@ -7,27 +7,27 @@
             <field name="sequence">11</field>
         </record>
 
-         <record id="group_user_dw_homologation" model="res.groups">
+        <record id="group_user_dw_homologation" model="res.groups">
             <field name="name">User</field>
             <field name="category_id" ref="dw_supplier_approval.module_dw_homologation_category"/>
         </record>
-         <record id="group_manager_dw_homologation" model="res.groups">
+        <record id="group_manager_dw_homologation" model="res.groups">
             <field name="name">Manager</field>
             <field name="category_id" ref="dw_supplier_approval.module_dw_homologation_category"/>
-                     <field name="implied_ids" eval="[(4, ref('dw_supplier_approval.group_user_dw_homologation'))]"/>
+            <field name="implied_ids" eval="[(4, ref('dw_supplier_approval.group_user_dw_homologation'))]"/>
 
         </record>
 
 
-          <record model="ir.rule" id="dw_homologation_create_button">
-            <field name="name">Approval</field>
-            <field name="model_id" ref="model_dw_homologation"/>
-            <field eval="0" name="perm_unlink"/>
-            <field eval="0" name="perm_write"/>
-            <field eval="1" name="perm_read"/>
-            <field eval="0" name="perm_create"/>
-            <field name="domain_force">[ ('state_market','not in',['cancel','done'])]</field>
-        </record>
+<!--        <record model="ir.rule" id="dw_homologation_create_button">-->
+<!--            <field name="name">Approval</field>-->
+<!--            <field name="model_id" ref="model_dw_homologation"/>-->
+<!--            <field eval="0" name="perm_unlink"/>-->
+<!--            <field eval="0" name="perm_write"/>-->
+<!--            <field eval="1" name="perm_read"/>-->
+<!--            <field eval="0" name="perm_create"/>-->
+<!--            <field name="domain_force">[ ('state_market','not in',['cancel','done'])]</field>-->
+<!--        </record>-->
 
 
         <record id="ir_rule_dw_market_multi_company" model="ir.rule">
@@ -41,6 +41,12 @@
         <record id="ir_rule_dw_homologation_multi_company" model="ir.rule">
             <field name="name">Dw Homologation: Multi Company</field>
             <field name="model_id" ref="model_dw_homologation"/>
+            <field eval="True" name="global"/>
+            <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+        </record>
+        <record id="ir_rule_dw_homologation_multi_company" model="ir.rule">
+            <field name="name"> Consultation : Multi Company</field>
+            <field name="model_id" ref="model_dw_consultation"/>
             <field eval="True" name="global"/>
             <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
         </record>

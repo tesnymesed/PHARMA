@@ -23,8 +23,6 @@ class DwHomologation(models.Model):
         ],
         string="State",
         default="prospection",
-        store="1",
-        group_expand='_expand_states'
     )
     company_id = fields.Many2one(
         'res.company',
@@ -34,33 +32,38 @@ class DwHomologation(models.Model):
     product_id = fields.Many2one(
         'product.product',
         check_company=True,
-        compute="_compute_product", readonly=False, store=True, domain="[('id','in',product_ids)]"
+        compute="_compute_product", readonly=False, store=True, required="1",
+        domain=['|', '|', ('homologue', '=', True), ('categ_id.homologue', '=', True),
+                ('product_tmpl_id.homologue', '=', True), ('purchase_ok', '=', True)],
     )
     lot_validation = fields.Boolean('Lot Validation')
     supplier_id = fields.Many2one(
-        'res.partner',
+        'res.partner', required=1,
         domain='[("is_supplier","=", True)]'
     )
     dw_supplier_nature = fields.Selection(
         [('fabricant', 'Fabricant'), ('regroupeur', 'Regroupeur')],
-        string="Supplier nature", related="supplier_id.dw_supplier_nature",readonly=False,store=True,
+        string="Supplier nature", related="supplier_id.dw_supplier_nature", readonly=False, store=True,
     )
     product_ids = fields.Many2many(
         'product.product',
         related="market_id.product_ids"
     )
+    market_supplier_ids = fields.Many2many(
+        related="market_id.supplier_ids"
+    )
     state_market = fields.Selection(
-        selection= [
+        selection=[
             ('draft', 'Identification of the need'),
-            ('homologation_cosultation','Approval/consultation'),
+            ('homologation_cosultation', 'Approval/consultation'),
             ('done', 'Assigned'),
-            ('cancel','Canceled')
+            ('cancel', 'Canceled')
         ],
         string="State",
         related="market_id.state"
     )
 
-    email= fields.Char('Email')
+    email = fields.Char('Email')
 
     phone = fields.Char('Phone')
     # address fields
@@ -72,6 +75,7 @@ class DwHomologation(models.Model):
     country_id = fields.Many2one('res.country', string='Country', )
     country_code = fields.Char(related='country_id.code', string="Country Code")
     purchase_id = fields.Many2one("purchase.order", string="Purchase Order")
+    consultation_id = fields.Many2one("dw.consultation", string="Consultation")
 
     manufacturing_document_attachment = fields.Binary(string="Document fabriquant")
     manufacturing_file_name = fields.Char(string='File name')
@@ -84,6 +88,7 @@ class DwHomologation(models.Model):
 
     fichier_stabilite_attachment = fields.Binary(string="Fichier de stabilité")
     fichier_stabilite_file_name = fields.Char(string='File name')
+
     def _expand_states(self, states, domain, order):
         return [key for key, dummy in self._fields['state'].selection]
 
@@ -148,26 +153,56 @@ class DwHomologation(models.Model):
             'res_model': 'purchase.order',
             'views': [[self.env.ref('purchase.purchase_order_form').id, 'form']],
 
-            'context': {
-                'default_homologation_id': self.id,
-                'default_partner_id': self.supplier_id.id,
-                'default_order_line': [(0, 0, {'product_id': self.product_id.id,
-                                               'name': self.product_id.name,
-                                               'price_unit': 0.0,
-                                               'product_uom': self.product_id.product_tmpl_id.uom_po_id.id,
+            'context': {'create': 0,
+                        'default_homologation_id': self.id,
+                        'default_partner_id': self.supplier_id.id,
+                        'default_order_line': [(0, 0, {'product_id': self.product_id.id,
+                                                       'name': self.product_id.name,
+                                                       'price_unit': 0.0,
+                                                       'product_uom': self.product_id.product_tmpl_id.uom_po_id.id,
 
-                                               })]
-            }
+                                                       })]
+                        }
         }
 
     def button_prospection(self):
         self.write({"state": "prospection"})
 
+    def _prepare_criteria_line_consultation(self):
+        vals_dict = [
+            (0, 0, {'criteria_id': self.env.ref("dw_supplier_approval.dw_criteria_consultation_price_unit_ht").id}),
+            (0, 0, {
+                'criteria_id': self.env.ref("dw_supplier_approval.dw_criteria_consultation_delivery_time").id})]
+        return vals_dict
+
+    def _prepare_consultation(self):
+        return {
+            'supplier_id': self.supplier_id.id if self.supplier_id else False,
+            'product_id': self.product_id.id if self.product_id else False,
+            'market_id': self.market_id.id if self.market_id else False,
+            'homologation_id': self.id,
+            'company_id': self.company_id.id if self.company_id else False,
+            "criteria_line_ids": self._prepare_criteria_line_consultation()
+        }
+
+    def action_lunch_consultation(self):
+        self.consultation_id = self.env['dw.consultation'].create(self._prepare_consultation())
+        if self.consultation_id:
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Consultation',
+                'res_model': 'dw.consultation',
+                'views': [[self.env.ref('dw_supplier_approval.dw_consultation_form_view').id, 'form']],
+                'res_id': self.consultation_id.id,
+                'context': {"create": 0},
+            }
+
     @api.model_create_multi
     def create(self, vals_list):
+        IrSequence = self.env['ir.sequence']
         for vals in vals_list:
             if 'name' not in vals or vals['name'] == _('New'):
-                vals['name'] = self.env['ir.sequence'].next_by_code('dw.homologation') or _('New')
+                vals['name'] = IrSequence.next_by_code('dw.homologation') or _('New')
         return super().create(vals_list)
 
     def action_to_audit(self):
@@ -239,3 +274,17 @@ class DwHomologation(models.Model):
                         'default_product_id': self.product_id.id if self.product_id else False,
                         'limit_folders_to_lead': True},
         }
+
+    def action_show_consultations(self):
+        return ({
+            'res_model': 'dw.consultation',
+            'type': 'ir.actions.act_window',
+            'name': _("%(homologation_name)s's Consultations", homologation_name=self.name),
+
+            'domain': [
+                ('homologation_id', '=', self.id),
+            ],
+            'view_mode': 'tree,form',
+
+            'context': {'create': False},
+        })

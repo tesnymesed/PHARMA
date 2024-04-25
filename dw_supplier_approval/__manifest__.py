@@ -7,13 +7,13 @@
 =        """,
     'author': 'DIGIWAVES - ALGERIA',
     'website': 'www.digiwaves.io',
-    'depends': ['base',
-                'project', 'purchase', 'documents'
-                ],
+    'depends': ['dw_base', 'purchase', 'purchase_requisition', 'documents'],
     'data': [
         # data
         'data/documents_data.xml',
-        'data/homologation_data.xml',
+        'data/sequence.xml',
+        'data/market_type_data.xml',
+        'data/consultation_crietria_data.xml',
         # report
 
         # security
@@ -24,13 +24,18 @@
         'views/product.xml',
         'views/homologation.xml',
         'views/market.xml',
-
+        'views/market_type_views.xml',
+        'views/purchase_order_views.xml',
+        'views/dw_consultation_criteria.xml',
+        'views/dw_consultations_views.xml',
+        'views/dw_consultation_criteria_line.xml',
+        # menus
         'menus.xml',
-        # 'views/assets.xml',
 
         # wizard
         'wizard/document_wizard.xml',
         'wizard/document_market_wizard.xml',
+        'wizard/dw_attribute_market_views.xml',
 
     ],
     'qweb': [

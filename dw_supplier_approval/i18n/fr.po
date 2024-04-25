@@ -150,7 +150,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__company_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__company_id
 msgid "Company"
-msgstr "Entreprise"
+msgstr "Compagnie"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_document_market_wizard

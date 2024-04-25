@@ -8,27 +8,72 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                   <group >
-                      <field name="manufacturing_file_name" invisible="1"/>
-                       <field name="manufacturing_document_attachment" widget="binary" filename="manufacturing_file_name" required="1"/>
-                   </group>
-                    <group ></group>
+                    <group>
+                        <field name="state_homologation" invisible="1"/>
+                        <field name="homologation_id" invisible="1"/>
+                        <field name="manufacturing_file_name" invisible="1"/>
+
+                        <field name="manufacturing_document_attachment" widget="binary"
+                               filename="manufacturing_file_name" invisible="state_homologation != 'prospection'"
+                               required="state_homologation == 'prospection'"/>
+
+                        <field name="rapport_expertise_file_name" invisible="1"/>
+                        <field name="rapport_expertise_attachment" widget="binary"
+                               invisible="state_homologation != 'analyse'" required="state_homologation == 'analyse'"
+                               filename="rapport_expertise_file_name"/>
+                        <field name="rapport_audit_file_name" invisible="1"/>
+                        <field name="rapport_audit_attachment" widget="binary" invisible="state_homologation != 'audit'"
+                               required="state_homologation == 'audit'"
+                               filename="rapport_audit_file_name"/>
+
+                        <field name="stabilite_file_name" invisible="1"/>
+                        <field name="fichier_stabilite_attachment" widget="binary"
+                               invisible="state_homologation != 'lot_validation'"
+                               required="state_homologation == 'lot_validation'"
+                               filename="stabilite_file_name"/>
+                    </group>
+                    <group></group>
                     <footer>
                         <button
-                                name="action_confirm"
+                                name="action_manufacturing"
                                 string="Confirm"
                                 type="object"
-                                 class="btn-primary"
+                                class="btn-primary"
                                 data-hotkey="q"
-
+                                invisible="state_homologation != 'prospection'"
                         />
+
+                        <button
+                                name="action_expertise"
+                                string="Confirm"
+                                type="object"
+                                class="btn-primary"
+                                data-hotkey="q"
+                                invisible="state_homologation != 'analyse'"
+                        />
+                        <button
+                                name="action_audit"
+                                string="Confirm"
+                                type="object"
+                                class="btn-primary"
+                                data-hotkey="q"
+                                invisible="state_homologation != 'audit'"
+                        />
+                        <button
+                                name="action_stability"
+                                string="Confirm"
+                                type="object"
+                                class="btn-primary"
+                                data-hotkey="q"
+                                invisible="state_homologation != 'lot_validation'"
+                        />
+
                         <button special="cancel" string="Cancel" class="oe_link"/>
                     </footer>
                 </sheet>
             </form>
         </field>
     </record>
-
 
 
 </odoo>

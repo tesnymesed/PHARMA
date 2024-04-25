@@ -77,15 +77,6 @@ class DwHomologation(models.Model):
     purchase_id = fields.Many2one("purchase.order", string="Purchase Order")
     consultation_id = fields.Many2one("dw.consultation", string="Consultation")
 
-    manufacturing_document_attachment = fields.Binary(string="Document fabriquant")
-    manufacturing_file_name = fields.Char(string='File name')
-
-    rapport_expertise_attachment = fields.Binary(string="Document d\'expertise")
-    rapport_expertise_file_name = fields.Char(string='File name')
-
-    rapport_audit_attachment = fields.Binary(string="Document d\'audit")
-    rapport_audit_file_name = fields.Char(string='File name')
-
     fichier_stabilite_attachment = fields.Binary(string="Fichier de stabilité")
     fichier_stabilite_file_name = fields.Char(string='File name')
 
@@ -112,7 +103,7 @@ class DwHomologation(models.Model):
         self.email = self.supplier_id.email if self.supplier_id else False
 
     def action_to_analyse(self):
-
+        print(self.state)
         if self.dw_supplier_nature == 'regroupeur':
             return {
                 'type': 'ir.actions.act_window',
@@ -206,51 +197,47 @@ class DwHomologation(models.Model):
         return super().create(vals_list)
 
     def action_to_audit(self):
+        print(self.state)
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'expert Document',
+            'res_model': 'dw.document.wizard',
+            'views': [[self.env.ref('dw_supplier_approval.view_manufacturing_document_wizard').id, 'form']],
+            'target': 'new',
 
-        if self.rapport_expertise_attachment and self.rapport_expertise_file_name:
-            self.env['documents.document'].create({
-                'res_model': 'dw.homologation',
-                'res_id': self.id,
-                'name': self.rapport_expertise_file_name,
-                'type': 'binary',
-                'product_id': self.product_id.id if self.product_id else False,
-                'partner_id': self.supplier_id.id if self.supplier_id else False,
-                'datas': self.rapport_expertise_attachment,
-                'folder_id': self.env.ref('dw_supplier_approval.folder_homologation').id,
-            })
-        self.write({"state": "audit"})
+            'context': {
+                'default_homologation_id': self.id,
+
+            }
+        }
 
     def action_to_lot_validation_or_qualification(self):
-        if self.rapport_audit_attachment and self.rapport_audit_file_name:
-            self.env['documents.document'].create({
-                'res_model': 'dw.homologation',
-                'res_id': self.id,
-                'name': self.rapport_audit_file_name,
-                'type': 'binary',
-                'product_id': self.product_id.id if self.product_id else False,
-                'partner_id': self.supplier_id.id if self.supplier_id else False,
-                'datas': self.rapport_audit_attachment,
-                'folder_id': self.env.ref('dw_supplier_approval.folder_homologation').id,
-            })
+        print(self.state)
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Audit Document',
+            'res_model': 'dw.document.wizard',
+            'views': [[self.env.ref('dw_supplier_approval.view_manufacturing_document_wizard').id, 'form']],
+            'target': 'new',
 
-        if self.lot_validation:
-            self.write({"state": "lot_validation"})
-        else:
-            self.write({"state": "qualification"})
+            'context': {
+                'default_homologation_id': self.id
+            }
+        }
 
     def action_to_qualification(self):
-        if self.fichier_stabilite_attachment and self.fichier_stabilite_file_name:
-            self.env['documents.document'].create({
-                'res_model': 'dw.homologation',
-                'res_id': self.id,
-                'name': self.fichier_stabilite_file_name,
-                'type': 'binary',
-                'product_id': self.product_id.id if self.product_id else False,
-                'partner_id': self.supplier_id.id if self.supplier_id else False,
-                'datas': self.fichier_stabilite_attachment,
-                'folder_id': self.env.ref('dw_supplier_approval.folder_homologation').id,
-            })
-        self.write({"state": "qualification"})
+        print(self.state)
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Stability Document',
+            'res_model': 'dw.document.wizard',
+            'views': [[self.env.ref('dw_supplier_approval.view_manufacturing_document_wizard').id, 'form']],
+            'target': 'new',
+
+            'context': {
+                'default_homologation_id': self.id
+            }
+        }
 
     def action_homologate(self):
         self.write({"state": "homologue"})
@@ -272,6 +259,7 @@ class DwHomologation(models.Model):
             'context': {'default_res_model': 'dw.homologation', 'default_res_id': self.id,
                         'default_partner_id': self.supplier_id.id if self.supplier_id else False,
                         'default_product_id': self.product_id.id if self.product_id else False,
+                        'searchpanel_default_folder_id': self.env.ref("dw_supplier_approval.folder_homologation").id,
                         'limit_folders_to_lead': True},
         }
 

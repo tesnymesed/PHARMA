@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+         <record id="dw_market_type_gre_a_gre" model="dw.market.type">
+            <field name="name">Gré à Gré</field>
+            <field name="code">gre_a_gre</field>
+            <field name="forced_nbr_supplier">True</field>
+            <field name="nbr_supplier">1</field>
+        </record>
+         <record id="dw_market_type_appel_offre" model="dw.market.type">
+            <field name="name">Appel d'offre</field>
+            <field name="code">appel_offre</field>
+            <field name="forced_nbr_supplier">True</field>
+            <field name="nbr_supplier">2</field>
+        </record>
+    </data>
+</odoo>

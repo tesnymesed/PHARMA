@@ -22,8 +22,9 @@ class DocumentMarketWizard(models.TransientModel):
         related="market_id.state",
         store=True,
     )
+
     def action_confirm(self):
-        if self.cahier_charge_attachment and self.cahier_charge_name and self.state_market=='draft':
+        if self.cahier_charge_attachment and self.cahier_charge_name and self.state_market == 'draft':
             pg_recorded = self.env['documents.document'].create({
                 'res_model': 'dw.market',
                 'res_id': self.market_id.id,
@@ -33,7 +34,6 @@ class DocumentMarketWizard(models.TransientModel):
                 'datas': self.cahier_charge_attachment,
                 'folder_id': self.env.ref('dw_supplier_approval.folder_dw_market').id,
             })
-            self.market_id.write({'state':'homologation_cosultation'})
         if self.pv_attribution_attachment and self.pv_attribution_name and self.state_market == 'homologation_cosultation':
             pg_recorded = self.env['documents.document'].create({
                 'res_model': 'dw.market',
@@ -43,4 +43,3 @@ class DocumentMarketWizard(models.TransientModel):
                 'datas': self.pv_attribution_attachment,
                 'folder_id': self.env.ref('dw_supplier_approval.folder_dw_market').id,
             })
-            self.market_id.write({'state': 'done'})

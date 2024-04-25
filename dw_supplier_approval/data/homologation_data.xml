@@ -5,12 +5,7 @@
 
 
 
-        <record id="seq_dw_homologation" model="ir.sequence">
-            <field name="name">Homologation sequence</field>
-            <field name="code">dw.homologation</field>
-            <field name="prefix">H</field>
-            <field name="padding">4</field>
-        </record>
+
 
     </data>
 </odoo>

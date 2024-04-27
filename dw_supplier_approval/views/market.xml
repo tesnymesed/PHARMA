@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!--  Market      -->
+
+        <record id="kanban_dw_market" model="ir.ui.view">
+            <field name="name">dw.market.kanban</field>
+            <field name="model">dw.market</field>
+            <field name="priority" eval="1"/>
+            <field name="arch" type="xml">
+                <kanban default_group_by="state" class="o_kanban_small_column o_opportunity_kanban"
+                        archivable="false" sample="1" js_class="crm_kanban" quick_create="False"
+                        records_draggable="False">
+                    <field name="state" invisible="1"/>
+                    <field name="name" required="1"/>
+                    <field name="product_ids" widget="many2many_tags" required="1" readonly="state not in 'draft'"/>
+                    <field name="user_id"/>
+                    <field name="description"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <div class="o-title">
+                                        <h4 style="font-size: 15px; text-align:center;">
+                                            <field name="name"/>
+                                        </h4>
+                                    </div>
+                                    <div>
+                                        <span class="o_kanban_record_subtitle">
+                                            <b>Product</b>
+                                            :
+                                            <field name="product_ids" widget="many2many_tags"/>
+                                        </span>
+
+                                        <span class="o_kanban_record_subtitle"><b>Responsible</b>:
+                                            <field name="user_id"/>
+                                        </span>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+
+                </kanban>
+            </field>
+        </record>
+        <record id="view_market_tree" model="ir.ui.view">
+            <field name="name">dw.market.tree</field>
+            <field name="model">dw.market</field>
+            <field name="priority" eval="2"/>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" optional="show"/>
+                    <field name="state" optional="show"/>
+                    <field name="description" optional="show"/>
+                    <field name="company_id" optional="show"/>
+                    <field name="user_id" optional="show"/>
+                    <field name="product_ids" optional="show" widget="many2many_tags"/>
+                    <field name="market_type_id"/>
+
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_market_form">
+            <field name="name">dw.market.form</field>
+            <field name="model">dw.market</field>
+            <field name="priority" eval="3"/>
+            <field name="arch" type="xml">
+                <form string="Market">
+                    <header>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,prospection,homologation_cosultation,done"/>
+
+                        <button name="button_draft" string="return to draft"
+                                class="btn-primary"
+                                invisible="state != 'cancel' "
+                                type="object"/>
+                        <button name="action_prospection" string="Prospection"
+                                class="btn-primary"
+                                invisible="state not in  ['draft']"
+                                confirm="Do you want to prospect this market"
+                                type="object"/>
+                        <button name="action_homologation" string="Confirm"
+                                class="btn-primary"
+                                invisible="state not in  ['prospection']"
+                                type="object"/>
+                        <button name="action_load_spec_file" string="Load Specification File"
+                                class="btn-primary"
+                                invisible="state not in  ['draft']"
+                                type="object"/>
+                        <button name="action_attribution_file" string="Load Attribution File"
+                                class="btn-primary"
+                                invisible="state not in  ['homologation_cosultation']"
+                                type="object"/>
+                        <button name="action_done" string="Confirm"
+                                class="btn-primary"
+                                invisible="state not in  ['homologation_cosultation']"
+                                type="object"/>
+
+
+                        <button
+                                name="action_cancel" string="Cancel"
+                                type="object" class="btn-primary" data-hotkey="q"
+                                invisible="state in ['cancel','done'] "
+                        />
+
+
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="show_documents" type="object" class="oe_stat_button"
+                                    icon="fa-list-alt">
+                                <div class="o_stat_info">
+
+                                    <span class="o_stat_text">Documents</span>
+                                </div>
+                            </button>
+                            <button name="action_show_consultations" type="object"
+                                    class="oe_stat_button"
+                                    invisible="state not in ['homologation_cosultation','done'] "
+                                    icon="fa-list-alt">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Consultations</span>
+                                </div>
+                            </button>
+                            <button name="action_show_consultations_tco" type="object"
+                                    class="oe_stat_button"
+                                    invisible="state not in ['homologation_cosultation','done'] "
+                                    icon="fa-list-alt">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">TCO</span>
+                                </div>
+                            </button>
+                            <button name="action_show_homologations" type="object"
+                                    class="oe_stat_button"
+                                    invisible="state not in ['homologation_cosultation','done']"
+                                    icon="fa-list-alt">
+                                <div class="o_stat_info">
+
+                                    <span class="o_stat_text">approvals</span>
+                                </div>
+                            </button>
+
+                        </div>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                        <group>
+                            <group>
+
+
+                                <field name="supplier_ids" options='{"no_create":True}' widget="many2many_tags"
+                                       readonly="state != 'prospection'" required="state!= 'draft'"
+                                       invisible="state == 'draft'"/>
+                                <field name="product_ids" options='{"no_create":True}' required="1"
+                                       widget="many2many_tags"
+                                       readonly="state != 'draft'"/>
+                                <field name="description" readonly="state != 'draft'"/>
+
+
+                            </group>
+                            <group>
+                                <field name="user_id" readonly="state != 'draft'"/>
+                                <field name="len_supplier_homologated_market" invisible="1"/>
+                                <field name="len_supplier_market" invisible="1"/>
+
+                                <field name="market_type_id" invisible="state == 'draft'"
+                                       readonly="state != 'prospection'" required="state == 'prospection'"/>
+                                <field name="supplier_homologuer_ids" widget="many2many_tags" invisible="1"/>
+                                <field name="company_id" readonly="state != 'draft'"/>
+
+                            </group>
+
+                        </group>
+                        <div class="oe_button_box" name="button_box">
+                        </div>
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+
+                    </div>
+                </form>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

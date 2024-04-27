@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!--add homologue in product template -->
+        <record id="view_product_template_inherited" model="ir.ui.view">
+            <field name="name">product.template.inherited</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='categ_id']" position="after">
+                    <field name="homologue"/>
+                </xpath>
+            </field>
+        </record>
+          <!--add homologue in product_product -->
+          <record id="product_normal_form_view_inherited" model="ir.ui.view">
+            <field name="name">product.product.inherited</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='categ_id']" position="after">
+                    <field name="number_fournisseur" invisible="1" />
+                    <field name="homologue" invisible="not purchase_ok"/>
+
+
+                </xpath>
+            </field>
+        </record>
+
+           <!--add homologue in product category -->
+        <record id="inherit_product_category_form_view2" model="ir.ui.view">
+            <field name="name">product.category.form</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='first']" position="inside">
+                    <field name="homologue"/>
+                </xpath>
+            </field>
+        </record>
+
+          <record id="view_identification_besoin_product_tree" model="ir.ui.view">
+            <field name="name">product.identification.besoin.tree.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="arch" type="xml">
+                           <xpath expr="//button[@name='action_open_label_layout']" position="after">
+
+                     <button name="action_launch_market" string="launch market"
+
+
+                                type="object"/>
+
+
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

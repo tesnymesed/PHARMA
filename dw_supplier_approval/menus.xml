@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_supplier_approval" model="ir.actions.act_window">
+            <field name="name">Market</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dw.market</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{}</field>
+
+        </record>
+        <record id="action_identification_besoin" model="ir.actions.act_window">
+            <field name="name">Identification of the need</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">['|', '|',('homologue', '=', True), ('categ_id.homologue', '=', True),
+                ('product_tmpl_id.homologue', '=', True), ('purchase_ok', '=', True), ('number_fournisseur', '&lt;',2)]
+            </field>
+        </record>
+        <record id="action_market_type" model="ir.actions.act_window">
+            <field name="name">Market</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dw.market.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+
+        </record>
+        <record id="action_dw_homologation" model="ir.actions.act_window">
+            <field name="name">supplier approval</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dw.homologation</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree' , 'view_id': ref('dw_supplier_approval.view_homologation_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('dw_supplier_approval.view_homologation_form')})]"/>
+            <field name="context">{}</field>
+
+        </record>
+        <menuitem id="menu_supplier_approval_root"
+                  name="homologation fournisseur"
+                  web_icon="dw_supplier_approval,static/description/icon.png"
+                  sequence="10"
+                  groups="dw_supplier_approval.group_user_dw_homologation"
+        />
+        <menuitem id="menu_supplier_approval_configuration"
+                  name="Configuration"
+                  sequence="15"
+                  groups="dw_supplier_approval.group_manager_dw_homologation"
+                  parent="dw_supplier_approval.menu_supplier_approval_root"
+
+        />
+        <menuitem id="menu_market_type"
+                  name="Market Type"
+                  parent="dw_supplier_approval.menu_supplier_approval_configuration"
+                  action="action_market_type"
+                  sequence="15"
+
+
+        />
+        <menuitem id="menu_market_root"
+                  name="Market"
+                  parent="menu_supplier_approval_root"
+                  sequence="10"
+        />
+        <menuitem id="menu_identification_besoin_root"
+                  name="Identification of the need"
+                  parent="menu_market_root"
+                  action="action_identification_besoin"
+                  sequence="11"
+        />
+        <menuitem id="menu_market"
+                  name="Market"
+                  parent="menu_market_root"
+                  action="action_supplier_approval"
+                  sequence="10"
+        />
+
+        <menuitem id="menu_homologation_root"
+                  name="approval"
+                  parent="menu_supplier_approval_root"
+                  sequence="11"
+        />
+        <menuitem id="menu_homologation"
+                  name="approval"
+                  parent="menu_homologation_root"
+                  action="action_dw_homologation"
+                  sequence="11"
+        />
+
+        <menuitem name="Consultation Criteria" id="dw_consultation_criteria_menu"
+                  parent="menu_supplier_approval_configuration"
+                  action="dw_consultation_criteria_act_window"
+                  sequence="20"
+        />
+        <menuitem name="Consultation" id="dw_consultation_menu" parent="menu_supplier_approval_root"
+                  action="dw_consultation_act_window" sequence="15"/>
+
+    </data>
+</odoo>

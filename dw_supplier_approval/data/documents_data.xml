@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!--        folders of homologation  -->
+        <record id="folder_homologation" model="documents.folder">
+            <field name="name">Homologation</field>
+        </record>
+         <record id="folder_dw_market" model="documents.folder">
+            <field name="name">Market</field>
+        </record>
+        </data>
+    </odoo>

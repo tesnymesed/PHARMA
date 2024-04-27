@@ -112,6 +112,7 @@ class MrpPlan(models.Model):
 
 class MrpPlanLines(models.Model):
     _name = "mrp.plan.lines"
+
     product_id = fields.Many2one(
         'product.product',
         required=True,

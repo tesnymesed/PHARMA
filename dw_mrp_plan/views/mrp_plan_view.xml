@@ -84,6 +84,7 @@
                 <field name="mip_quantity" optional="hide" readonly="roadmap_id != False or mrp_state == 'done'"/>
 
                 <field name="lot_size" optional="show"/>
+                <field name="pdp_validation" optional="show"/>
                 <field name="quantity" readonly="roadmap_id != False or mrp_state == 'done'"/>
                 <field name="expected_final_quantity"/>
                 <field name="quantity_estimation" optional="hide"/>

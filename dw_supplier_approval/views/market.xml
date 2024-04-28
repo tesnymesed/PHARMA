@@ -172,50 +172,54 @@
                                 <field name="description" readonly="state != 'draft'"/>
                             </group>
 
+                            <notebook>
+                                <page string="Products and Suppliers">
+                                    <field name="market_line_ids" mode="tree" nolabel="1">
+                                        <tree string="Products and Supplier" multi_edit="1" duplicate="false"
+                                              editable="bottom" readonly="parent.state != 'draft'">
+                                            <field name="market_id" column_invisible="1"/>
+                                            <field name="product_id" options='{"no_create":True}' required="1"
+                                                   readonly="parent.state != 'draft'"/>
+                                            <field name="company_id" column_invisible="1"/>
+                                            <field name="quantity" required="1" readonly="parent.state != 'draft'"/>
+                                            <field name="supplier_ids" options='{"no_create":True}'
+                                                   widget="many2many_tags"
+                                                   column_invisible="parent.state == 'draft'"
+                                                   readonly="parent.state != 'prospection'"
+                                                   required="parent.state != 'draft'"/>
+                                        </tree>
+                                    </field>
+                                    <field name="market_line_ids" mode="tree" nolabel="1" invisible="state == 'draft'">
+                                        <tree string="Products and Supplier" multi_edit="1" duplicate="false" create="0"
+                                              editable="bottom" readonly="parent.state != 'draft'">
+                                            <field name="market_id" column_invisible="1"/>
+                                            <field name="product_id" options='{"no_create":True}' required="1"
+                                                   readonly="parent.state != 'draft'"/>
+                                            <field name="company_id" column_invisible="1"/>
+                                            <field name="line_homlogated" column_invisible="1"/>
+                                            <field name="quantity" required="1" readonly="parent.state != 'draft'"/>
+                                            <field name="supplier_ids" options='{"no_create":True}'
+                                                   widget="many2many_tags"
+                                                   column_invisible="parent.state == 'draft'"
+                                                   readonly="parent.state != 'prospection'"
+                                                   required="parent.state != 'draft'"/>
+                                            <button string="homologate" name="action_done" type="object" icon="fa-check"
+                                                    invisible="line_homlogated or not supplier_ids"/>
+
+                                        </tree>
+                                    </field>
+                                </page>
+                                <page name="Criteria" string="Criteria">
+                                    <group>
+                                        <field name="market_criteria_ids" widget="many2many_tags"
+                                               readonly="state != 'draft'" required="1"/>
+                                    </group>
+                                </page>
+                            </notebook>
                         </group>
                         <div class="oe_button_box" name="button_box">
                         </div>
-                        <notebook>
-                            <page string="Products and Suppliers">
-                                <field name="market_line_ids" mode="tree" nolabel="1" invisible="state != 'draft'">
-                                    <tree string="Products and Supplier" multi_edit="1" duplicate="false"
-                                          editable="bottom" readonly="parent.state != 'draft'">
-                                        <field name="market_id" column_invisible="1"/>
-                                        <field name="product_id" options='{"no_create":True}' required="1"
-                                               readonly="parent.state != 'draft'"/>
-                                        <field name="company_id" column_invisible="1"/>
-                                        <field name="quantity" required="1" readonly="parent.state != 'draft'"/>
-                                        <field name="supplier_ids" options='{"no_create":True}' widget="many2many_tags"
-                                               column_invisible="parent.state == 'draft'"
-                                               readonly="parent.state != 'prospection'"
-                                               required="parent.state != 'draft'"/>
-                                    </tree>
-                                </field>
-                                <field name="market_line_ids" mode="tree" nolabel="1" invisible="state == 'draft'">
-                                    <tree string="Products and Supplier" multi_edit="1" duplicate="false" create="0"
-                                          editable="bottom" readonly="parent.state != 'draft'">
-                                        <field name="market_id" column_invisible="1"/>
-                                        <field name="product_id" options='{"no_create":True}' required="1"
-                                               readonly="parent.state != 'draft'"/>
-                                        <field name="company_id" column_invisible="1"/>
-                                        <field name="line_homlogated" column_invisible="1"/>
-                                        <field name="quantity" required="1" readonly="parent.state != 'draft'"/>
-                                        <field name="supplier_ids" options='{"no_create":True}' widget="many2many_tags"
-                                               column_invisible="parent.state == 'draft'"
-                                               readonly="parent.state != 'prospection'"
-                                               required="parent.state != 'draft'"/>
-                                        <button string="homologate" name="action_done" type="object" icon="fa-check" invisible="line_homlogated or not supplier_ids"/>
 
-                                    </tree>
-                                </field>
-                            </page>
-                            <page name="Criteria" string="Criteria">
-                                <group>
-                                    <field name="market_criteria_ids" widget="many2many_tags"
-                                           readonly="state != 'draft'" required="1"/>
-                                </group>
-                            </page>
-                        </notebook>
                     </sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids"/>

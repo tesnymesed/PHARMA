@@ -18,6 +18,7 @@ class DwAttributeMarket(models.TransientModel):
         market_id = self.market_id
         consultation_id = self.consultation_id
         market_id.write({"state": "done"})
+        consultation_id.write({"state": "allocated"})
 
         return {
             'type': 'ir.actions.act_window',

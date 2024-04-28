@@ -5,15 +5,23 @@
             <field name="name">dw.homologation.tree</field>
             <field name="model">dw.homologation</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree    decoration-info="state == 'homologue' and not consultation_id"
+                        decoration-success="consultation_id">
+                    <header>
+                        <button name="action_create_consultation" string="Lancer consultation" type="object"
+                                class="btn-primary"/>
+                    </header>
                     <field name="name" optional="show"/>
-                    <field name="market_id" optional="show"/>
-                    <field name="state" optional="show"/>
+                    <field name="product_id" optional="hide"/>
                     <field name="supplier_id" optional="show"/>
                     <field name="dw_supplier_nature" optional="show"/>
-                    <field name="product_id" optional="show"/>
+                    <field name="consultation_id" column_invisible="1"/>
+                    <field name="market_id" optional="hide"/>
+                    <field name="state" optional="show"/>
                     <field name="lot_validation" optional="show"/>
-                    <field name="company_id" optional="show"/>
+                    <field name="company_id" optional="hide"/>
+                    <button string="Consulter" name="action_create_consultation" type="object" icon="fa-check"
+                            invisible="state != 'homologue' or  consultation_id"/>
 
 
                 </tree>
@@ -38,7 +46,7 @@
                                 class="btn-primary"
                                 invisible="state != 'analyse' or purchase_id == False"
                                 type="object"/>
-                          <button name="load_reports" string="Load reports"
+                        <button name="load_reports" string="Load reports"
                                 class="btn-primary"
                                 invisible="state != 'analyse'"
                                 type="object"/>
@@ -46,7 +54,7 @@
                                 class="btn-primary"
                                 invisible="state != 'prospection'"
                                 type="object"/>
-                         <button name="action_load_audit_report" string="load audit report"
+                        <button name="action_load_audit_report" string="load audit report"
                                 class="btn-primary"
                                 invisible="state != 'audit'"
                                 type="object"/>
@@ -54,7 +62,6 @@
                                 class="btn-primary"
                                 invisible="state != 'lot_validation'"
                                 type="object"/>
-
 
 
                         <button name="action_to_lot_validation_or_qualification" string="Confirm"
@@ -85,7 +92,7 @@
                                 type="object" class="btn-primary" data-hotkey="q"
                                 invisible="state in ['prospection','cancel','homologue'] "
                         />
-                         <button
+                        <button
                                 name="action_reject" string="Reject"
                                 type="object" class="btn-primary" data-hotkey="q"
                                 invisible="state in ['prospection','qualification'] "
@@ -99,19 +106,19 @@
                                 invisible="not consultation_id"/>
 
                         <div class="oe_button_box" name="button_box">
-
-                            <button name="show_documents" type="object" class="oe_stat_button"
-                                    icon="fa-list-alt">
-                                <div class="o_stat_info">
-
-                                    <span class="o_stat_text">Documents</span>
-                                </div>
-                            </button>
                             <button name="show_purchase_order" type="object" class="oe_stat_button"
                                     icon="fa-list-alt" invisible="purchase_id == False">
                                 <div class="o_stat_info">
 
                                     <span class="o_stat_text">PO Sample</span>
+                                </div>
+                            </button>
+                            <button name="action_show_market" type="object"
+                                    class="oe_stat_button"
+                                    invisible="not market_id "
+                                    icon="fa-list-alt">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Market</span>
                                 </div>
                             </button>
                             <button name="action_show_consultations" type="object"
@@ -120,6 +127,13 @@
                                     icon="fa-list-alt">
                                 <div class="o_stat_info">
                                     <span class="o_stat_text">Consultations</span>
+                                </div>
+                            </button>
+                            <button name="show_documents" type="object" class="oe_stat_button"
+                                    icon="fa-list-alt">
+                                <div class="o_stat_info">
+
+                                    <span class="o_stat_text">Documents</span>
                                 </div>
                             </button>
 
@@ -158,7 +172,7 @@
 
                             </group>
                             <group>
-                                <field name="market_id" readonly="state != 'prospection'"/>
+                                <field name="market_id" invisible="1"/>
                                 <field name="product_id" readonly="state != 'prospection'" invisible="not market_id"
                                        domain="[('id', 'in', product_ids)]"/>
                                 <field name="product_id" readonly="state != 'prospection'" invisible="market_id"/>
@@ -168,12 +182,6 @@
                                 <field name="phone" widget="phone" required="1" readonly="state == 'homologue'"/>
                                 <field name="email" widget="email" required="1" readonly="state == 'homologue'"/>
                                 <field name="purchase_id" invisible="1"/>
-
-
-
-
-
-
                             </group>
                         </group>
 

@@ -10,24 +10,42 @@
                 <xpath expr="//field[@name='categ_id']" position="after">
                     <field name="homologue"/>
                 </xpath>
+                <div name="button_box" position="inside">
+
+                    <button class="oe_stat_button" type="object" name="action_show_homologations" icon="fa-list-alt">
+                        <div class="o_stat_info">
+
+                            <span class="o_stat_text">Homologation</span>
+                        </div>
+                    </button>
+                </div>
             </field>
         </record>
-          <!--add homologue in product_product -->
-          <record id="product_normal_form_view_inherited" model="ir.ui.view">
+        <!--add homologue in product_product -->
+        <record id="product_normal_form_view_inherited" model="ir.ui.view">
             <field name="name">product.product.inherited</field>
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='categ_id']" position="after">
-                    <field name="number_fournisseur" invisible="1" />
+                    <field name="number_fournisseur" invisible="1"/>
                     <field name="homologue" invisible="not purchase_ok"/>
 
 
                 </xpath>
+                <div name="button_box" position="inside">
+
+                    <button class="oe_stat_button" type="object" name="action_show_homologations" icon="fa-list-alt">
+                        <div class="o_stat_info">
+
+                            <span class="o_stat_text">Homologation</span>
+                        </div>
+                    </button>
+                </div>
             </field>
         </record>
 
-           <!--add homologue in product category -->
+        <!--add homologue in product category -->
         <record id="inherit_product_category_form_view2" model="ir.ui.view">
             <field name="name">product.category.form</field>
             <field name="model">product.category</field>
@@ -39,17 +57,17 @@
             </field>
         </record>
 
-          <record id="view_identification_besoin_product_tree" model="ir.ui.view">
+        <record id="view_identification_besoin_product_tree" model="ir.ui.view">
             <field name="name">product.identification.besoin.tree.inherit</field>
             <field name="model">product.product</field>
             <field name="inherit_id" ref="product.product_product_tree_view"/>
             <field name="arch" type="xml">
-                           <xpath expr="//button[@name='action_open_label_layout']" position="after">
+                <xpath expr="//button[@name='action_open_label_layout']" position="after">
 
-                     <button name="action_launch_market" string="launch market"
+                    <button name="action_launch_market" string="launch market"
 
 
-                                type="object"/>
+                            type="object"/>
 
 
                 </xpath>

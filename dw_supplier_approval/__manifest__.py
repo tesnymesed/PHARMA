@@ -29,6 +29,7 @@
         'views/dw_consultation_criteria.xml',
         'views/dw_consultations_views.xml',
         'views/dw_consultation_criteria_line.xml',
+        'views/res_partner_views.xml',
         # menus
         'menus.xml',
 
@@ -36,6 +37,7 @@
         'wizard/document_wizard.xml',
         'wizard/document_market_wizard.xml',
         'wizard/dw_attribute_market_views.xml',
+        'wizard/dw_homologate_market_views.xml',
 
     ],
     'qweb': [

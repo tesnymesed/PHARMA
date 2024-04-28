@@ -10,6 +10,7 @@ from . import purchase_order
 from . import dw_consultation_criteria
 from . import dw_consultation
 from . import purchase_requisition
+from . import res_partner
 
 
 

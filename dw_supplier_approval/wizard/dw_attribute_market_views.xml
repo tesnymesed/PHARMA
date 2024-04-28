@@ -19,7 +19,7 @@
                          <notebook>
                             <page name="consultation_criteria" string="Consultation Criteria">
                                 <field name="criteria_line_ids" mode="tree" nolabel="1">
-                                    <tree string="Criteria Consultation" multi_edit="1" duplicate="false" editable="bottom" create="0">
+                                    <tree string="Criteria Consultation" multi_edit="1" duplicate="false" editable="bottom" readonly="1">
                                         <field name="criteria_type" column_invisible="1"/>
                                         <field name="period_type" column_invisible="1"/>
                                         <field name="criteria_id"/>

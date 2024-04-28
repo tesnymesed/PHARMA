@@ -341,7 +341,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_consultation__state__consulted
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
 msgid "Consulted"
-msgstr ""
+msgstr "Consulté"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__country_id
@@ -720,12 +720,12 @@ msgstr ""
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_form_view
 msgid "Mark as Consulted"
-msgstr ""
+msgstr "Consulter"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_form_view
 msgid "Mark as Draft"
-msgstr ""
+msgstr "Marquer comme brouillon"
 
 #. module: dw_supplier_approval
 #: model:documents.folder,name:dw_supplier_approval.folder_dw_market

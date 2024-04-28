@@ -4,10 +4,12 @@ access_dw_market_type,Dw Market Type,model_dw_market_type,base.group_user,1,1,1,
 access_dw_consultation_criteria_line,Dw consultation criteria line,model_dw_consultation_criteria_line,base.group_user,1,1,1,1
 access_dw_consultation_criteria,Dw consultation criteria,model_dw_consultation_criteria,base.group_user,1,1,1,1
 access_dw_attribute_market_wizard,dw.attribute.market.wizard,model_dw_attribute_market_wizard,base.group_user,1,1,1,1
+access_dw_homologate_market_wizard,dw.homologate.market.wizard,model_dw_homologate_market_wizard,base.group_user,1,1,1,1
 access_dw_consultation,Dw consultation,model_dw_consultation,base.group_user,1,1,1,1
 access_dw_homologation,Dw Homologation,model_dw_homologation,base.group_user,1,1,1,1
 access_dw_document_wizard,DW document wizard,model_dw_document_wizard,base.group_user,1,1,1,1
 access_dw_document_market_wizard,DW Document market wizard,model_dw_document_market_wizard,base.group_user,1,1,1,1
+access_dw_market_line,DW Market Line,model_dw_market_line,base.group_user,1,1,1,1
 
 
 

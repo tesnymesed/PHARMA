@@ -25,8 +25,8 @@ class DwMarketLine(models.Model):
     company_id = fields.Many2one(
         'res.company', store=1, related="market_id.company_id",
     )
-    line_homlogated = fields.Boolean( default=False)
-    line_consulted = fields.Boolean( default=False)
+    line_homlogated = fields.Boolean(default=False)
+    line_consulted = fields.Boolean(default=False)
 
     def action_done(self):
         market_id = self.market_id
@@ -55,6 +55,7 @@ class DwMarket(models.Model):
     _name = 'dw.market'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Supplier Approval"
+    _order = "start_date desc"
     name = fields.Char(string="Name")
     dw_homologate = fields.Boolean(string="This market is used for homologation", default=True)
     state = fields.Selection(
@@ -94,6 +95,7 @@ class DwMarket(models.Model):
     market_criteria_ids = fields.Many2many('dw.consultation.criteria', string="Market Criteria")
     consultation_ids = fields.One2many("dw.consultation", 'market_id', string="Consultations")
     homologation_ids = fields.One2many("dw.homologation", 'market_id', string="Homologation")
+    requisition_ids = fields.One2many("purchase.requisition", 'market_id', string="Attribution")
 
     supplier_homologuer_ids = fields.Many2many(
         'res.partner',
@@ -105,12 +107,14 @@ class DwMarket(models.Model):
     len_supplier_market = fields.Integer("Length Market supplier", store=1, compute="compute_len_supplier_market")
     len_supplier_homologated_market = fields.Integer("Length Market supplier Approved", store=0,
                                                      compute="compute_len_supplier_homologated_market")
+    start_date = fields.Date(string="Start Date", default=fields.Date.today)
+    end_date = fields.Date(string="End Date", default=fields.Date.today)
 
     @api.depends('market_line_ids')
     def _compute_products_ids(self):
         for record in self:
-
             record.product_ids = record.market_line_ids.mapped('product_id')
+
     def _expand_states(self, states, domain, order):
         return [key for key, dummy in self._fields['state'].selection]
 
@@ -242,6 +246,20 @@ class DwMarket(models.Model):
             'res_model': 'dw.homologation',
             'type': 'ir.actions.act_window',
             'name': _("%(market_name)s's homologation", market_name=self.name),
+
+            'domain': [
+                ('market_id', '=', self.id),
+            ],
+            'view_mode': 'tree,form',
+
+            'context': {'default_market_id': self.id, "create": 0},
+        })
+
+    def action_show_Attribution(self):
+        return ({
+            'res_model': 'purchase.requisition',
+            'type': 'ir.actions.act_window',
+            'name': _("%(market_name)s's Attribution", market_name=self.name),
 
             'domain': [
                 ('market_id', '=', self.id),

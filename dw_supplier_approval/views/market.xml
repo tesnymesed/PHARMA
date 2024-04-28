@@ -51,14 +51,18 @@
             <field name="model">dw.market</field>
             <field name="priority" eval="2"/>
             <field name="arch" type="xml">
-                <tree>
+                <tree  decoration-danger="state != 'done' and end_date >= context_today().strftime('%Y-%m-%d')">
                     <field name="name" optional="show"/>
-                    <field name="state" optional="show"/>
-                    <field name="description" optional="show"/>
-                    <field name="company_id" optional="show"/>
-                    <field name="user_id" optional="show"/>
-                    <field name="product_ids" optional="show" widget="many2many_tags"/>
+                    <field name="start_date" optional="show"/>
+                    <field name="end_date" optional="show"/>
+                    <field name="description" optional="hide"/>
+                    <field name="company_id" optional="hide"/>
+                    <field name="user_id" optional="hide"/>
+                    <field name="product_ids" optional="hide" widget="many2many_tags"/>
                     <field name="market_type_id"/>
+                    <field name="state" optional="show"/>
+
+
 
                 </tree>
             </field>
@@ -134,6 +138,14 @@
                                     <span class="o_stat_text">Consultations</span>
                                 </div>
                             </button>
+                            <button name="action_show_Attribution" type="object"
+                                    class="oe_stat_button"
+                                    invisible="state not in ['done'] "
+                                    icon="fa-list-alt">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Attribution</span>
+                                </div>
+                            </button>
                             <button name="action_show_consultations_tco" type="object"
                                     class="oe_stat_button"
                                     invisible="state not in ['homologation_cosultation','done'] "
@@ -157,24 +169,28 @@
                         <group>
                             <group>
 
-                                <field name="user_id" readonly="state != 'draft'"/>
                                 <field name="len_supplier_homologated_market" invisible="1"/>
                                 <field name="len_supplier_market" invisible="1"/>
                                 <field name="dw_homologate" invisible="1"/>
+                                <field name="start_date" required="1" readonly="state != 'draft'"/>
+                                <field name="end_date" required="1" readonly="0"/>
                                 <field name="market_type_id" options='{"no_create":True}' invisible="state == 'draft'"
                                        readonly="state != 'prospection'" required="state == 'prospection'"/>
                                 <field name="supplier_homologuer_ids" widget="many2many_tags" invisible="1"/>
-                                <field name="company_id" readonly="state != 'draft'"/>
 
 
                             </group>
                             <group>
                                 <field name="description" readonly="state != 'draft'"/>
+                                <field name="company_id" readonly="state != 'draft'"/>
+                                <field name="user_id" readonly="state != 'draft'"/>
+
+
                             </group>
 
                             <notebook>
                                 <page string="Products and Suppliers">
-                                    <field name="market_line_ids" mode="tree" nolabel="1"  invisible="state != 'draft'">
+                                    <field name="market_line_ids" mode="tree" nolabel="1" invisible="state != 'draft'">
                                         <tree string="Products and Supplier" multi_edit="1" duplicate="false"
                                               editable="bottom" readonly="parent.state != 'draft'">
                                             <field name="market_id" column_invisible="1"/>
@@ -203,7 +219,7 @@
                                                    column_invisible="parent.state == 'draft'"
                                                    readonly="parent.state != 'prospection'"
                                                    required="parent.state != 'draft'"/>
-                                            <button string="homologate" name="action_done" type="object" icon="fa-check"
+                                            <button  name="action_done" type="object" icon="fa-check"
                                                     invisible="line_homlogated or not supplier_ids"/>
 
                                         </tree>
@@ -217,8 +233,7 @@
                                 </page>
                             </notebook>
                         </group>
-                        <div class="oe_button_box" name="button_box">
-                        </div>
+
 
                     </sheet>
                     <div class="oe_chatter">

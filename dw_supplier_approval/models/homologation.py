@@ -8,6 +8,7 @@ class DwHomologation(models.Model):
     _name = 'dw.homologation'
     _description = "supplier approval"
     _inherit = ['mail.thread', 'mail.activity.mixin']
+    _order = "start_date desc"
 
     name = fields.Char(string='Name', default=lambda self: _('New'), copy=False)
 
@@ -50,6 +51,8 @@ class DwHomologation(models.Model):
     product_ids = fields.Many2many(
         'product.product',
     )
+    start_date = fields.Date(string="Start Date", default=fields.Date.today)
+    end_date = fields.Date(string="End Date", default=fields.Date.today)
     market_supplier_ids = fields.Many2many('res.partner', store="1"
                                            )
     state_market = fields.Selection(

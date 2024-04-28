@@ -720,12 +720,12 @@ msgstr ""
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_form_view
 msgid "Mark as Consulted"
-msgstr "Consulter"
+msgstr "Marquer Consulter"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_form_view
 msgid "Mark as Draft"
-msgstr "Marquer comme brouillon"
+msgstr "Marquer comme Brouillon"
 
 #. module: dw_supplier_approval
 #: model:documents.folder,name:dw_supplier_approval.folder_dw_market

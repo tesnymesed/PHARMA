@@ -6,6 +6,7 @@ class DwConsultationCriteria(models.Model):
     _name = 'dw.consultation'
     _description = "Consultation"
     _inherit = ['mail.thread', 'mail.activity.mixin']
+    _order = "start_date desc"
 
     name = fields.Char(strong="Consultation")
     supplier_id = fields.Many2one("res.partner", String="Supplier", domain='[("is_supplier","=", True)]',
@@ -43,6 +44,8 @@ class DwConsultationCriteria(models.Model):
     ],
         string="State",
         default="draft", )
+    start_date = fields.Date(string="Start Date", default=fields.Date.today)
+    end_date = fields.Date(string="End Date", default=fields.Date.today)
 
     @api.depends('name', 'supplier_id')
     def _compute_display_name(self):
@@ -115,3 +118,18 @@ class DwConsultationCriteria(models.Model):
 
             'context': {'create': False},
         })
+
+    def action_show_Attribution(self):
+        if self.market_id :
+            return ({
+                'res_model': 'purchase.requisition',
+                'type': 'ir.actions.act_window',
+                'name': _("%(market_name)s's Attribution", market_name=self.market_id.name),
+
+                'domain': [
+                    ('market_id', '=', self.market_id.id),
+                ],
+                'view_mode': 'tree,form',
+
+                'context': {'default_market_id': self.market_id.id, "create": 0},
+            })

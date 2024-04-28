@@ -174,7 +174,7 @@
 
                             <notebook>
                                 <page string="Products and Suppliers">
-                                    <field name="market_line_ids" mode="tree" nolabel="1">
+                                    <field name="market_line_ids" mode="tree" nolabel="1"  invisible="state != 'draft'">
                                         <tree string="Products and Supplier" multi_edit="1" duplicate="false"
                                               editable="bottom" readonly="parent.state != 'draft'">
                                             <field name="market_id" column_invisible="1"/>

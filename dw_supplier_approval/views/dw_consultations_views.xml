@@ -11,7 +11,7 @@
 
                         <field name="state" widget="statusbar"
                                statusbar_visible="draft,consulted,allocated"/>
-                        <button name="action_draft" string="Mark as Draft" type="object" class="btn-primary"/>
+                        <button name="action_draft" string="Mark as Draft" type="object" class="btn-primary" invisible="state=='draft'"/>
                         <button name="action_consulted" string="Mark as Consulted" type="object" class="btn-primary"/>
                         <button name="action_canceled" string="Cancel" type="object" class="btn-primary"/>
                     </header>
@@ -32,6 +32,8 @@
                                 <field name="product_id" domain="[('id', 'in', product_ids)]"
                                        invisible="not market_id"/>
                                 <field name="user_id"/>
+                                                                <field name="display_name"></field>
+
                                 <field name="supplier_market_id" invisible="1"/>
                                 <field name="homologation_ids" invisible="1"/>
                                 <field name="product_ids" invisible="1"/>

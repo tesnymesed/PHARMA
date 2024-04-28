@@ -12,13 +12,31 @@
                         <group>
 
                             <field name="market_id" invisible="1"/>
+                            <field name="criteria_type" invisible="1"/>
                             <field name="consultation_id" required="1"/>
 
                         </group>
+                         <notebook>
+                            <page name="consultation_criteria" string="Consultation Criteria">
+                                <field name="criteria_line_ids" mode="tree" nolabel="1">
+                                    <tree string="Criteria Consultation" multi_edit="1" duplicate="false" editable="bottom" create="0">
+                                        <field name="criteria_type" column_invisible="1"/>
+                                        <field name="period_type" column_invisible="1"/>
+                                        <field name="criteria_id"/>
+                                        <field name="amount" readonly="criteria_type  != 'amount'" required="criteria_type  == 'amount'"/>
+                                        <field name="percentage" readonly="criteria_type  != 'percentage'" required="criteria_type  == 'percentage'"/>
+                                        <field name="number_days" readonly="criteria_type  != 'period' or period_type != 'days' " required="criteria_type  == 'period' and period_type == 'days' "/>
+
+                                        <field name="number_months" readonly="criteria_type  != 'period' or period_type != 'months' " required="criteria_type  == 'period' and period_type == 'months' "/>
+                                        <field name="number_years" readonly="criteria_type  != 'period' or period_type != 'years' " required="criteria_type  == 'period' and period_type == 'years' "/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                         <footer>
                             <button
                                     name="action_confirm"
-                                    string="Confirm"
+                                    string="Awarding the market"
                                     type="object"
                                     class="btn-primary"
 

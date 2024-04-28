@@ -8,22 +8,30 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                   <group >
-                      <field name="cahier_charge_name" invisible="1"/>
-                       <field name="state_market" invisible="1"> </field>
-                       <field name="market_id" invisible="1"> </field>
-                       <field name="cahier_charge_attachment" widget="binary" filename="cahier_charge_name"  invisible="state_market != 'draft'" />
+                    <group>
 
-                       <field name="pv_attribution_name" invisible="1"/>
-                       <field name="pv_attribution_attachment" widget="binary" filename="pv_attribution_name"  invisible="state_market != 'homologation_cosultation'"/>
-                   </group>
-                    <group ></group>
+                        <field name="state_market" invisible="1"></field>
+                        <field name="market_id" invisible="1"></field>
+
+                        <field name="fiche_specification_name" invisible="1"/>
+                        <field name="fiche_specification_attachment" widget="binary" filename="fiche_specification_name"
+                               invisible="state_market != 'draft'"/>
+
+                        <field name="cahier_charge_name" invisible="1"/>
+                        <field name="cahier_charge_attachment" widget="binary" filename="fiche_specification_name"
+                               invisible="state_market != 'prospection'"/>
+
+                        <field name="pv_attribution_name" invisible="1"/>
+                        <field name="pv_attribution_attachment" widget="binary" filename="pv_attribution_name"
+                               invisible="state_market != 'homologation_cosultation'"/>
+                    </group>
+                    <group></group>
                     <footer>
                         <button
                                 name="action_confirm"
                                 string="Confirm"
                                 type="object"
-                                 class="btn-primary"
+                                class="btn-primary"
                                 data-hotkey="q"
 
                         />
@@ -33,7 +41,6 @@
             </form>
         </field>
     </record>
-
 
 
 </odoo>

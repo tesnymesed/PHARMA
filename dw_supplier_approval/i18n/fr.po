@@ -6,14 +6,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-23 12:53+0000\n"
-"PO-Revision-Date: 2024-04-23 12:53+0000\n"
+"POT-Creation-Date: 2024-04-28 12:17+0000\n"
+"PO-Revision-Date: 2024-04-28 12:17+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/homologation.py:0
+#, python-format
+msgid "%(homologation_name)s's Consultations"
+msgstr ""
 
 #. module: dw_supplier_approval
 #. odoo-python
@@ -30,14 +37,48 @@ msgid "%(market_name)s homologations's Documents"
 msgstr "Documents Homologation %(market_name)s"
 
 #. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/market.py:0
+#, python-format
+msgid "%(market_name)s's Consultations"
+msgstr ""
+
+#. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/market.py:0
+#, python-format
+msgid "%(market_name)s's TCO"
+msgstr ""
+
+#. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/market.py:0
+#, python-format
+msgid "%(market_name)s's homologation"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_search_view
+msgid "*product"
+msgstr ""
+
+#. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.kanban_dw_market
-msgid "<b>Product</b> :"
+msgid ""
+"<b>Product</b>\n"
+"                                            :"
 msgstr "<b>Produit</b> :"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.kanban_dw_market
 msgid "<b>Responsible</b>:"
 msgstr "<b>Responsable</b>:"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
+msgid "<span class=\"o_stat_text\">Consultations</span>"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
@@ -52,8 +93,8 @@ msgstr "<span class=\"o_stat_text\">BC Echantillon</span>"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
-msgid "<span class=\"o_stat_text\">Purchase Orders</span>"
-msgstr "<span class=\"o_stat_text\">Consultations</span>"
+msgid "<span class=\"o_stat_text\">TCO</span>"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
@@ -61,32 +102,58 @@ msgid "<span class=\"o_stat_text\">approvals</span>"
 msgstr "<span class=\"o_stat_text\">Homologations</span>"
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__message_needaction
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__message_needaction
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__message_needaction
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__message_needaction
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__message_needaction
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__message_needaction
 msgid "Action Needed"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__active
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__active
+msgid "Active"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__activity_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__activity_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__activity_ids
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__activity_ids
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__activity_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__activity_ids
 msgid "Activities"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__activity_exception_decoration
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__activity_exception_decoration
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__activity_exception_decoration
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__activity_exception_decoration
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__activity_exception_decoration
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__activity_exception_decoration
 msgid "Activity Exception Decoration"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__activity_state
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__activity_state
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__activity_state
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__activity_state
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__activity_state
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__activity_state
 msgid "Activity State"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__activity_type_icon
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__activity_type_icon
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__activity_type_icon
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__activity_type_icon
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__activity_type_icon
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__activity_type_icon
 msgid "Activity Type Icon"
 msgstr ""
 
@@ -94,6 +161,16 @@ msgstr ""
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__street
 msgid "Address"
 msgstr "Adresse"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_consultation__state__allocated
+msgid "Allocated"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__amount
+msgid "Amount"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_homologation__state__analyse
@@ -106,13 +183,27 @@ msgid "Approval/consultation"
 msgstr "Homologation/Consultation"
 
 #. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_search_view
+msgid "Archived"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
+msgid "Assign"
+msgstr "Attribuer "
+
+#. module: dw_supplier_approval
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_market__state__done
 msgid "Assigned"
 msgstr "Attribué"
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__message_attachment_count
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__message_attachment_count
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__message_attachment_count
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__message_attachment_count
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__message_attachment_count
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__message_attachment_count
 msgid "Attachment Count"
 msgstr ""
 
@@ -122,14 +213,58 @@ msgid "Audit"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_attribute_market_form_view
+msgid "Awarding the market"
+msgstr "Attribuer le marché"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_attribute_market_wizard__consultation_id
+msgid "Awarding the market to the supplier"
+msgstr "Attribution du marché au fournisseur"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_consultation_criteria__criteria_type__amount
+msgid "Based on Amount"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_consultation_criteria__period_type__days
+msgid "Based on Days"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_consultation_criteria__period_type__months
+msgid "Based on Months"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_consultation_criteria__criteria_type__percentage
+msgid "Based on Percentage"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_consultation_criteria__criteria_type__period
+msgid "Based on Period"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_consultation_criteria__period_type__years
+msgid "Based on Years"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_attribute_market_form_view
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_form_view
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_document_market_wizard
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_manufacturing_document_wizard
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_report_exper_techn_reports_wizard
 msgid "Cancel"
 msgstr "Annuler"
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_consultation__state__canceled
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_homologation__state__cancel
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_market__state__cancel
 msgid "Canceled"
@@ -147,18 +282,66 @@ msgid "Code"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__company_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__company_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__company_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__company_id
 msgid "Company"
-msgstr "Compagnie"
+msgstr "Entreprise"
+
+#. module: dw_supplier_approval
+#: model:ir.ui.menu,name:dw_supplier_approval.menu_supplier_approval_configuration
+msgid "Configuration"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_document_market_wizard
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_manufacturing_document_wizard
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_report_exper_techn_reports_wizard
 msgid "Confirm"
 msgstr "Confirmer"
+
+#. module: dw_supplier_approval
+#: model:ir.actions.act_window,name:dw_supplier_approval.dw_consultation_act_window
+#: model:ir.model,name:dw_supplier_approval.model_dw_consultation
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__consultation_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__consultation_id
+#: model:ir.ui.menu,name:dw_supplier_approval.dw_consultation_menu
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_form_view
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_search_view
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_tree_view
+msgid "Consultation"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.actions.act_window,name:dw_supplier_approval.dw_consultation_criteria_act_window
+#: model:ir.model,name:dw_supplier_approval.model_dw_consultation_criteria
+#: model:ir.ui.menu,name:dw_supplier_approval.dw_consultation_criteria_menu
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_attribute_market_form_view
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_criteria_form_view
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_criteria_search_view
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_criteria_tree_view
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_form_view
+msgid "Consultation Criteria"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model,name:dw_supplier_approval.model_dw_consultation_criteria_line
+msgid "Consultation Criteria Line"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__consultation_ids
+msgid "Consultations"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_consultation__state__consulted
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
+msgid "Consulted"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__country_id
@@ -174,59 +357,98 @@ msgstr ""
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
 msgid "Create Purchase order"
-msgstr "BC Echantillon"
+msgstr "Créer bon de commande"
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_attribute_market_wizard__create_uid
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__create_uid
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__create_uid
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__create_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__create_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__create_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__create_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__create_uid
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__create_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_type__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_attribute_market_wizard__create_date
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__create_date
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__create_date
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__create_date
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__create_date
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__create_date
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__create_date
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__create_date
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__create_date
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_type__create_date
 msgid "Created on"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__criteria_id
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_criteria_search_view
+msgid "Criteria"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_attribute_market_form_view
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_form_view
+msgid "Criteria Consultation"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_attribute_market_wizard__criteria_line_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__criteria_line_ids
+msgid "Criteria Line"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_attribute_market_wizard__criteria_type
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__criteria_type
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__criteria_type
+msgid "Criteria Type"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__description
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__description
 msgid "Description"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_attribute_market_wizard__display_name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__display_name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__display_name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__display_name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__display_name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__display_name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__display_name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__display_name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_type__display_name
 msgid "Display Name"
 msgstr ""
 
 #. module: dw_supplier_approval
-#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__rapport_audit_attachment
-msgid "Document d'audit"
-msgstr ""
-
-#. module: dw_supplier_approval
-#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__rapport_expertise_attachment
-msgid "Document d'expertise"
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
+msgid "Do you want to prospect this market"
 msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__manufacturing_document_attachment
-#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__manufacturing_document_attachment
 msgid "Document fabriquant"
 msgstr ""
 
 #. module: dw_supplier_approval
-#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__documents_line_ids
-msgid "Documents Line"
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_consultation__state__draft
+msgid "Draft"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__display_name
+msgid "Dsiplay name"
 msgstr ""
 
 #. module: dw_supplier_approval
@@ -235,49 +457,97 @@ msgid "Email"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__rapport_expertise_attachment
+msgid "Expert report"
+msgstr "Rapport d’expertise"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__fiche_specification_attachment
+msgid "Fiches de Spécifications"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__fichier_stabilite_attachment
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__fichier_stabilite_attachment
 msgid "Fichier de stabilité"
 msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__cahier_charge_name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__fiche_specification_name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__pv_attribution_name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__Pre_eval_quest_name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__manufacturing_file_name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__rapport_audit_file_name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__rapport_expertise_file_name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__rapport_technique_name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__stabilite_file_name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__fichier_stabilite_file_name
-#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__manufacturing_file_name
-#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__rapport_audit_file_name
-#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__rapport_expertise_file_name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__cahier_charge_name
 msgid "File name"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__message_follower_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__message_follower_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__message_follower_ids
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__message_follower_ids
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__message_follower_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__message_follower_ids
 msgid "Followers"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__message_partner_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__message_partner_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__message_partner_ids
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__message_partner_ids
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__message_partner_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__message_partner_ids
 msgid "Followers (Partners)"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation__activity_type_icon
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation_criteria__activity_type_icon
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation_criteria_line__activity_type_icon
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_homologation__activity_type_icon
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_market__activity_type_icon
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_market_line__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_type__nbr_supplier
+msgid "Forcing Number"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_type__forced_nbr_supplier
+msgid "Forcing Number of supplier ?"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_criteria_search_view
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_search_view
+msgid "Group By"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__has_message
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__has_message
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__has_message
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__has_message
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__has_message
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__has_message
 msgid "Has Message"
 msgstr ""
 
 #. module: dw_supplier_approval
 #: model:documents.folder,name:dw_supplier_approval.folder_homologation
 #: model:ir.actions.act_window,name:dw_supplier_approval.action_homologation_list
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__homologation_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__homologation_ids
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__homologation_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__homologation_ids
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_purchase_order__homologation_id
@@ -297,23 +567,36 @@ msgid "Homologuer"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_attribute_market_wizard__id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_type__id
 msgid "ID"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__activity_exception_icon
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__activity_exception_icon
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__activity_exception_icon
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__activity_exception_icon
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__activity_exception_icon
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__activity_exception_icon
 msgid "Icon"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation__activity_exception_icon
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation_criteria__activity_exception_icon
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation_criteria_line__activity_exception_icon
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_homologation__activity_exception_icon
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_market__activity_exception_icon
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_market_line__activity_exception_icon
 msgid "Icon to indicate an exception activity."
 msgstr ""
 
@@ -325,41 +608,97 @@ msgid "Identification of the need"
 msgstr "Identification besoin"
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation__message_needaction
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation_criteria__message_needaction
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation_criteria_line__message_needaction
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_homologation__message_needaction
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_market__message_needaction
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_market_line__message_needaction
 msgid "If checked, new messages require your attention."
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation__message_has_error
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation__message_has_sms_error
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation_criteria__message_has_error
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation_criteria__message_has_sms_error
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation_criteria_line__message_has_error
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation_criteria_line__message_has_sms_error
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_homologation__message_has_error
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_homologation__message_has_sms_error
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_market__message_has_error
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_market__message_has_sms_error
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_market_line__message_has_error
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_market_line__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__message_is_follower
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__message_is_follower
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__message_is_follower
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__message_is_follower
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__message_is_follower
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__message_is_follower
 msgid "Is Follower"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_attribute_market_wizard__write_uid
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__write_uid
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__write_uid
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__write_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__write_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__write_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__write_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__write_uid
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__write_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_type__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_attribute_market_wizard__write_date
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__write_date
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__write_date
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__write_date
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__write_date
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__write_date
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__write_date
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__write_date
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__write_date
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_type__write_date
 msgid "Last Updated on"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__len_supplier_market
+msgid "Length Market supplier"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__len_supplier_homologated_market
+msgid "Length Market supplier Approved"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
+msgid "Load Attribution File"
+msgstr "charger d'ocumentattribution"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
+msgid "Load Specification File"
+msgstr "Attacher Spécifications"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
+msgid "Load cahier des charges"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
+msgid "Load reports"
 msgstr ""
 
 #. module: dw_supplier_approval
@@ -369,17 +708,36 @@ msgid "Lot Validation"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
+msgid "Lunch Consultation"
+msgstr ""
+
+#. module: dw_supplier_approval
 #: model:res.groups,name:dw_supplier_approval.group_manager_dw_homologation
 msgid "Manager"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_form_view
+msgid "Mark as Consulted"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_form_view
+msgid "Mark as Draft"
 msgstr ""
 
 #. module: dw_supplier_approval
 #: model:documents.folder,name:dw_supplier_approval.folder_dw_market
 #: model:ir.actions.act_window,name:dw_supplier_approval.action_market_type
 #: model:ir.actions.act_window,name:dw_supplier_approval.action_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_attribute_market_wizard__market_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__market_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__market_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__market_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__market_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_purchase_order__market_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_purchase_requisition__market_id
 #: model:ir.ui.menu,name:dw_supplier_approval.menu_market
 #: model:ir.ui.menu,name:dw_supplier_approval.menu_market_root
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
@@ -387,29 +745,59 @@ msgid "Market"
 msgstr "Marché"
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__market_supplier_ids
+msgid "Market Supplier"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.ui.menu,name:dw_supplier_approval.menu_market_type
+msgid "Market Type"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__market_line_ids
+msgid "Market line"
+msgstr ""
+
+#. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__market_type_id
 msgid "Market type"
 msgstr "Type du marché"
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__message_has_error
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__message_has_error
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__message_has_error
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__message_has_error
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__message_has_error
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__message_has_error
 msgid "Message Delivery error"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__message_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__message_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__message_ids
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__message_ids
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__message_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__message_ids
 msgid "Messages"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__my_activity_date_deadline
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__my_activity_date_deadline
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__my_activity_date_deadline
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__my_activity_date_deadline
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__my_activity_date_deadline
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__my_activity_date_deadline
 msgid "My Activity Deadline"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_type__name
@@ -417,48 +805,95 @@ msgid "Name"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__quantity
+msgid "Needed Quantity"
+msgstr ""
+
+#. module: dw_supplier_approval
 #. odoo-python
+#: code:addons/dw_supplier_approval/models/dw_consultation.py:0
+#: code:addons/dw_supplier_approval/models/dw_consultation.py:0
 #: code:addons/dw_supplier_approval/models/homologation.py:0
 #: code:addons/dw_supplier_approval/models/homologation.py:0
 #: code:addons/dw_supplier_approval/models/homologation.py:0
-#: code:addons/dw_supplier_approval/models/homologation.py:0
+#: code:addons/dw_supplier_approval/models/market.py:0
+#: code:addons/dw_supplier_approval/models/market.py:0
 #, python-format
 msgid "New"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__activity_calendar_event_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__activity_calendar_event_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__activity_calendar_event_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__activity_calendar_event_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__activity_calendar_event_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__activity_date_deadline
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__activity_date_deadline
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__activity_date_deadline
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__activity_date_deadline
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__activity_date_deadline
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__activity_summary
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__activity_summary
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__activity_summary
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__activity_summary
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__activity_summary
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__activity_summary
 msgid "Next Activity Summary"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__activity_type_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__activity_type_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__activity_type_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__activity_type_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__activity_type_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__activity_type_id
 msgid "Next Activity Type"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__number_days
+msgid "Number Days"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__number_months
+msgid "Number Months"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__number_years
+msgid "Number Years"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__message_needaction_counter
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__message_needaction_counter
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__message_needaction_counter
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__message_needaction_counter
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__message_needaction_counter
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__message_needaction_counter
 msgid "Number of Actions"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__message_has_error_counter
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__message_has_error_counter
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__message_has_error_counter
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__message_has_error_counter
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__message_has_error_counter
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__message_has_error_counter
 msgid "Number of errors"
 msgstr ""
 
@@ -468,15 +903,35 @@ msgid "Number of fournisseur"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation__message_needaction_counter
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation_criteria__message_needaction_counter
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation_criteria_line__message_needaction_counter
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_homologation__message_needaction_counter
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_market__message_needaction_counter
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_market_line__message_needaction_counter
 msgid "Number of messages requiring action"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation__message_has_error_counter
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation_criteria__message_has_error_counter
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation_criteria_line__message_has_error_counter
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_homologation__message_has_error_counter
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_market__message_has_error_counter
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_market_line__message_has_error_counter
 msgid "Number of messages with delivery error"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__percentage
+msgid "Percentage"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_attribute_market_wizard__period_type
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__period_type
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__period_type
+msgid "Period Type"
 msgstr ""
 
 #. module: dw_supplier_approval
@@ -485,10 +940,20 @@ msgid "Phone"
 msgstr "Téléphone"
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__Pre_eval_quest_attachment
+msgid "Pre-evaluation questionnaire"
+msgstr "Questionnaire de pré-évaluation"
+
+#. module: dw_supplier_approval
 #: model:ir.model,name:dw_supplier_approval.model_product_template
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__product_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__product_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__product_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__product_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__product_ids
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__product_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__product_id
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_criteria_search_view
 msgid "Product"
 msgstr "Produit"
 
@@ -503,21 +968,32 @@ msgid "Product Variant"
 msgstr "Variante de produit"
 
 #. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
+msgid "Products and Supplier"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
+msgid "Products and Suppliers"
+msgstr ""
+
+#. module: dw_supplier_approval
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_homologation__state__prospection
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_market__state__prospection
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
 msgid "Prospection"
 msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model,name:dw_supplier_approval.model_purchase_order
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__purchase_id
-#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__purchase_ids
 msgid "Purchase Order"
 msgstr "Bon de commande fournisseur"
 
 #. module: dw_supplier_approval
-#: model:ir.actions.act_window,name:dw_supplier_approval.action_purchase_order_list
-msgid "Purchase Orders"
-msgstr "Bons de commandes"
+#: model:ir.model,name:dw_supplier_approval.model_purchase_requisition
+msgid "Purchase Requisition"
+msgstr "Demande d'achat"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_homologation__state__qualification
@@ -525,25 +1001,53 @@ msgid "Qualification"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__quantity
+msgid "Quantity"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__rating_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__rating_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__rating_ids
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__rating_ids
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__rating_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__rating_ids
 msgid "Ratings"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
+msgid "Reject"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_homologation__state__rejected
+msgid "Rejected"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__user_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__user_id
 msgid "Responsible"
 msgstr "Responsable"
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__activity_user_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__activity_user_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__activity_user_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__activity_user_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__activity_user_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__activity_user_id
 msgid "Responsible User"
 msgstr "Utilisateur responsable"
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__message_has_sms_error
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__message_has_sms_error
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__message_has_sms_error
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__message_has_sms_error
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__message_has_sms_error
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__message_has_sms_error
 msgid "SMS Delivery error"
 msgstr ""
 
@@ -554,7 +1058,9 @@ msgid "Specification document"
 msgstr "Cahier des charges"
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__state
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__state_market
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__state_homologation
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__state
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__state_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__state_market
@@ -564,13 +1070,22 @@ msgid "State"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation__activity_state
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation_criteria__activity_state
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation_criteria_line__activity_state
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_homologation__activity_state
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_market__activity_state
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_market_line__activity_state
 msgid ""
 "Status based on activities\n"
 "Overdue: Due date is already passed\n"
 "Today: Activity date is today\n"
 "Planned: Future activities."
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__street2
+msgid "Street"
 msgstr ""
 
 #. module: dw_supplier_approval
@@ -584,12 +1099,13 @@ msgid "Street..."
 msgstr ""
 
 #. module: dw_supplier_approval
-#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__street2
-msgid "Street2"
-msgstr ""
-
-#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__supplier_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__supplier_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__supplier_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__supplier_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__supplier_id
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_criteria_search_view
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_search_view
 msgid "Supplier"
 msgstr "Fournisseur"
 
@@ -599,15 +1115,26 @@ msgid "Supplier Approval"
 msgstr "Homologation fournisseur"
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__supplier_market_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__supplier_homologuer_ids
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_purchase_order__supplier_homologuer_ids
 msgid "Supplier Homologuer"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__rapport_audit_attachment
+msgid "Supplier audit report"
+msgstr "Rapport d’audit fournisseur"
+
+#. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__dw_supplier_nature
 msgid "Supplier nature"
 msgstr "Nature du fournisseur"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__rapport_technique_attachment
+msgid "Technical control report"
+msgstr "Rapport technique de contrôle"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_homologation__country_code
@@ -617,8 +1144,56 @@ msgid ""
 msgstr ""
 
 #. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/market.py:0
+#, python-format
+msgid "The number of supplier must be greater than %(nbr_supplier)s.!"
+msgstr ""
+
+#. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/market_type.py:0
+#, python-format
+msgid "The number of supplier must be greater than 0.!"
+msgstr ""
+
+#. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/market.py:0
+#, python-format
+msgid ""
+"The number of the Homologated  supplier must be greater than "
+"%(nbr_supplier)s.!"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.actions.act_window,help:dw_supplier_approval.dw_consultation_criteria_act_window
+msgid "There is no examples click here to add new Consultation Criteria."
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.actions.act_window,help:dw_supplier_approval.dw_consultation_act_window
+msgid "There is no examples click here to add new Consultation."
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_criteria_form_view
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_form_view
+msgid "Title"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_criteria_search_view
+msgid "Type"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation__activity_exception_decoration
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation_criteria__activity_exception_decoration
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation_criteria_line__activity_exception_decoration
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_homologation__activity_exception_decoration
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_market__activity_exception_decoration
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_market_line__activity_exception_decoration
 msgid "Type of the exception activity on record."
 msgstr ""
 
@@ -628,14 +1203,22 @@ msgid "User"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__website_message_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__website_message_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__website_message_ids
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__website_message_ids
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__website_message_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__website_message_ids
 msgid "Website Messages"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation__website_message_ids
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation_criteria__website_message_ids
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_consultation_criteria_line__website_message_ids
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_homologation__website_message_ids
 #: model:ir.model.fields,help:dw_supplier_approval.field_dw_market__website_message_ids
+#: model:ir.model.fields,help:dw_supplier_approval.field_dw_market_line__website_message_ids
 msgid "Website communication history"
 msgstr ""
 
@@ -656,6 +1239,12 @@ msgid "approval"
 msgstr "Homologation"
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__homologue
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_template__homologue
+msgid "approval required"
+msgstr "Homologation Requise"
+
+#. module: dw_supplier_approval
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_homologation__state__homologue
 msgid "approved"
 msgstr "Homologué"
@@ -666,6 +1255,11 @@ msgid "attribution VR"
 msgstr "PV Attribution"
 
 #. module: dw_supplier_approval
+#: model:ir.model,name:dw_supplier_approval.model_dw_attribute_market_wizard
+msgid "dw.attribute.market.wizard"
+msgstr ""
+
+#. module: dw_supplier_approval
 #: model:ir.model,name:dw_supplier_approval.model_dw_document_market_wizard
 msgid "dw.document.market.wizard"
 msgstr ""
@@ -673,6 +1267,11 @@ msgstr ""
 #. module: dw_supplier_approval
 #: model:ir.model,name:dw_supplier_approval.model_dw_document_wizard
 msgid "dw.document.wizard"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model,name:dw_supplier_approval.model_dw_market_line
+msgid "dw.market.line"
 msgstr ""
 
 #. module: dw_supplier_approval
@@ -687,8 +1286,6 @@ msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_product_category__homologue
-#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__homologue
-#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_template__homologue
 msgid "homologué"
 msgstr ""
 
@@ -696,6 +1293,21 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_identification_besoin_product_tree
 msgid "launch market"
 msgstr "Lancer marché"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
+msgid "load Pre-evaluation questionnaire"
+msgstr "Questionnaire de pré-évaluation"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
+msgid "load Stability Report"
+msgstr "Rapport de Stabilité"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
+msgid "load audit report"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__name

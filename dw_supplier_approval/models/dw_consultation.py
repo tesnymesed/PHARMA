@@ -21,6 +21,7 @@ class DwConsultationCriteria(models.Model):
                 ('product_tmpl_id.homologue', '=', True), ('purchase_ok', '=', True)],
 
     )
+    display_name = fields.Char("Dsiplay name", compute="_compute_display_name" , store ="1")
     company_id = fields.Many2one(
         'res.company',
         default=lambda self: self.env.company,
@@ -40,6 +41,15 @@ class DwConsultationCriteria(models.Model):
     ],
         string="State",
         default="draft", )
+    @api.depends('name','supplier_id')
+    def _compute_display_name(self):
+        for record in self :
+            final_name=""
+
+            final_name = final_name + record.name if record.name else ""
+            if record.supplier_id:
+             final_name = final_name+ " " + record.supplier_id.name
+             record.display_name =final_name
 
     @api.model_create_multi
     def create(self, vals_list):

@@ -3,6 +3,27 @@
 from odoo import fields, models, api, _
 from odoo.exceptions import ValidationError
 
+class DwMarketLine(models.Model):
+    _name = 'dw.market.line'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    company_id = fields.Many2one(
+        'res.company',
+        default=lambda self: self.env.company,
+    )
+    product_id = fields.Many2one(
+        'product.product',
+        check_company=True,
+        domain=['|', '|', ('homologue', '=', True), ('categ_id.homologue', '=', True),
+                ('product_tmpl_id.homologue', '=', True), ('purchase_ok', '=', True)],
+
+    )
+    supplier_id = fields.Many2one(
+        'res.partner',
+        check_company=True,
+        domain=[('is_supplier', '=', True)]
+    )
+    quantity = fields.Float('Quantity', default=1)
+    market_id = fields.Many2one('dw.market')
 
 class DwMarket(models.Model):
     _name = 'dw.market'
@@ -50,6 +71,7 @@ class DwMarket(models.Model):
         'res.partner',
         compute="_compute_supplier_homologuer"
     )
+    market_line_ids = fields.One2many('dw.market.line','market_id',string="Market line")
     cahier_charge_attachment = fields.Binary(string="Specification document")
     cahier_charge_name = fields.Char(string='File name')
     quantity = fields.Float("Needed Quantity")
@@ -63,10 +85,10 @@ class DwMarket(models.Model):
     def button_draft(self):
         self.write({"state": "draft"})
 
-    @api.depends('supplier_ids')
+    @api.depends('market_line_ids')
     def compute_len_supplier_market(self):
         for record in self:
-            record.len_supplier_market = len(record.supplier_ids)
+            record.len_supplier_market = len(record.market_line_ids.mapped('supplier_id'))
 
     @api.depends('supplier_homologuer_ids')
     def compute_len_supplier_homologated_market(self):
@@ -80,6 +102,8 @@ class DwMarket(models.Model):
             supplier_ids = search.mapped('supplier_id')
             record.supplier_homologuer_ids = supplier_ids
 
+
+
     def action_load_spec_file(self):
         return {
             'type': 'ir.actions.act_window',
@@ -92,7 +116,18 @@ class DwMarket(models.Model):
                 'default_market_id': self.id
             }
         }
+    def  action_load_cahier_charge(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Market Document',
+            'res_model': 'dw.document.market.wizard',
+            'views': [[self.env.ref('dw_supplier_approval.view_document_market_wizard').id, 'form']],
+            'target': 'new',
 
+            'context': {
+                'default_market_id': self.id
+            }
+        }
     def action_homologation(self):
         if self.market_type_id and self.market_type_id.forced_nbr_supplier and self.len_supplier_market < self.market_type_id.nbr_supplier:
             raise ValidationError(

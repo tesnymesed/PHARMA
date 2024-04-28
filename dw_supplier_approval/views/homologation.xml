@@ -38,6 +38,25 @@
                                 class="btn-primary"
                                 invisible="state != 'analyse' or purchase_id == False"
                                 type="object"/>
+                          <button name="load_reports" string="Load reports"
+                                class="btn-primary"
+                                invisible="state != 'analyse'"
+                                type="object"/>
+                        <button name="action_load_Pre_eval_quest_file" string="load Pre-evaluation questionnaire"
+                                class="btn-primary"
+                                invisible="state != 'prospection'"
+                                type="object"/>
+                         <button name="action_load_audit_report" string="load audit report"
+                                class="btn-primary"
+                                invisible="state != 'audit'"
+                                type="object"/>
+                        <button name="action_load_stabilite_file" string="load Stability Report"
+                                class="btn-primary"
+                                invisible="state != 'lot_validation'"
+                                type="object"/>
+
+
+
                         <button name="action_to_lot_validation_or_qualification" string="Confirm"
                                 class="btn-primary"
                                 invisible="state != 'audit'"
@@ -49,7 +68,7 @@
 
                         <button name="action_homologate" string="Homologuer"
                                 class="btn-primary"
-                                invisible="state in ['cancel','prospection','audit','lot_validation','homologue']"
+                                invisible="state in ['cancel','rejected','prospection','audit','lot_validation','homologue']"
                                 type="object"/>
 
                         <button name="create_purchase_order" string="Create Purchase order"
@@ -65,6 +84,11 @@
                                 name="action_cancel" string="Cancel"
                                 type="object" class="btn-primary" data-hotkey="q"
                                 invisible="state in ['prospection','cancel','homologue'] "
+                        />
+                         <button
+                                name="action_reject" string="Reject"
+                                type="object" class="btn-primary" data-hotkey="q"
+                                invisible="state in ['prospection','qualification'] "
                         />
                         <field name="state" widget="statusbar"
                                statusbar_visible="prospection,analyse,audit,lot_validation,qualification"/>

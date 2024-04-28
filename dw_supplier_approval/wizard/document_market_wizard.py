@@ -6,6 +6,9 @@ class DocumentMarketWizard(models.TransientModel):
     cahier_charge_attachment = fields.Binary(string="Specification document")
     cahier_charge_name = fields.Char(string='File name')
 
+    fiche_specification_attachment = fields.Binary(string="Fiches de Spécifications")
+    fiche_specification_name = fields.Char(string='File name')
+
     pv_attribution_attachment = fields.Binary(string="attribution VR")
     pv_attribution_name = fields.Char(string='File name')
 
@@ -32,6 +35,16 @@ class DocumentMarketWizard(models.TransientModel):
                 'type': 'binary',
 
                 'datas': self.cahier_charge_attachment,
+                'folder_id': self.env.ref('dw_supplier_approval.folder_dw_market').id,
+            })
+        if self.fiche_specification_attachment and self.fiche_specification_name and self.state_market == 'draft':
+            pg_recorded = self.env['documents.document'].create({
+                'res_model': 'dw.market',
+                'res_id': self.market_id.id,
+                'name': self.fiche_specification_name,
+                'type': 'binary',
+
+                'datas': self.fiche_specification_attachment,
                 'folder_id': self.env.ref('dw_supplier_approval.folder_dw_market').id,
             })
         if self.pv_attribution_attachment and self.pv_attribution_name and self.state_market == 'homologation_cosultation':

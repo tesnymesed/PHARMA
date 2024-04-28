@@ -54,9 +54,8 @@ class DwMarket(models.Model):
     product_ids = fields.Many2many(
         'product.product',
         check_company=True,
-        domain=['|', '|', ('homologue', '=', True), ('categ_id.homologue', '=', True),
-                ('product_tmpl_id.homologue', '=', True), ('purchase_ok', '=', True)],
-
+        compute="_compute_products_ids",
+        store="1"
     )
     supplier_ids = fields.Many2many(
         'res.partner',
@@ -79,6 +78,11 @@ class DwMarket(models.Model):
     len_supplier_homologated_market = fields.Integer("Length Market supplier Approved", store=0,
                                                      compute="compute_len_supplier_homologated_market")
 
+    @api.depends('market_line_ids')
+    def _compute_products_ids(self):
+        for record in self:
+
+            record.product_ids = record.market_line_ids.mapped('product_id')
     def _expand_states(self, states, domain, order):
         return [key for key, dummy in self._fields['state'].selection]
 

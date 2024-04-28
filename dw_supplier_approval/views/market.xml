@@ -178,11 +178,7 @@
                             <group>
                                 <field name="description" readonly="state != 'draft'"/>
                             </group>
-
-                        </group>
-                        <div class="oe_button_box" name="button_box">
-                        </div>
-                        <notebook>
+ <notebook>
                             <page  string="Products and Suppliers">
                                 <field name="market_line_ids" mode="tree" nolabel="1">
                                     <tree string="Products and Supplier" multi_edit="1" duplicate="false"
@@ -199,6 +195,10 @@
                                 </field>
                             </page>
                         </notebook>
+                        </group>
+                        <div class="oe_button_box" name="button_box">
+                        </div>
+
                     </sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids"/>

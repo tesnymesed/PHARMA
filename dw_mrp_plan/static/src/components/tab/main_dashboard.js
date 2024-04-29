@@ -48,28 +48,113 @@ export class OwlMainDashboard extends Component {
             var mrp_names_list = [...new Set(this.state.mrp_plan_list.map(item => [item.name,item.season_date]))]
             var selectMrpPlan= document.getElementById('select-mrp-plan');
             mrp_names_list.forEach(function(optionValue) {
-              var option = document.createElement('option');
-              option.text = optionValue[0] +'/ ' +optionValue[1];
-              option.value = optionValue[1]; // Set both text and value to the same value
+              var option = this.addSelectOption(optionValue[0] +'/ ' +optionValue[1], optionValue[1])
               selectMrpPlan.appendChild(option);
-            });
+            }.bind(this));
+            const create_option = this.addSelectOption('Create MRP Plan...', 'createMrpPlan')
+            selectMrpPlan.appendChild(create_option);
             $('#select-mrp-plan').change(function() {
                 var selectedValues = $('#select-mrp-plan').val();
-                var res = this.get_mrp_plan_product_data(selectedValues)
-                res.then((result) => {
-                    this.state.monthly_data = result
-                    var [original_data, data] = this.data_nest(result,'monthly')
-                    this.state.mrp_plan_product_data = original_data
-                    var filtred_data = data.filter(function(dict) {
-                        return selectedValues.includes(dict['Product']);
+                if(selectedValues == 'createMrpPlan'){
+                    console.log(".......... Creating MRP Plan ...........")
+                    var company_data = this.getCompanyData()
+                    company_data.then((result) => {
+                        console.log("Company Data: ",result)
+                        var selectCompanyMrpPlan= document.getElementById('select-mrp-plan-company');
+                        result.forEach(function(optionValue) {
+                            console.log("Options",optionValue)
+                          var option = this.addSelectOption(optionValue['name'] , optionValue['id'])
+                          selectCompanyMrpPlan.appendChild(option);
+                        }.bind(this));
+                        var company_id = $('#select-mrp-plan-company').val();
+                        var sale_plan_data = this.getSalePlanData(company_id)
+                        sale_plan_data.then((result) => {
+                             var select_sale_plan = document.getElementById("select-mrp-sale-plan");
+                             select_sale_plan.innerHTML = "";
+                             result.forEach(function(optionValue) {
+                                 var option = this.addSelectOption(optionValue['name'] , optionValue['id'])
+                                 select_sale_plan.appendChild(option);
+                                 }.bind(this));
+                            }).catch((error) => {
+                                console.error(error); // Handle any errors
+                        });
+
+                        var season_data = this.generateSeasonData()
+                        console.log("DATA 88",season_data)
+                        var select_season_plan = document.getElementById("select-mrp-season-plan");
+                        season_data.forEach(function(optionValue) {
+                             var option = this.addSelectOption(optionValue[1] , optionValue[0])
+                             select_season_plan.appendChild(option);
+                        }.bind(this));
+
+
+
+                    }).catch((error) => {
+                        console.error(error); // Handle any errors
                     });
-                    var monthly_columns = this.getTabCols(data)
-                    monthly_tab.setData(data);
-                    monthly_tab.setColumns(monthly_columns);
-                }).catch((error) => {
-                    console.error(error);
+                    $('#createMrpPlanModel').modal('show');
+                }else{
+                    var res = this.get_mrp_plan_product_data(selectedValues)
+                    res.then((result) => {
+                        this.state.monthly_data = result
+                        var [original_data, data] = this.data_nest(result,'monthly')
+                        this.state.mrp_plan_product_data = original_data
+                        var filtred_data = data.filter(function(dict) {
+                            return selectedValues.includes(dict['Product']);
+                        });
+                        var monthly_columns = this.getTabCols(data)
+                        monthly_tab.setData(data);
+                        monthly_tab.setColumns(monthly_columns);
+                    }).catch((error) => {
+                        console.error(error);
+                    });
+                }
+
+            }.bind(this));
+
+            $('#select-mrp-plan-company').change(function () {
+                var selectedValues = $('#select-mrp-plan-company').val();
+                var company_id = $('#select-mrp-plan-company').val();
+                var sale_plan_data = this.getSalePlanData(company_id)
+                sale_plan_data.then((result) => {
+                     var select_sale_plan = document.getElementById("select-mrp-sale-plan");
+                     select_sale_plan.innerHTML = "";
+                     result.forEach(function(optionValue) {
+                         var option = this.addSelectOption(optionValue['name'] , optionValue['id'])
+                         select_sale_plan.appendChild(option);
+                         }.bind(this));
+                    }).catch((error) => {
+                        console.error(error);
                 });
             }.bind(this));
+
+            document.getElementById("saveMrpPlanButton").addEventListener("click", function () {
+                    var plan_name = $('#mrp-plan-name').val();
+                    var plan_season = $('#select-mrp-season-plan').val();
+                    var plan_company = $('#select-mrp-plan-company').val();
+                    var plan_sale_plan = $('#select-mrp-sale-plan').val();
+
+                    console.log('plan_name',plan_name)
+                    console.log('plan_season',plan_season)
+                    console.log('plan_company',plan_company)
+                    console.log('plan_sale_plan',plan_sale_plan)
+                    var new_mrp_plan = this.createMrpPlan(plan_name, plan_season, plan_company, plan_sale_plan)
+                    new_mrp_plan.then((result) => {
+                        var mrp_plan_notif = this.notificationService.add("MRP Plan "+plan_name+" Successfully Created", {
+                          title: "Create MRP Plan",
+                          type: "success"
+                        });
+                        setTimeout(mrp_plan_notif, 2000);
+                    }).catch((error) => {
+                         var mrp_plan_notif = this.notificationService.add("MRP Plan "+plan_name+" Cant be created, Please contact your system administrator", {
+                          title: "Create MRP Plan",
+                          type: "danger"
+                        });
+                        setTimeout(mrp_plan_notif, 2000);
+                    });
+
+                }.bind(this));
+
             monthly_tab.on("headerDblClick", function(e, column){
                 $('#tableBody').html('');
                 $('#tableHead').html('');
@@ -511,6 +596,57 @@ export class OwlMainDashboard extends Component {
             return [data, res]
         }
     }
+
+    addSelectOption(text, value){
+        var option = document.createElement('option');
+        option.text = text;
+        option.value = value; // Set both text and value to the same value
+        return option
+    }
+
+    async getSalePlanData(company_id) {
+        var data =  this.orm.searchRead("sale.plan",['|',['company_id.id','=', company_id],['company_id','=',false]],['id', 'name'])
+        var res = []
+        await data.then(result => {
+             res = result
+        }).catch(error => {
+            console.error(error);
+        });
+        return res
+    }
+
+    async getCompanyData() {
+        var data =  this.orm.searchRead("res.company",[[1,'=',1]],['id', 'name'])
+        var res = []
+        await data.then(result => {
+             res = result
+        }).catch(error => {
+            console.error(error);
+        });
+        return res
+    }
+
+    generateSeasonData(){
+        var cnt = 10;
+        var list1 = [];
+        var today = new Date().getFullYear();
+        for (let i = 2010; i < today + 5; i++) {
+            list1.push([cnt.toString(), i.toString()]);
+            cnt = cnt + 1;
+        }
+        return list1
+    }
+
+    createMrpPlan(plan_name, plan_season, plan_company_id, plan_sale_plan_id){
+         var new_mrp_plan = this.orm.create('mrp.plan', [{
+                            'name': plan_name,
+                            'season_date': plan_season,
+                            'sale_plan_id': plan_sale_plan_id,
+                            'company_id': plan_company_id,
+                            }]);
+        return new_mrp_plan
+    }
+
 }
 OwlMainDashboard.template = "owl.OwlMainDashboard"
 registry.category("actions").add("owl.main_dashboard", OwlMainDashboard)

@@ -13,6 +13,49 @@
                                 </select>
                           </div>
                       </div>
+                        <!-- Modal for Creating MRP Plan-->
+                    <div class="modal fade" id="createMrpPlanModel" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Create MRP Plan</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body" id="createMrpPlanModalBody">
+                              <div class="row">
+<!--                                  <form class="row g-3 needs-validation" novalidate="novalidate" id="createMrpPlanForm">-->
+                                      <div class="col-sm-3">
+                                          <label for="mrp-plan-name" class="form-label">Plan Name</label>
+                                          <input type="email" class="form-control" id="mrp-plan-name" aria-describedby="inputGroupPrepend2" required="required"/>
+                                      </div>
+                                      <div class="col-sm-3">
+                                          <label for="select-mrp-plan-company" class="form-label">Company</label>
+                                          <select class="form-select" id="select-mrp-plan-company" data-placeholder="Company ...">
+                                          </select>
+                                      </div>
+                                      <div class="col-sm-3">
+                                          <label for="select-mrp-sale-plan" class="form-label">Sale Plan</label>
+                                          <select class="form-select" id="select-mrp-sale-plan" data-placeholder="Select Sale Plan ...">
+                                          </select>
+                                      </div>
+                                      <div class="col-sm-3">
+                                          <label for="select-mrp-season-plan" class="form-label">Season</label>
+                                          <select class="form-select" id="select-mrp-season-plan" data-placeholder="Sale Plan ..." required="required">
+                                          </select>
+                                      </div>
+
+<!--                                  </form>-->
+
+                              </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
+                            <button type="button" id="saveMrpPlanButton" class="btn btn-primary">Save</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+<!--                      End Modal for Creating MRP Plan-->
                       <!--                      Modal For Weekly Plan-->
                     <div class="modal fade" id="WeeklyPlaModel" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-scrollable modal-xl">

@@ -80,6 +80,14 @@ class DwHomologation(models.Model):
     fichier_stabilite_file_name = fields.Char(string='File name')
     qty = fields.Float("Quantity")
 
+    @api.constrains('end_date', 'start_date')
+    def _check_date_start_end(self):
+      for record in self:
+        if record.start_date and record.end_date:
+
+            if record.start_date > record.end_date:
+                raise ValidationError(
+                    _('start date can\'t be greater that end date'))
     def _expand_states(self, states, domain, order):
         return [key for key, dummy in self._fields['state'].selection]
 

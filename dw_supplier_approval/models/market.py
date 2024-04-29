@@ -110,6 +110,14 @@ class DwMarket(models.Model):
     start_date = fields.Date(string="Start Date", default=fields.Date.today)
     end_date = fields.Date(string="End Date", default=fields.Date.today)
 
+    @api.constrains('end_date','start_date')
+    def _check_date_start_end(self):
+      for record in self:
+        if record.start_date and record.end_date:
+
+                if record.start_date > record.end_date:
+                    raise ValidationError(
+                        _('start date can\'t be greater that end date'))
     @api.depends('market_line_ids')
     def _compute_products_ids(self):
         for record in self:

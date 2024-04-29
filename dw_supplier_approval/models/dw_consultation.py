@@ -47,6 +47,14 @@ class DwConsultationCriteria(models.Model):
     start_date = fields.Date(string="Start Date", default=fields.Date.today)
     end_date = fields.Date(string="End Date", default=fields.Date.today)
 
+    @api.constrains('end_date', 'start_date')
+    def _check_date_start_end(self):
+       for record in self :
+        if record.start_date and record.end_date:
+
+            if record.start_date > record.end_date:
+                raise ValidationError(
+                    _('start date can\'t be greater that end date'))
     @api.depends('name', 'supplier_id')
     def _compute_display_name(self):
         for record in self:
@@ -112,7 +120,7 @@ class DwConsultationCriteria(models.Model):
             'name': _("%(consultation_name)s's Consultations", consultation_name=self.name),
 
             'domain': [
-                ('consultation_id', 'in', self.id),
+                ('consultation_id', '=', self.id),
             ],
             'view_mode': 'tree,form',
 

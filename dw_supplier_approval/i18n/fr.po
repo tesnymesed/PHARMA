@@ -6,14 +6,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-28 12:17+0000\n"
-"PO-Revision-Date: 2024-04-28 12:17+0000\n"
+"POT-Creation-Date: 2024-04-29 15:12+0000\n"
+"PO-Revision-Date: 2024-04-29 15:12+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/dw_consultation.py:0
+#: code:addons/dw_supplier_approval/models/dw_consultation.py:0
+#, python-format
+msgid "%(consultation_name)s's Consultations"
+msgstr ""
 
 #. module: dw_supplier_approval
 #. odoo-python
@@ -38,9 +46,24 @@ msgstr "Documents Homologation %(market_name)s"
 
 #. module: dw_supplier_approval
 #. odoo-python
+#: code:addons/dw_supplier_approval/models/dw_consultation.py:0
+#: code:addons/dw_supplier_approval/models/market.py:0
+#, python-format
+msgid "%(market_name)s's Attribution"
+msgstr ""
+
+#. module: dw_supplier_approval
+#. odoo-python
 #: code:addons/dw_supplier_approval/models/market.py:0
 #, python-format
 msgid "%(market_name)s's Consultations"
+msgstr ""
+
+#. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/homologation.py:0
+#, python-format
+msgid "%(market_name)s's Market"
 msgstr ""
 
 #. module: dw_supplier_approval
@@ -58,9 +81,24 @@ msgid "%(market_name)s's homologation"
 msgstr ""
 
 #. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/product.py:0
+#: code:addons/dw_supplier_approval/models/product.py:0
+#, python-format
+msgid "%(product_name)s's homologation"
+msgstr ""
+
+#. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/res_partner.py:0
+#, python-format
+msgid "%(supplier_name)s's homologation"
+msgstr ""
+
+#. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_search_view
 msgid "*product"
-msgstr ""
+msgstr "*Produit"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.kanban_dw_market
@@ -75,6 +113,12 @@ msgid "<b>Responsible</b>:"
 msgstr "<b>Responsable</b>:"
 
 #. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_form_view
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
+msgid "<span class=\"o_stat_text\">Attribution</span>"
+msgstr ""
+
+#. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
 msgid "<span class=\"o_stat_text\">Consultations</span>"
@@ -85,6 +129,20 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
 msgid "<span class=\"o_stat_text\">Documents</span>"
 msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_form_view
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_view_partner_form_inherit_test
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.product_normal_form_view_inherited
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_product_template_inherited
+msgid "<span class=\"o_stat_text\">Homologation</span>"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_form_view
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
+msgid "<span class=\"o_stat_text\">Market</span>"
+msgstr "<span class=\"o_stat_text\">Marché</span>"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
@@ -100,6 +158,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
 msgid "<span class=\"o_stat_text\">approvals</span>"
 msgstr "<span class=\"o_stat_text\">Homologations</span>"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_homologate_market_form_view
+msgid "<span>Homologate </span>"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__message_needaction
@@ -165,12 +228,12 @@ msgstr "Adresse"
 #. module: dw_supplier_approval
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_consultation__state__allocated
 msgid "Allocated"
-msgstr ""
+msgstr "attribué"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__amount
 msgid "Amount"
-msgstr ""
+msgstr "Montant"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_homologation__state__analyse
@@ -190,7 +253,7 @@ msgstr ""
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
 msgid "Assign"
-msgstr "Attribuer "
+msgstr "Attribuer"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_market__state__done
@@ -205,6 +268,16 @@ msgstr "Attribué"
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__message_attachment_count
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__message_attachment_count
 msgid "Attachment Count"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__requisition_ids
+msgid "Attribution"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_form_view
+msgid "Attribué"
 msgstr ""
 
 #. module: dw_supplier_approval
@@ -240,21 +313,22 @@ msgstr ""
 #. module: dw_supplier_approval
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_consultation_criteria__criteria_type__percentage
 msgid "Based on Percentage"
-msgstr ""
+msgstr "Basé sur le pourcentage"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_consultation_criteria__criteria_type__period
 msgid "Based on Period"
-msgstr ""
+msgstr "Basé sur la période"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_consultation_criteria__period_type__years
 msgid "Based on Years"
-msgstr ""
+msgstr "Basé sur les années"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_attribute_market_form_view
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_form_view
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_homologate_market_form_view
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_document_market_wizard
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_manufacturing_document_wizard
@@ -308,6 +382,7 @@ msgstr "Confirmer"
 #: model:ir.model,name:dw_supplier_approval.model_dw_consultation
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__consultation_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__consultation_id
+#: model:ir.module.category,name:dw_supplier_approval.module_dw_consultation_category
 #: model:ir.ui.menu,name:dw_supplier_approval.dw_consultation_menu
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_form_view
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_search_view
@@ -325,7 +400,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_criteria_tree_view
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_form_view
 msgid "Consultation Criteria"
-msgstr ""
+msgstr "Critères de consultation"
 
 #. module: dw_supplier_approval
 #: model:ir.model,name:dw_supplier_approval.model_dw_consultation_criteria_line
@@ -342,6 +417,16 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
 msgid "Consulted"
 msgstr "Consulté"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_tree
+msgid "Consulter"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model,name:dw_supplier_approval.model_res_partner
+msgid "Contact"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__country_id
@@ -366,6 +451,7 @@ msgstr "Créer bon de commande"
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__create_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__create_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__create_uid
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologate_market_wizard__create_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__create_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__create_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__create_uid
@@ -380,6 +466,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__create_date
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__create_date
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__create_date
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologate_market_wizard__create_date
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__create_date
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__create_date
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__create_date
@@ -390,8 +477,9 @@ msgstr ""
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__criteria_id
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_criteria_search_view
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
 msgid "Criteria"
-msgstr ""
+msgstr "critères"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_attribute_market_form_view
@@ -424,6 +512,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__display_name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__display_name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__display_name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologate_market_wizard__display_name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__display_name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__display_name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__display_name
@@ -434,7 +523,7 @@ msgstr ""
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
 msgid "Do you want to prospect this market"
-msgstr ""
+msgstr "Vous souhaitez prospecter ce marché"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__manufacturing_document_attachment
@@ -444,7 +533,7 @@ msgstr ""
 #. module: dw_supplier_approval
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_consultation__state__draft
 msgid "Draft"
-msgstr ""
+msgstr "Brouillon"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__display_name
@@ -455,6 +544,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__email
 msgid "Email"
 msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__end_date
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__end_date
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__end_date
+msgid "End Date"
+msgstr "Date de fin"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__rapport_expertise_attachment
@@ -550,6 +646,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__homologation_ids
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__homologation_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__homologation_ids
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__homologation_ids
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_purchase_order__homologation_id
 #: model:ir.module.category,name:dw_supplier_approval.module_dw_homologation_category
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
@@ -557,11 +654,7 @@ msgid "Homologation"
 msgstr ""
 
 #. module: dw_supplier_approval
-#: model:res.groups,name:dw_supplier_approval.group_dw_homologation
-msgid "Homologation group"
-msgstr ""
-
-#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_homologate_market_form_view
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
 msgid "Homologuer"
 msgstr ""
@@ -573,6 +666,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologate_market_wizard__id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__id
@@ -644,12 +738,18 @@ msgid "Is Follower"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_tree
+msgid "Lancer consultation"
+msgstr ""
+
+#. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_attribute_market_wizard__write_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__write_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__write_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__write_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__write_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__write_uid
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologate_market_wizard__write_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__write_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__write_uid
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__write_uid
@@ -664,6 +764,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__write_date
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__write_date
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__write_date
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologate_market_wizard__write_date
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__write_date
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__write_date
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__write_date
@@ -679,6 +780,16 @@ msgstr ""
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__len_supplier_homologated_market
 msgid "Length Market supplier Approved"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__line_consulted
+msgid "Line Consulted"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__line_homlogated
+msgid "Line Homlogated"
 msgstr ""
 
 #. module: dw_supplier_approval
@@ -699,7 +810,7 @@ msgstr ""
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
 msgid "Load reports"
-msgstr ""
+msgstr "Charger les documents"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__lot_validation
@@ -710,9 +821,10 @@ msgstr ""
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
 msgid "Lunch Consultation"
-msgstr ""
+msgstr "Lancer consultation"
 
 #. module: dw_supplier_approval
+#: model:res.groups,name:dw_supplier_approval.group_manager_dw_consultation
 #: model:res.groups,name:dw_supplier_approval.group_manager_dw_homologation
 msgid "Manager"
 msgstr ""
@@ -734,6 +846,7 @@ msgstr "Marquer comme Brouillon"
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_attribute_market_wizard__market_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__market_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__market_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologate_market_wizard__line_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__market_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__market_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_purchase_order__market_id
@@ -745,14 +858,19 @@ msgid "Market"
 msgstr "Marché"
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__market_criteria_ids
+msgid "Market Criteria"
+msgstr "Critères de marché"
+
+#. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__market_supplier_ids
 msgid "Market Supplier"
-msgstr ""
+msgstr "Fournisseur du marché"
 
 #. module: dw_supplier_approval
 #: model:ir.ui.menu,name:dw_supplier_approval.menu_market_type
 msgid "Market Type"
-msgstr ""
+msgstr "Type du marché"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__market_line_ids
@@ -802,12 +920,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_type__name
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #. module: dw_supplier_approval
-#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__quantity
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__quantity
 msgid "Needed Quantity"
-msgstr ""
+msgstr "Quantité nécessaire"
 
 #. module: dw_supplier_approval
 #. odoo-python
@@ -820,7 +938,7 @@ msgstr ""
 #: code:addons/dw_supplier_approval/models/market.py:0
 #, python-format
 msgid "New"
-msgstr ""
+msgstr "Nouveau"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__activity_calendar_event_id
@@ -925,7 +1043,7 @@ msgstr ""
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__percentage
 msgid "Percentage"
-msgstr ""
+msgstr "Pourcentage"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_attribute_market_wizard__period_type
@@ -970,12 +1088,12 @@ msgstr "Variante de produit"
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
 msgid "Products and Supplier"
-msgstr ""
+msgstr "Produits et fournisseurs"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
 msgid "Products and Suppliers"
-msgstr ""
+msgstr "Produits et fournisseurs"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_homologation__state__prospection
@@ -1001,7 +1119,8 @@ msgid "Qualification"
 msgstr ""
 
 #. module: dw_supplier_approval
-#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__quantity
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__qty
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__qty
 msgid "Quantity"
 msgstr ""
 
@@ -1018,12 +1137,12 @@ msgstr ""
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
 msgid "Reject"
-msgstr ""
+msgstr "rejeter"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_homologation__state__rejected
 msgid "Rejected"
-msgstr ""
+msgstr "rejeté"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__user_id
@@ -1056,6 +1175,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__cahier_charge_attachment
 msgid "Specification document"
 msgstr "Cahier des charges"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__start_date
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__start_date
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__start_date
+msgid "Start Date"
+msgstr "Date de début"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__state
@@ -1103,7 +1229,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__supplier_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__supplier_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__supplier_ids
-#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__supplier_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__supplier_ids
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_criteria_search_view
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_search_view
 msgid "Supplier"
@@ -1148,39 +1274,54 @@ msgstr ""
 #: code:addons/dw_supplier_approval/models/market.py:0
 #, python-format
 msgid "The number of supplier must be greater than %(nbr_supplier)s.!"
-msgstr ""
+msgstr "Le nombre de fournisseurs doit être supérieur à %(nbr_supplier)s.!"
 
 #. module: dw_supplier_approval
 #. odoo-python
 #: code:addons/dw_supplier_approval/models/market_type.py:0
 #, python-format
 msgid "The number of supplier must be greater than 0.!"
-msgstr ""
+msgstr "Le nombre de fournisseurs doit être supérieur à 0.!"
 
 #. module: dw_supplier_approval
 #. odoo-python
+#: code:addons/dw_supplier_approval/models/market.py:0
 #: code:addons/dw_supplier_approval/models/market.py:0
 #, python-format
 msgid ""
 "The number of the Homologated  supplier must be greater than "
 "%(nbr_supplier)s.!"
-msgstr ""
-
+msgstr "Le nombre de fournisseurs Homologués doit être supérieur à"
+"%(nbr_supplier)s.!"
 #. module: dw_supplier_approval
 #: model_terms:ir.actions.act_window,help:dw_supplier_approval.dw_consultation_criteria_act_window
 msgid "There is no examples click here to add new Consultation Criteria."
-msgstr ""
+msgstr "Il n'y a pas d'exemples, cliquez ici pour ajouter de nouveaux critères de consultation"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.actions.act_window,help:dw_supplier_approval.dw_consultation_act_window
 msgid "There is no examples click here to add new Consultation."
-msgstr ""
+msgstr "Il n'y a pas d'exemples, cliquez ici pour ajouter une nouvelle consultation"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__dw_homologate
+msgid "This market is used for homologation"
+msgstr "Ce marché est utilisé pour l'homologation"
+
+#. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/homologation.py:0
+#, python-format
+msgid ""
+"This supplier %(supplier_name)s is not homologated for this product "
+"%(product_name)s .!"
+msgstr "Ce fournisseur %(supplier_name)s n'est pas homologué pour ce produit"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_criteria_form_view
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_form_view
 msgid "Title"
-msgstr ""
+msgstr "Titre"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_consultation_criteria_search_view
@@ -1198,6 +1339,7 @@ msgid "Type of the exception activity on record."
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:res.groups,name:dw_supplier_approval.group_user_dw_consultation
 #: model:res.groups,name:dw_supplier_approval.group_user_dw_homologation
 msgid "User"
 msgstr ""
@@ -1222,6 +1364,33 @@ msgstr ""
 msgid "Website communication history"
 msgstr ""
 
+#. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/dw_consultation.py:0
+#, python-format
+msgid ""
+"You cannot mark as consulted for this Criteria %(criteria_name)s , you "
+"should introduce Amount .!"
+msgstr "Vous ne pouvez pas marquer comme consulté pour ce critère %(criteria_name)s , vous "
+"devrait introduire Montant .!"
+#. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/dw_consultation.py:0
+#, python-format
+msgid ""
+"You cannot mark as consulted for this Criteria %(criteria_name)s , you "
+"should introduce number of days .!"
+msgstr "Vous ne pouvez pas marquer comme consulté pour ce critère %(criteria_name)s , vous "
+"devrait introduire le nombre de jours .!"
+#. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/dw_consultation.py:0
+#, python-format
+msgid ""
+"You cannot mark as consulted for this Criteria %(criteria_name)s , you "
+"should introduce percentage .!"
+msgstr "Vous ne pouvez pas marquer comme consulté pour ce critère %(criteria_name)s , vous "
+"devrait introduire un pourcentage .!"
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
 msgid "ZIP"
@@ -1255,6 +1424,11 @@ msgid "attribution VR"
 msgstr "PV Attribution"
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_market__state__consultation
+msgid "consultation"
+msgstr ""
+
+#. module: dw_supplier_approval
 #: model:ir.model,name:dw_supplier_approval.model_dw_attribute_market_wizard
 msgid "dw.attribute.market.wizard"
 msgstr ""
@@ -1267,6 +1441,11 @@ msgstr ""
 #. module: dw_supplier_approval
 #: model:ir.model,name:dw_supplier_approval.model_dw_document_wizard
 msgid "dw.document.wizard"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model,name:dw_supplier_approval.model_dw_homologate_market_wizard
+msgid "dw.homologate.market.wizard"
 msgstr ""
 
 #. module: dw_supplier_approval
@@ -1307,7 +1486,7 @@ msgstr "Rapport de Stabilité"
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
 msgid "load audit report"
-msgstr ""
+msgstr "charger rapport d'audit"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__name
@@ -1318,7 +1497,16 @@ msgstr "Nom"
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
 msgid "return to draft"
-msgstr ""
+msgstr "retour au brouillon"
+
+#. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/dw_consultation.py:0
+#: code:addons/dw_supplier_approval/models/homologation.py:0
+#: code:addons/dw_supplier_approval/models/market.py:0
+#, python-format
+msgid "start date can't be greater that end date"
+msgstr "la date de début ne peut pas être supérieure à la date de fin"
 
 #. module: dw_supplier_approval
 #: model:ir.actions.act_window,name:dw_supplier_approval.action_dw_homologation

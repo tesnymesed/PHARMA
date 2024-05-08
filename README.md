@@ -26,7 +26,7 @@ The purpose of this branch is to facilitate thorough testing of new features and
 
 When creating a branch for pre-production testing, follow the naming convention below:
 
-    staging/<feature-name>
+    pre-production/<feature-name>
 
 Replace `<feature-name>` with a brief and descriptive name that indicates the purpose or nature of the feature being tested.
 

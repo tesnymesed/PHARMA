@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-29 15:12+0000\n"
-"PO-Revision-Date: 2024-04-29 15:12+0000\n"
+"POT-Creation-Date: 2024-05-09 15:52+0000\n"
+"PO-Revision-Date: 2024-05-09 15:52+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -251,6 +251,12 @@ msgid "Archived"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model:ir.actions.act_window,name:dw_supplier_approval.action_view_article_homologue
+#: model:ir.ui.menu,name:dw_supplier_approval.menu_article_homologation
+msgid "Article"
+msgstr ""
+
+#. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_market_form
 msgid "Assign"
 msgstr "Attribuer"
@@ -324,6 +330,11 @@ msgstr "Basé sur la période"
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_consultation_criteria__period_type__years
 msgid "Based on Years"
 msgstr "Basé sur les années"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__has_backliested_supplier
+msgid "Blacklisted"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_attribute_market_form_view
@@ -501,6 +512,11 @@ msgid "Criteria Type"
 msgstr ""
 
 #. module: dw_supplier_approval
+#: model_terms:ir.actions.act_window,help:dw_supplier_approval.action_identification_besoin
+msgid "Créer un nouveau produit"
+msgstr ""
+
+#. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria__description
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__description
 msgid "Description"
@@ -556,6 +572,26 @@ msgstr "Date de fin"
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__rapport_expertise_attachment
 msgid "Expert report"
 msgstr "Rapport d’expertise"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.product_template_search_view_inherit
+msgid "Expirated contract"
+msgstr "Contrat expirée"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.product_template_search_view_inherit
+msgid "Expirated homologation"
+msgstr "Homologation expirée"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__expired_contract
+msgid "Expired contract"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__expired_homologation
+msgid "Expired homologation"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_market_wizard__fiche_specification_attachment
@@ -638,6 +674,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market_line__has_message
 msgid "Has Message"
 msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.product_template_search_view_inherit
+msgid "Has blacklisted supplier"
+msgstr "A un fournisseur sur liste noire"
 
 #. module: dw_supplier_approval
 #: model:documents.folder,name:dw_supplier_approval.folder_homologation
@@ -983,17 +1024,17 @@ msgstr ""
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__number_days
 msgid "Number Days"
-msgstr ""
+msgstr "Nombre de jours"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__number_months
 msgid "Number Months"
-msgstr ""
+msgstr "Nombre de mois"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__number_years
 msgid "Number Years"
-msgstr ""
+msgstr "Nombre d'années"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__message_needaction_counter
@@ -1253,6 +1294,8 @@ msgid "Supplier audit report"
 msgstr "Rapport d’audit fournisseur"
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation__dw_supplier_nature
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_consultation_criteria_line__dw_supplier_nature
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_homologation__dw_supplier_nature
 msgid "Supplier nature"
 msgstr "Nature du fournisseur"
@@ -1291,17 +1334,21 @@ msgstr "Le nombre de fournisseurs doit être supérieur à 0.!"
 msgid ""
 "The number of the Homologated  supplier must be greater than "
 "%(nbr_supplier)s.!"
-msgstr "Le nombre de fournisseurs Homologués doit être supérieur à"
-"%(nbr_supplier)s.!"
+msgstr ""
+"Le nombre de fournisseurs Homologués doit être supérieur à%(nbr_supplier)s.!"
+
 #. module: dw_supplier_approval
 #: model_terms:ir.actions.act_window,help:dw_supplier_approval.dw_consultation_criteria_act_window
 msgid "There is no examples click here to add new Consultation Criteria."
-msgstr "Il n'y a pas d'exemples, cliquez ici pour ajouter de nouveaux critères de consultation"
+msgstr ""
+"Il n'y a pas d'exemples, cliquez ici pour ajouter de nouveaux critères de "
+"consultation"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.actions.act_window,help:dw_supplier_approval.dw_consultation_act_window
 msgid "There is no examples click here to add new Consultation."
-msgstr "Il n'y a pas d'exemples, cliquez ici pour ajouter une nouvelle consultation"
+msgstr ""
+"Il n'y a pas d'exemples, cliquez ici pour ajouter une nouvelle consultation"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_market__dw_homologate
@@ -1371,8 +1418,10 @@ msgstr ""
 msgid ""
 "You cannot mark as consulted for this Criteria %(criteria_name)s , you "
 "should introduce Amount .!"
-msgstr "Vous ne pouvez pas marquer comme consulté pour ce critère %(criteria_name)s , vous "
-"devrait introduire Montant .!"
+msgstr ""
+"Vous ne pouvez pas marquer comme consulté pour ce critère %(criteria_name)s "
+", vous devrait introduire Montant .!"
+
 #. module: dw_supplier_approval
 #. odoo-python
 #: code:addons/dw_supplier_approval/models/dw_consultation.py:0
@@ -1380,8 +1429,10 @@ msgstr "Vous ne pouvez pas marquer comme consulté pour ce critère %(criteria_n
 msgid ""
 "You cannot mark as consulted for this Criteria %(criteria_name)s , you "
 "should introduce number of days .!"
-msgstr "Vous ne pouvez pas marquer comme consulté pour ce critère %(criteria_name)s , vous "
-"devrait introduire le nombre de jours .!"
+msgstr ""
+"Vous ne pouvez pas marquer comme consulté pour ce critère %(criteria_name)s "
+", vous devrait introduire le nombre de jours .!"
+
 #. module: dw_supplier_approval
 #. odoo-python
 #: code:addons/dw_supplier_approval/models/dw_consultation.py:0
@@ -1389,8 +1440,10 @@ msgstr "Vous ne pouvez pas marquer comme consulté pour ce critère %(criteria_n
 msgid ""
 "You cannot mark as consulted for this Criteria %(criteria_name)s , you "
 "should introduce percentage .!"
-msgstr "Vous ne pouvez pas marquer comme consulté pour ce critère %(criteria_name)s , vous "
-"devrait introduire un pourcentage .!"
+msgstr ""
+"Vous ne pouvez pas marquer comme consulté pour ce critère %(criteria_name)s "
+", vous devrait introduire un pourcentage .!"
+
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
 msgid "ZIP"

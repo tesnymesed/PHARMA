@@ -4,16 +4,66 @@ from odoo import fields, models, api, _
 from odoo.exceptions import ValidationError
 
 
+class DwMarketLine(models.Model):
+    _name = 'dw.market.line'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+
+    product_id = fields.Many2one(
+        'product.product',
+        check_company=True,
+        domain=['|', '|', ('homologue', '=', True), ('categ_id.homologue', '=', True),
+                ('product_tmpl_id.homologue', '=', True), ('purchase_ok', '=', True)],
+
+    )
+    supplier_ids = fields.Many2many(
+        'res.partner',
+        check_company=True,
+        domain=[('is_supplier', '=', True)]
+    )
+    quantity = fields.Float('Needed Quantity', default=1)
+    market_id = fields.Many2one('dw.market')
+    company_id = fields.Many2one(
+        'res.company', store=1, related="market_id.company_id",
+    )
+    line_homlogated = fields.Boolean(default=False)
+    line_consulted = fields.Boolean(default=False)
+
+    def action_done(self):
+        market_id = self.market_id
+        if market_id.dw_homologate:
+            if market_id.market_type_id and market_id.market_type_id.forced_nbr_supplier and len(
+                    self.supplier_ids) < market_id.market_type_id.nbr_supplier:
+                raise ValidationError(
+                    _('The number of the Homologated  supplier must be greater than %(nbr_supplier)s.!',
+                      nbr_supplier=market_id.market_type_id.nbr_supplier)
+                )
+
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Market Document',
+                'res_model': 'dw.homologate.market.wizard',
+                'views': [[self.env.ref('dw_supplier_approval.dw_homologate_market_form_view').id, 'form']],
+                'target': 'new',
+
+                'context': {
+                    'default_line_id': self.id
+                }
+            }
+
+
 class DwMarket(models.Model):
     _name = 'dw.market'
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Supplier Approval"
+    _order = "start_date desc"
     name = fields.Char(string="Name")
+    dw_homologate = fields.Boolean(string="This market is used for homologation", default=True)
     state = fields.Selection(
         selection=[
             ('draft', 'Identification of the need'),
             ('prospection', 'Prospection'),
             ('homologation_cosultation', 'Approval/consultation'),
+            ('consultation', 'consultation'),
             ('done', 'Assigned'),
             ('cancel', 'Canceled')
         ],
@@ -33,9 +83,8 @@ class DwMarket(models.Model):
     product_ids = fields.Many2many(
         'product.product',
         check_company=True,
-        domain=['|', '|', ('homologue', '=', True), ('categ_id.homologue', '=', True),
-                ('product_tmpl_id.homologue', '=', True), ('purchase_ok', '=', True)],
-
+        compute="_compute_products_ids",
+        store="1"
     )
     supplier_ids = fields.Many2many(
         'res.partner',
@@ -43,19 +92,36 @@ class DwMarket(models.Model):
         domain=[('is_supplier', '=', True)]
     )
     market_type_id = fields.Many2one('dw.market.type', string="Market type")
+    market_criteria_ids = fields.Many2many('dw.consultation.criteria', string="Market Criteria")
     consultation_ids = fields.One2many("dw.consultation", 'market_id', string="Consultations")
-    homologation_ids = fields.Many2many("dw.homologation", 'market_id', string="Homologation")
+    homologation_ids = fields.One2many("dw.homologation", 'market_id', string="Homologation")
+    requisition_ids = fields.One2many("purchase.requisition", 'market_id', string="Attribution")
 
     supplier_homologuer_ids = fields.Many2many(
         'res.partner',
-        compute="_compute_supplier_homologuer"
+        compute="_compute_homolgated_supplier"
     )
+    market_line_ids = fields.One2many('dw.market.line', 'market_id', string="Market line")
     cahier_charge_attachment = fields.Binary(string="Specification document")
     cahier_charge_name = fields.Char(string='File name')
-    quantity = fields.Float("Needed Quantity")
     len_supplier_market = fields.Integer("Length Market supplier", store=1, compute="compute_len_supplier_market")
     len_supplier_homologated_market = fields.Integer("Length Market supplier Approved", store=0,
                                                      compute="compute_len_supplier_homologated_market")
+    start_date = fields.Date(string="Start Date", default=fields.Date.today)
+    end_date = fields.Date(string="End Date", default=fields.Date.today)
+
+    @api.constrains('end_date','start_date')
+    def _check_date_start_end(self):
+      for record in self:
+        if record.start_date and record.end_date:
+
+                if record.start_date > record.end_date:
+                    raise ValidationError(
+                        _('start date can\'t be greater that end date'))
+    @api.depends('market_line_ids')
+    def _compute_products_ids(self):
+        for record in self:
+            record.product_ids = record.market_line_ids.mapped('product_id')
 
     def _expand_states(self, states, domain, order):
         return [key for key, dummy in self._fields['state'].selection]
@@ -63,10 +129,10 @@ class DwMarket(models.Model):
     def button_draft(self):
         self.write({"state": "draft"})
 
-    @api.depends('supplier_ids')
+    @api.depends('market_line_ids')
     def compute_len_supplier_market(self):
         for record in self:
-            record.len_supplier_market = len(record.supplier_ids)
+            record.len_supplier_market = len(record.market_line_ids.mapped('supplier_ids'))
 
     @api.depends('supplier_homologuer_ids')
     def compute_len_supplier_homologated_market(self):
@@ -74,13 +140,25 @@ class DwMarket(models.Model):
             record.len_supplier_homologated_market = len(record.supplier_homologuer_ids)
 
     @api.depends('supplier_ids')
-    def _compute_supplier_homologuer(self):
+    def _compute_homolgated_supplier(self):
         for record in self:
-            search = record.homologation_ids.search([('state', '=', 'homologue'), ('market_id', '=', record.id)])
-            supplier_ids = search.mapped('supplier_id')
-            record.supplier_homologuer_ids = supplier_ids
+            record.supplier_homologuer_ids = record.homologation_ids.filtered(
+                lambda homologation: homologation.state == 'homologue').mapped("supplier_id")
 
     def action_load_spec_file(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Market Document',
+            'res_model': 'dw.document.market.wizard',
+            'views': [[self.env.ref('dw_supplier_approval.view_document_market_wizard').id, 'form']],
+            'target': 'new',
+
+            'context': {
+                'default_market_id': self.id
+            }
+        }
+
+    def action_load_cahier_charge(self):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Market Document',
@@ -115,7 +193,7 @@ class DwMarket(models.Model):
         }
 
     def action_done(self):
-        if self.market_type_id and self.market_type_id.forced_nbr_supplier and self.len_supplier_homologated_market < self.market_type_id.nbr_supplier:
+        if self.dw_homologate and self.market_type_id and self.market_type_id.forced_nbr_supplier and self.len_supplier_homologated_market < self.market_type_id.nbr_supplier:
             raise ValidationError(
                 _('The number of the Homologated  supplier must be greater than %(nbr_supplier)s.!',
                   nbr_supplier=self.market_type_id.nbr_supplier)
@@ -168,7 +246,7 @@ class DwMarket(models.Model):
             ],
             'view_mode': 'tree,form',
 
-            'context': {'default_market_id': self.id, "create": False if self.state in ["cancel", "done"] else True},
+            'context': {'default_market_id': self.id, "create": 0},
         })
 
     def action_show_homologations(self):
@@ -182,7 +260,21 @@ class DwMarket(models.Model):
             ],
             'view_mode': 'tree,form',
 
-            'context': {'default_market_id': self.id, "create": False if self.state in ["cancel", "done"] else True},
+            'context': {'default_market_id': self.id, "create": 0},
+        })
+
+    def action_show_Attribution(self):
+        return ({
+            'res_model': 'purchase.requisition',
+            'type': 'ir.actions.act_window',
+            'name': _("%(market_name)s's Attribution", market_name=self.name),
+
+            'domain': [
+                ('market_id', '=', self.id),
+            ],
+            'view_mode': 'tree,form',
+
+            'context': {'default_market_id': self.id, "create": 0},
         })
 
     def action_show_consultations_tco(self):

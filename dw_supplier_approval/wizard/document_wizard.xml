@@ -17,10 +17,57 @@
                                filename="manufacturing_file_name" invisible="state_homologation != 'prospection'"
                                required="state_homologation == 'prospection'"/>
 
+
+
+                    </group>
+                    <group></group>
+                    <footer>
+                        <button
+                                name="action_manufacturing"
+                                string="Confirm"
+                                type="object"
+                                class="btn-primary"
+                                data-hotkey="q"
+                                invisible="state_homologation != 'prospection'"
+                        />
+
+
+
+
+
+                        <button special="cancel" string="Cancel" class="oe_link"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_report_exper_techn_reports_wizard" model="ir.ui.view">
+        <field name="name">Report Expertise Technique Wizard</field>
+        <field name="model">dw.document.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="state_homologation" invisible="1"/>
+                        <field name="homologation_id" invisible="1"/>
                         <field name="rapport_expertise_file_name" invisible="1"/>
+
                         <field name="rapport_expertise_attachment" widget="binary"
-                               invisible="state_homologation != 'analyse'" required="state_homologation == 'analyse'"
-                               filename="rapport_expertise_file_name"/>
+                               filename="rapport_expertise_file_name" invisible="state_homologation != 'analyse'"
+                               required="state_homologation == 'analyse'"/>
+
+                        <field name="rapport_technique_name" invisible="1"/>
+                        <field name="rapport_technique_attachment" widget="binary"
+                               invisible="state_homologation != 'analyse'"
+                               required="state_homologation == 'analyse'"
+                               filename="rapport_technique_name"/>
+
+                        <field name="Pre_eval_quest_name" invisible="1"/>
+                        <field name="Pre_eval_quest_attachment" widget="binary"
+                               invisible="state_homologation != 'prospection'"
+                               required="state_homologation == 'prospection'"
+                               filename="Pre_eval_quest_name"/>
                         <field name="rapport_audit_file_name" invisible="1"/>
                         <field name="rapport_audit_attachment" widget="binary" invisible="state_homologation != 'audit'"
                                required="state_homologation == 'audit'"
@@ -35,21 +82,21 @@
                     <group></group>
                     <footer>
                         <button
-                                name="action_manufacturing"
-                                string="Confirm"
-                                type="object"
-                                class="btn-primary"
-                                data-hotkey="q"
-                                invisible="state_homologation != 'prospection'"
-                        />
-
-                        <button
-                                name="action_expertise"
+                                name="action_exper_techn_report"
                                 string="Confirm"
                                 type="object"
                                 class="btn-primary"
                                 data-hotkey="q"
                                 invisible="state_homologation != 'analyse'"
+                        />
+
+                        <button
+                                name="action_Pre_eval_quest"
+                                string="Confirm"
+                                type="object"
+                                class="btn-primary"
+                                data-hotkey="q"
+                                invisible="state_homologation != 'prospection'"
                         />
                         <button
                                 name="action_audit"
@@ -67,7 +114,6 @@
                                 data-hotkey="q"
                                 invisible="state_homologation != 'lot_validation'"
                         />
-
                         <button special="cancel" string="Cancel" class="oe_link"/>
                     </footer>
                 </sheet>

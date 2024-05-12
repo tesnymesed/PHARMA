@@ -45,7 +45,7 @@
         />
         <menuitem id="menu_supplier_approval_configuration"
                   name="Configuration"
-                  sequence="15"
+                  sequence="20"
                   groups="dw_supplier_approval.group_manager_dw_homologation"
                   parent="dw_supplier_approval.menu_supplier_approval_root"
 
@@ -54,7 +54,7 @@
                   name="Market Type"
                   parent="dw_supplier_approval.menu_supplier_approval_configuration"
                   action="action_market_type"
-                  sequence="15"
+                  sequence="20"
 
 
         />
@@ -87,14 +87,14 @@
                   action="action_dw_homologation"
                   sequence="11"
         />
-
+        <menuitem name="Consultation" id="dw_consultation_menu" parent="menu_supplier_approval_root"
+                  action="dw_consultation_act_window" sequence="15"/>
         <menuitem name="Consultation Criteria" id="dw_consultation_criteria_menu"
                   parent="menu_supplier_approval_configuration"
                   action="dw_consultation_criteria_act_window"
                   sequence="20"
         />
-        <menuitem name="Consultation" id="dw_consultation_menu" parent="menu_supplier_approval_root"
-                  action="dw_consultation_act_window" sequence="15"/>
+
 
     </data>
 </odoo>

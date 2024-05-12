@@ -13,6 +13,10 @@ for i in range(2010, datetime.datetime.today().year + 5):
 
 class MrpPlan(models.Model):
     _name = 'mrp.plan'
+    _sql_constraints = [
+        ('unique_season_date_company', 'unique(season_date, company_id)',
+         'Season Date must be unique within the same company!')
+    ]
 
     name = fields.Char(
         required=True
@@ -112,6 +116,10 @@ class MrpPlan(models.Model):
 
 class MrpPlanLines(models.Model):
     _name = "mrp.plan.lines"
+    _sql_constraints = [
+        ('unique_product_id_plan', 'unique(product_id,plan_id)',
+         'Product must be unique within the same Plan!')
+    ]
 
     product_id = fields.Many2one(
         'product.product',
@@ -139,6 +147,7 @@ class MrpPlanLines(models.Model):
         ondelete='cascade'
     )
     sequence = fields.Integer()
+    safety_stock_target = fields.Integer("Safety Stock Target")
     lot_size = fields.Float(
         compute='_compute_lot_size',
         store=True
@@ -193,6 +202,7 @@ class MrpPlanLines(models.Model):
             else:
                 self.bom_id = False
 
+    @api.model
     def create(self, vals):
         result = super().create(vals)
         for res in result:
@@ -465,7 +475,8 @@ class ProductMrpPlan(models.Model):
             else:  # add product to MPS
                 new_mps = self.env['mrp.production.schedule'].create({
                     'product_id': self.product_id.id,
-                    # 'bom_id': date,
+                    'bom_id': self.product_plan_id.bom_id.id,
+                    'forecast_target_qty': self.product_plan_id.safety_stock_target,
                     # 'production_schedule_id': record.id
                 })
                 if new_mps:
@@ -477,6 +488,11 @@ class ProductMrpPlan(models.Model):
                 else:
                     raise ValidationError("Product Can Not Be Added To MPS Table")
         return result
+
+    def unlink(self):
+        for record in self:
+            record.product_plan_weekly_ids.unlink()
+        return super().unlink()
 
 class ProductMrpPlanWeekly(models.Model):
     _name = 'product.mrp.plan.weekly'
@@ -525,9 +541,3 @@ class ProductMrpPlanWeekly(models.Model):
             'quantity_per_lot': self.product_plan_id.bom_id.product_qty
         }
         return datas
-
-# class MrpProductionSchedule(models.Model):
-#     _inherit = 'mrp.production.schedule'
-#     mrp_plan_id = fields.Many2one(
-#             'mrp.plan'
-#     )

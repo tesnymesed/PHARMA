@@ -38,7 +38,15 @@
             'static/src/xml/monthly_mrp_plan_widget_button.xml',
             'dw_mrp_plan/static/src/components/tab/main_dashboard.js',
             'dw_mrp_plan/static/src/components/tab/main_dashboard.xml',
-
+            'dw_mrp_plan/static/src/js/jquery.min.js',
+            'dw_mrp_plan/static/src/js/bootstrap.bundle.min.js',
+            'dw_mrp_plan/static/src/js/popper.min.js',
+            'dw_mrp_plan/static/src/js/bootstrap.min.js',
+            'dw_mrp_plan/static/src/js/d3-collection.min.js',
+            'dw_mrp_plan/static/src/js/tabulator.min.js',
+            'dw_mrp_plan/static/src/js/select2.min.js',
+            'dw_mrp_plan/static/src/js/bootstrap-datepicker.js',
+            'dw_mrp_plan/static/src/js/multiselect-dropdown.js'
         ],
     },
 

@@ -1,112 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="owl.OwlMainDashboard" owl="1">
-        <div class="container">
-            <div class="row">
-                <div class="card">
-                  <div class="card-body">
-                      <h2>MRP</h2>
-                      <div class="row">
-                          <div class="col-sm-3">
-                                <label for="select-mrp-plan" class="form-label">Select MRP Plan</label>
-                                <select class="form-select" id="select-mrp-plan" data-placeholder="Select Mrp Plan ...">
-                                </select>
-                          </div>
-                      </div>
-                        <!-- Modal for Creating MRP Plan-->
-                    <div class="modal fade" id="createMrpPlanModel" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-scrollable modal-xl">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Create MRP Plan</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body" id="createMrpPlanModalBody">
-                              <div class="row">
-<!--                                  <form class="row g-3 needs-validation" novalidate="novalidate" id="createMrpPlanForm">-->
-                                      <div class="col-sm-3">
-                                          <label for="mrp-plan-name" class="form-label">Plan Name</label>
-                                          <input type="email" class="form-control" id="mrp-plan-name" aria-describedby="inputGroupPrepend2" required="required"/>
+        <head>
+            <link rel="stylesheet" type="text/css" href="dw_mrp_plan/static/src/css/bootstrap.min.css"/>
+            <link rel="stylesheet" type="text/css" href="dw_mrp_plan/static/src/css/tabulator.min.css"/>
+            <link rel="stylesheet" type="text/css" href="dw_mrp_plan/static/src/css/select2.min.css"/>
+            <link rel="stylesheet" type="text/css" href="dw_mrp_plan/static/src/css/docs.css"/>
+            <link rel="stylesheet" type="text/css" href="dw_mrp_plan/static/src/components/tab/main_dashboard.css"/>
+            <link rel="stylesheet" type="text/css" href="dw_mrp_plan/static/src/css/bootstrap-datepicker.css"/>
+        </head>
+        <body>
+            <div class="container-fluid" >
+                <div class="row">
+                    <div class="card">
+                      <div class="card-body">
+                          <h3>Material Requirements Planning</h3>
+                          <br></br>
+                          <div class="row">
+    <!--                          <mpsComp/>-->
+                              <div class="col-sm-6">
+                                  <div class="row">
+                                      <label for="select-mrp-plan" class="col-sm-8 col-form-label flex-grow-1 text-end fw-bold fst-italic fs-6">Select or Create MRP Plan</label>
+                                      <div class="col-sm-4">
+                                        <select class="form-select" id="select-mrp-plan" aria-label="Select MRP Plan">
+                                        </select>
                                       </div>
-                                      <div class="col-sm-3">
-                                          <label for="select-mrp-plan-company" class="form-label">Company</label>
-                                          <select class="form-select" id="select-mrp-plan-company" data-placeholder="Company ...">
-                                          </select>
-                                      </div>
-                                      <div class="col-sm-3">
-                                          <label for="select-mrp-sale-plan" class="form-label">Sale Plan</label>
-                                          <select class="form-select" id="select-mrp-sale-plan" data-placeholder="Select Sale Plan ...">
-                                          </select>
-                                      </div>
-                                      <div class="col-sm-3">
-                                          <label for="select-mrp-season-plan" class="form-label">Season</label>
-                                          <select class="form-select" id="select-mrp-season-plan" data-placeholder="Sale Plan ..." required="required">
-                                          </select>
-                                      </div>
-
-<!--                                  </form>-->
-
+                                  </div>
+                              </div>
+                              <div class="col-sm-6">
+                                    <button type="button" data-toggle="button" id="add-products" class="btn btn-primary">Add Products</button>
                               </div>
                           </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
-                            <button type="button" id="saveMrpPlanButton" class="btn btn-primary">Save</button>
+                            <!-- Modal for Creating MRP Plan-->
+                        <div class="modal fade" id="createMrpPlanModel" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Create MRP Plan</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body" style="height: 400px;"  id="createMrpPlanModalBody">
+                                  <div class="row">
+    <!--                                  <form class="row g-3 needs-validation" novalidate="novalidate" id="createMrpPlanForm">-->
+                                          <div class="col-sm-3">
+                                              <label for="mrp-plan-name" class="form-label">Plan Name</label>
+                                              <input type="text" class="form-control" id="mrp-plan-name" aria-describedby="inputGroupPrepend2" required="required"/>
+                                          </div>
+                                          <div class="col-sm-3">
+                                              <label for="select-mrp-plan-company" class="form-label">Company</label>
+    <!--                                          <input type="tesxt" class="form-control" id="select-mrp-plan-company" aria-describedby="inputGroupPrepend2" disabled="true"/>-->
+                                              <select class="form-select" id="select-mrp-plan-company" data-placeholder="Company ...">
+                                              </select>
+                                          </div>
+                                          <div class="col-sm-3">
+                                              <label for="select-mrp-sale-plan" class="form-label">Sale Plan</label>
+                                              <select class="form-select" id="select-mrp-sale-plan" data-placeholder="Select Sale Plan ...">
+                                              </select>
+                                          </div>
+                                          <div class="col-sm-3">
+                                              <label for="select-mrp-season-plan" class="form-label">Season</label>
+                                              <input class="date-own form-control" style="width: 200px;" type="text" id="select-mrp-season-plan"/>
+                                          </div>
+
+    <!--                                  </form>-->
+
+                                  </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
+                                <button type="button" id="saveMrpPlanButton" class="btn btn-primary">Save</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+    <!--                      End Modal for Creating MRP Plan-->
+                          <!--                      Modal For Weekly Plan-->
+                        <div class="modal fade" id="WeeklyPlaModel" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Weekly MRP Plan</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body" id="WeeklyPlanmodalBody">
+                                <center><h3 id="weeklytableTitle"></h3></center>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+    <!--                      End modal weekly plan-->
+                                <!-- Modal For PDP Validation-->
+                        <div class="modal fade" id="PDPValidationModel" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="ModalTitle"></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body" id="PDPValidationmodalBody">
+                        <!--          Body -->
+                                <center><h3 id="bodyTitle"></h3></center>
+                                <table class="table table-striped">
+                                  <thead id="tableHead">
+                                  </thead>
+                                  <tbody id="tableBody">
+                                  </tbody>
+                                </table>
+
+                                <div id="dynamic-input-form">
+                                    <button id="addRow" class="btn btn-primary mt-3 add-row">Add New Product</button>
+                                    <div id="newRow"></div>
+                                </div>
+
+
+                    <!--          Body End-->
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" id="save" class="btn btn-primary">Validate</button>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-<!--                      End Modal for Creating MRP Plan-->
-                      <!--                      Modal For Weekly Plan-->
-                    <div class="modal fade" id="WeeklyPlaModel" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-scrollable modal-xl">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Weekly MRP Plan</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body" id="WeeklyPlanmodalBody">
-                            <center><h3 id="weeklytableTitle"></h3></center>
-                          </div>
+                </div>
+                <div class="row">
+                    <div class="card">
+                        <div class="card-body">
+                          <div id="tab" class="table table-hover"></div>
                         </div>
-                      </div>
                     </div>
-<!--                      End modal weekly plan-->
-                            <!-- Modal For PDP Validation-->
-                    <div class="modal fade" id="PDPValidationModel" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-scrollable modal-xl">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Product MRP Plan Validation</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body" id="PDPValidationmodalBody">
-                    <!--          Body -->
-                            <center><h3 id="tableTitle"></h3></center>
-                            <table class="table table-striped">
-                              <thead id="tableHead">
-                              </thead>
-                              <tbody id="tableBody">
-                              </tbody>
-                            </table>
-                <!--          Body End-->
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" id="save" class="btn btn-primary">Validate</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="card">
-                    <div class="card-body">
-                      <div id="tab" class="table table-hover"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </body>
     </t>
 </templates>

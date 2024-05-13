@@ -1,7 +1,9 @@
 # -*- coding:utf-8 -*-
 
 from odoo import fields, models, api, _
-import datetime
+from datetime import date
+from dateutil.relativedelta import relativedelta
+
 
 class DwProductTemplate(models.Model):
     _inherit = 'product.template'
@@ -33,9 +35,9 @@ class DwProduct(models.Model):
     )
     number_fournisseur = fields.Integer('Number of fournisseur', compute="_compute_number_fournisseur", store=1)
     homologation_ids = fields.One2many("dw.homologation", 'product_id', string="Homologation")
-    has_backliested_supplier = fields.Boolean('Blacklisted',compute="_compute_has_blacklisted",store=True)
-    expired_homologation = fields.Boolean('Expired homologation',compute="_compute_expired_homologation",store=True)
-    expired_contract = fields.Boolean('Expired contract',compute="_compute_expired_contract",store=True)
+    has_backliested_supplier = fields.Boolean('Blacklisted', compute="_compute_has_blacklisted", store=True)
+    expired_homologation = fields.Boolean('Expired homologation', compute="_compute_expired_homologation", store=True)
+    expired_contract = fields.Boolean('Expired contract', compute="_compute_expired_contract", store=True)
 
     def action_show_homologations(self):
         return ({
@@ -50,27 +52,39 @@ class DwProduct(models.Model):
 
             'context': {"create": 0},
         })
+
+    def diff_month(self, d1, d2):
+        return (d1.year - d2.year) * 12 + d1.month - d2.month
+
     def _compute_expired_contract(self):
-        month_18 = datetime.timedelta(days=18*30)
-        for record in self :
-             record.expired_contract = True if any(seller.purchase_requisition_id.date_end and
-                    seller.purchase_requisition_id.date_end - fields.Datetime.now() <= month_18 for seller in
-                    record.seller_ids) else False
+        today = date.today()
+
+        for record in self:
+            record.expired_contract = True if any(
+                seller.purchase_requisition_id and seller.purchase_requisition_id.date_end and
+                self.diff_month(seller.purchase_requisition_id.date_end, today) <= 18 for seller in
+                record.seller_ids) else False
 
     def _compute_expired_homologation(self):
-        month_18 = datetime.timedelta(days=18*30)
-        for record in self :
+        # Get today's date
+        today = date.today()
+        month_18 = today + relativedelta(months=18)
+
+        for record in self:
             record.expired_homologation = True if any(homologation.end_date and homologation.state == 'homologue' and
-                homologation.end_date-fields.Datetime.now() <= month_18    for homologation in record.homologation_ids) else False
+                                                      self.diff_month(homologation.end_date, today) <= 18 for
+                                                      homologation in record.homologation_ids) else False
+
     def _compute_has_blacklisted(self):
-        for record in self :
-           blacklist1 = True if any(
-                homologation.supplier_id.is_blacklisted == True and  homologation.state == 'homologue' for homologation in record.homologation_ids) else False
-           blacklist2 = True if any(
-               seller.partner_id.is_blacklisted == True for seller in
-               record.seller_ids) else False
-           if blacklist1 or blacklist2 :
-               record.has_backliested_supplier = True
+        for record in self:
+            blacklist1 = True if any(
+                homologation.supplier_id.is_blacklisted == True and homologation.state == 'homologue' for homologation
+                in record.homologation_ids) else False
+            blacklist2 = True if any(
+                seller.partner_id.is_blacklisted == True for seller in
+                record.seller_ids) else False
+            if blacklist1 or blacklist2:
+                record.has_backliested_supplier = True
 
     # @api.depends('homologation_ids')
     def _compute_number_fournisseur(self):

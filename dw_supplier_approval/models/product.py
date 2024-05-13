@@ -67,7 +67,7 @@ class DwProduct(models.Model):
            blacklist1 = True if any(
                 homologation.supplier_id.is_blacklisted == True and  homologation.state == 'homologue' for homologation in record.homologation_ids) else False
            blacklist2 = True if any(
-               seller.supplier_id.is_blacklisted == True for seller in
+               seller.partner_id.is_blacklisted == True for seller in
                record.seller_ids) else False
            if blacklist1 or blacklist2 :
                record.has_backliested_supplier = True

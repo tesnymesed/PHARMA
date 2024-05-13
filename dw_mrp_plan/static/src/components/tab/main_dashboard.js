@@ -31,6 +31,9 @@ export class OwlMainDashboard extends Component {
             monthly_tab.on("tableBuilt", function() {
                 monthly_tab.redraw();
             });
+            $('.select2').select2({
+                closeOnSelect: false
+            });
             //MRP Plan Select
             this.state.mrp_plan_list = await this.getMrpPlanList()
             var mrp_names_list = [...new Set(this.state.mrp_plan_list.map(item => [item.name, item.season_date, item.id]))]
@@ -41,39 +44,15 @@ export class OwlMainDashboard extends Component {
             }.bind(this));
             const create_option = this.addSelectOption('Create MRP Plan...', 'createMrpPlan')
             selectMrpPlan.appendChild(create_option);
+
+            $('#create-plan').click(function() {
+                this.btnCreateMrpPla()
+            }.bind(this));
+
             $('#select-mrp-plan').change(function() {
                 var selectedValues = $('#select-mrp-plan').val();
-                console.log("Selected Value MRP Plan==>",selectedValues)
                 if(selectedValues == 'createMrpPlan'){
-                    var company_data = this.getCompanyData()
-                    company_data.then((result) => {
-                        console.log("Company Data: ",result)
-                        var selectCompanyMrpPlan= document.getElementById('select-mrp-plan-company');
-                        selectCompanyMrpPlan.innerHTML = "";
-                        result.forEach(function(optionValue) {
-                            console.log("Options",optionValue)
-                          var option = this.addSelectOption(optionValue['name'] , optionValue['id'])
-                          selectCompanyMrpPlan.appendChild(option);
-                        }.bind(this));
-                        var company_id = $('#select-mrp-plan-company').val();
-                        var sale_plan_data = this.getSalePlanData(company_id)
-                        sale_plan_data.then((result) => {
-                             var select_sale_plan = document.getElementById("select-mrp-sale-plan");
-                             select_sale_plan.innerHTML = "";
-                             result.forEach(function(optionValue) {
-                                 var option = this.addSelectOption(optionValue['name'] , optionValue['id'])
-                                 select_sale_plan.appendChild(option);
-                                 }.bind(this));
-                                 var df_option = this.addSelectOption("Empty", "")
-                                select_sale_plan.appendChild(df_option);
-                            }).catch((error) => {
-                                console.error(error); // Handle any errors
-                        });
-                    }).catch((error) => {
-                        console.error(error); // Handle any errors
-                    });
-                    $('#select-mrp-plan').val('Select Option ...')
-                    $('#createMrpPlanModel').modal('show');
+                   this.btnCreateMrpPla()
 
                 }else{
                     var res = this.get_mrp_plan_product_data('',selectedValues)
@@ -148,10 +127,8 @@ export class OwlMainDashboard extends Component {
                 }.bind(this));
 
             document.getElementById("add-products").addEventListener("click", function () {
-                console.log("=== Inside Add Products ===")
                 var mrp_plan_id = $('#select-mrp-plan').val();
                 var row_id = 1
-                console.log("Mrp Plan ID",mrp_plan_id)
                 var products =  this.orm.searchRead("product.product",[['product_tmpl_id.categ_id.is_final_product', '=', true],['product_tmpl_id.bom_ids', '!=', false]],['id','display_name'])
                         products.then((products_list) => {
                             $('#ModalTitle').html('Add Products To MRP Plan');
@@ -215,7 +192,7 @@ export class OwlMainDashboard extends Component {
                                 }, 2000);
 
                                 }).catch((error) => {
-                                     var mrp_plan_lines_notif = this.notificationService.add("Err, Please contact your system administrator", {
+                                     var mrp_plan_lines_notif = this.notificationService.add("Err, Product must be unique within the same Plan, Please contact your system administrator", {
                                       title: "Add Product To MRP Plan",
                                       type: "danger"
                                 });
@@ -235,7 +212,6 @@ export class OwlMainDashboard extends Component {
                 $('#tableBody').html('');
                 $('#tableHead').html('');
                 if (column.getField() !== "Product"){
-                    console.log("=== DBClick ==>",column.getField())
                     var date = new Date(column.getField())
                     var prod = []
                     var start_date = this.formatDate(column.getField(),-1)
@@ -304,6 +280,7 @@ export class OwlMainDashboard extends Component {
                             title: key,
                             field: key,
                             headerFilter:true,
+                            formatterParams:{'type':'monthly'},
                             formatter: this.actionButtonFormatter.bind(this),
                             headerFilterPlaceholder: "Find a Product...",
                              widthGrow:2
@@ -323,7 +300,8 @@ export class OwlMainDashboard extends Component {
                             title: key,
                             field: key,
                             headerFilter:true,
-                            formatter: this.weeklyActionButtonFormatter.bind(this),
+                            formatterParams:{'type':'weekly'},
+                            formatter: this.actionButtonFormatter.bind(this),
                             headerFilterPlaceholder: "Find a Product..."
                         }
                     }else{
@@ -364,7 +342,11 @@ export class OwlMainDashboard extends Component {
         button.addEventListener('click', function(e) {
             e.stopPropagation(); // Prevent cell click event from triggering
             var cellValue = cell.getValue();
-            var proxy_details = this.state.mrp_plan_product_data.filter(obj => obj['product'] === cellValue)
+            if(formatterParams['type'] === 'monthly'){
+                var proxy_details = this.state.mrp_plan_product_data.filter(obj => obj['product'] === cellValue)
+            }else{
+                 var proxy_details = this.state.weekly_mrp_plan_product_data.filter(obj => obj['product'] === cellValue)
+            }
             $('#tableBody').html('');
             $('#tableHead').html('');
             this.addTableHead()
@@ -377,7 +359,12 @@ export class OwlMainDashboard extends Component {
                                 , newObj['quantity'], newObj['sale_capacity'], newObj['sale_planned_quantity'], newObj['pdp_validation'])
                 return newObj;
             });
-            $('#bodyTitle').text(list_details[0]['product'])
+            if(formatterParams['type'] === 'monthly'){
+                $('#bodyTitle').text(list_details[0]['product'])
+            }else{
+                 $('#bodyTitle').text(list_details[0]['product'] + "/ Weekly Plan For: "+this.formatDate(list_details[0]['date']))
+            }
+
             $('#ModalTitle').text("Product MRP Plan Validation")
             this.hideElement("dynamic-input-form")
             $('#PDPValidationModel').modal('show');
@@ -402,79 +389,10 @@ export class OwlMainDashboard extends Component {
                               type: "success"
                             });
                             setTimeout(close, 2000);
-                    this.validateDates(checkedValues,'monthly')
+                    this.validateDates(checkedValues,formatterParams['type'])
                      $('#PDPValidationModel').modal('hide');
                 }.bind(this));
 
-            }.bind(this));
-        // Append the value and button containers to the split cell container
-        container.appendChild(valueContainer);
-        buttonContainer.appendChild(button);
-        container.appendChild(buttonContainer);
-        return container;
-    }
-
-    weeklyActionButtonFormatter(cell, formatterParams, onRendered) {
-        // Create the split cell container
-        var container = document.createElement('div');
-        container.classList.add('split-cell');
-        // Create the cell value container
-        var valueContainer = document.createElement('div');
-        valueContainer.classList.add('cell-value');
-        valueContainer.textContent = cell.getValue();
-        // Create the button container
-        var buttonContainer = document.createElement('div');
-        buttonContainer.classList.add('button-container');
-        // Create the button element
-        var button = document.createElement('button');
-        button.id = 'detailsButton';
-        var img = document.createElement("img");
-        img.src = "dw_mrp_plan/static/src/components/tab/list.svg";
-        img.alt = "Icon";
-        button.appendChild(img);
-        button.addEventListener('click', function(e) {
-            e.stopPropagation(); // Prevent cell click event from triggering
-            var cellValue = cell.getValue();
-            var proxy_details = this.state.weekly_mrp_plan_product_data.filter(obj => obj['product'] === cellValue)
-            $('#tableBody').html('');
-            $('#tableHead').html('');
-            this.addTableHead()
-            const list_details = proxy_details.map(proxyObject => {
-                const newObj = {};
-                for (let key of Object.keys(proxyObject)) {
-                    newObj[key] = proxyObject[key];
-                }
-                console.log("Data Weekly:",newObj)
-                this.addTableRow(newObj['id'],newObj['date'], newObj['expected_final_quantity'], newObj['expected_start_quantity'], newObj['lot_size']
-                                , newObj['quantity'], newObj['sale_capacity'], newObj['sale_planned_quantity'], newObj['pdp_validation'])
-                return newObj;
-            });
-            $('#bodyTitle').text(list_details[0]['product'] + "/ Weekly Plan For: "+this.formatDate(list_details[0]['date']))
-            $('#ModalTitle').text("Product MRP Plan Validation")
-            this.hideElement("dynamic-input-form")
-            $('#PDPValidationModel').modal('show');
-            document.getElementById("checkAll").addEventListener("change", function () {
-                var checkboxes = document.querySelectorAll(".checkBox");
-                checkboxes.forEach(function (checkbox) {
-                    if (!checkbox.disabled){
-                        checkbox.checked = this.checked;
-                    }
-                }.bind(this));
-            });
-            $('#save').off('click').on('click', function() {
-                    var checkboxes = document.querySelectorAll(".checkBox");
-                    var checkedValues = [];
-                    checkboxes.forEach(function(checkbox) {
-                            if (checkbox.checked && !checkbox.disabled) {
-                                checkedValues.push(checkbox.value);
-                            }
-                        }.bind(this));
-                    this.validateDates(checkedValues,'weekly')
-                    this.notificationService.add("All Selected Records Has Been Updated Successfully", {
-                      title: "Success",
-                      type: "success"
-                    });
-                }.bind(this));
             }.bind(this));
         // Append the value and button containers to the split cell container
         container.appendChild(valueContainer);
@@ -495,8 +413,6 @@ export class OwlMainDashboard extends Component {
     }
 
     validateDates(ids_list,type){
-        console.log('===== Inside Validate:',type)
-        console.log(ids_list)
         ids_list.forEach((id,step) => {
             (function(recordId,step) {
                 setTimeout(function() {
@@ -507,8 +423,6 @@ export class OwlMainDashboard extends Component {
                             });
                         this.state.mrp_plan_product_data = this.updateObjectById(this.state.mrp_plan_product_data , parseInt(id), 'pdp_validation', true)
                     }else{
-                        console.log("Im Here ===>>>>")
-
                         this.orm.write('product.mrp.plan.weekly', [parseInt(id)], {
                             ['pdp_validation']: true
                             });
@@ -532,7 +446,7 @@ export class OwlMainDashboard extends Component {
         newRow.append('<td>' + expected_final_quantit + '</td>');
         newRow.append('<td>' + expected_start_quantity + '</td>');
         newRow.append('<td>' + lot_size + '</td>');
-        newRow.append('<td> <span class="badge bg-primary"> ' + quantity + '</span> </td>');
+        newRow.append('<td> <span class="badge rounded-pill bg-primary" style="font-size: 16px;"> ' + quantity + '</span> </td>');
         newRow.append('<td>' + sale_capacity + '</td>');
         newRow.append('<td>' + sale_planned_quantity + '</td>');
         $('#tableBody').append(newRow);
@@ -622,10 +536,9 @@ export class OwlMainDashboard extends Component {
                             height: "auto",
                             layout:"fitColumns",
                             data:data,
-//                            placeholder:"No Data, Please Add Products to MRP Plan",
                             pagination:"local",
                             paginationSize:6,
-                            paginationSizeSelector:[3, 5, 8, 12],
+                            paginationSizeSelector:[3, 5, 8, 12,20,30],
                             movableColumns:true,
                             paginationCounter:"rows",
                             columns: columns,
@@ -809,7 +722,35 @@ export class OwlMainDashboard extends Component {
         }
     }
 
+    btnCreateMrpPla(){
+        var company_data = this.getCompanyData()
+        company_data.then((result) => {
+            var selectCompanyMrpPlan= document.getElementById('select-mrp-plan-company');
+            selectCompanyMrpPlan.innerHTML = "";
+            result.forEach(function(optionValue) {
+              var option = this.addSelectOption(optionValue['name'] , optionValue['id'])
+              selectCompanyMrpPlan.appendChild(option);
+            }.bind(this));
+            var company_id = $('#select-mrp-plan-company').val();
+            var sale_plan_data = this.getSalePlanData(company_id)
+            sale_plan_data.then((result) => {
+                 var select_sale_plan = document.getElementById("select-mrp-sale-plan");
+                 select_sale_plan.innerHTML = "";
+                 result.forEach(function(optionValue) {
+                     var option = this.addSelectOption(optionValue['name'] , optionValue['id'])
+                     select_sale_plan.appendChild(option);
+                     }.bind(this));
+                     var df_option = this.addSelectOption("Empty", "")
+                    select_sale_plan.appendChild(df_option);
+                }).catch((error) => {
+                    console.error(error); // Handle any errors
+            });
+        }).catch((error) => {
+            console.error(error); // Handle any errors
+        });
+        $('#select-mrp-plan').val('Select Option ...')
+        $('#createMrpPlanModel').modal('show');
+    }
 }
-//OwlMainDashboard.components = { mpsComp }
 OwlMainDashboard.template = "owl.OwlMainDashboard"
 registry.category("actions").add("owl.main_dashboard", OwlMainDashboard)

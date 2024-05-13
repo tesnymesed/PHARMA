@@ -45,8 +45,7 @@
             'dw_mrp_plan/static/src/js/d3-collection.min.js',
             'dw_mrp_plan/static/src/js/tabulator.min.js',
             'dw_mrp_plan/static/src/js/select2.min.js',
-            'dw_mrp_plan/static/src/js/bootstrap-datepicker.js',
-            'dw_mrp_plan/static/src/js/multiselect-dropdown.js'
+            'dw_mrp_plan/static/src/js/bootstrap-datepicker.js'
         ],
     },
 

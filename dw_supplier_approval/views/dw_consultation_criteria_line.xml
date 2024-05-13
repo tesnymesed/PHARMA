@@ -10,6 +10,7 @@
                 <tree string="Consultation Criteria"  expand="1">
                     <field name="criteria_id"/>
                     <field name="supplier_id"/>
+                    <field name="dw_supplier_nature"/>
                     <field name="product_id"/>
                     <field name="amount"/>
                     <field name="percentage"/>

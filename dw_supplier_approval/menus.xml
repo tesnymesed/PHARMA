@@ -14,8 +14,20 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">product.product</field>
             <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="dw_supplier_approval.product_template_search_view_inherit"/>
+
             <field name="domain">['|', '|',('homologue', '=', True), ('categ_id.homologue', '=', True),
-                ('product_tmpl_id.homologue', '=', True), ('purchase_ok', '=', True), ('number_fournisseur', '&lt;',2)]
+                ('product_tmpl_id.homologue', '=', True),('purchase_ok', '=',
+                True),'|','|','|',('number_fournisseur', '&lt;',2),('has_backliested_supplier','=',True),('expired_homologation','=',True),('expired_contract','=',True)]
+            </field>
+        </record>
+        <record id="action_view_article_homologue" model="ir.actions.act_window">
+            <field name="name">Article</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">['|', '|',('homologue', '=',True), ('categ_id.homologue', '=', True),
+                ('product_tmpl_id.homologue', '=', True), ('purchase_ok', '=', True)]
             </field>
         </record>
         <record id="action_market_type" model="ir.actions.act_window">
@@ -68,6 +80,12 @@
                   parent="menu_market_root"
                   action="action_identification_besoin"
                   sequence="11"
+        />
+        <menuitem id="menu_article_homologation"
+                  name="Article"
+                  parent="dw_supplier_approval.menu_supplier_approval_configuration"
+                  action="action_view_article_homologue"
+                  sequence="21"
         />
         <menuitem id="menu_market"
                   name="Market"

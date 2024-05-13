@@ -46,7 +46,10 @@ class DwConsultationCriteria(models.Model):
         default="draft", )
     start_date = fields.Date(string="Start Date", default=fields.Date.today)
     end_date = fields.Date(string="End Date", default=fields.Date.today)
-
+    dw_supplier_nature = fields.Selection(
+        [('fabricant', 'Fabricant'), ('regroupeur', 'Regroupeur')],
+        string="Supplier nature", related="supplier_id.dw_supplier_nature", readonly=False, store=True,
+    )
     @api.constrains('end_date', 'start_date')
     def _check_date_start_end(self):
        for record in self :

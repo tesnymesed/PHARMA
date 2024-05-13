@@ -234,26 +234,29 @@ export class OwlMainDashboard extends Component {
             monthly_tab.on("headerDblClick", function(e, column){
                 $('#tableBody').html('');
                 $('#tableHead').html('');
-                var date = new Date(column.getField())
-                var prod = []
-                var start_date = this.formatDate(column.getField(),-1)
-                var end_date = this.getLastDayOfMonth(start_date)
-                monthly_tab.getData().forEach(function(row) {
-                    prod.push(row['Product']);
-                });
-                var prod_ids = this.getValueBasedOnKey(prod,this.state.mrp_plan_product_data, 'product', 'productID')
-                var weekly_data =  this.getWeeklyPlan(prod_ids, start_date, end_date)// check end date return wrong day (29 intead of 31 for dec)
-                weekly_data.then((result) => {
-                    var [main_weekly_data,tab_data] = this.data_nest(result,'weekly')
-                    this.state.weekly_mrp_plan_product_data = main_weekly_data
-                    let modal = document.getElementById("WeeklyPlaModel");
-                    this.addTabtToModal();
-                    var weekly_columns = this.getTabCols(tab_data,'weekly')
-                    weekly_tab = this.setupTabulator(tab_data,weekly_columns,"#WeeklyTab");
-                }).catch((error) => {
-                    console.error(error); // Handle any errors
-                });
-                $('#WeeklyPlaModel').modal('show');
+                if (column.getField() !== "Product"){
+                    console.log("=== DBClick ==>",column.getField())
+                    var date = new Date(column.getField())
+                    var prod = []
+                    var start_date = this.formatDate(column.getField(),-1)
+                    var end_date = this.getLastDayOfMonth(start_date)
+                    monthly_tab.getData().forEach(function(row) {
+                        prod.push(row['Product']);
+                    });
+                    var prod_ids = this.getValueBasedOnKey(prod,this.state.mrp_plan_product_data, 'product', 'productID')
+                    var weekly_data =  this.getWeeklyPlan(prod_ids, start_date, end_date)// check end date return wrong day (29 intead of 31 for dec)
+                    weekly_data.then((result) => {
+                        var [main_weekly_data,tab_data] = this.data_nest(result,'weekly')
+                        this.state.weekly_mrp_plan_product_data = main_weekly_data
+                        let modal = document.getElementById("WeeklyPlaModel");
+                        this.addTabtToModal();
+                        var weekly_columns = this.getTabCols(tab_data,'weekly')
+                        weekly_tab = this.setupTabulator(tab_data,weekly_columns,"#WeeklyTab");
+                    }).catch((error) => {
+                        console.error(error); // Handle any errors
+                    });
+                    $('#WeeklyPlaModel').modal('show');
+                }
             }.bind(this));
         })
     }

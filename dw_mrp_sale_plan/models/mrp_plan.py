@@ -83,11 +83,12 @@ class DwProductMrpPlan(models.Model):
             if record.quantity == 0 and not record.no_manufacturing:
                 if record.sale_planned_quantity < record.lot_size:
                     record.quantity = record.lot_size
-                elif record.sale_planned_quantity % record.lot_size == 0:
-                    record.quantity = record.sale_planned_quantity
-                else:
-                    rate = math.ceil(record.sale_planned_quantity / record.lot_size)
-                    record.quantity = rate * record.lot_size
+                elif record.sale_planned_quantity != 0:
+                    if record.sale_planned_quantity % record.lot_size == 0:
+                        record.quantity = record.sale_planned_quantity
+                    else:
+                        rate = math.ceil(record.sale_planned_quantity / record.lot_size)
+                        record.quantity = rate * record.lot_size
 
     @api.depends('quantity')
     def _compute_expected_final_quantities(self):

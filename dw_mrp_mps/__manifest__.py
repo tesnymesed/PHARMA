@@ -12,6 +12,7 @@
     'website': 'www.digiwaves.io',
     'depends': ['mrp_mps'],
     'data': [
+        'views/product_template_views.xml',
         'views/res_config_settings_views.xml',
     ],
 

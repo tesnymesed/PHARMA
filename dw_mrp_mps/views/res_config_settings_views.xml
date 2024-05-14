@@ -15,14 +15,21 @@
                     </div>
                 </setting>
             </xpath>
+
             <xpath expr="//setting[@id='security_lead_time']" position="after">
                 <setting id="dw_product_lead_time" string="Product Lead Time" company_dependent="1"
                          help="Take into account products lead time to schedule Purchase orders."
                          invisible="not use_manufacturing_lead">
                     <field name="dw_use_product_lead"/>
+                    <div id="dw_product_lead_settings" class="content-group" invisible="not dw_use_product_lead">
+                        <div class="mt8">
+                            <button name="%(dw_mrp_mps.dw_product_lead_time_action)d" icon="oi-arrow-right"
+                                    type="action" string="Product Purchase Lead Times" class="btn-link"/>
+                        </div>
+                    </div>
                 </setting>
             </xpath>
+
         </field>
     </record>
-
 </odoo>

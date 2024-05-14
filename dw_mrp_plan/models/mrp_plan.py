@@ -13,6 +13,10 @@ for i in range(2010, datetime.datetime.today().year + 5):
 
 class MrpPlan(models.Model):
     _name = 'mrp.plan'
+    _sql_constraints = [
+        ('unique_season_date_company', 'unique(season_date, company_id)',
+         'Season Date must be unique within the same company!')
+    ]
 
     name = fields.Char(
         required=True
@@ -112,6 +116,10 @@ class MrpPlan(models.Model):
 
 class MrpPlanLines(models.Model):
     _name = "mrp.plan.lines"
+    _sql_constraints = [
+        ('unique_product_id_plan', 'unique(product_id,plan_id)',
+         'Product must be unique within the same Plan!')
+    ]
 
     product_id = fields.Many2one(
         'product.product',
@@ -139,6 +147,7 @@ class MrpPlanLines(models.Model):
         ondelete='cascade'
     )
     sequence = fields.Integer()
+    safety_stock_target = fields.Integer("Safety Stock Target")
     lot_size = fields.Float(
         compute='_compute_lot_size',
         store=True
@@ -193,6 +202,7 @@ class MrpPlanLines(models.Model):
             else:
                 self.bom_id = False
 
+    @api.model
     def create(self, vals):
         result = super().create(vals)
         for res in result:
@@ -292,6 +302,9 @@ class ProductMrpPlan(models.Model):
         compute="_compute_roadmap_done"
     )
     company_id = fields.Many2one('res.company', related="product_plan_id.company_id", store=1)
+    pdp_validation = fields.Boolean(
+        default=False
+    )
 
     @api.depends('roadmap_id')
     def _compute_roadmap_done(self):
@@ -396,7 +409,7 @@ class ProductMrpPlan(models.Model):
         return dates
     def generate_week_dates(self,date):
         first_day_of_month = date
-        days_to_first_sunday = (first_day_of_month.weekday() + 1)
+        days_to_first_sunday = (first_day_of_month.weekday() + 2)
         days_to_next_sunday = (7 - days_to_first_sunday) % 7
         first_week_start_date = first_day_of_month - datetime.timedelta(days=days_to_next_sunday)
         week_dates = [first_week_start_date + datetime.timedelta(weeks=week) for week in range(5)
@@ -430,6 +443,56 @@ class ProductMrpPlan(models.Model):
             record.qty_available = record.product_plan_id.product_id.product_tmpl_id.qty_available
             record.free_qty = record.product_plan_id.product_id.free_qty
             record.virtual_available = record.product_plan_id.product_id.product_tmpl_id.virtual_available
+
+    def update_last_day_of_month(self,date):
+        """
+        Update date from first day to last day of the month to match PDP date format
+        """
+        num_days = (datetime.datetime(date.year, date.month, 1) + timedelta(days=32)).replace(day=1) - timedelta(days=1)
+        return num_days.strftime('%Y-%m-%d')
+
+    def write(self, vals):
+        result = super(ProductMrpPlan, self).write(vals)
+        # Validate QTY in PDP
+        if 'pdp_validation' in vals:
+            if self._name == 'product.mrp.plan':
+                date = self.update_last_day_of_month(self.date)
+            else:
+                date = self.date
+            mps = self.env['mrp.production.schedule'].search([('product_id.id', '=', self.product_id.id)])
+            if mps:  # product exist in MPS tab
+                mpf = self.env['mrp.product.forecast'].search(
+                    [('date', '=', date), ('production_schedule_id.product_id.id', '=', self.product_id.id)])
+                if mpf:
+                    mpf.forecast_qty = self.quantity
+                else:
+                    # for record in mps:
+                    self.env['mrp.product.forecast'].create({
+                        'forecast_qty': self.quantity,
+                        'date': date,
+                        'production_schedule_id': mps.id
+                    })
+            else:  # add product to MPS
+                new_mps = self.env['mrp.production.schedule'].create({
+                    'product_id': self.product_id.id,
+                    'bom_id': self.product_plan_id.bom_id.id,
+                    'forecast_target_qty': self.product_plan_id.safety_stock_target,
+                    # 'production_schedule_id': record.id
+                })
+                if new_mps:
+                    self.env['mrp.product.forecast'].create({
+                        'forecast_qty': self.quantity,
+                        'date': date,
+                        'production_schedule_id': new_mps.id
+                    })
+                else:
+                    raise ValidationError("Product Can Not Be Added To MPS Table")
+        return result
+
+    def unlink(self):
+        for record in self:
+            record.product_plan_weekly_ids.unlink()
+        return super().unlink()
 
 class ProductMrpPlanWeekly(models.Model):
     _name = 'product.mrp.plan.weekly'

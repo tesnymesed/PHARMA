@@ -54,6 +54,7 @@
                                 <field name="sequence" widget="handle"/>
                                 <field name="product_id" required="1"/>
                                 <field name="bom_id" required="1"/>
+                                <field name="safety_stock_target"/>
                                 <field name="quantity" readonly="1" force_save="1"/>
                                 <field name="uom_id" optional="hide"/>
                                 <button name="action_view_quantity_by_month" type="object" class="oe_stat_button"
@@ -84,6 +85,7 @@
                 <field name="mip_quantity" optional="hide" readonly="roadmap_id != False or mrp_state == 'done'"/>
 
                 <field name="lot_size" optional="show"/>
+                <field name="pdp_validation" optional="show"/>
                 <field name="quantity" readonly="roadmap_id != False or mrp_state == 'done'"/>
                 <field name="expected_final_quantity"/>
                 <field name="quantity_estimation" optional="hide"/>

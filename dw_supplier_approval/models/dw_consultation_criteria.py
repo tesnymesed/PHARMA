@@ -39,6 +39,7 @@ class DwConsultationCriteriaLine(models.Model):
     criteria_id = fields.Many2one('dw.consultation.criteria', string='Criteria', domain="[('active','=',True)]")
     name = fields.Char(store=1, related="criteria_id.name")
     supplier_id = fields.Many2one(store=1, related="consultation_id.supplier_id")
+    dw_supplier_nature = fields.Selection(store=1, related="consultation_id.dw_supplier_nature")
     product_id = fields.Many2one(store=1, related="consultation_id.product_id")
     criteria_type = fields.Selection(store=1, related="criteria_id.criteria_type")
     amount = fields.Float("Amount")

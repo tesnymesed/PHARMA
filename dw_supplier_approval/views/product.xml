@@ -1,7 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <!--add homologue in product template -->
+        <!--        search view de produit -->
+        <record id="product_template_search_view_inherit" model="ir.ui.view">
+            <field name="name">product.product.search.inherit</field>
+            <field name="model">product.product</field>
+            <field name="mode">primary</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='categ_id']" position="after">
+                    <field name="has_backliested_supplier"/>
+                    <field name="expired_homologation"/>
+                    <field name="expired_contract"/>
+                </xpath>
+                <xpath expr="//filter[@name='favorites']" position="after">
+                     <separator/>
+                    <filter string="Has blacklisted supplier" name="has_backlist" domain="['|', '|',('homologue', '=', True), ('categ_id.homologue', '=', True),
+                ('product_tmpl_id.homologue', '=', True),('has_backliested_supplier','=',True),('purchase_ok', '=', True)]"/>
+                    <filter string="Expirated homologation" name="expired_homologation" domain="['|', '|',('homologue', '=', True), ('categ_id.homologue', '=', True),
+                ('product_tmpl_id.homologue', '=', True),('expired_homologation','=',True),('purchase_ok', '=', True)]"/>
+                            <filter string="Expirated contract" name="expired_contract" domain="['|', '|',('homologue', '=', True), ('categ_id.homologue', '=', True),
+                ('product_tmpl_id.homologue', '=', True),('expired_contract','=',True),('purchase_ok', '=', True)]"/>
+                </xpath>
+
+            </field>
+        </record>
+        add homologue in product template
+
         <record id="view_product_template_inherited" model="ir.ui.view">
             <field name="name">product.template.inherited</field>
             <field name="model">product.template</field>
@@ -28,16 +53,15 @@
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='categ_id']" position="after">
-                    <field name="number_fournisseur" invisible="1"/>
+                    <field name="number_fournisseur" />
                     <field name="homologue" invisible="not purchase_ok"/>
-
-
+                    <field name="has_backliested_supplier" invisible="1"/>
+                    <field name="expired_homologation" invisible="1"/>
+                    <field name="expired_contract" invisible="1"/>
                 </xpath>
                 <div name="button_box" position="inside">
-
                     <button class="oe_stat_button" type="object" name="action_show_homologations" icon="fa-list-alt">
                         <div class="o_stat_info">
-
                             <span class="o_stat_text">Homologation</span>
                         </div>
                     </button>
@@ -53,6 +77,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='first']" position="inside">
                     <field name="homologue"/>
+
                 </xpath>
             </field>
         </record>

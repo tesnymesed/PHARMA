@@ -4,12 +4,6 @@ from odoo import fields, api, models, _
 from odoo.exceptions import ValidationError
 from datetime import date, timedelta
 
-cnt = 10
-list1 = []
-for i in range(2010, datetime.datetime.today().year + 5):
-    list1.append((str(cnt), str(i)))
-    cnt = cnt + 1
-
 
 class MrpPlan(models.Model):
     _name = 'mrp.plan'
@@ -21,8 +15,7 @@ class MrpPlan(models.Model):
     name = fields.Char(
         required=True
     )
-    season_date = fields.Selection(
-        selection=list1,
+    season_date = fields.Char(
         required=True
     )
     state = fields.Selection([
@@ -41,7 +34,7 @@ class MrpPlan(models.Model):
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
 
     def get_the_year(self):
-        return dict(self._fields['season_date'].selection).get(self.season_date)
+        return self.season_date
 
     def action_product_mrp_plan(self):
         self.ensure_one()

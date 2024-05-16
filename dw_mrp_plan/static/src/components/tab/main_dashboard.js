@@ -1,6 +1,5 @@
 /** @odoo-module */
 import { registry } from "@web/core/registry"
-import { loadJS, loadCSS } from "@web/core/assets"
 import { useService } from "@web/core/utils/hooks"
 const { Component, onWillStart, onMounted, useRef, useState } = owl
 export class OwlMainDashboard extends Component {

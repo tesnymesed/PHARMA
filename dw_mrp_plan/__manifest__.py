@@ -11,7 +11,7 @@
         'mrp',
         'mrp_mps',
         'web',
-        'base'
+        'shared_assets'
     ],
     'data': [
         # data
@@ -38,14 +38,6 @@
         'web.assets_backend': [
             'static/src/js/ListController.js',
             'static/src/xml/monthly_mrp_plan_widget_button.xml',
-            'dw_mrp_plan/static/src/js/jquery.min.js',
-            'dw_mrp_plan/static/src/js/bootstrap.bundle.min.js',
-            'dw_mrp_plan/static/src/js/popper.min.js',
-            'dw_mrp_plan/static/src/js/bootstrap.min.js',
-            'dw_mrp_plan/static/src/js/bootstrap-datepicker.js',
-            'dw_mrp_plan/static/src/js/d3-collection.min.js',
-            'dw_mrp_plan/static/src/js/tabulator.min.js',
-            'dw_mrp_plan/static/src/js/select2.min.js',
             'dw_mrp_plan/static/src/components/*/*.js',
             'dw_mrp_plan/static/src/components/*/*.xml'
         ],

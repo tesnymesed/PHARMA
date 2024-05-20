@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="owl.YearPicker" owl="1">
-        <link rel="stylesheet" type="text/css" href="dw_mrp_plan/static/src/css/bootstrap-datepicker.css"/>
+        <link rel="stylesheet" type="text/css" href="custom_widget/static/src/lib/css/bootstrap-datepicker.css"/>
         <style>
             .ui-datepicker-calendar {
                 display: none;

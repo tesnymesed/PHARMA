@@ -97,7 +97,7 @@
                         <button
                                 name="action_reject" string="Reject"
                                 type="object" class="btn-primary" data-hotkey="q"
-                                invisible="state in ['prospection','qualification'] "
+                                invisible="state in ['prospection','qualification','rejected'] "
                         />
                         <field name="state" widget="statusbar"
                                statusbar_visible="prospection,analyse,audit,lot_validation,qualification"/>

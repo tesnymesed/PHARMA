@@ -14,13 +14,21 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">product.product</field>
             <field name="view_mode">tree,form</field>
+             <field name="view_ids" eval="[(5, 0, 0),
+
+            (0, 0, {'view_mode': 'tree' , 'view_id': ref('dw_supplier_approval.view_identification_besoin_product_tree')}),
+            ]"/>
             <field name="search_view_id" ref="dw_supplier_approval.product_template_search_view_inherit"/>
 
-            <field name="domain">['|', '|',('homologue', '=', True), ('categ_id.homologue', '=', True),
+           <field name="domain">['|', '|',('homologue', '=', True), ('categ_id.homologue', '=', True),
                 ('product_tmpl_id.homologue', '=', True),('purchase_ok', '=',
-                True),'|','|','|',('number_fournisseur', '&lt;',2),('has_backliested_supplier','=',True),('expired_homologation','=',True),('expired_contract','=',True)]
+                True),'|','|','|',('number_fournisseur2', '&lt;',2),('has_backliested_supplier2','=',True),('expired_homologation2','=',True),('expired_contract2','=',True)]
             </field>
         </record>
+<!--         <field name="domain">['|', '|',('homologue', '=', True), ('categ_id.homologue', '=', True),
+                ('product_tmpl_id.homologue', '=', True),('purchase_ok', '=',
+                True),('number_fournisseur', '&lt;',2)]
+            </field>-->
         <record id="action_view_article_homologue" model="ir.actions.act_window">
             <field name="name">Article</field>
             <field name="type">ir.actions.act_window</field>
@@ -77,7 +85,7 @@
         />
         <menuitem id="menu_identification_besoin_root"
                   name="Identification of the need"
-                  parent="menu_market_root"
+                  parent="menu_supplier_approval_root"
                   action="action_identification_besoin"
                   sequence="11"
         />

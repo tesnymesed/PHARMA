@@ -33,12 +33,20 @@ class DwProduct(models.Model):
         'approval required',
         default=False
     )
-    number_fournisseur = fields.Integer('Number of fournisseur', compute="_compute_number_fournisseur", store=1)
-    homologation_ids = fields.One2many("dw.homologation", 'product_id', string="Homologation")
-    has_backliested_supplier = fields.Boolean('Blacklisted', compute="_compute_has_blacklisted", store=True)
-    expired_homologation = fields.Boolean('Expired homologation', compute="_compute_expired_homologation", store=True)
-    expired_contract = fields.Boolean('Expired contract', compute="_compute_expired_contract", store=True)
+    number_fournisseur = fields.Integer('Number of fournisseur', compute="_compute_number_fournisseur", store=True)
+    number_fournisseur2 = fields.Integer('Number of fournisseur', related="number_fournisseur", store=True)
 
+    homologation_ids = fields.One2many("dw.homologation", 'product_id', string="Homologation")
+    homologation_ids = fields.One2many("dw.homologation", 'product_id', string="Homologation")
+
+    has_backliested_supplier = fields.Boolean('Blacklisted', compute="_compute_has_blacklisted")
+    has_backliested_supplier2 = fields.Boolean('Blacklisted', related="has_backliested_supplier", store=True)
+
+    expired_homologation = fields.Boolean('Expired homologation', compute="_compute_expired_homologation")
+    expired_homologation2 = fields.Boolean('Expired homologation', related="expired_homologation", store=True)
+
+    expired_contract = fields.Boolean('Expired contract', compute="_compute_expired_contract")
+    expired_contract2 = fields.Boolean('Expired contract', related="expired_contract", store=True)
     def action_show_homologations(self):
         return ({
             'res_model': 'dw.homologation',
@@ -85,7 +93,8 @@ class DwProduct(models.Model):
                 record.seller_ids) else False
             if blacklist1 or blacklist2:
                 record.has_backliested_supplier = True
-
+            else :
+                record.has_backliested_supplier = False
     # @api.depends('homologation_ids')
     def _compute_number_fournisseur(self):
         for record in self:

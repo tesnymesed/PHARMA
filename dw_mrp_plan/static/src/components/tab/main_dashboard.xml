@@ -2,11 +2,11 @@
 <templates xml:space="preserve">
     <t t-name="owl.OwlMainDashboard" owl="1">
         <head>
-            <link rel="stylesheet" type="text/css" href="shared_assets/static/lib/css/bootstrap.min.css"/>
-            <link rel="stylesheet" type="text/css" href="shared_assets/static/lib/css/tabulator.min.css"/>
-            <link rel="stylesheet" type="text/css" href="shared_assets/static/lib/css/select2.min.css"/>
-            <link rel="stylesheet" type="text/css" href="shared_assets/static/lib/css/docs.css"/>
-            <link rel="stylesheet" type="text/css" href="shared_assets/static/lib/css/bootstrap-datepicker.css"/>
+            <link rel="stylesheet" type="text/css" href="shared_assets/static/libs/css/bootstrap.min.css"/>
+            <link rel="stylesheet" type="text/css" href="shared_assets/static/libs/css/tabulator.min.css"/>
+            <link rel="stylesheet" type="text/css" href="shared_assets/static/libs/css/select2.min.css"/>
+            <link rel="stylesheet" type="text/css" href="shared_assets/static/libs/css/docs.css"/>
+            <link rel="stylesheet" type="text/css" href="shared_assets/static/libs/css/bootstrap-datepicker.css"/>
             <link rel="stylesheet" type="text/css" href="dw_mrp_plan/static/src/components/tab/main_dashboard.css"/>
         </head>
         <body>

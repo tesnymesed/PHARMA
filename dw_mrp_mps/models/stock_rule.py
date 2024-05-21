@@ -16,7 +16,7 @@ class StockRule(models.Model):
 
         buy_rule.ensure_one()
 
-        _use_product_lead = self.env['ir.config_parameter'].sudo().get_param('mrp.dw_use_product_lead')
+        _use_product_lead = self.env['ir.config_parameter'].sudo().get_param('dw_mrp.dw_use_product_lead')
 
         if bool(_use_product_lead):
 

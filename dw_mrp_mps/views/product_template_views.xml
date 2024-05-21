@@ -17,7 +17,8 @@
                 <field name="detailed_type" optional="hide" readonly="1"/>
                 <field name="type" column_invisible="True" readonly="1"/>
                 <field name="uom_id" string="Unit" readonly="1" optional="hide" groups="uom.group_uom"/>
-                <field name="dw_purchase_lead" optional="show"/>
+                <field string="Lead Time" name="dw_purchase_lead" optional="show"/>
+                <field string="Lead Time (Set manually)"  name="dw_set_lead_time" optional="hide"/>
             </tree>
         </field>
     </record>

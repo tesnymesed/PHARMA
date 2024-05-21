@@ -1,4 +1,4 @@
 # -*- encoding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from . import mrp_mps, product_template, res_company, res_config_settings, stock_rule
+from . import mrp_mps, product_template, res_company, res_config_settings

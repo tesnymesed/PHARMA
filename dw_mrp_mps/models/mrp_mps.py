@@ -60,7 +60,7 @@ class DWMrpProductionSchedule(models.Model):
 
         - safety_stock_qty: starting_inventory_qty - forecast_qty - indirect_demand_qty + replenish_qty
         """
-        _use_product_lead = self.env['ir.config_parameter'].sudo().get_param('mrp.dw_use_product_lead')
+        _use_product_lead = self.env['ir.config_parameter'].sudo().get_param('dw_mrp.dw_use_product_lead')
 
         company_id = self.env.company
         date_range = company_id._get_date_range()
@@ -103,7 +103,8 @@ class DWMrpProductionSchedule(models.Model):
             # Bypass if the schedule is only used in order to compute indirect
             # demand.
             rounding = production_schedule.product_id.uom_id.rounding
-            lead_time = production_schedule._get_lead_times()
+            delays = production_schedule._get_lead_times()
+            lead_time = delays['total_delay']
             # Ignore "Days to Supply Components" when set demand for components since it's normally taken care by the
             # components themselves
             lead_time_ignore_components = lead_time - production_schedule.bom_id.days_to_prepare_mo
@@ -178,10 +179,15 @@ class DWMrpProductionSchedule(models.Model):
                 if not forecast_values['replenish_qty']:
                     continue
                 # Set the indirect demand qty for children schedules.
-                for (product, ratio) in indirect_ratio_mps[(production_schedule.warehouse_id, production_schedule.product_id)].items():
+                for (product, ratio) in indirect_ratio_mps[
+                    (production_schedule.warehouse_id, production_schedule.product_id)].items():
 
                     if bool(_use_product_lead):
-                        _lead_time = lead_time_ignore_components + product.dw_purchase_lead
+                        _security_lead_days = delays.get('security_lead_days', 0.0)
+                        _product_delay = product.dw_purchase_lead
+                        _lead_time = (lead_time_ignore_components
+                                      - _security_lead_days
+                                      + _product_delay)
 
                     related_date = max(
                         subtract(date_start, days=_lead_time),
@@ -206,3 +212,10 @@ class DWMrpProductionSchedule(models.Model):
                     forecast['indirect_demand_qty'] != 0 for forecast in production_schedule_state['forecast_ids'])
                 production_schedule_state['has_indirect_demand'] = has_indirect_demand
         return [p for p in production_schedule_states if p['id'] in self.ids]
+
+    def _get_lead_times(self):
+        """ Get the lead time for each product in self. The lead times are
+        based on rules lead times + produce delay or supplier info delay.
+        """
+        rules = self.product_id._get_rules_from_location(self.warehouse_id.lot_stock_id)
+        return rules._get_lead_days(self.product_id, bom=self.bom_id)[0]

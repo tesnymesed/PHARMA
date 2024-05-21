@@ -76,8 +76,6 @@ class DwProduct(models.Model):
     def _compute_expired_homologation(self):
         # Get today's date
         today = date.today()
-        month_18 = today + relativedelta(months=18)
-
         for record in self:
             record.expired_homologation = True if any(homologation.end_date and homologation.state == 'homologue' and
                                                       self.diff_month(homologation.end_date, today) <= 18 for

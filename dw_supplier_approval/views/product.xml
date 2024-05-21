@@ -99,7 +99,7 @@
 
                 <xpath expr="//field[@name='name']" position="after">
 
-                     <field name="number_fournisseur2" optional="show"/>
+                     <field name="number_fournisseur2" optional="hide"/>
                      <field name="has_backliested_supplier" optional="hide"/>
                      <field name="expired_homologation" optional="hide"/>
                      <field name="expired_contract" optional="hide"/>

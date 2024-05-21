@@ -33,7 +33,7 @@ class DwProduct(models.Model):
         'approval required',
         default=False
     )
-    number_fournisseur = fields.Integer('Number of fournisseur', compute="_compute_number_fournisseur", store=True)
+    number_fournisseur = fields.Integer('Number of fournisseur', compute="_compute_number_fournisseur")
     number_fournisseur2 = fields.Integer('Number of fournisseur', related="number_fournisseur", store=True)
 
     homologation_ids = fields.One2many("dw.homologation", 'product_id', string="Homologation")

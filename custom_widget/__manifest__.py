@@ -6,7 +6,7 @@
     'website': 'www.digiwaves.io',
     'sequence': 30,
     'category': 'Tools',
-    'depends': ['web','shared_assets'],
+    'depends': ['web', 'shared_assets'],
     'assets': {
         'web.assets_backend': [
             'custom_widget/static/src/components/**/*',

@@ -11,14 +11,14 @@
 
     'assets': {
         'web.assets_backend': [
-            'shared_assets/static/lib/js/jquery.min.js',
-            'shared_assets/static/lib/js/bootstrap.bundle.min.js',
-            'shared_assets/static/lib/js/popper.min.js',
-            'shared_assets/static/lib/js/bootstrap.min.js',
-            'shared_assets/static/lib/js/bootstrap-datepicker.js',
-            'shared_assets/static/lib/js/d3-collection.min.js',
-            'shared_assets/static/lib/js/tabulator.min.js',
-            'shared_assets/static/lib/js/select2.min.js',
+            'shared_assets/static/libs/js/jquery.min.js',
+            'shared_assets/static/libs/js/bootstrap.bundle.min.js',
+            'shared_assets/static/libs/js/popper.min.js',
+            'shared_assets/static/libs/js/bootstrap.min.js',
+            'shared_assets/static/libs/js/bootstrap-datepicker.js',
+            'shared_assets/static/libs/js/d3-collection.min.js',
+            'shared_assets/static/libs/js/tabulator.min.js',
+            'shared_assets/static/libs/js/select2.min.js',
         ],
     },
     'installable': True,

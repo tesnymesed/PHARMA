@@ -10,8 +10,7 @@
     'depends': [
         'mrp',
         'mrp_mps',
-        'web',
-        'shared_assets'
+        'custom_widget',
     ],
     'data': [
         # data

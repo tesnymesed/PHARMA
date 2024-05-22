@@ -6,19 +6,12 @@ from dateutil.relativedelta import relativedelta
 from odoo import fields, api, models, _
 from odoo.exceptions import UserError
 
-cnt = 10
-list1 = []
-for i in range(datetime.datetime.today().year - 2, datetime.datetime.today().year + 5):
-    list1.append((str(cnt), str(i)))
-    cnt = cnt + 1
-
 
 class SalePlan(models.Model):
     _name = 'sale.plan'
 
     name = fields.Char()
-    season_date = fields.Selection(
-        selection=list1,
+    season_date = fields.Char(
         required=True
     )
     product_plan_ids = fields.One2many(
@@ -31,7 +24,7 @@ class SalePlan(models.Model):
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
 
     def get_the_year(self):
-        return dict(self._fields['season_date'].selection).get(self.season_date)
+        return self.season_date
 
     def action_compare_plan(self):
         if not self.plan_id:
@@ -50,13 +43,21 @@ class SalePlan(models.Model):
                 })
 
     def get_month_year(self):
-        month_year_list = []
-
-        for i in range(12):
-            current_month = (self.create_date + relativedelta(months=i)).strftime('%b-%y')
-            month_year_list.append(current_month)
-
-        return month_year_list
+        season_date = self.season_date
+        return [
+            'Jan-' + season_date,
+            'Fev-' + season_date,
+            'Mar-' + season_date,
+            'Apr-' + season_date,
+            'May-' + season_date,
+            'Jun-' + season_date,
+            'Jul-' + season_date,
+            'Aug-' + season_date,
+            'Sep-' + season_date,
+            'Oct-' + season_date,
+            'Nov-' + season_date,
+            'Dec-' + season_date,
+        ]
 
     def action_print(self):
         return self.env.ref('dw_sale_plan.action_sale_plan_report').report_action(self)

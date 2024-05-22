@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Top menu item -->
+        <menuitem name="Supply Plan"
+            id="menu_dw_mrp_supply_plan_root"
+            groups="dw_mrp_supply_plan_group_manager,dw_mrp_supply_plan_group_user"
+            web_icon="dw_mrp_supply_plan,static/description/icon.png"
+            sequence="140"
+        />
+
+        <menuitem
+                id="menu_mrp_supply_plan"
+                name="Supply Plans"
+                parent="dw_mrp_supply_plan.menu_dw_mrp_supply_plan_root"
+                sequence="1"
+                action="dw_mrp_supply_plan.mrp_supply_plan_action"
+        />
+
+    </data>
+</odoo>

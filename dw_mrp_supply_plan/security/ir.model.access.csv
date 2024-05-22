@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+dw_mrp_supply_plan_access_right_user,MRP Supply Plan,model_dw_mrp_supply_plan,dw_mrp_supply_plan.dw_mrp_supply_plan_group_user,1,1,1,1
+dw_mrp_supply_plan_lines_access_right_user,MRP Supply Plan Lines,model_dw_mrp_supply_plan_lines,dw_mrp_supply_plan.dw_mrp_supply_plan_group_user,1,1,1,1
+dw_mrp_product_supply_plan_access_right_user,MRP Product Supply Plan,model_dw_mrp_product_supply_plan,dw_mrp_supply_plan.dw_mrp_supply_plan_group_user,1,1,1,1
+dw_mrp_supply_plan_access_right_manager,MRP Supply Plan,model_dw_mrp_supply_plan,dw_mrp_supply_plan.dw_mrp_supply_plan_group_manager,1,1,1,1
+dw_mrp_supply_plan_lines_access_right_manager,MRP Supply Plan Lines,model_dw_mrp_supply_plan_lines,dw_mrp_supply_plan.dw_mrp_supply_plan_group_manager,1,1,1,1
+dw_mrp_product_supply_plan_access_right_manager,MRP Product Supply Plan,model_dw_mrp_product_supply_plan,dw_mrp_supply_plan.dw_mrp_supply_plan_group_manager,1,1,1,1
+
+
+

@@ -9,6 +9,7 @@
     'website': 'www.digiwaves.io',
     'depends': [
         'mrp',
+        'custom_widget',
     ],
     'data': [
         # data

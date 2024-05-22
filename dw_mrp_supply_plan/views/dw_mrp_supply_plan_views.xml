@@ -55,8 +55,8 @@
                                 <field name="product_id" required="1"/>
                                 <field name="uom_id" optional="hide"/>
                                 <button name="action_view_product_monthly_supply_plan" type="object" class="oe_stat_button"
-                                        icon="fa-list"/>
-                                <button name="print_plan_summary_report" type="object" icon="fa-desktop"/>
+                                        title="Monthly" icon="fa-calendar-days"/>
+                                <button name="print_plan_summary_report" type="object" title="Summary" icon="fa-desktop"/>
                             </tree>
                         </field>
                     </page>

@@ -6,7 +6,7 @@
             <field name="model">dw.homologation</field>
             <field name="arch" type="xml">
                 <tree decoration-info="state == 'homologue' and not consultation_id"
-                      decoration-success="state == 'homologue' and consultation_id" decoration-danger="state != 'homologue' and end_date >= context_today().strftime('%Y-%m-%d')">
+                      decoration-success="state == 'homologue' and consultation_id" decoration-danger="state == 'homologue' and end_date &lt; context_today().strftime('%Y-%m-%d')">
                     <header>
                         <button name="action_create_consultation" string="Lancer consultation" type="object"
                                 class="btn-primary"/>

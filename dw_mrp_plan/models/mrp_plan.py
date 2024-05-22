@@ -4,12 +4,6 @@ from odoo import fields, api, models, _
 from odoo.exceptions import ValidationError
 from datetime import date, timedelta
 
-cnt = 10
-list1 = []
-for i in range(2010, datetime.datetime.today().year + 5):
-    list1.append((str(cnt), str(i)))
-    cnt = cnt + 1
-
 
 class MrpPlan(models.Model):
     _name = 'mrp.plan'
@@ -21,8 +15,7 @@ class MrpPlan(models.Model):
     name = fields.Char(
         required=True
     )
-    season_date = fields.Selection(
-        selection=list1,
+    season_date = fields.Char(
         required=True
     )
     state = fields.Selection([
@@ -41,7 +34,7 @@ class MrpPlan(models.Model):
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
 
     def get_the_year(self):
-        return dict(self._fields['season_date'].selection).get(self.season_date)
+        return self.season_date
 
     def action_product_mrp_plan(self):
         self.ensure_one()
@@ -53,19 +46,20 @@ class MrpPlan(models.Model):
         }
 
     def get_month_year(self):
+        season_date = self.season_date
         return [
-            'Jan-' + self.create_date.strftime('%y'),
-            'Fev-' + self.create_date.strftime('%y'),
-            'Mar-' + self.create_date.strftime('%y'),
-            'Apr-' + self.create_date.strftime('%y'),
-            'May-' + self.create_date.strftime('%y'),
-            'Jun-' + self.create_date.strftime('%y'),
-            'Jul-' + self.create_date.strftime('%y'),
-            'Aug-' + self.create_date.strftime('%y'),
-            'Sep-' + self.create_date.strftime('%y'),
-            'Oct-' + self.create_date.strftime('%y'),
-            'Nov-' + self.create_date.strftime('%y'),
-            'Dec-' + self.create_date.strftime('%y'),
+            'Jan-' + season_date,
+            'Fev-' + season_date,
+            'Mar-' + season_date,
+            'Apr-' + season_date,
+            'May-' + season_date,
+            'Jun-' + season_date,
+            'Jul-' + season_date,
+            'Aug-' + season_date,
+            'Sep-' + season_date,
+            'Oct-' + season_date,
+            'Nov-' + season_date,
+            'Dec-' + season_date,
         ]
 
     def run_action(self):
@@ -229,13 +223,14 @@ class MrpPlanLines(models.Model):
     def print_plan_summary_report(self):
         return self.env.ref('dw_mrp_plan.action_mrp_plan_monthly_report').report_action(self)
 
+
 class ProductMrpPlan(models.Model):
     _name = 'product.mrp.plan'
     _order = 'date asc'
 
     product_plan_weekly_ids = fields.One2many(
-            'product.mrp.plan.weekly',
-            'mrp_plan_monthly_id',
+        'product.mrp.plan.weekly',
+        'mrp_plan_monthly_id',
     )
 
     product_id = fields.Many2one(
@@ -314,7 +309,6 @@ class ProductMrpPlan(models.Model):
             else:
                 record.roadmap_done = False
 
-
     @api.onchange('no_manufacturing')
     def _onchange_no_manufacturing(self):
         self.quantity = 0
@@ -328,8 +322,6 @@ class ProductMrpPlan(models.Model):
             if record.lot_size > 0:
                 if record.quantity % record.lot_size > 0:
                     raise ValidationError(_("You cannot set a quantity that doesn't multiply the lot size"))
-
-
 
     @api.depends('quantity')
     def _compute_expected_final_quantities(self):
@@ -392,7 +384,7 @@ class ProductMrpPlan(models.Model):
                 res.product_plan_weekly_ids = [(6, 0, [obj.id for obj in weekly_objs])]
         return result
 
-    def get_weeks(self,date):
+    def get_weeks(self, date):
         dates = []
         week_dates = self.generate_week_dates(date)
         for index, week in enumerate(week_dates):
@@ -407,7 +399,8 @@ class ProductMrpPlan(models.Model):
             )
 
         return dates
-    def generate_week_dates(self,date):
+
+    def generate_week_dates(self, date):
         first_day_of_month = date
         days_to_first_sunday = (first_day_of_month.weekday() + 2)
         days_to_next_sunday = (7 - days_to_first_sunday) % 7
@@ -444,7 +437,7 @@ class ProductMrpPlan(models.Model):
             record.free_qty = record.product_plan_id.product_id.free_qty
             record.virtual_available = record.product_plan_id.product_id.product_tmpl_id.virtual_available
 
-    def update_last_day_of_month(self,date):
+    def update_last_day_of_month(self, date):
         """
         Update date from first day to last day of the month to match PDP date format
         """
@@ -494,6 +487,7 @@ class ProductMrpPlan(models.Model):
             record.product_plan_weekly_ids.unlink()
         return super().unlink()
 
+
 class ProductMrpPlanWeekly(models.Model):
     _name = 'product.mrp.plan.weekly'
     _description = 'Weekly Mrp Plan Product'
@@ -502,7 +496,7 @@ class ProductMrpPlanWeekly(models.Model):
     _order = 'date asc'
 
     mrp_plan_monthly_id = fields.Many2one(
-            'product.mrp.plan'
+        'product.mrp.plan'
     )
 
     test = fields.Float()
@@ -515,8 +509,8 @@ class ProductMrpPlanWeekly(models.Model):
         # update monthly Qty
         if 'quantity' in vals:
             month_qty = sum((self.env['product.mrp.plan.weekly']
-                         .search([('mrp_plan_monthly_id.id', '=', self.mrp_plan_monthly_id.id)]))
-                         .mapped('quantity'))
+                             .search([('mrp_plan_monthly_id.id', '=', self.mrp_plan_monthly_id.id)]))
+                            .mapped('quantity'))
             self.mrp_plan_monthly_id.quantity = month_qty
         return result
 

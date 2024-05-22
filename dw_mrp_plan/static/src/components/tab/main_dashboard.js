@@ -1,6 +1,5 @@
 /** @odoo-module */
 import { registry } from "@web/core/registry"
-import { loadJS, loadCSS } from "@web/core/assets"
 import { useService } from "@web/core/utils/hooks"
 const { Component, onWillStart, onMounted, useRef, useState } = owl
 export class OwlMainDashboard extends Component {
@@ -21,7 +20,7 @@ export class OwlMainDashboard extends Component {
 
          onMounted(async ()=>{
             var cuurent_year = new Date().getFullYear()
-            this.state.monthly_data = await this.get_mrp_plan_product_data(cuurent_year.toString().slice(2))
+            this.state.monthly_data = await this.get_mrp_plan_product_data(cuurent_year.toString())
             var [original_data, data] = this.data_nest(this.state.monthly_data,'monthly')
             var monthly_tab
             var weekly_tab
@@ -101,7 +100,7 @@ export class OwlMainDashboard extends Component {
 
             $('#saveMrpPlanButton').off('click').on('click', function() {
                     var plan_name = $('#mrp-plan-name').val();
-                    var plan_season = $('#select-mrp-season-plan').val().slice(2);
+                    var plan_season = $('#select-mrp-season-plan').val();
                     var plan_company = $('#select-mrp-plan-company').val();
                     var plan_sale_plan = $('#select-mrp-sale-plan').val();
                         var new_mrp_plan = this.createMrpPlan(plan_name, plan_season, plan_company, plan_sale_plan)

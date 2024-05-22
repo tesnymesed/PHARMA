@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-09 15:52+0000\n"
-"PO-Revision-Date: 2024-05-09 15:52+0000\n"
+"POT-Creation-Date: 2024-05-21 07:54+0000\n"
+"PO-Revision-Date: 2024-05-21 07:54+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -333,6 +333,7 @@ msgstr "Basé sur les années"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__has_backliested_supplier
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__has_backliested_supplier2
 msgid "Blacklisted"
 msgstr ""
 
@@ -574,22 +575,14 @@ msgid "Expert report"
 msgstr "Rapport d’expertise"
 
 #. module: dw_supplier_approval
-#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.product_template_search_view_inherit
-msgid "Expirated contract"
-msgstr "Contrat expirée"
-
-#. module: dw_supplier_approval
-#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.product_template_search_view_inherit
-msgid "Expirated homologation"
-msgstr "Homologation expirée"
-
-#. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__expired_contract
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__expired_contract2
 msgid "Expired contract"
 msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__expired_homologation
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__expired_homologation2
 msgid "Expired homologation"
 msgstr ""
 
@@ -693,6 +686,11 @@ msgstr "A un fournisseur sur liste noire"
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_homologation_form
 msgid "Homologation"
 msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.product_template_search_view_inherit
+msgid "Homologation expires less than 18 month"
+msgstr "homologation expire moins de 18 mois"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_homologate_market_form_view
@@ -1058,6 +1056,7 @@ msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__number_fournisseur
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__number_fournisseur2
 msgid "Number of fournisseur"
 msgstr ""
 
@@ -1480,6 +1479,11 @@ msgstr "PV Attribution"
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__dw_market__state__consultation
 msgid "consultation"
 msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.product_template_search_view_inherit
+msgid "contract expires less than 18 month"
+msgstr "contrat expire dans moins de 18 mois"
 
 #. module: dw_supplier_approval
 #: model:ir.model,name:dw_supplier_approval.model_dw_attribute_market_wizard

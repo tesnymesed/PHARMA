@@ -7,6 +7,7 @@
             <field name="arch" type="xml">
                 <tree decoration-info="state == 'homologue' and not consultation_id"
                       decoration-success="state == 'homologue' and consultation_id" decoration-danger="state == 'homologue' and end_date &lt; context_today().strftime('%Y-%m-%d')">
+
                     <header>
                         <button name="action_create_consultation" string="Lancer consultation" type="object"
                                 class="btn-primary"/>
@@ -97,7 +98,7 @@
                         <button
                                 name="action_reject" string="Reject"
                                 type="object" class="btn-primary" data-hotkey="q"
-                                invisible="state in ['prospection','qualification'] "
+                                invisible="state in ['prospection','qualification','rejected'] "
                         />
                         <field name="state" widget="statusbar"
                                statusbar_visible="prospection,analyse,audit,lot_validation,qualification"/>

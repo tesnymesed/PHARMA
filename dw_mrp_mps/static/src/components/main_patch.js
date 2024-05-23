@@ -20,19 +20,8 @@ patch(MainComponent.prototype, {
             await loadCSS("shared_assets/static/libs/css/daterangepicker.css")
         })
         onMounted(async ()=>{
-            console.log("====== Inside Mounted Function =====")
-
-            console.log('this.model',this.model)
-            console.log('this.env.config',this.env.config)
-            console.log('this.env.config.offset',this.env.config.offset)
-            console.log('this.env.config.limit',this.env.config.limit)
-             console.log("+++++productionScheduleIds+++++",this.model.data.production_schedule_ids)
-
-
-//            this.model.data.dates.unshift('ssss 2025')
-            console.log(this.model.data.manufacturing_period)
-            let self = this
             $('input[name="dates"]').daterangepicker();
+            var self = this;
             $(function() {
               $('input[name="daterange"]').daterangepicker({
                 opens: 'left',
@@ -45,13 +34,7 @@ patch(MainComponent.prototype, {
                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
                 }
               }, function(start, end, label) {
-                    console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' ------ to ----> ' + end.format('YYYY-MM-DD'));
                     self.model.load([], self.env.config.offset, self.env.config.limit, start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
-                console.log('this.model',self.model)
-                console.log('this.env.config',self.env.config)
-                console.log('this.env.config.offset',self.env.config.offset)
-                console.log('this.env.config.limit',self.env.config.limit)
-                console.log("+++++productionScheduleIds+++++",self.model.data.production_schedule_ids)
               });
             });
 

@@ -10,14 +10,17 @@
     'summary': 'DW Master Production Schedule',
     'author': 'DIGIWAVES - ALGERIA',
     'website': 'www.digiwaves.io',
-    'depends': ['mrp_mps'],
+    'depends': ['mrp_mps',
+                'shared_assets'],
     'data': [
         'views/res_config_settings_views.xml',
     ],
 
     'assets': {
         'web.assets_backend': [
-            'dw_mrp_mps/static/src/**/*'
+            'dw_mrp_mps/static/src/**/*',
+            'dw_mrp_mps/static/src/**/*',
+            'dw_mrp_mps/static/src/components/main.xml',
         ],
     },
     'installable': True,

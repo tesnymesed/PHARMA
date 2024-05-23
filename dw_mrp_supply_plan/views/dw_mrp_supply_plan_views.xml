@@ -13,28 +13,33 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button string="Monthly Product QTY" name="run_action" type="object"/>
+                    <!--                    <button string="Monthly Product QTY" name="run_action" type="object"/>-->
+                    <button type="object" name="action_approve" string="Approve" class="oe_highlight"
+                            invisible="state in ('approved', 'done', 'cancelled')"/>
                     <button type="object" name="action_done" string="Mark as Done" class="oe_highlight"
-                            invisible="state == 'done'"/>
-                    <!--                    <button name="action_import_excel_view" string="Import Excel" type="object"/>-->
-                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                            invisible="state in ('draft', 'done', 'cancelled')"/>
+                    <!--                    <button name="action_draft" invisible="state != 'cancelled'" string="Set to Draft" type="object"/>-->
+                    <button name="action_cancel" invisible="state not in ('draft', 'approved')" string="Cancel"
+                            type="object"/>
+
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approved,done"/>
                 </header>
-<!--                <div class="oe_button_box" name="button_box">-->
-<!--                    <button-->
-<!--                            type="object"-->
-<!--                            name="action_print"-->
-<!--                            class="oe_stat_button"-->
-<!--                            icon="fa-folder-open-o"-->
-<!--                            string="Overview"-->
-<!--                    />-->
-<!--                    <button-->
-<!--                            type="object"-->
-<!--                            name="action_display_all_roadmaps"-->
-<!--                            class="oe_stat_button"-->
-<!--                            icon="fa-sitemap"-->
-<!--                            string="Roadmaps"-->
-<!--                    />-->
-<!--                </div>-->
+                <!--                <div class="oe_button_box" name="button_box">-->
+                <!--                    <button-->
+                <!--                            type="object"-->
+                <!--                            name="action_print"-->
+                <!--                            class="oe_stat_button"-->
+                <!--                            icon="fa-folder-open-o"-->
+                <!--                            string="Overview"-->
+                <!--                    />-->
+                <!--                    <button-->
+                <!--                            type="object"-->
+                <!--                            name="action_display_all_roadmaps"-->
+                <!--                            class="oe_stat_button"-->
+                <!--                            icon="fa-sitemap"-->
+                <!--                            string="Roadmaps"-->
+                <!--                    />-->
+                <!--                </div>-->
                 <group>
                     <group>
                         <field name="name"/>
@@ -51,12 +56,19 @@
                     <page name="product_plan" string="Product Supply Plan">
                         <field name="product_supply_plan_ids">
                             <tree editable="bottom">
+                                <field name="company_id" column_invisible="1"/>
                                 <field name="sequence" widget="handle"/>
                                 <field name="product_id" required="1"/>
                                 <field name="uom_id" optional="hide"/>
-                                <button name="action_view_product_monthly_supply_plan" type="object" class="oe_stat_button"
-                                        title="Monthly" icon="fa-calendar-days"/>
-                                <button name="print_plan_summary_report" type="object" title="Summary" icon="fa-desktop"/>
+                                <field name="quantity_planned" />
+                                <field name="quantity_approved" optional="show" />
+                                <field name="quantity_to_order" optional="show" />
+                                <field name="quantity_done" optional="show" />
+                                <field name="partner_id" optional="hide" readonly="0"/>
+                                <button name="action_view_product_monthly_supply_plan" type="object"
+                                        class="oe_stat_button"
+                                        title="Monthly" icon="fa-calendar"/>
+                                <!-- <button name="print_plan_summary_report" type="object" title="Summary" icon="fa-desktop"/> -->
                             </tree>
                         </field>
                     </page>
@@ -70,19 +82,25 @@
         <field name="model">dw.mrp.product.supply.plan</field>
         <field name="arch" type="xml">
             <tree editable="bottom" create="0">
+                <field name="company_id" column_invisible="1"/>
                 <field name="product_supply_plan_id" column_invisible="1"/>
                 <field name="date" readonly="1" force_save="1"/>
-                <field name="product_id" readonly="1" force_save="1"/>
+                <field name="date_launch" optional="hide" readonly="1" force_save="1"/>
 
-                <field name="quantity_planned"/>
+                <field name="product_id" readonly="1" force_save="1" optional="hide"/>
+
+                <field name="quantity_planned" readonly="state == 'approved'"/>
                 <field name="quantity_approved" optional="show" readonly="state == 'approved'"/>
-                <field name="quantity_to_order" optional="hide" readonly="state == 'approved'"/>
-                <field name="quantity_done" optional="show" readonly="state == 'approved'"/>
+                <field name="quantity_to_order" optional="show" readonly="state == 'approved'"/>
+                <field name="quantity_done" optional="show" readonly="state == 'done'"/>
 
+                <button name="action_approve" string="Approve" invisible="state in ['approved', 'done']"
+                        type="object" icon="fa-check"/>
+                <!-- <button name="action_cancel" string="Refuse" invisible="status in ['accepted', 'refused']"-->
+                <!-- type="object" icon="fa-times"/>-->
 
                 <field name="state" optional="hide" readonly="1"/>
-
-                <field name="date_launch" optional="hide" readonly="1" force_save="1"/>
+                <field name="partner_id" optional="hide" readonly="0"/>
 
             </tree>
         </field>

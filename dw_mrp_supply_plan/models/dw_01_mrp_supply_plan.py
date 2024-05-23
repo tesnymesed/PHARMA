@@ -1,5 +1,6 @@
 from odoo import fields, models, _
 
+
 class DwMrpSupplyPlan(models.Model):
     _name = 'dw.mrp.supply.plan'
     _description = 'MRP Yearly Supply plan'
@@ -69,11 +70,16 @@ class DwMrpSupplyPlan(models.Model):
 
     def action_approve(self):
         self.state = 'approved'
+        self.product_supply_plan_ids.monthly_supply_plan_ids.action_approve()
 
     def action_done(self):
         self.state = 'done'
         # TODO: Check
-        # self.product_supply_plan_ids.monthly_supply_plan_ids.action_done()
+        self.product_supply_plan_ids.monthly_supply_plan_ids.action_done()
+    # def action_draft(self):
+    #     self.state = 'draft'
+    #     # TODO: Check
+    #     self.product_supply_plan_ids.monthly_supply_plan_ids.action_done()
 
     def action_cancel(self):
         self.state = 'cancelled'

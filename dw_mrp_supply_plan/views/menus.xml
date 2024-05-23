@@ -11,12 +11,19 @@
         />
 
         <menuitem
-                id="menu_mrp_supply_plan"
+                id="menu_dw_mrp_supply_plan"
                 name="Supply Plans"
                 parent="dw_mrp_supply_plan.menu_dw_mrp_supply_plan_root"
                 sequence="1"
                 action="dw_mrp_supply_plan.mrp_supply_plan_action"
         />
+<!--        <menuitem-->
+<!--                id="menu_dw_mrp_product_supply_plan"-->
+<!--                name="Supply Plan Lines"-->
+<!--                parent="dw_mrp_supply_plan.menu_dw_mrp_supply_plan_root"-->
+<!--                sequence="2"-->
+<!--                action="dw_mrp_supply_plan.mrp_supply_plan_lines_action"-->
+<!--        />-->
 
     </data>
 </odoo>

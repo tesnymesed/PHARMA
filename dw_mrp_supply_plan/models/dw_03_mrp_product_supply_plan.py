@@ -1,8 +1,4 @@
-import datetime
-from datetime import timedelta
-
 from odoo import fields, models
-from odoo.exceptions import ValidationError
 
 from .utils import _domain_supply_products
 
@@ -16,9 +12,7 @@ class DwMrpProductSupplyPlan(models.Model):
 
     date_launch = fields.Date()
 
-    state = fields.Selection([('proposed', 'Proposed'), ('approved', 'Approved')], default='draft')
-
-    # quantity = fields.Float()
+    state = fields.Selection([('proposed', 'Proposed'), ('approved', 'Approved'), ('done', 'Done')], default='proposed')
 
     quantity_planned = fields.Float(string="Planned Quantity", default=0.0)
 
@@ -38,6 +32,13 @@ class DwMrpProductSupplyPlan(models.Model):
 
     uom_id = fields.Many2one('uom.uom', related='product_id.product_tmpl_id.uom_id')
 
+    partner_id = fields.Many2one('res.partner', string='Supplier',
+                                 change_default=True,
+                                 tracking=True,
+                                 related="product_supply_plan_id.partner_id",
+                                 domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+                                 help="You can find a vendor by its Name, TIN, Email or Internal Reference.")
+
     # roadmap_id = fields.Many2one('mrp.roadmap')
 
     # @api.depends('roadmap_id')
@@ -50,3 +51,11 @@ class DwMrpProductSupplyPlan(models.Model):
 
     def action_approve(self):
         self.state = 'approved'
+        self.write({
+            'state': 'approved',
+            'quantity_approved': self.quantity_planned,
+            'quantity_to_order': self.quantity_planned,
+        })
+
+    def action_done(self):
+        self.write({'state': 'done', 'quantity_done': self.quantity_to_order})

@@ -22,6 +22,18 @@ class DwMrpSupplyPlanLines(models.Model):
 
     # quantity = fields.Float(compute='_compute_monthly_supply_plans_total_quantity')
 
+    quantity_planned = fields.Float(string="Planned Quantity", default=0.0,
+                                    compute=lambda self: self._compute_monthly_supply_plans_total_quantity('quantity_planned'))
+
+    quantity_approved = fields.Float(string="Confirmed Quantity", default=0.0,
+                                     compute=lambda self: self._compute_monthly_supply_plans_total_quantity('quantity_approved'))
+
+    quantity_done = fields.Float(string="Ordered Quantity", default=0.0,
+                                 compute=lambda self: self._compute_monthly_supply_plans_total_quantity('quantity_done'))
+
+    quantity_to_order = fields.Float(string="Quantities to Order", default=0.0,
+                                     compute=lambda self: self._compute_monthly_supply_plans_total_quantity('quantity_to_order'))
+
     sequence = fields.Integer()
 
     uom_id = fields.Many2one('uom.uom', related='product_id.product_tmpl_id.uom_id')
@@ -37,6 +49,12 @@ class DwMrpSupplyPlanLines(models.Model):
 
     company_id = fields.Many2one('res.company', related="supply_plan_id.company_id", store=True)
 
+    partner_id = fields.Many2one('res.partner', string='Supplier',
+                                 change_default=True,
+                                 tracking=True,
+                                 domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+                                 help="You can find a vendor by its Name, TIN, Email or Internal Reference.")
+
     def get_monthly_supply_plans(self):
         datas = []
         current_year = int(self.supply_plan_id.get_season_year())
@@ -45,19 +63,20 @@ class DwMrpSupplyPlanLines(models.Model):
             datas.append(
                 (0, 0, {
                     'date': _date,
+                    'date_launch': _date,
                     'product_supply_plan_id': self.id,
                     'product_id': self.product_id.id,
-                    'start_quantity': self.product_id.product_tmpl_id.qty_available if month == 1 else 0
+                    # 'start_quantity': self.product_id.product_tmpl_id.qty_available if month == 1 else 0
                 })
             )
 
         return datas
 
     @api.depends('monthly_supply_plan_ids.quantity')
-    def _compute_monthly_supply_plans_total_quantity(self):
+    def _compute_monthly_supply_plans_total_quantity(self, field_name):
         for record in self:
             # TODO: Which quantity to SUM
-            record.quantity = sum(record.monthly_supply_plan_ids.mapped('quantity'))
+            record[field_name] = sum(record.monthly_supply_plan_ids.mapped(field_name))
 
     def action_view_product_monthly_supply_plan(self):
         tree_view = self.env.ref('dw_mrp_supply_plan.view_dw_mrp_product_monthly_supply_plan_form')

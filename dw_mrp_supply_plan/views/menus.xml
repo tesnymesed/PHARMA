@@ -4,10 +4,10 @@
 
         <!-- Top menu item -->
         <menuitem name="Supply Plan"
-            id="menu_dw_mrp_supply_plan_root"
-            groups="dw_mrp_supply_plan_group_manager,dw_mrp_supply_plan_group_user"
-            web_icon="dw_mrp_supply_plan,static/description/icon.png"
-            sequence="140"
+                  id="menu_dw_mrp_supply_plan_root"
+                  groups="dw_mrp_supply_plan_group_manager,dw_mrp_supply_plan_group_user"
+                  web_icon="dw_mrp_supply_plan,static/description/icon.png"
+                  sequence="140"
         />
 
         <menuitem
@@ -15,15 +15,15 @@
                 name="Supply Plans"
                 parent="dw_mrp_supply_plan.menu_dw_mrp_supply_plan_root"
                 sequence="1"
-                action="dw_mrp_supply_plan.mrp_supply_plan_action"
+                action="dw_mrp_supply_plan.dw_mrp_supply_plan_action"
         />
-<!--        <menuitem-->
-<!--                id="menu_dw_mrp_product_supply_plan"-->
-<!--                name="Supply Plan Lines"-->
-<!--                parent="dw_mrp_supply_plan.menu_dw_mrp_supply_plan_root"-->
-<!--                sequence="2"-->
-<!--                action="dw_mrp_supply_plan.mrp_supply_plan_lines_action"-->
-<!--        />-->
+        <menuitem
+                id="menu_dw_mrp_product_supply_plan"
+                name="Supply Plan Lines"
+                parent="dw_mrp_supply_plan.menu_dw_mrp_supply_plan_root"
+                sequence="2"
+                action="dw_mrp_supply_plan.dw_mrp_product_supply_plan_action"
+        />
 
     </data>
 </odoo>

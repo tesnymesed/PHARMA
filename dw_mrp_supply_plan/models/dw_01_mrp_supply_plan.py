@@ -10,7 +10,7 @@ class DwMrpSupplyPlan(models.Model):
          'Season Date must be unique within the same company!')
     ]
 
-    name = fields.Char(required=True)
+    name = fields.Char('Ref', copy=False, required=True, default=_('New'))
 
     season_date = fields.Char(required=True)
 
@@ -76,6 +76,7 @@ class DwMrpSupplyPlan(models.Model):
         self.state = 'done'
         # TODO: Check
         self.product_supply_plan_ids.monthly_supply_plan_ids.action_done()
+
     # def action_draft(self):
     #     self.state = 'draft'
     #     # TODO: Check

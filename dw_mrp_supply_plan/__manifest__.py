@@ -13,7 +13,7 @@
     ],
     'data': [
         # data
-
+        'data/supply_plan_data.xml',
         # security
         'security/security.xml',
         'security/ir.model.access.csv',

@@ -60,10 +60,10 @@
                                 <field name="sequence" widget="handle"/>
                                 <field name="product_id" required="1"/>
                                 <field name="uom_id" optional="hide"/>
-                                <field name="quantity_planned" />
-                                <field name="quantity_approved" optional="show" />
-                                <field name="quantity_to_order" optional="show" />
-                                <field name="quantity_done" optional="show" />
+                                <field name="quantity_planned"/>
+                                <field name="quantity_approved" optional="show"/>
+                                <field name="quantity_to_order" optional="show"/>
+                                <field name="quantity_done" optional="show"/>
                                 <field name="partner_id" optional="hide" readonly="0"/>
                                 <button name="action_view_product_monthly_supply_plan" type="object"
                                         class="oe_stat_button"
@@ -77,7 +77,7 @@
         </field>
     </record>
 
-    <record id="view_dw_mrp_product_monthly_supply_plan_form" model="ir.ui.view">
+    <record id="view_dw_mrp_product_monthly_supply_plan_tree" model="ir.ui.view">
         <field name="name">dw.mrp.product.supply.plan.tree</field>
         <field name="model">dw.mrp.product.supply.plan</field>
         <field name="arch" type="xml">
@@ -85,7 +85,7 @@
                 <field name="company_id" column_invisible="1"/>
                 <field name="product_supply_plan_id" column_invisible="1"/>
                 <field name="date" readonly="1" force_save="1"/>
-                <field name="date_launch" optional="hide" readonly="1" force_save="1"/>
+                <field name="date_launch" optional="hide" readonly="0" force_save="1"/>
 
                 <field name="product_id" readonly="1" force_save="1" optional="hide"/>
 
@@ -106,7 +106,60 @@
         </field>
     </record>
 
-    <record id="view_mrp_supply_plan_tree" model="ir.ui.view">
+
+    <record id="view_dw_mrp_product_monthly_supply_plan_tree2" model="ir.ui.view">
+        <field name="name">dw.mrp.product.supply.plan.tree2</field>
+        <field name="model">dw.mrp.product.supply.plan</field>
+        <field name="arch" type="xml">
+            <tree create="0">
+                <field name="supply_plan_id"/>
+                <field name="product_supply_plan_id"/>
+                <field name="company_id"/>
+                <field name="product_id" readonly="1" force_save="1" optional="hide"/>
+                <field name="date" readonly="1" force_save="1"/>
+                <field name="date_launch" optional="hide" readonly="0" force_save="1"/>
+
+                <field name="quantity_planned" readonly="state == 'approved'"/>
+                <field name="quantity_approved" optional="show" readonly="state == 'approved'"/>
+                <field name="quantity_to_order" optional="show" readonly="state == 'approved'"/>
+                <field name="quantity_done" optional="show" readonly="state == 'done'"/>
+                <!--                <button name="action_approve" string="Approve" invisible="state in ['approved', 'done']"-->
+                <!--                        type="object" icon="fa-check"/>-->
+
+                <field name="state" optional="hide" readonly="1"/>
+                <field name="partner_id" optional="hide" readonly="0"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <record id="dw_mrp_product_supply_plan_view_search" model="ir.ui.view">
+        <field name="name">dw.mrp.product.supply.plan.view.search</field>
+        <field name="model">dw.mrp.product.supply.plan</field>
+        <field name="arch" type="xml">
+            <search string="Search Purchase Order">
+                <group expand="0" string="Group By">
+                    <filter string="Company" name="company" domain="[]"
+                            context="{'group_by': 'company_id'}"/>
+                    <filter string="Supply Plan" name="supply_plan" domain="[]"
+                            context="{'group_by': 'supply_plan_id'}"/>
+                    <filter string="Product Supply Plan" name="product_supply_plan" domain="[]"
+                            context="{'group_by': 'product_supply_plan_id'}"/>
+                    <filter string="Supplier" name="supplier" domain="[]"
+                            context="{'group_by': 'partner_id'}"/>
+                    <filter string="Product" name="product" domain="[]"
+                            context="{'group_by': 'product_id'}"/>
+                    <filter string="Requirement Date" name="requirement_date" domain="[]"
+                            context="{'group_by': 'date'}"/>
+                    <filter string="Launch Date" name="launch_date" domain="[]"
+                            context="{'group_by': 'date_launch'}"/>
+                </group>
+
+            </search>
+        </field>
+    </record>
+
+    <record id="view_dw_mrp_supply_plan_tree" model="ir.ui.view">
         <field name="name">dw.mrp.supply.plan.tree</field>
         <field name="model">dw.mrp.supply.plan</field>
         <field name="arch" type="xml">
@@ -118,7 +171,7 @@
         </field>
     </record>
 
-    <record id="mrp_supply_plan_action" model="ir.actions.act_window">
+    <record id="dw_mrp_supply_plan_action" model="ir.actions.act_window">
         <field name="name">MRP Supply Plan</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">dw.mrp.supply.plan</field>
@@ -126,6 +179,19 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create new MRP Supply Plan.
+            </p>
+        </field>
+    </record>
+
+    <record id="dw_mrp_product_supply_plan_action" model="ir.actions.act_window">
+        <field name="name">MRP Product Supply Plan</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">dw.mrp.product.supply.plan</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_dw_mrp_product_monthly_supply_plan_tree2"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create new MRP Product Supply Plan.
             </p>
         </field>
     </record>

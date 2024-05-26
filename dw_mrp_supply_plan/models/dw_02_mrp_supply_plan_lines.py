@@ -8,33 +8,40 @@ from .utils import _domain_supply_products
 class DwMrpSupplyPlanLines(models.Model):
     _name = "dw.mrp.supply.plan.lines"
 
-    _description = "MRP Yearly Product Supply plan lines (For each Product, each month's quantities are referenced, fetched: displayed from dw.mrp.product.supply.plan) "
+    _description = ("MRP Yearly Product Supply plan lines (For each Product, each month's quantities are referenced, "
+                    "fetched: displayed from dw.mrp.product.supply.plan) ")
 
     _sql_constraints = [
         ('unique_product_id_supply_plan_id', 'unique(product_id, supply_plan_id)',
          'Product must be unique within the same Supply Plan !')
     ]
 
-    supply_plan_id = fields.Many2one('dw.mrp.supply.plan', ondelete='cascade')
+    name = fields.Char('Ref', copy=False, default=_('New'))
 
-    product_id = fields.Many2one('product.product', required=True,
-                                 domain=lambda self: _domain_supply_products())
+    sequence = fields.Integer()
 
     # quantity = fields.Float(compute='_compute_monthly_supply_plans_total_quantity')
 
     quantity_planned = fields.Float(string="Planned Quantity", default=0.0,
-                                    compute=lambda self: self._compute_monthly_supply_plans_total_quantity('quantity_planned'))
+                                    compute=lambda self: self._compute_monthly_supply_plans_total_quantity(
+                                        'quantity_planned'))
 
     quantity_approved = fields.Float(string="Confirmed Quantity", default=0.0,
-                                     compute=lambda self: self._compute_monthly_supply_plans_total_quantity('quantity_approved'))
+                                     compute=lambda self: self._compute_monthly_supply_plans_total_quantity(
+                                         'quantity_approved'))
 
     quantity_done = fields.Float(string="Ordered Quantity", default=0.0,
-                                 compute=lambda self: self._compute_monthly_supply_plans_total_quantity('quantity_done'))
+                                 compute=lambda self: self._compute_monthly_supply_plans_total_quantity(
+                                     'quantity_done'))
 
     quantity_to_order = fields.Float(string="Quantities to Order", default=0.0,
-                                     compute=lambda self: self._compute_monthly_supply_plans_total_quantity('quantity_to_order'))
+                                     compute=lambda self: self._compute_monthly_supply_plans_total_quantity(
+                                         'quantity_to_order'))
 
-    sequence = fields.Integer()
+    supply_plan_id = fields.Many2one('dw.mrp.supply.plan', ondelete='cascade')
+
+    product_id = fields.Many2one('product.product', required=True,
+                                 domain=lambda self: _domain_supply_products())
 
     uom_id = fields.Many2one('uom.uom', related='product_id.product_tmpl_id.uom_id')
 
@@ -47,7 +54,8 @@ class DwMrpSupplyPlanLines(models.Model):
     #     store=True
     # )
 
-    company_id = fields.Many2one('res.company', related="supply_plan_id.company_id", store=True)
+    company_id = fields.Many2one('res.company', related="supply_plan_id.company_id",
+                                 default=lambda self: self.env.company, store=1)
 
     partner_id = fields.Many2one('res.partner', string='Supplier',
                                  change_default=True,
@@ -79,7 +87,7 @@ class DwMrpSupplyPlanLines(models.Model):
             record[field_name] = sum(record.monthly_supply_plan_ids.mapped(field_name))
 
     def action_view_product_monthly_supply_plan(self):
-        tree_view = self.env.ref('dw_mrp_supply_plan.view_dw_mrp_product_monthly_supply_plan_form')
+        tree_view = self.env.ref('dw_mrp_supply_plan.view_dw_mrp_product_monthly_supply_plan_tree')
 
         return {
             'name': _("Product's Monthly Supply Plan"),
@@ -106,9 +114,23 @@ class DwMrpSupplyPlanLines(models.Model):
 
     @api.model
     def create(self, vals):
-        result = super().create(vals)
+
+        company_id = vals.get('company_id', self.default_get(['company_id'])['company_id'])
+        self_comp = self.with_company(company_id)
+
+        if vals.get('name', _('New')) == _('New'):
+            seq_date = None
+            if 'create_date' in vals:
+                seq_date = fields.Datetime.context_timestamp(self, fields.Datetime.to_datetime(vals.get('create_date')))
+
+            vals['name'] = self_comp.env['ir.sequence'].next_by_code('dw.mrp.supply.plan.lines',
+                                                                     sequence_date=seq_date) or '/'
+
+        result = super(DwMrpSupplyPlanLines, self_comp).create(vals)
+
         for res in result:
             res.monthly_supply_plan_ids = res.get_monthly_supply_plans()
+
         return result
 
     # @api.depends('bom_id')

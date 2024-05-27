@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="dw_product_quota_tree_view" model="ir.ui.view">
+        <field name="name">dw.product.quota.tree</field>
+        <field name="model">dw.product.quota</field>
+        <field name="arch" type="xml">
+            <tree string="Product Allowed Quota">
+                <field name="name"/>
+                <field name="product_id"/>
+                <field name="uom_id"/>
+                <field name="company_id"/>
+                <field name="type_id"/>
+                <field name="quota"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="state" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="dw_product_quota_form_view" model="ir.ui.view">
+        <field name="name">dw.product.quota.form</field>
+        <field name="model">dw.product.quota</field>
+        <field name="arch" type="xml">
+            <form string="Product Allowed Quota">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,expired"/>
+
+                    <button type="object" name="action_confirm" string="Confirm" class="oe_highlight"
+                            invisible="state in ('confirmed', 'expired', 'cancelled')"/>
+                    <button name="action_cancel" invisible="state not in ('draft', 'confirmed')" string="Cancel"
+                            type="object"/>
+                    <button name="action_draft" invisible="state != 'cancelled'" string="Set to Draft" type="object"/>
+                </header>
+
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="product_id"/>
+                        <field name="uom_id"/>
+                        <field name="company_id"/>
+                        <field name="type_id"/>
+                        <field name="quota"/>
+                        <field name="date_start"/>
+                        <field name="date_end"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="dw_product_quota_action" model="ir.actions.act_window">
+        <field name="name">Product Allowed Quota</field>
+        <field name="res_model">dw.product.quota</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create new MRP Product Quota.
+            </p>
+        </field>
+    </record>
+
+
+</odoo>

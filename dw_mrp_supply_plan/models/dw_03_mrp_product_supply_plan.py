@@ -60,7 +60,6 @@ class DwMrpProductSupplyPlan(models.Model):
     #             record.roadmap_done = False
 
     def action_approve(self):
-        self.state = 'approved'
         self.write({
             'state': 'approved',
             'quantity_approved': self.quantity_planned,

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="dw_mrp_supply_wizard_form" model="ir.ui.view">
+        <field name="name">dw.mrp.supply.wizard.form</field>
+        <field name="model">dw.mrp.supply.wizard</field>
+        <field name="arch" type="xml">
+            <form string="MRP Supply Wizard">
+                <group>
+                    <field name="company_id"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                </group>
+                <footer>
+                    <button name="action_fetch_supply_plan" type="object" string="Fetch Supply Plan"
+                            class="oe_highlight"/>
+                    <button name="action_create_rfqs" type="object" string="Create RFQs" class="oe_highlight"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+                <notebook>
+                    <page string="Products to Supply">
+                        <field name="product_supply_plan_ids">
+                            <tree>
+                                <field name="supply_plan_id"/>
+                                <field name="product_supply_plan_id"/>
+                                <field name="product_id"/>
+                                <field name="quantity_to_order" optional="show"/>
+                                <field name="quantity_planned" optional="hide"/>
+                                <field name="quantity_approved" optional="hide"/>
+
+                                <field name="partner_id"/>
+                                <field name="date_launch"/>
+                                <field name="date"/>
+
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+
+    <record id="dw_mrp_supply_wizard_action" model="ir.actions.act_window">
+        <field name="name">MRP Supply Wizard</field>
+        <field name="res_model">dw.mrp.supply.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="dw_mrp_supply_wizard_menu"
+              name="MRP Supply Wizard"
+              parent="dw_mrp_supply_plan.menu_dw_mrp_supply_plan_root"
+              sequence="2"
+              action="dw_mrp_supply_wizard_action"
+    />
+
+</odoo>

@@ -14,9 +14,13 @@
     'data': [
         # data
         'data/supply_plan_data.xml',
+
         # security
         'security/security.xml',
         'security/ir.model.access.csv',
+
+        # wizard
+        'wizard/dw_mrp_supply_wizard.xml',
 
         # views
         'views/dw_mrp_supply_plan_views.xml',

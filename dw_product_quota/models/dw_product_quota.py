@@ -32,8 +32,8 @@ class DWProductPurchaseQuota(models.Model):
 
     type_id = fields.Many2one('dw.product.quota.type', string='Quota Type', required=True)
 
-    company_id = fields.Many2one('res.company', related="type_id.company_id", store=1,
-                                 default=lambda self: self.env.company)
+    company_id = fields.Many2one('res.company',
+                                 default=lambda self: self.type_id.company_id or self.env.company, readonly=False)
 
     @api.constrains('quota')
     def _check_quota(self):

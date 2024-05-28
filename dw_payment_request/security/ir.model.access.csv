@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dw_payment_request,Dw Payment Request,model_dw_payment_request,base.group_user,1,1,1,1
+access_dw_reject_reason,Dw Reject Reason,model_dw_reject_reason,base.group_user,1,1,1,1
+access_dw_reject_reason_wizard,Dw Dw Reject Reason Wizard,model_dw_reject_reason_wizard,base.group_user,1,1,1,1
+
+
+
+
+
+
+
+
+
+

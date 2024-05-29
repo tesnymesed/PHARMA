@@ -129,14 +129,27 @@ class DwMrpSupplyWizard(models.Model):
             purchase_order_preview = self.env['dw.purchase.order.preview'].create(_prx)
 
             self.purchase_order_preview_ids += purchase_order_preview
-
+        #
+        # return {
+        #     'type': 'ir.actions.act_window',
+        #     'name': 'MRP Supply Wizard',
+        #     'res_model': 'dw.mrp.supply.wizard',
+        #     'view_mode': 'form',
+        #     'target': 'new',
+        #     'res_id': self.id,
+        # }
         return {
             'type': 'ir.actions.act_window',
-            'name': 'MRP Supply Wizard',
-            'res_model': 'dw.mrp.supply.wizard',
-            'view_mode': 'form',
-            'target': 'new',
-            'res_id': self.id,
+            'name': 'Purchase Orders Preview',
+            'res_model': 'dw.purchase.order.preview',
+            'view_mode': 'tree',
+            'target': 'current',
+            'domain': [('id', 'in', self.purchase_order_preview_ids.ids)],
+            'context': {
+                'search_default_group_by_date_planned': True,
+                'expand': True,
+            }
+            # 'res_id': self.id,
         }
 
 

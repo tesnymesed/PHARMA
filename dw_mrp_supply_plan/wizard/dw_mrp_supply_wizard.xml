@@ -1,40 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="dw_mrp_supply_wizard_form" model="ir.ui.view">
-        <field name="name">dw.mrp.supply.wizard.form</field>
+    <record id="dw_mrp_supply_wizard_view_form" model="ir.ui.view">
+        <field name="name">dw.mrp.supply.wizard.view.form</field>
         <field name="model">dw.mrp.supply.wizard</field>
         <field name="arch" type="xml">
             <form string="MRP Supply Wizard">
-                <group>
-                    <field name="company_id"/>
-                    <field name="date_from"/>
-                    <field name="date_to"/>
-                </group>
-                <footer>
-                    <button name="action_fetch_supply_plan" type="object" string="Fetch Supply Plan"
-                            class="oe_highlight"/>
-                    <button name="action_create_rfqs" type="object" string="Create RFQs" class="oe_highlight"/>
-                    <button string="Cancel" class="btn-secondary" special="cancel"/>
-                </footer>
-                <notebook>
-                    <page string="Products to Supply">
-                        <field name="product_supply_plan_ids">
-                            <tree>
-                                <field name="supply_plan_id"/>
-                                <field name="product_supply_plan_id"/>
-                                <field name="product_id"/>
-                                <field name="quantity_to_order" optional="show"/>
-                                <field name="quantity_planned" optional="hide"/>
-                                <field name="quantity_approved" optional="hide"/>
+                <sheet>
+                    <group>
+                        <field name="company_id"/>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <notebook>
+                        <page string="Product Supply Plan">
+                            <field name="product_supply_plan_ids" readonly="1">
+                                <tree editable="bottom" create="0">
+                                    <field name="company_id"/>
+                                    <field name="product_supply_plan_id"/>
+                                    <field name="date" readonly="1" force_save="1"/>
+                                    <field name="product_id" readonly="1"/>
 
-                                <field name="partner_id"/>
-                                <field name="date_launch"/>
-                                <field name="date"/>
+                                    <field name="date_launch" readonly="1"/>
 
-                            </tree>
-                        </field>
-                    </page>
-                </notebook>
+                                    <field name="quantity_to_order"/>
+                                    <field name="quantity_planned" optional="hide"/>
+                                    <field name="quantity_approved" optional="hide"/>
+
+                                    <field name="state" optional="hide" readonly="1"/>
+                                    <field name="partner_id"/>
+                                </tree>
+
+                            </field>
+                        </page>
+                        <page string="Purchase Orders Preview">
+                            <group>
+                                <field name="grouping_options" widget="many2many_checkboxes"/>
+                            </group>
+                            <field name="purchase_order_preview_ids" string="Purchase Order Preview">
+                                <tree editable="bottom" create="0">
+                                    <field name="company_id" invisible="not company_id"/>
+                                    <field name="partner_id" domain="[('is_supplier', '=', True)]"
+                                           invisible="not partner_id" readonly="0"
+                                    />
+                                    <field name="date_planned"/>
+                                    <!-- <field name="incoterm_id"/>-->
+                                    <field name="order_line_ids"/>
+                                </tree>
+
+                                <form>
+                                    <field name="partner_id" domain="[('is_supplier', '=', True)]" readonly="0"
+                                           required="True"/>
+                                    <field name="company_id"/>
+                                    <!-- <field name="incoterm_id"/>-->
+                                    <field name="order_line_ids">
+                                        <tree editable="bottom">
+                                            <field name="product_id"/>
+                                            <field name="product_qty"/>
+                                            <!-- <field name="price_unit"/>-->
+                                            <field name="date_planned"/>
+                                        </tree>
+                                    </field>
+                                </form>
+
+                            </field>
+                        </page>
+                    </notebook>
+
+                    <footer>
+                        <button name="action_fetch_supply_plan" string="Fetch Supply Plan" type="object"
+                                class="oe_highlight"/>
+                        <button name="action_create_purchase_orders" string="Create Purchase Orders"
+                                type="object"
+                                invisible="not product_supply_plan_ids"
+                                class="oe_highlight"/>
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree view for dw.purchase.order.preview -->
+    <record id="dw_purchase_order_preview_tree_view" model="ir.ui.view">
+        <field name="name">dw.purchase.order.preview.tree</field>
+        <field name="model">dw.purchase.order.preview</field>
+        <field name="arch" type="xml">
+            <tree string="Purchase Order Preview">
+                <field name="company_id"/>
+                <field name="partner_id"/>
+                <field name="date_planned"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form view for dw.purchase.order.preview -->
+    <record id="dw_purchase_order_preview_form_view" model="ir.ui.view">
+        <field name="name">dw.purchase.order.preview.form</field>
+        <field name="model">dw.purchase.order.preview</field>
+        <field name="arch" type="xml">
+            <form string="Purchase Order Preview">
+                <sheet>
+                    <group>
+                        <field name="company_id" invisible="not company_id"/>
+                        <field name="partner_id" domain="[('is_supplier', '=', True)]"
+                        />
+                        <field name="date_planned"/>
+                        <!-- <field name="incoterm_id"/>-->
+                    </group>
+                    <notebook>
+                        <page string="Preview Lines">
+                            <field name="order_line_ids">
+                                <tree editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="product_qty"/>
+                                    <!-- <field name="price_unit"/>-->
+                                    <field name="date_planned"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
             </form>
         </field>
     </record>
@@ -46,11 +131,26 @@
         <field name="target">new</field>
     </record>
 
+    <!-- Action for dw.purchase.order.preview.wizard -->
+    <record id="action_dw_purchase_order_preview" model="ir.actions.act_window">
+        <field name="name">Purchase Order Preview</field>
+        <field name="res_model">dw.purchase.order.preview</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
     <menuitem id="dw_mrp_supply_wizard_menu"
               name="MRP Supply Wizard"
               parent="dw_mrp_supply_plan.menu_dw_mrp_supply_plan_root"
               sequence="2"
               action="dw_mrp_supply_wizard_action"
     />
+
+    <!-- Menu item for dw.purchase.order.preview.wizard -->
+    <menuitem id="dw_purchase_order_preview_menu"
+              name="Purchase Order Preview"
+              parent="dw_mrp_supply_plan.menu_dw_mrp_supply_plan_root"
+              action="action_dw_purchase_order_preview"
+              sequence="5"/>
 
 </odoo>

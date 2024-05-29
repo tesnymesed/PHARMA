@@ -8,7 +8,7 @@
     'author': 'DIGIWAVES - ALGERIA',
     'website': 'www.digiwaves.io',
     'depends': [
-        'mrp',
+        'purchase',
         'custom_widget',
     ],
     'data': [
@@ -19,13 +19,14 @@
         'security/security.xml',
         'security/ir.model.access.csv',
 
-        # wizard
-        'wizard/dw_mrp_supply_wizard.xml',
 
         # views
         'views/dw_mrp_supply_plan_views.xml',
 
         'views/menus.xml',
+
+        # wizard
+        'wizard/dw_mrp_supply_wizard.xml',
     ],
 
     'installable': True,

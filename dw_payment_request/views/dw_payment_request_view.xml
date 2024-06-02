@@ -6,7 +6,7 @@
             <field name="model">dw.payment.request</field>
             <field name="arch" type="xml">
                 <tree
-                      decoration-success="state == 'confirm'" decoration-danger="state == 'rejected'">
+                        decoration-success="state == 'confirm'" decoration-danger="state == 'rejected'">
 
                     <field name="name" optional="show"/>
                     <field name="state" optional="show"/>
@@ -63,6 +63,7 @@
                                 <field name="request_date"/>
                                 <field name="date_limit"/>
                                 <field name="validation_date"/>
+                                <field name="amount_in_text" invisible="1"/>
 
                             </group>
                             <group>
@@ -71,8 +72,16 @@
                                 <field name="journal_id"/>
                                 <field name="date" invisible="state != 'rejected'"/>
                                 <field name="reject_motif_id" invisible="state != 'rejected'"/>
-                                <field name="dw_account_move_id" invisible="1" />
-                                <field name="dw_import_forlder_id" invisible="1" />
+                                <field name="dw_account_move_id" invisible="1"/>
+                                <field name="dw_import_forlder_id" invisible="1"/>
+                            </group>
+
+                        </group>
+                        <group>
+                            <group>
+                                <field name="check_num"/>
+                                <field name="Payment_order"/>
+                                <field name="Montant" widget="monetary"/>
                             </group>
 
                         </group>

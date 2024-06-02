@@ -1,11 +1,10 @@
 # -*- coding:utf-8 -*-
 
 from odoo import fields, models, api, _
-
+import datetime
 
 class DwPaymentRequest(models.Model):
     _name = "dw.payment.request"
-
 
     name = fields.Char(string="Reference", required=True, copy=False, readonly=True, default=lambda self: _('New'))
     state = fields.Selection(
@@ -18,7 +17,7 @@ class DwPaymentRequest(models.Model):
         string="State",
         default="draft",
         store=True,
-    group_expand = '_expand_states'
+        group_expand='_expand_states'
     )
     user_id = fields.Many2one('res.users', 'Agent', default=lambda self: self.env.user)
     confirmed_by_id = fields.Many2one('res.users', 'Confirmed by')
@@ -40,10 +39,36 @@ class DwPaymentRequest(models.Model):
         string='Journal',
 
     )
-    dw_account_move_id = fields.Many2one('account.move',string='Account move')
-    dw_import_forlder_id = fields.Many2one('dw.import.folder',string='Import Folder')
+    dw_account_move_id = fields.Many2one('account.move', string='Account move')
+    dw_import_forlder_id = fields.Many2one('dw.import.folder', string='Import Folder')
+
+    amount_in_text = fields.Char(string="Amount in Text", compute="_compute_amount_in_text")
+    check_num = fields.Char(string="Check N°")
+    Payment_order = fields.Char(string="Payment order")
+    company_id = fields.Many2one(
+        'res.company',
+        default=lambda self: self.env.company,
+    )
+    currency_id = fields.Many2one('res.currency', related='company_id.currency_id', store=True)
+    Montant = fields.Monetary(string="Amount", currency_field="currency_id")
+
+    @api.depends('dw_account_move_id.amount_total')  # Replace 'your_field_dependency' with the actual field dependency
+    def _compute_amount_in_text(self):
+        for rec in self:
+            currency = self.env['res.currency'].search([('name', '=', rec.dw_account_move_id.currency_id.name)],
+                                                       limit=1)
+            currency.ensure_one()
+            # set the context to text
+            ctx = self._context.copy()
+            ctx['lang'] = 'fr_FR'
+
+            amount_net = rec.dw_account_move_id.amount_total
+
+            rec.amount_in_text = currency.with_context(ctx).amount_to_text(amount_net)
+
     def action_confirm(self):
-        self.write({'state':'confirm'})
+        self.write({'state': 'confirm'})
+
     def action_reject(self):
 
         return {
@@ -57,16 +82,19 @@ class DwPaymentRequest(models.Model):
                 'default_payment_request_id': self.id, 'dialog_size': 'medium',
             }
         }
+
     def action_cancel(self):
         self.write({'state': 'cancelled'})
+
     def action_to_draft(self):
         self.write({'state': 'draft'})
+
     def _expand_states(self, states, domain, order):
         return [key for key, dummy in self._fields['state'].selection]
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             if 'name' not in vals or vals['name'] == _('New'):
                 vals['name'] = self.env['ir.sequence'].next_by_code('dw.payment.request') or _('New')
         return super().create(vals_list)
-

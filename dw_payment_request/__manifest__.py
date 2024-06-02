@@ -12,9 +12,10 @@
         # data
 'data/souche.xml',
         # report
-
+'report/payment_request_report.xml',
         # security
     'security/ir.model.access.csv',
+    'security/security.xml',
         # views
 'views/dw_payment_request_view.xml',
 'views/dw_reject_reason.xml',

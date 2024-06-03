@@ -3,6 +3,10 @@
 
 from collections import defaultdict
 from math import log10
+from odoo.tools.date_utils import add, subtract
+from odoo.tools.float_utils import float_round
+from odoo.osv.expression import OR, AND
+from collections import OrderedDict
 
 from odoo import api, fields, models
 from odoo.tools.date_utils import add, subtract
@@ -13,7 +17,7 @@ class DWMrpProductionSchedule(models.Model):
     _inherit = 'mrp.production.schedule'
 
     @api.model
-    def get_mps_view_state(self, domain=False, offset=0, limit=False):
+    def get_mps_view_state(self, domain=False, offset=0, limit=False, start_date_range='', end_date_range=''):
         """ Return the global information about MPS and a list of production
         schedules values with the domain.
 
@@ -28,15 +32,21 @@ class DWMrpProductionSchedule(models.Model):
         :rtype: dict
         """
 
-        config = super(DWMrpProductionSchedule, self).get_mps_view_state(domain=False, offset=offset, limit=limit)
-        config['date_objs'] = self.env.company._get_date_range()
+
+        config = super(DWMrpProductionSchedule, self).get_mps_view_state(domain=False, offset=0, limit=False)
+        productions_schedules = self.env['mrp.production.schedule'].search(domain or [], offset=offset, limit=limit)
+        config['date_objs'] = self.env.company._get_date_range(start_date_range=start_date_range, end_date_range=end_date_range)
+        config['dates'] = self.env.company._date_range_to_str(start_date_range=start_date_range, end_date_range=end_date_range)
+        config['production_schedule_ids'] = productions_schedules.get_production_schedule_view_state(start_date_range=start_date_range, end_date_range=end_date_range)
         return config
 
-    def get_production_schedule_view_state(self):
+    def get_production_schedule_view_state(self, start_date_range='', end_date_range=''):
+
         """ Prepare and returns the fields used by the MPS client action.
         For each schedule returns the fields on the model. And prepare the cells
         for each period depending the manufacturing period set on the company.
         The forecast cells contains the following information:
+
         - date_start: First day of the current period.
         - date_stop: Last day of the current period.
 
@@ -63,9 +73,9 @@ class DWMrpProductionSchedule(models.Model):
         _use_product_lead = self.env['ir.config_parameter'].sudo().get_param('dw_mrp.dw_use_product_lead')
 
         company_id = self.env.company
-        date_range = company_id._get_date_range()
-        date_range_year_minus_1 = company_id._get_date_range(years=1)
-        date_range_year_minus_2 = company_id._get_date_range(years=2)
+        date_range = company_id._get_date_range(start_date_range=start_date_range, end_date_range=end_date_range)
+        date_range_year_minus_1 = company_id._get_date_range(start_date_range=start_date_range, end_date_range=end_date_range, years=1)
+        date_range_year_minus_2 = company_id._get_date_range(start_date_range=start_date_range, end_date_range=end_date_range, years=2)
 
         # We need to get the schedule that impact the schedules in self. Since
         # the state is not saved, it needs to recompute the quantity to
@@ -103,6 +113,7 @@ class DWMrpProductionSchedule(models.Model):
             # Bypass if the schedule is only used in order to compute indirect
             # demand.
             rounding = production_schedule.product_id.uom_id.rounding
+
             delays = production_schedule._get_lead_times()
             lead_time = delays['total_delay']
             # Ignore "Days to Supply Components" when set demand for components since it's normally taken care by the
@@ -117,6 +128,7 @@ class DWMrpProductionSchedule(models.Model):
                 production_schedule_state['precision_digits'] = precision_digits
                 production_schedule_state['forecast_ids'] = []
 
+
             starting_inventory_qty = production_schedule.product_id.with_context(
                 warehouse=production_schedule.warehouse_id.id).qty_available
             if len(date_range):
@@ -125,11 +137,13 @@ class DWMrpProductionSchedule(models.Model):
                 starting_inventory_qty += outgoing_qty_done.get(
                     (date_range[0], production_schedule.product_id, production_schedule.warehouse_id), 0.0)
 
+
             for index, (date_start, date_stop) in enumerate(date_range):
                 forecast_values = {}
                 key = ((date_start, date_stop), production_schedule.product_id, production_schedule.warehouse_id)
                 key_y_1 = (date_range_year_minus_1[index], *key[1:])
                 key_y_2 = (date_range_year_minus_2[index], *key[1:])
+
                 existing_forecasts = production_schedule.forecast_ids.filtered(
                     lambda p: p.date >= date_start and p.date <= date_stop)
                 if production_schedule in self:
@@ -161,6 +175,7 @@ class DWMrpProductionSchedule(models.Model):
                     forecast_values['forecast_qty'] = 0.0
 
                 if not replenish_qty_updated:
+
                     replenish_qty = production_schedule._get_replenish_qty(
                         starting_inventory_qty - forecast_values['forecast_qty'] - forecast_values[
                             'indirect_demand_qty'])
@@ -179,6 +194,7 @@ class DWMrpProductionSchedule(models.Model):
                 if not forecast_values['replenish_qty']:
                     continue
                 # Set the indirect demand qty for children schedules.
+
                 for (product, ratio) in indirect_ratio_mps[
                     (production_schedule.warehouse_id, production_schedule.product_id)].items():
 
@@ -200,14 +216,17 @@ class DWMrpProductionSchedule(models.Model):
             if production_schedule in self:
                 # The state is computed after all because it needs the final
                 # quantity to replenish.
+
                 forecasts_state = production_schedule._get_forecasts_state(production_schedule_states_by_id, date_range,
                                                                            procurement_date)
+
                 forecasts_state = forecasts_state[production_schedule.id]
                 for index, forecast_state in enumerate(forecasts_state):
                     production_schedule_state['forecast_ids'][index].update(forecast_state)
 
                 # The purpose is to hide indirect demand row if the schedule do not
                 # depends from another.
+
                 has_indirect_demand = any(
                     forecast['indirect_demand_qty'] != 0 for forecast in production_schedule_state['forecast_ids'])
                 production_schedule_state['has_indirect_demand'] = has_indirect_demand
@@ -219,3 +238,4 @@ class DWMrpProductionSchedule(models.Model):
         """
         rules = self.product_id._get_rules_from_location(self.warehouse_id.lot_stock_id)
         return rules._get_lead_days(self.product_id, bom=self.bom_id)[0]
+

@@ -59,7 +59,7 @@
                                 <field name="uom_id" optional="hide"/>
                                 <button name="action_view_quantity_by_month" type="object" class="oe_stat_button"
                                         icon="fa-list"/>
-                                <button name="print_plan_summary_report" type="object" icon="fa-desktop"/>
+                                <button name="print_plan_summary_report" type="object"  title="Summary" icon="fa-desktop"/>
                             </tree>
                         </field>
                     </page>
@@ -93,7 +93,7 @@
                 <field name="no_manufacturing" optional="hide"/>
                 <button name="action_create_roadmap_wizard" type="object" class="oe_stat_button"
                         icon="fa-wrench" invisible="roadmap_id != False or mrp_state == 'done'"/>
-                <button name="action_view_quantity_by_week" type="object" class="oe_stat_button"
+                <button name="action_view_quantity_by_week" string="Weekly" type="object" class="oe_stat_button"
                         icon="oi-view-pivot"/>
             </tree>
         </field>

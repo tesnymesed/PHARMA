@@ -13,6 +13,7 @@
     'depends': ['mrp_mps',
                 'shared_assets'],
     'data': [
+        'views/product_template_views.xml',
         'views/res_config_settings_views.xml',
     ],
 

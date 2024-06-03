@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+dw_product_quota_access_right_user,DW Product Quota,model_dw_product_quota,base.group_user,1,1,1,1
+dw_product_quota_type_access_right_user,DW Product Quota Type,model_dw_product_quota_type,base.group_user,1,1,1,1

@@ -9,10 +9,8 @@ import { useBus } from "@web/core/utils/hooks";
 patch(MainComponent.prototype, {
   setup() {
         super.setup();
-        console.log("MainComponent this", this);
 //        let dates = this.model.data.date_objs;
         let model = this.model;
-        console.log("MainComponent model", model);
 
 //        let dates = model.data.date_objs;
 //        console.log("MainComponent dates", dates);
@@ -41,14 +39,11 @@ patch(MainComponent.prototype, {
         })
   },
    get manufacturingPeriodDates() {
-        console.log('manufacturingPeriodDates',this.manufacturingPeriodDates);
         return this.model.data.date_objs;
    },
 
    onWillStart() {
-        console.log('onWillStart');
         this.manufacturingPeriodDates = this.manufacturingPeriodDates;
-        console.log('onWillStart',this.manufacturingPeriodDates);
    }
 
 

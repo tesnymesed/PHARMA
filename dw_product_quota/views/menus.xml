@@ -1,0 +1,18 @@
+<odoo>
+    <menuitem
+            id="product_quota_in_purchase_config_menu_item" name="Product Quotas"
+            parent="purchase.menu_purchase_config" sequence="50"/>
+
+    <menuitem id="dw_product_quota_menu"
+              name="Product Allowed Quota"
+              action="dw_product_quota_action"
+              parent="dw_product_quota.product_quota_in_purchase_config_menu_item"
+              sequence="1"/>
+
+    <menuitem id="dw_product_quota_type_menu"
+              name="Product Allowed Quota Types"
+              action="dw_product_quota_type_action"
+              parent="dw_product_quota.product_quota_in_purchase_config_menu_item"
+              sequence="2"/>
+
+</odoo>

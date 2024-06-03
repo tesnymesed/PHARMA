@@ -56,8 +56,8 @@
             <field name="inherit_id" ref="product.product_normal_form_view"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='categ_id']" position="after">
-                    <field name="number_fournisseur" />
-                    <field name="number_fournisseur2" />
+                    <field name="number_fournisseur" invisible="1" />
+                    <field name="number_fournisseur2" invisible="1"/>
                     <field name="homologue" invisible="not purchase_ok"/>
                     <field name="has_backliested_supplier" invisible="1"/>
                     <field name="expired_homologation" invisible="1"/>

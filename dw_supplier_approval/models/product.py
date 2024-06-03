@@ -34,7 +34,7 @@ class DwProduct(models.Model):
         default=False
     )
     number_fournisseur = fields.Integer('Number of fournisseur', compute="_compute_number_fournisseur")
-    number_fournisseur2 = fields.Integer('Number of fournisseur', related="number_fournisseur", store=True)
+    number_fournisseur2 = fields.Integer('Number of fournisseur', compute="_compute_number_fournisseur2", store=True)
 
     homologation_ids = fields.One2many("dw.homologation", 'product_id', string="Homologation")
     homologation_ids = fields.One2many("dw.homologation", 'product_id', string="Homologation")
@@ -47,6 +47,11 @@ class DwProduct(models.Model):
 
     expired_contract = fields.Boolean('Expired contract', compute="_compute_expired_contract")
     expired_contract2 = fields.Boolean('Expired contract', related="expired_contract", store=True)
+
+    @api.depends('number_fournisseur')
+    def _compute_number_fournisseur2(self):
+        for record in self :
+            record.number_fournisseur2 = record.number_fournisseur
     def action_show_homologations(self):
         return ({
             'res_model': 'dw.homologation',

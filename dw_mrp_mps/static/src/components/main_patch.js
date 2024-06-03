@@ -9,10 +9,13 @@ import { useBus } from "@web/core/utils/hooks";
 patch(MainComponent.prototype, {
   setup() {
         super.setup();
+        console.log("MainComponent this", this);
 //        let dates = this.model.data.date_objs;
         let model = this.model;
+        console.log("MainComponent model", model);
 
 //        let dates = model.data.date_objs;
+//        console.log("MainComponent dates", dates);
         onWillStart(async ()=>{
             await loadCSS("shared_assets/static/libs/css/daterangepicker.css")
         })
@@ -31,18 +34,21 @@ patch(MainComponent.prototype, {
                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
                 }
               }, function(start, end, label) {
-                    self.model.load([], start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+                    self.model.load([], self.env.config.offset, self.env.config.limit, start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
               });
             });
 
         })
   },
    get manufacturingPeriodDates() {
+        console.log('manufacturingPeriodDates',this.manufacturingPeriodDates);
         return this.model.data.date_objs;
    },
 
    onWillStart() {
+        console.log('onWillStart');
         this.manufacturingPeriodDates = this.manufacturingPeriodDates;
+        console.log('onWillStart',this.manufacturingPeriodDates);
    }
 
 

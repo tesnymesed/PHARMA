@@ -138,28 +138,33 @@ class DwMrpSupplyWizard(models.Model):
         #     'target': 'new',
         #     'res_id': self.id,
         # }
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Purchase Orders Preview',
-            'res_model': 'dw.purchase.order.preview',
-            'view_mode': 'tree',
-            'target': 'current',
-            'domain': [('id', 'in', self.purchase_order_preview_ids.ids)],
-            'context': {
-                'search_default_group_by_date_planned': True,
+        action = self.env['ir.actions.act_window']._for_xml_id('dw_mrp_supply_plan.action_dw_purchase_order_preview')
+
+        if action:
+            _ctx = {
+                'group_by': ['company_id', 'date_planned'],
                 'expand': True,
             }
-            # 'res_id': self.id,
-        }
+
+            if 'partner' in [o.name for o in self.grouping_options]:
+                _ctx['group_by'].insert(1, 'partner_id')
+
+            action.update({
+                'target': 'current',
+                'domain': [('id', 'in', self.purchase_order_preview_ids.ids)],
+                'context': _ctx
+                # 'res_id': self.id,
+            })
+            return action
 
 
-class PurchaseOrderPreview(models.Model):
+class DWPurchaseOrderPreview(models.Model):
     _name = 'dw.purchase.order.preview'
     _description = 'Purchase Order Preview'
 
-    name = fields.Char('Ref', copy=False, default=_('New'))
+    name = fields.Char('PO Version', copy=False, default=_('New'))
 
-    wizard_id = fields.Many2one('dw.mrp.supply.wizard', string='Wizard')
+    wizard_id = fields.Many2one('dw.mrp.supply.wizard', string='Preview Ref')
     partner_id = fields.Many2one('res.partner', string='Supplier')
     company_id = fields.Many2one('res.company', string='Company')
     # incoterm_id = fields.Many2one('account.incoterms', string='Incoterm')
@@ -167,15 +172,41 @@ class PurchaseOrderPreview(models.Model):
 
     order_line_ids = fields.One2many('dw.purchase.order.preview.line', 'preview_id', string='Order Lines')
 
+    @api.model
+    def create(self, vals):
 
-class PurchaseOrderPreviewLine(models.Model):
+        if vals.get('name', _('New')) == _('New'):
+            seq_date = None
+            if 'create_date' in vals:
+                seq_date = fields.Datetime.context_timestamp(self, fields.Datetime.to_datetime(vals.get('create_date')))
+
+            vals['name'] = self.env['ir.sequence'].next_by_code('dw.purchase.order.preview',
+                                                                sequence_date=seq_date) or '/'
+
+        return super(DWPurchaseOrderPreview, self).create(vals)
+
+
+class DWPurchaseOrderPreviewLine(models.Model):
     _name = 'dw.purchase.order.preview.line'
     _description = 'Purchase Order Preview Line'
 
     name = fields.Char('Ref', copy=False, default=_('New'))
 
-    preview_id = fields.Many2one('dw.purchase.order.preview', string='Preview')
+    preview_id = fields.Many2one('dw.purchase.order.preview', string='PO Version')
     product_id = fields.Many2one('product.product', string='Product')
     product_qty = fields.Float(string='Quantity')
     price_unit = fields.Float(string='Unit Price')
     date_planned = fields.Date(string='Planned Date')
+
+    @api.model
+    def create(self, vals):
+
+        if vals.get('name', _('New')) == _('New'):
+            seq_date = None
+            if 'create_date' in vals:
+                seq_date = fields.Datetime.context_timestamp(self, fields.Datetime.to_datetime(vals.get('create_date')))
+
+            vals['name'] = self.env['ir.sequence'].next_by_code('dw.purchase.order.preview.line',
+                                                                sequence_date=seq_date) or '/'
+
+        return super(DWPurchaseOrderPreviewLine, self).create(vals)

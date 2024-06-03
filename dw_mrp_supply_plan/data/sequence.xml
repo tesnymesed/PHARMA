@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="sequence_dw_mrp_supply_wizard" model="ir.sequence">
+            <field name="name">PO Preview Sequence</field>
+            <field name="code">dw.mrp.supply.wizard</field>
+            <field name="prefix">SPP-</field>
+            <field name="padding">6</field>
+        </record>
+        <record id="sequence_dw_purchase_order_preview" model="ir.sequence">
+            <field name="name">PO Preview Sequence</field>
+            <field name="code">dw.purchase.order.preview</field>
+            <field name="prefix">PO/V-</field>
+            <field name="padding">6</field>
+        </record>
+        <record id="sequence_dw_purchase_order_preview_line" model="ir.sequence">
+            <field name="name">PO Preview Line Sequence</field>
+            <field name="code">dw.purchase.order.preview.line</field>
+            <field name="prefix">PO-L</field>
+            <field name="padding">6</field>
+        </record>
+    </data>
+</odoo>

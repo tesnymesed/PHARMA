@@ -34,6 +34,4 @@ class DwProductTemplate(models.Model):
 
     def _inverse_lead_time(self):
         for record in self:
-            print(record.dw_purchase_lead)
-            print(record.dw_set_lead_time)
             record.dw_set_lead_time = record.dw_purchase_lead

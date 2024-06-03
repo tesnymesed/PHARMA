@@ -9,14 +9,11 @@ patch(MpsLineComponent.prototype, {
     setup() {
         let data = this.props.data;
         let forecastIds = data.forecast_ids;
-        console.log("this", this);
-        console.log("this.props.data", this.props.data);
-        console.log("forecastIds", forecastIds);
+
 
         super.setup();
 
         onMounted(() => {
-            console.log('onMounted');
             this.index = this.findCurrentPeriodIdx(forecastIds)
             this.disableHeaderCells();
             this.disableTableContentCells();
@@ -30,7 +27,6 @@ patch(MpsLineComponent.prototype, {
         if (header.length > 0) {
             header = header[0];
         }
-        console.log("header", header)
 
         var nestedElements = header.getElementsByTagName('th');
 
@@ -42,7 +38,6 @@ patch(MpsLineComponent.prototype, {
     disableTableContentCells() {
         var elements = document.getElementsByClassName('o_mps_content'); // tbody
         for (var j = 0; j < elements.length; j++) {
-            console.log("elements[j]", elements[j])
             var trNestedElements = elements[j].getElementsByTagName('tr');
 
             for (var k = 0; k < trNestedElements.length; k++) {
@@ -75,7 +70,6 @@ patch(MpsLineComponent.prototype, {
             return (startDate <= today && endDate >= today)
         });
 
-        console.log(index, "index");
         return index;
 
     }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="dw_product_quota_type_tree_view" model="ir.ui.view">
+        <field name="name">dw.product.quota.type.tree</field>
+        <field name="model">dw.product.quota.type</field>
+        <field name="arch" type="xml">
+            <tree string="Product Quota Type">
+                <field name="name"/>
+                <field name="company_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="dw_product_quota_type_form_view" model="ir.ui.view">
+        <field name="name">product.quota.type.form</field>
+        <field name="model">dw.product.quota.type</field>
+        <field name="arch" type="xml">
+            <form string="Product Quota Type">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="company_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="dw_product_quota_type_action" model="ir.actions.act_window">
+        <field name="name">Product Quota Type</field>
+        <field name="res_model">dw.product.quota.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create new MRP Product Quota Type.
+            </p>
+        </field>
+    </record>
+
+</odoo>

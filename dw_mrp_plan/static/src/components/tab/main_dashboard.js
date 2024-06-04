@@ -14,10 +14,6 @@ export class OwlMainDashboard extends Component {
                 product_list: [],
             })
 
-        onWillStart(async()=>{
-
-        })
-
          onMounted(async ()=>{
             var cuurent_year = new Date().getFullYear()
             this.state.monthly_data = await this.get_mrp_plan_product_data(cuurent_year.toString())
@@ -289,6 +285,7 @@ export class OwlMainDashboard extends Component {
                             title: key,
                             field: key,
                             editor: 'number',
+                            formatterParams:{'type':'monthly'},
                             formatter: this.actionFormatterSplitCell.bind(this),
                             cellEdited: this.monthlycellEdited.bind(this),
 
@@ -309,6 +306,7 @@ export class OwlMainDashboard extends Component {
                             title: key,
                             field: key,
                             editor: 'number',
+                            formatterParams:{'type':'weekly'},
                             formatter: this.actionFormatterSplitCell.bind(this),
                             cellEdited: this.weeklyCellEdited.bind(this),
                         }
@@ -321,6 +319,7 @@ export class OwlMainDashboard extends Component {
              return []
         }
     }
+
     actionFormatterSplitCell(cell, formatterParams, onRendered) {
         var cellElement = cell.getElement();
         // Create the split cell container
@@ -339,19 +338,47 @@ export class OwlMainDashboard extends Component {
         button.classList.add('btn-outline-secondary');
         // button.classList.add('rounded-pill');
         button.classList.add('road-map-qty');
-        button.textContent = "QTY 88";
+        
         container.appendChild(valueContainer);
         buttonContainer.appendChild(button);
         container.appendChild(buttonContainer);
+        var product = cell.getTable().getData()[0]['Product'];
+        if(formatterParams['type'] === 'monthly'){
+            var date = this.formatDate(cell.getColumn().getField(),-1)
+            var prod_id = this.searchItem(this.state.monthly_data, 'date', date, 'product', product, 'productID')
+        }else{
+            var date = cell.getColumn().getField()
+            var prod_id = this.searchItem(this.state.weekly_mrp_plan_product_data, 'date', date, 'product', product, 'productID')
+        }
+        var roadMap = this.getRoadMapData(prod_id,date)
+        var recordId = -1
+        roadMap.then((result) => {
+            console.log('getRoadMapData',result)
+            if (result.length > 0){
+                button.textContent = result[0]['quantity'];
+                recordId = result[0]['id'];
+            }else{
+                button.textContent = 0;
+            }
+        }).catch((error) => {
+            console.log("ERR: ",error)
+        });
+
         button.addEventListener('click', function(e) {
-            console.log("=== Button Clicked: Display OFs -> RoadMap===")
             if (e.target) {
-                console.log("777777777777777",cell)
                 e.stopPropagation();
+                if (recordId != -1){
+                    this.env.services.action.doAction({
+                        type: 'ir.actions.act_window',
+                        res_model: 'mrp.roadmap',
+                        res_id: recordId,
+                        views: [[false, 'form']],
+                        target: 'current',
+                    });
+                }
             }
         }.bind(this))
         return container;
-
     }
 
     actionButtonFormatter(cell, formatterParams, onRendered) {
@@ -636,7 +663,6 @@ export class OwlMainDashboard extends Component {
         if(pdp_validated === true){
              cell.getElement().style.backgroundColor = "#ADD8E6";
              cell.restoreOldValue();
-            //  return `<span class="editable-field">${editedValue}</span><span class="non-editable-field">New Field</span>`;
         }else{
             var record_id_to_update = this.searchItem(this.state.mrp_plan_product_data, 'date', this.formatDate(columnField,-1), 'product', prod, 'id')
             cell.getElement().setAttribute("contenteditable", false);
@@ -647,9 +673,8 @@ export class OwlMainDashboard extends Component {
                 });
                 console.log('Field value updated successfully');
                 this.state.mrp_plan_product_data = this.updateObjectById(this.state.mrp_plan_product_data , record_id_to_update, 'quantity', editedValue)
-                // return `<span class="editable-field">${editedValue}</span><span class="non-editable-field">New Field</span>`;
             } catch (error) {
-                console.error('Error updating field value:', error);
+                console.error('Catching Error updating field value:', error);
             }
         }
     }
@@ -782,6 +807,10 @@ export class OwlMainDashboard extends Component {
                 div.style.display = "block";
             }
         }
+    }
+
+    async getRoadMapData(product,date) {
+        return await this.orm.searchRead("mrp.roadmap",[['product_id.id','=',product],['date','=',date]],[])
     }
 
     btnCreateMrpPla(){

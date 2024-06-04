@@ -289,6 +289,7 @@ export class OwlMainDashboard extends Component {
                             title: key,
                             field: key,
                             editor: 'number',
+                            formatter: this.actionFormatterSplitCell.bind(this),
                             cellEdited: this.monthlycellEdited.bind(this),
 
                         }
@@ -308,6 +309,7 @@ export class OwlMainDashboard extends Component {
                             title: key,
                             field: key,
                             editor: 'number',
+                            formatter: this.actionFormatterSplitCell.bind(this),
                             cellEdited: this.weeklyCellEdited.bind(this),
                         }
                     }
@@ -318,6 +320,38 @@ export class OwlMainDashboard extends Component {
         }else{
              return []
         }
+    }
+    actionFormatterSplitCell(cell, formatterParams, onRendered) {
+        var cellElement = cell.getElement();
+        // Create the split cell container
+        var container = document.createElement('div');
+        container.classList.add('split-cell');
+        // Create the cell value container
+        var valueContainer = document.createElement('div');
+        valueContainer.classList.add('cell-content');
+        valueContainer.textContent = cell.getValue();
+        // Create the button container
+        var buttonContainer = document.createElement('div');
+        buttonContainer.classList.add('button-container');
+        // Create the button element
+        var button = document.createElement('button');
+        button.classList.add('badge');
+        button.classList.add('btn-outline-secondary');
+        // button.classList.add('rounded-pill');
+        button.classList.add('road-map-qty');
+        button.textContent = "QTY 88";
+        container.appendChild(valueContainer);
+        buttonContainer.appendChild(button);
+        container.appendChild(buttonContainer);
+        button.addEventListener('click', function(e) {
+            console.log("=== Button Clicked: Display OFs -> RoadMap===")
+            if (e.target) {
+                console.log("777777777777777",cell)
+                e.stopPropagation();
+            }
+        }.bind(this))
+        return container;
+
     }
 
     actionButtonFormatter(cell, formatterParams, onRendered) {
@@ -540,7 +574,7 @@ export class OwlMainDashboard extends Component {
                             paginationSizeSelector:[3, 5, 8, 12,20,30],
                             movableColumns:true,
                             paginationCounter:"rows",
-                            columns: columns,
+                            columns: columns
                         });
         return table
     }
@@ -567,6 +601,33 @@ export class OwlMainDashboard extends Component {
         return ids;
     }
 
+    customEditor(cell, onRendered, success, cancel) {
+        console.log("=== inside etidor -----")
+        // Create and style input element
+        var input = document.createElement("input");
+        input.setAttribute("type", "text");
+        input.style.width = "100%";
+        input.style.boxSizing = "border-box";
+
+        // Set initial value
+        input.value = cell.getValue();
+
+        // Focus on input element when editor is rendered
+        onRendered(function(){
+            input.focus();
+            input.style.height = "100%";
+        });
+
+        // When user presses enter, update cell value and close editor
+        input.addEventListener("blur", function(e){
+            success(input.value);
+        });
+
+        // Add input to cell
+        cell.getElement().appendChild(input);
+        return input;
+    }
+
     async monthlycellEdited(cell){
         const editedValue = cell.getValue();
         const columnField = cell.getField();
@@ -575,6 +636,7 @@ export class OwlMainDashboard extends Component {
         if(pdp_validated === true){
              cell.getElement().style.backgroundColor = "#ADD8E6";
              cell.restoreOldValue();
+            //  return `<span class="editable-field">${editedValue}</span><span class="non-editable-field">New Field</span>`;
         }else{
             var record_id_to_update = this.searchItem(this.state.mrp_plan_product_data, 'date', this.formatDate(columnField,-1), 'product', prod, 'id')
             cell.getElement().setAttribute("contenteditable", false);
@@ -585,6 +647,7 @@ export class OwlMainDashboard extends Component {
                 });
                 console.log('Field value updated successfully');
                 this.state.mrp_plan_product_data = this.updateObjectById(this.state.mrp_plan_product_data , record_id_to_update, 'quantity', editedValue)
+                // return `<span class="editable-field">${editedValue}</span><span class="non-editable-field">New Field</span>`;
             } catch (error) {
                 console.error('Error updating field value:', error);
             }

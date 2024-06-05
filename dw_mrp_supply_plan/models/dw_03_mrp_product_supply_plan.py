@@ -60,14 +60,16 @@ class DwMrpProductSupplyPlan(models.Model):
     #             record.roadmap_done = False
 
     def action_approve(self):
-        self.write({
-            'state': 'approved',
-            'quantity_approved': self.quantity_planned,
-            'quantity_to_order': self.quantity_planned,
-        })
+        for record in self:
+            record.write({
+                'state': 'approved',
+                'quantity_approved': record.quantity_planned,
+                'quantity_to_order': record.quantity_planned,
+            })
 
     def action_done(self):
-        self.write({'state': 'done', 'quantity_done': self.quantity_to_order})
+        for record in self:
+            record.write({'state': 'done', 'quantity_done': record.quantity_to_order})
 
     @api.model
     def create(self, vals):

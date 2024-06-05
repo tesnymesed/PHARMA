@@ -85,7 +85,8 @@
         <field name="name">dw.purchase.order.preview.tree</field>
         <field name="model">dw.purchase.order.preview</field>
         <field name="arch" type="xml">
-            <tree string="Purchase Order Preview">
+            <tree string="Purchase Order Versions">
+                <field name="name"/>
                 <field name="company_id"/>
                 <field name="partner_id"/>
                 <field name="date_planned"/>
@@ -98,9 +99,11 @@
         <field name="name">dw.purchase.order.preview.form</field>
         <field name="model">dw.purchase.order.preview</field>
         <field name="arch" type="xml">
-            <form string="Purchase Order Preview">
+            <form string="Purchase Order Version">
                 <sheet>
                     <group>
+                        <field name="wizard_id"/>
+                        <field name="name"/>
                         <field name="company_id" invisible="not company_id"/>
                         <field name="partner_id" domain="[('is_supplier', '=', True)]"
                         />
@@ -108,7 +111,7 @@
                         <!-- <field name="incoterm_id"/>-->
                     </group>
                     <notebook>
-                        <page string="Preview Lines">
+                        <page string="PO Lines">
                             <field name="order_line_ids">
                                 <tree editable="bottom">
                                     <field name="product_id"/>
@@ -133,7 +136,7 @@
 
     <!-- Action for dw.purchase.order.preview.wizard -->
     <record id="action_dw_purchase_order_preview" model="ir.actions.act_window">
-        <field name="name">Purchase Order Preview</field>
+        <field name="name">Purchase Order Versions</field>
         <field name="res_model">dw.purchase.order.preview</field>
         <field name="view_mode">tree,form</field>
     </record>
@@ -148,7 +151,7 @@
 
     <!-- Menu item for dw.purchase.order.preview.wizard -->
     <menuitem id="dw_purchase_order_preview_menu"
-              name="Purchase Order Preview"
+              name="Purchase Orders Plan"
               parent="dw_mrp_supply_plan.menu_dw_mrp_supply_plan_root"
               action="action_dw_purchase_order_preview"
               sequence="5"/>

@@ -14,11 +14,11 @@
     'data': [
         # data
         'data/supply_plan_data.xml',
+        'data/sequence.xml',
 
         # security
         'security/security.xml',
         'security/ir.model.access.csv',
-
 
         # views
         'views/dw_mrp_supply_plan_views.xml',

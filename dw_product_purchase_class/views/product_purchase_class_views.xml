@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="dw_product_purchase_class_view_form" model="ir.ui.view">
+        <field name="name">dw.product.purchase.class.form</field>
+        <field name="model">dw.product.purchase.class</field>
+        <field name="arch" type="xml">
+            <form string="Purchase Class">
+                <group>
+                    <group>
+                        <field name="name" placeholder="e.g. A, B, C, D .."/>
+                        <field name="dw_frequency"/>
+                    </group>
+                    <group>
+                        <field name="code"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                </group>
+
+                <field name="active" invisible="1"/>
+            </form>
+        </field>
+    </record>
+
+    <record id="dw_product_purchase_class_view_tree" model="ir.ui.view">
+        <field name="name">dw.product.purchase.class.tree</field>
+        <field name="model">dw.product.purchase.class</field>
+        <field name="arch" type="xml">
+            <tree string="Purchase Class">
+                <field name="name"/>
+                <field name="dw_frequency"/>
+                <field name="code"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_dw_product_purchase_class" model="ir.actions.act_window">
+        <field name="name">Product classes</field>
+        <field name="res_model">dw.product.purchase.class</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No class found. Let's create one!
+            </p>
+        </field>
+    </record>
+</odoo>

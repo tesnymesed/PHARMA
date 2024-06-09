@@ -84,6 +84,7 @@ class DwMrpSupplyPlan(models.Model):
 
     def action_cancel(self):
         self.state = 'cancelled'
+        self.product_supply_plan_ids.monthly_supply_plan_ids.action_cancel()
 
     def unlink(self):
         for record in self:

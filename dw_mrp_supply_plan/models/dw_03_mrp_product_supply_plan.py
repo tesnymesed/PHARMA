@@ -15,7 +15,11 @@ class DwMrpProductSupplyPlan(models.Model):
 
     date_launch = fields.Date()
 
-    state = fields.Selection([('proposed', 'Proposed'), ('approved', 'Approved'), ('done', 'Done')], default='proposed')
+    state = fields.Selection([('draft', 'Draft'),
+                              ('approved', 'Approved'),
+                              ('done', 'Done'),
+                              ('cancelled', 'Cancelled')],
+                             string="Status", default='draft', readonly=True)
 
     quantity_planned = fields.Float(string="Planned Quantity", default=0.0)
 
@@ -70,6 +74,10 @@ class DwMrpProductSupplyPlan(models.Model):
     def action_done(self):
         for record in self:
             record.write({'state': 'done', 'quantity_done': record.quantity_to_order})
+
+    def action_cancel(self):
+        for record in self:
+            record.write({'state': 'cancelled'})
 
     @api.model
     def create(self, vals):

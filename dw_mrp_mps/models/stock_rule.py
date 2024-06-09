@@ -30,4 +30,3 @@ class StockRule(models.Model):
                 delay_description.append((_('Product Lead Time'), _('+ %d day(s)', product_lead_time)))
 
         return delays, delay_description
-

@@ -13,19 +13,9 @@ export class OwlMainDashboard extends Component {
                 weekly_mrp_plan_product_data : [],
                 product_list: [],
             })
+        
 
          onMounted(async ()=>{
-            var cuurent_year = new Date().getFullYear()
-            this.state.monthly_data = await this.get_mrp_plan_product_data(cuurent_year.toString())
-            var [original_data, data] = this.data_nest(this.state.monthly_data,'monthly')
-            var monthly_tab
-            var weekly_tab
-            this.state.mrp_plan_product_data = original_data
-            var monthly_columns = this.getTabCols(data)
-            monthly_tab = this.setupTabulator(data,monthly_columns,"#tab");
-            monthly_tab.on("tableBuilt", function() {
-                monthly_tab.redraw();
-            });
             $('.select2').select2({
                 closeOnSelect: false
             });
@@ -39,6 +29,21 @@ export class OwlMainDashboard extends Component {
             }.bind(this));
             const create_option = this.addSelectOption('Create MRP Plan...', 'createMrpPlan')
             selectMrpPlan.appendChild(create_option);
+
+            //Load tab data
+            var selected_plan_id = $('#select-mrp-plan').val()
+            // var cuurent_year = new Date().getFullYear()
+            this.state.monthly_data = await this.get_mrp_plan_product_data('', selected_plan_id == 'createMrpPlan' ? -1 : selected_plan_id)
+            var [original_data, data] = this.data_nest(this.state.monthly_data,'monthly')
+            var monthly_tab
+            var weekly_tab
+            this.state.mrp_plan_product_data = original_data
+            var monthly_columns = this.getTabCols(data)
+            monthly_tab = this.setupTabulator(data,monthly_columns,"#tab");
+            monthly_tab.on("tableBuilt", function() {
+                monthly_tab.redraw();
+            });
+           
 
             $('#create-plan').click(function() {
                 this.btnCreateMrpPla()
@@ -353,7 +358,7 @@ export class OwlMainDashboard extends Component {
         var roadMap = this.getRoadMapData(prod_id,date)
         var recordId = -1
         roadMap.then((result) => {
-            console.log('getRoadMapData',result)
+            // console.log('getRoadMapData',result)
             if (result.length > 0){
                 button.textContent = result[0]['quantity'];
                 recordId = result[0]['id'];
@@ -706,7 +711,8 @@ export class OwlMainDashboard extends Component {
         if (id){
             var data =  this.orm.searchRead("product.mrp.plan",[[1,'=',1],['product_plan_id.plan_id.id','=',id]],['quantity','date','product_id','expected_start_quantity','sale_planned_quantity','lot_size','expected_final_quantity','sale_capacity','autonomy','pdp_validation'])
         }else{
-            var data =  this.orm.searchRead("product.mrp.plan",[[1,'=',1],['product_plan_id.plan_id.season_date','=',year]],['quantity','date','product_id','expected_start_quantity','sale_planned_quantity','lot_size','expected_final_quantity','sale_capacity','autonomy','pdp_validation'])
+            var data =  this.orm.searchRead("product.mrp.plan",[[1,'=',1],['product_plan_id.plan_id.season_date','=',year]],['product_plan_id','quantity','date','product_id','expected_start_quantity','sale_planned_quantity','lot_size','expected_final_quantity','sale_capacity','autonomy','pdp_validation'])
+        
         }
         var res = []
         await data.then(result => {

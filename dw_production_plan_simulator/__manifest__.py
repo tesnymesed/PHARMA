@@ -19,7 +19,7 @@
     - Determine the feasibility of the production plan
     - Display alert messages for capacity and material constraints
     """,
-    'depends': ['web', 'shared_assets'],
+    'depends': ['web', 'shared_assets','mrp'],
     'data': [
         # data
 

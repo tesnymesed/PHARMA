@@ -356,15 +356,16 @@ class DwProductionPlanSimulator(models.Model):
         existing_mps = []
         for i, vals in enumerate(vals_list):
             # Allow to add components of a BoM for MPS already created
-            if vals.get('bom_id'):
-                mps = self.search([
-                    ('product_id', '=', vals['product_id']),
-                    ('warehouse_id', '=', vals.get('warehouse_id', self._default_warehouse_id().id)),
-                    ('company_id', '=', vals.get('company_id', self.env.company.id)),
-                ], limit=1)
-                if mps:
-                    # mps.bom_id = vals.get('bom_id')
-                    existing_mps.append((i, mps.id))
+            # if vals.get('bom_id'):
+            mps = self.search([
+                ('product_id', '=', vals['product_id']),
+                ('bom_id', '=', vals['bom_id']),
+                ('warehouse_id', '=', vals.get('warehouse_id', self._default_warehouse_id().id)),
+                ('company_id', '=', vals.get('company_id', self.env.company.id)),
+            ], limit=1)
+            if mps:
+                # mps.bom_id = vals.get('bom_id')
+                existing_mps.append((i, mps.id))
 
         for i_remove, __ in reversed(existing_mps):
             del vals_list[i_remove]
@@ -487,6 +488,8 @@ class DwProductionPlanSimulator(models.Model):
                     forecast_values['sold_qty'] = float_round(outgoing_qty_done.get(key, 0.0),
                                                               precision_rounding=rounding)
                     forecast_values['sale_objective_qty'] = float_round(
+                        incoming_qty.get(key, 0.0), precision_rounding=rounding)
+                    forecast_values['production_objective_qty'] = float_round(
                         incoming_qty.get(key, 0.0), precision_rounding=rounding)
 
                 forecast_values['indirect_demand_qty'] = float_round(indirect_demand_qty.get(key, 0.0),

@@ -27,13 +27,13 @@
             - <t t-esc="productionSimulation.warehouse_id[1]"
           /></span>
           <span> </span>
-<!--          <a-->
-<!--            href="#"-->
-<!--            role="button"-->
-<!--            title="Forecast Report"-->
-<!--            t-attf-class="fa fa-fw fa-area-chart"-->
-<!--            t-on-click.prevent="_onClickForecastReport"-->
-<!--          />-->
+          <!--          <a-->
+          <!--            href="#"-->
+          <!--            role="button"-->
+          <!--            title="Forecast Report"-->
+          <!--            t-attf-class="fa fa-fw fa-area-chart"-->
+          <!--            t-on-click.prevent="_onClickForecastReport"-->
+          <!--          />-->
         </th>
         <th />
         <t
@@ -85,6 +85,22 @@
         >
           <th class="text-end pe-4">
             <span t-esc="formatFloat(simulation.sale_objective_qty)" />
+          </th>
+        </t>
+      </tr>
+      <tr name="production_objective">
+        <th />
+        <th scope="row">
+          <span>Production Objective</span>
+        </th>
+        <th></th>
+        <t
+          t-foreach="productionSimulation.product_plan_sim_ids"
+          t-as="simulation"
+          t-key="simulation_index"
+        >
+          <th class="text-end pe-4">
+            <span t-esc="formatFloat(simulation.production_objective_qty)" />
           </th>
         </t>
       </tr>

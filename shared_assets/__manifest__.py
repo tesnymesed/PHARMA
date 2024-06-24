@@ -21,6 +21,7 @@
             'shared_assets/static/libs/js/select2.min.js',
             'shared_assets/static/libs/js/moment.min.js',
             'shared_assets/static/libs/js/daterangepicker.min.js',
+            
         ],
     },
     'installable': True,

@@ -13,6 +13,7 @@
                         <field name="lot_size" readonly="id"/>
                     </group>
                     <group>
+                        <field name="product_tmpl_id" invisible="1"/>
                         <field name="warehouse_id" />
                         <field name="workcenter_id"/>
                         <field name="workcenter_default_capacity" readonly="id"/>

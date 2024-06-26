@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+import datetime
+
+from odoo import fields, models, _
 from odoo.tools.date_utils import start_of, end_of, add, subtract
 from odoo.tools.misc import format_date
-import datetime
 
 
 class DWCompany(models.Model):
@@ -37,7 +38,8 @@ class DWCompany(models.Model):
         if start_date_range != '':
             first_day = datetime.datetime.strptime(start_date_range, "%Y-%m-%d").date()
             end_date_range = datetime.datetime.strptime(end_date_range, "%Y-%m-%d").date()
-            manufacturing_period_count = self.count_manufacturing_period_to_display(first_day, end_date_range, self.manufacturing_period)
+            manufacturing_period_count = self.count_manufacturing_period_to_display(first_day, end_date_range,
+                                                                                    self.manufacturing_period)
         for columns in range(manufacturing_period_count):
             last_day = end_of(first_day, self.manufacturing_period)
             date_range.append((first_day, last_day))
@@ -50,7 +52,7 @@ class DWCompany(models.Model):
         delta = end_date_range - start_date_range
         days = delta.days
         if manufacturing_period == 'day':
-            col_count =  days
+            col_count = days
         elif manufacturing_period == 'week':
             col_count = days // 7
         else:
@@ -69,11 +71,11 @@ class DWCompany(models.Model):
                 dates_as_str.append(format_date(self.env, date_start, date_format='MMM yyyy'))
             elif self.manufacturing_period == 'week':
                 dates_as_str.append(_('Week %(week_num)s (%(start_date)s-%(end_date)s/%(month)s)',
-                    week_num=format_date(self.env, date_start, date_format='w'),
-                    start_date=format_date(self.env, date_start, date_format='d'),
-                    end_date=format_date(self.env, date_stop, date_format='d'),
-                    month=format_date(self.env, date_start, date_format='MMM')
-                ))
+                                      week_num=format_date(self.env, date_start, date_format='w'),
+                                      start_date=format_date(self.env, date_start, date_format='d'),
+                                      end_date=format_date(self.env, date_stop, date_format='d'),
+                                      month=format_date(self.env, date_start, date_format='MMM')
+                                      ))
             else:
                 dates_as_str.append(format_date(self.env, date_start, date_format='MMM d'))
         return dates_as_str

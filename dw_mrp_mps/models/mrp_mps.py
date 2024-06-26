@@ -3,10 +3,6 @@
 
 from collections import defaultdict
 from math import log10
-from odoo.tools.date_utils import add, subtract
-from odoo.tools.float_utils import float_round
-from odoo.osv.expression import OR, AND
-from collections import OrderedDict
 
 from odoo import api, fields, models
 from odoo.tools.date_utils import add, subtract
@@ -32,12 +28,14 @@ class DWMrpProductionSchedule(models.Model):
         :rtype: dict
         """
 
-
         config = super(DWMrpProductionSchedule, self).get_mps_view_state(domain=False, offset=0, limit=False)
         productions_schedules = self.env['mrp.production.schedule'].search(domain or [], offset=offset, limit=limit)
-        config['date_objs'] = self.env.company._get_date_range(start_date_range=start_date_range, end_date_range=end_date_range)
-        config['dates'] = self.env.company._date_range_to_str(start_date_range=start_date_range, end_date_range=end_date_range)
-        config['production_schedule_ids'] = productions_schedules.get_production_schedule_view_state(start_date_range=start_date_range, end_date_range=end_date_range)
+        config['date_objs'] = self.env.company._get_date_range(start_date_range=start_date_range,
+                                                               end_date_range=end_date_range)
+        config['dates'] = self.env.company._date_range_to_str(start_date_range=start_date_range,
+                                                              end_date_range=end_date_range)
+        config['production_schedule_ids'] = productions_schedules.get_production_schedule_view_state(
+            start_date_range=start_date_range, end_date_range=end_date_range)
         return config
 
     def get_production_schedule_view_state(self, start_date_range='', end_date_range=''):
@@ -74,8 +72,10 @@ class DWMrpProductionSchedule(models.Model):
 
         company_id = self.env.company
         date_range = company_id._get_date_range(start_date_range=start_date_range, end_date_range=end_date_range)
-        date_range_year_minus_1 = company_id._get_date_range(start_date_range=start_date_range, end_date_range=end_date_range, years=1)
-        date_range_year_minus_2 = company_id._get_date_range(start_date_range=start_date_range, end_date_range=end_date_range, years=2)
+        date_range_year_minus_1 = company_id._get_date_range(start_date_range=start_date_range,
+                                                             end_date_range=end_date_range, years=1)
+        date_range_year_minus_2 = company_id._get_date_range(start_date_range=start_date_range,
+                                                             end_date_range=end_date_range, years=2)
 
         # We need to get the schedule that impact the schedules in self. Since
         # the state is not saved, it needs to recompute the quantity to
@@ -128,7 +128,6 @@ class DWMrpProductionSchedule(models.Model):
                 production_schedule_state['precision_digits'] = precision_digits
                 production_schedule_state['forecast_ids'] = []
 
-
             starting_inventory_qty = production_schedule.product_id.with_context(
                 warehouse=production_schedule.warehouse_id.id).qty_available
             if len(date_range):
@@ -136,7 +135,6 @@ class DWMrpProductionSchedule(models.Model):
                     (date_range[0], production_schedule.product_id, production_schedule.warehouse_id), 0.0)
                 starting_inventory_qty += outgoing_qty_done.get(
                     (date_range[0], production_schedule.product_id, production_schedule.warehouse_id), 0.0)
-
 
             for index, (date_start, date_stop) in enumerate(date_range):
                 forecast_values = {}
@@ -175,7 +173,6 @@ class DWMrpProductionSchedule(models.Model):
                     forecast_values['forecast_qty'] = 0.0
 
                 if not replenish_qty_updated:
-
                     replenish_qty = production_schedule._get_replenish_qty(
                         starting_inventory_qty - forecast_values['forecast_qty'] - forecast_values[
                             'indirect_demand_qty'])
@@ -238,4 +235,3 @@ class DWMrpProductionSchedule(models.Model):
         """
         rules = self.product_id._get_rules_from_location(self.warehouse_id.lot_stock_id)
         return rules._get_lead_days(self.product_id, bom=self.bom_id)[0]
-

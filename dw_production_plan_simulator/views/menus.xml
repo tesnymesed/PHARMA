@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_production_plan_simulator" model="ir.actions.client">
+            <field name="name">Production Plan Simulator</field>
+            <field name="res_model">dw.production.plan.simulation</field>
+            <field name="tag">dw_production_plan_simulator.prod_plan_sim_client_action</field>
+        </record>
+        <!-- Top menu item -->
+        <menuitem name="Production Plan Simulator"
+                  id="menu_dw_production_plan_simulator_root"
+                  web_icon="dw_production_plan_simulator,static/description/icon.png"
+                  sequence="140"
+        />
+
+        <menuitem
+                id="menu_dw_production_plan_simulator"
+                name="Production Plan Simulator"
+                parent="dw_production_plan_simulator.menu_dw_production_plan_simulator_root"
+                action="dw_production_plan_simulator.action_production_plan_simulator"
+                sequence="1"
+        />
+
+    </data>
+</odoo>

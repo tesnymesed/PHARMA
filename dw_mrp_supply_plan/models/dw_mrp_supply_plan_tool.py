@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
 
 
-class DwMrpSupplyWizard(models.Model):
+class DwMrpSupplyPlanTool(models.Model):
     _name = 'dw.mrp.supply.wizard'
     _description = 'MRP Supply Tool: Create Purchase Orders From Product Supply Plan entries '
 
@@ -24,7 +24,7 @@ class DwMrpSupplyWizard(models.Model):
 
     @api.model
     def default_get(self, field_list):
-        res = super(DwMrpSupplyWizard, self).default_get(field_list)
+        res = super(DwMrpSupplyPlanTool, self).default_get(field_list)
         res['company_id'] = self.env.company.id
         res['date_from'] = fields.Date.today()
         res['date_to'] = fields.Date.today() + relativedelta(months=3)
@@ -55,7 +55,7 @@ class DwMrpSupplyWizard(models.Model):
             'res_id': self.id,
         }
 
-    def action_create_purchase_orders(self):
+    def action_create_purchase_orders_preview(self):
         self.ensure_one()
         # Group the product supply records based on the selected grouping options
 
@@ -172,6 +172,8 @@ class DWPurchaseOrderPreview(models.Model):
 
     order_line_ids = fields.One2many('dw.purchase.order.preview.line', 'preview_id', string='Order Lines')
 
+    po_id = fields.Many2one('purchase.order', string='PO', readonly=True)
+
     @api.model
     def create(self, vals):
 
@@ -185,6 +187,35 @@ class DWPurchaseOrderPreview(models.Model):
 
         return super(DWPurchaseOrderPreview, self).create(vals)
 
+    def action_create_purchase_order(self):
+        self.ensure_one()
+
+        # Create the actual Purchase Order record
+        purchase_order = self.env['purchase.order'].create({
+            'partner_id': self.partner_id.id,
+            'date_order': self.date_planned,
+            # 'currency_id': self.currency_id.id,
+        })
+
+        # Create the Purchase Order lines
+        for line in self.order_line_ids:
+            purchase_order.order_line.create({
+                'product_id': line.product_id.id,
+                'product_qty': line.product_qty,
+                'product_uom': line.product_uom.id,
+                # 'price_unit': line.price_unit,
+                'order_id': purchase_order.id,
+            })
+
+        self.write({'po_id': purchase_order.id})
+
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'purchase.order',
+            'view_mode': 'form',
+            'res_id': purchase_order.id,
+        }
+
 
 class DWPurchaseOrderPreviewLine(models.Model):
     _name = 'dw.purchase.order.preview.line'
@@ -194,6 +225,9 @@ class DWPurchaseOrderPreviewLine(models.Model):
 
     preview_id = fields.Many2one('dw.purchase.order.preview', string='PO Version')
     product_id = fields.Many2one('product.product', string='Product')
+    product_uom = fields.Many2one('uom.uom', string='Unit of Measure', related='product_id.uom_id',
+                                  )
+
     product_qty = fields.Float(string='Quantity')
     price_unit = fields.Float(string='Unit Price')
     date_planned = fields.Date(string='Planned Date')

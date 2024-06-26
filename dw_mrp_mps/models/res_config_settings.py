@@ -61,4 +61,3 @@ class ResConfigSettings(models.TransientModel):
             self.manufacturing_lead = 0.0
             self.dw_use_product_lead = False
             # TODO: force 0.0 upon disabling this option
-

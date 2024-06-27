@@ -8,12 +8,7 @@
             <field name="prefix">M</field>
             <field name="padding">6</field>
         </record>
-        <record id="seq_dw_homologation" model="ir.sequence">
-            <field name="name">Homologation sequence</field>
-            <field name="code">dw.homologation</field>
-            <field name="prefix">H</field>
-            <field name="padding">6</field>
-        </record>
+
          <record id="dw_consultation_seq" model="ir.sequence">
             <field name="name">Consultation sequence</field>
             <field name="code">consultation.main.seq</field>

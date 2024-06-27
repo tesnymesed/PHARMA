@@ -11,16 +11,15 @@ class DwConsultationCriteria(models.Model):
     name = fields.Char(strong="Consultation")
     supplier_id = fields.Many2one("res.partner", String="Supplier", domain='[("is_supplier","=", True)]',
                                   check_company=True, required=1)
-    market_id = fields.Many2one('dw.market', string='Market', domain="[('state','=','homologation_cosultation')]")
-    supplier_market_id = fields.Many2many(related="market_id.supplier_homologuer_ids")
-    homologation_ids = fields.One2many(related="market_id.homologation_ids")
+    market_id = fields.Many2one('dw.market', string='Market')
+
+
     product_ids = fields.Many2many(related="market_id.product_ids")
-    homologation_id = fields.Many2one('dw.homologation', string='Homologation', domain="[('state','in',['homologue'])]")
+
     product_id = fields.Many2one(
         'product.product', required=1,
         check_company=True,
-        domain=['|', '|', ('homologue', '=', True), ('categ_id.homologue', '=', True),
-                ('product_tmpl_id.homologue', '=', True), ('purchase_ok', '=', True)],
+        domain=[('purchase_ok', '=', True)],
 
     )
     display_name = fields.Char("Dsiplay name", compute="_compute_display_name", store="1")
@@ -116,19 +115,6 @@ class DwConsultationCriteria(models.Model):
             'context': {'create': False},
         })
 
-    def action_show_homologation(self):
-        return ({
-            'res_model': 'dw.homologation',
-            'type': 'ir.actions.act_window',
-            'name': _("%(consultation_name)s's Consultations", consultation_name=self.name),
-
-            'domain': [
-                ('consultation_id', '=', self.id),
-            ],
-            'view_mode': 'tree,form',
-
-            'context': {'create': False},
-        })
 
     def action_show_Attribution(self):
         if self.market_id :

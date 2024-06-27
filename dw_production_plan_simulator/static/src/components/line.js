@@ -14,6 +14,11 @@ export default class ProductionPlanSimulatorLine extends Component {
     this.forecastRow = useRef("forecastRow");
     this.replenishRow = useRef("replenishRow");
 
+    this.salesObjRow = useRef("salesObjRow");
+    this.prodObjRow = useRef("prodObjRow");
+    this.salesHistoryRow = useRef("salesHistoryRow");
+    this.prodPlanRow = useRef("prodPlanRow");
+
     onPatched(() => {
       // after a replenishment, switch to next column if possible
       const previousEl =
@@ -129,7 +134,7 @@ export default class ProductionPlanSimulatorLine extends Component {
       ev.target.value = this.model._getOriginValue(
         productionSimulationId,
         dateIndex,
-        "forecast_qty"
+        "forecasted_demand_qty"
       );
     } else {
       this.model
@@ -147,12 +152,212 @@ export default class ProductionPlanSimulatorLine extends Component {
             ev.target.value = this.model._getOriginValue(
               productionSimulationId,
               dateIndex,
-              "forecast_qty"
+              "forecasted_demand_qty"
             );
           }
         );
     }
   }
+
+  // # region: @bislem: Mocked data inputs
+
+  /**
+   * Handles the change on a simulation cell Sale Objective Qty.
+   * @private
+   * @param {Event} ev
+   * @param {Object} productionSimulationId dw.production.plan.simulation Id.
+   */
+
+  onChangeSalesObjectiveQty(ev, productionSimulationId) {
+    const dateIndex = parseInt(ev.target.dataset.date_index);
+    const saleObjQty = ev.target.value;
+    if (saleObjQty === "" || isNaN(saleObjQty)) {
+      ev.target.value = this.model._getOriginValue(
+        productionSimulationId,
+        dateIndex,
+        "sale_objective_qty"
+      );
+    } else {
+      this.model
+        ._saveSalesObjectiveQty(productionSimulationId, dateIndex, saleObjQty)
+        .then(
+          () => {
+            const inputSelector =
+              'input[data-date_index="' + (dateIndex + 1) + '"]';
+            const nextInput = this.salesObjRow.el.querySelector(inputSelector);
+            if (nextInput) {
+              nextInput.select();
+            }
+          },
+          () => {
+            ev.target.value = this.model._getOriginValue(
+              productionSimulationId,
+              dateIndex,
+              "sale_objective_qty"
+            );
+          }
+        );
+    }
+  }
+
+  onChangeProductionObjectiveQty(ev, productionSimulationId) {
+    const dateIndex = parseInt(ev.target.dataset.date_index);
+    const prodObjQty = ev.target.value;
+    if (prodObjQty === "" || isNaN(prodObjQty)) {
+      ev.target.value = this.model._getOriginValue(
+        productionSimulationId,
+        dateIndex,
+        "production_objective_qty"
+      );
+    } else {
+      this.model
+        ._saveProductionObjectiveQty(
+          productionSimulationId,
+          dateIndex,
+          prodObjQty
+        )
+        .then(
+          () => {
+            const inputSelector =
+              'input[data-date_index="' + (dateIndex + 1) + '"]';
+            const nextInput = this.prodObjRow.el.querySelector(inputSelector);
+            if (nextInput) {
+              nextInput.select();
+            }
+          },
+          () => {
+            ev.target.value = this.model._getOriginValue(
+              productionSimulationId,
+              dateIndex,
+              "production_objective_qty"
+            );
+          }
+        );
+    }
+  }
+
+  onChangePlannedProductionQty(ev, productionSimulationId) {
+    const dateIndex = parseInt(ev.target.dataset.date_index);
+    const plannedProdQty = ev.target.value;
+    if (plannedProdQty === "" || isNaN(plannedProdQty)) {
+      ev.target.value = this.model._getOriginValue(
+        productionSimulationId,
+        dateIndex,
+        "planned_production_qty"
+      );
+    } else {
+      this.model
+        ._savePlannedProductionQty(
+          productionSimulationId,
+          dateIndex,
+          plannedProdQty
+        )
+        .then(
+          () => {
+            const inputSelector =
+              'input[data-date_index="' + (dateIndex + 1) + '"]';
+            const nextInput = this.forecastRow.el.querySelector(inputSelector);
+            if (nextInput) {
+              nextInput.select();
+            }
+          },
+          () => {
+            ev.target.value = this.model._getOriginValue(
+              productionSimulationId,
+              dateIndex,
+              "planned_production_qty"
+            );
+          }
+        );
+    }
+  }
+
+  onChangeSoldQty(ev, productionSimulationId) {
+    const dateIndex = parseInt(ev.target.dataset.date_index);
+    const soldQty = ev.target.value;
+    if (soldQty === "" || isNaN(soldQty)) {
+      ev.target.value = this.model._getOriginValue(
+        productionSimulationId,
+        dateIndex,
+        "sold_qty"
+      );
+    } else {
+      this.model._saveSoldQty(productionSimulationId, dateIndex, soldQty).then(
+        () => {
+          const inputSelector =
+            'input[data-date_index="' + (dateIndex + 1) + '"]';
+          const nextInput =
+            this.salesHistoryRow.el.querySelector(inputSelector);
+          if (nextInput) {
+            nextInput.select();
+          }
+        },
+        () => {
+          ev.target.value = this.model._getOriginValue(
+            productionSimulationId,
+            dateIndex,
+            "sold_qty"
+          );
+        }
+      );
+    }
+  }
+
+  onChangeStockLevel(ev, productionSimulationId) {
+    const dateIndex = parseInt(ev.target.dataset.date_index);
+    const stockLevel = ev.target.value;
+    if (stockLevel === "" || isNaN(stockLevel)) {
+      ev.target.value = this.model._getOriginValue(
+        productionSimulationId,
+        dateIndex,
+        "stock_level"
+      );
+    } else {
+      this.model
+        ._saveStockLevel(productionSimulationId, dateIndex, stockLevel)
+        .then(
+          () => {
+            const inputSelector =
+              'input[data-date_index="' + (dateIndex + 1) + '"]';
+            const nextInput = this.forecastRow.el.querySelector(inputSelector);
+            if (nextInput) {
+              nextInput.select();
+            }
+          },
+          () => {
+            ev.target.value = this.model._getOriginValue(
+              productionSimulationId,
+              dateIndex,
+              "stock_level"
+            );
+          }
+        );
+    }
+  }
+
+  onChangeNotes(ev, productionSimulationId) {
+    const dateIndex = parseInt(ev.target.dataset.date_index);
+    const notes = ev.target.value;
+    this.model._saveNotes(productionSimulationId, dateIndex, notes).then(
+      () => {
+        const inputSelector =
+          'input[data-date_index="' + (dateIndex + 1) + '"]';
+        const nextInput = this.forecastRow.el.querySelector(inputSelector);
+        if (nextInput) {
+          nextInput.select();
+        }
+      },
+      () => {
+        ev.target.value = this.model._getOriginValue(
+          productionSimulationId,
+          dateIndex,
+          "notes"
+        );
+      }
+    );
+  }
+
+  // # endregion: @bislem: Mocked data inputs
 
   /**
    * Handles the quantity To Replenish change on a simulation cell.

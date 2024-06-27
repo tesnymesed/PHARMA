@@ -21,6 +21,20 @@ export class ProductionPlanSimulatorModel extends EventBus {
     this.mutex = new Mutex();
   }
 
+  saveDateRange(companyId, startDate, endDate) {
+    return this.mutex.exec(() => {
+      this.orm
+        .call("res.company", "set_prod_sim_date_range", [
+          companyId,
+          startDate,
+          endDate,
+        ])
+        .then((res) => {
+          console.log("Updated Date Range");
+        });
+    });
+  }
+
   async load(domain, offset, limit, startDate, endDate) {
     if (domain !== undefined) {
       this.domain = domain;
@@ -124,6 +138,8 @@ export class ProductionPlanSimulatorModel extends EventBus {
     this._actionReplenish(Array.from(this.selectedRecords), false);
   }
 
+  _;
+
   /**
    * Save the forecasted quantity and reload the current schedule in order
    * to update its To Replenish quantity and its safety stock (current and
@@ -149,6 +165,153 @@ export class ProductionPlanSimulatorModel extends EventBus {
     });
   }
 
+  // # region: @bislem: Mocked data inputs
+
+  /**
+   * Save the forecasted quantity and reload the current schedule in order
+   * to update its To Replenish quantity and its safety stock (current and
+   * future period). Also update the other schedules linked by BoM in order
+   * to update them depending the indirect demand.
+   * @private
+   * @param {Integer} productionSimulationId dw.production.plan.simulation Id.
+   * @param {Integer} dateIndex period to save (column number)
+   * @param {Float} forecastQty The new forecasted quantity
+   * @return {Promise}
+   */
+  _saveSalesObjectiveQty(productionSimulationId, dateIndex, saleObjQty) {
+    return this.mutex.exec(() => {
+      this.orm
+        .call("dw.production.plan.simulation", "set_sales_objective_qty", [
+          productionSimulationId,
+          dateIndex,
+          saleObjQty,
+        ])
+        .then(() => {
+          return this.reload(productionSimulationId);
+        });
+    });
+  }
+
+  /**
+   * Save the production objective quantity and reload the current schedule to update dependent data.
+   * @private
+   * @param {Integer} productionSimulationId dw.production.plan.simulation Id.
+   * @param {Integer} dateIndex period to save (column number)
+   * @param {Float} productionObjectiveQty The new production objective quantity
+   * @return {Promise}
+   */
+  _saveProductionObjectiveQty(
+    productionSimulationId,
+    dateIndex,
+    productionObjectiveQty
+  ) {
+    return this.mutex.exec(() => {
+      this.orm
+        .call("dw.production.plan.simulation", "set_production_objective_qty", [
+          productionSimulationId,
+          dateIndex,
+          productionObjectiveQty,
+        ])
+        .then(() => {
+          return this.reload(productionSimulationId);
+        });
+    });
+  }
+
+  /**
+   * Save the planned production quantity and reload the current schedule to update dependent data.
+   * @private
+   * @param {Integer} productionSimulationId dw.production.plan.simulation Id.
+   * @param {Integer} dateIndex period to save (column number)
+   * @param {Float} plannedProductionQty The new planned production quantity
+   * @return {Promise}
+   */
+  _savePlannedProductionQty(
+    productionSimulationId,
+    dateIndex,
+    plannedProductionQty
+  ) {
+    return this.mutex.exec(() => {
+      this.orm
+        .call("dw.production.plan.simulation", "set_planned_production_qty", [
+          productionSimulationId,
+          dateIndex,
+          plannedProductionQty,
+        ])
+        .then(() => {
+          return this.reload(productionSimulationId);
+        });
+    });
+  }
+
+  /**
+   * Save the sold quantity and reload the current schedule to update dependent data.
+   * @private
+   * @param {Integer} productionSimulationId dw.production.plan.simulation Id.
+   * @param {Integer} dateIndex period to save (column number)
+   * @param {Float} soldQty The new sold quantity
+   * @return {Promise}
+   */
+  _saveSoldQty(productionSimulationId, dateIndex, soldQty) {
+    return this.mutex.exec(() => {
+      this.orm
+        .call("dw.production.plan.simulation", "set_sold_qty", [
+          productionSimulationId,
+          dateIndex,
+          soldQty,
+        ])
+        .then(() => {
+          return this.reload(productionSimulationId);
+        });
+    });
+  }
+
+  /**
+   * Save the stock level and reload the current schedule to update dependent data.
+   * @private
+   * @param {Integer} productionSimulationId dw.production.plan.simulation Id.
+   * @param {Integer} dateIndex period to save (column number)
+   * @param {Float} stockLevel The new stock level
+   * @return {Promise}
+   */
+  _saveStockLevel(productionSimulationId, dateIndex, stockLevel) {
+    return this.mutex.exec(() => {
+      this.orm
+        .call("dw.production.plan.simulation", "set_stock_level", [
+          productionSimulationId,
+          dateIndex,
+          stockLevel,
+        ])
+        .then(() => {
+          return this.reload(productionSimulationId);
+        });
+    });
+  }
+
+  /**
+   * Save the notes (text) and reload the current schedule to update dependent data.
+   * @private
+   * @param {Integer} productionSimulationId dw.production.plan.simulation Id.
+   * @param {Integer} dateIndex period to save (column number)
+   * @param {String} notes The new notes (text)
+   * @return {Promise}
+   */
+  _saveNotes(productionSimulationId, dateIndex, notes) {
+    return this.mutex.exec(() => {
+      this.orm
+        .call("dw.production.plan.simulation", "set_notes", [
+          productionSimulationId,
+          dateIndex,
+          notes,
+        ])
+        .then(() => {
+          return this.reload(productionSimulationId);
+        });
+    });
+  }
+
+  // # endregion: @bislem: Mocked data inputs
+
   /**
    * Open the dw.production.plan.simulation form view in order to create the record.
    * Once the record is created get its state and render it.
@@ -162,13 +325,16 @@ export class ProductionPlanSimulatorModel extends EventBus {
           state.currentCompanyId,
         ])
         .then((res) => {
-          console.log('_createProducts res', res);
-                    this.load([["company_id", "=", state.currentCompanyId]]);
+          this.load([["company_id", "=", state.currentCompanyId]]);
+          return this.data;
           //                if (productionSimulationIds.length === 1) {
           //                    this.reload(productionSimulationIds[0]);
           //                } else {
           //                    this.load();
           //                }
+        })
+        .catch((error) => {
+          console.error("error", error);
         });
     });
   }
@@ -324,7 +490,7 @@ export class ProductionPlanSimulatorModel extends EventBus {
    * @param {Object} values {field_name: field_value}
    */
   _saveCompanySettings(values) {
-    this.mutex.exec(() => {
+    +this.mutex.exec(() => {
       this.orm.write("res.company", [this.data.company_id], values).then(() => {
         this.load();
       });

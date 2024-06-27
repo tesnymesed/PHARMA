@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="dw_consultation_form_view_inherit" model="ir.ui.view">
+            <field name="name">dw_supplier_approval.dw_consultation.form.inherit</field>
+            <field name="model">dw.consultation</field>
+            <field name="inherit_id" ref="dw_procurement.dw_consultation_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_show_market']" position="after">
+                    <button name="action_show_homologation" type="object" class="oe_stat_button"
+                            icon="fa-list-alt" invisible=" not homologation_id">
+                        <div class="o_stat_info">
+
+                            <span class="o_stat_text">Homologation</span>
+                        </div>
+                    </button>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="supplier_market_id" invisible="1"/>
+                    <field name="homologation_ids" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='market_id']" position="after">
+                  <field name="homologation_id" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+
+
+    </data>
+</odoo>

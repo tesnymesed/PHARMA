@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_identification_besoin" model="ir.actions.act_window">
+            <field name="name">Identification of the need</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product</field>
+            <field name="view_mode">tree,form</field>
+             <field name="view_ids" eval="[(5, 0, 0),
+
+            (0, 0, {'view_mode': 'tree' , 'view_id': ref('dw_supplier_approval.view_identification_besoin_product_tree')}),
+            ]"/>
+            <field name="search_view_id" ref="dw_supplier_approval.product_template_search_view_inherit"/>
+
+           <field name="domain">['|', '|',('homologue', '=', True), ('categ_id.homologue', '=', True),
+                ('product_tmpl_id.homologue', '=', True),('purchase_ok', '=',
+                True),'|','|','|',('number_fournisseur2', '&lt;',2),('has_backliested_supplier2','=',True),('expired_homologation2','=',True),('expired_contract2','=',True)]
+            </field>
+        </record>
+<!--         <field name="domain">['|', '|',('homologue', '=', True), ('categ_id.homologue', '=', True),
+                ('product_tmpl_id.homologue', '=', True),('purchase_ok', '=',
+                True),('number_fournisseur', '&lt;',2)]
+            </field>-->
+        <record id="action_view_article_homologue" model="ir.actions.act_window">
+            <field name="name">Article</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">['|', '|',('homologue', '=',True), ('categ_id.homologue', '=', True),
+                ('product_tmpl_id.homologue', '=', True), ('purchase_ok', '=', True)]
+            </field>
+        </record>
+
+        <record id="action_dw_homologation" model="ir.actions.act_window">
+            <field name="name">supplier approval</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dw.homologation</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'tree' , 'view_id': ref('dw_supplier_approval.view_homologation_tree')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('dw_supplier_approval.view_homologation_form')})]"/>
+            <field name="context">{}</field>
+
+        </record>
+
+
+        <menuitem id="menu_identification_besoin_root"
+                  name="Identification of the need"
+                  parent="dw_procurement.menu_supplier_approval_root"
+                  action="action_identification_besoin"
+                  sequence="11"
+        />
+        <menuitem id="menu_article_homologation"
+                  name="Article"
+                  parent="dw_procurement.menu_supplier_approval_configuration"
+                  action="action_view_article_homologue"
+                  sequence="21"
+        />
+
+
+        <menuitem id="menu_homologation_root"
+                  name="approval"
+                  parent="dw_procurement.menu_supplier_approval_root"
+                  sequence="11"
+        />
+        <menuitem id="menu_homologation"
+                  name="approval"
+                  parent="menu_homologation_root"
+                  action="action_dw_homologation"
+                  sequence="11"
+        />
+
+
+
+    </data>
+</odoo>

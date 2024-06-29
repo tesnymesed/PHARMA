@@ -66,14 +66,17 @@ class DwProductionPlanSimulator(models.Model):
                                            'Simulation quantity at date')
 
     safety_stock_target_qty = fields.Float(
-        'Safety Stock Target',
+        'Safety Stock Target (Months worth)',
         help="This is the minimum free stock you want to keep for that product at all times.")
+
     min_to_replenish_qty = fields.Float(
         'Minimum to Replenish',
         help="Unless the demand is 0, Odoo will always at least replenish this quantity.")
     max_to_replenish_qty = fields.Float(
         'Maximum to Replenish', default=1000,
         help="The maximum replenishment you would like to launch for each period in the MPS. Note that if the demand is higher than that amount, the remaining quantity will be transferred to the next period automatically.")
+
+
 
     # replenish_state = fields.Selection([
     #     ('to_replenish', 'To Replenish'),
@@ -277,12 +280,9 @@ class DwProductionPlanSimulator(models.Model):
             forecasts_to_replenish = filter(lambda f: f[replenishment_field],
                                             production_simulation_state['product_plan_sim_ids'])
             for simulation in forecasts_to_replenish:
-                existing_forecasts = production_simulation.product_plan_sim_ids.filtered(lambda p:
-                                                                                         p.date >= simulation[
-                                                                                             'date_start']
-                                                                                         and p.date <= simulation[
-                                                                                             'date_stop']
-                                                                                         )
+                existing_forecasts = production_simulation.product_plan_sim_ids.filtered(
+                    lambda p: p.date >= simulation['date_start'] and p.date <= simulation['date_stop'])
+
                 extra_values = production_simulation._get_procurement_extra_values(simulation)
                 quantity = simulation['replenish_qty'] - simulation['incoming_qty']
                 if not bom:
@@ -309,7 +309,7 @@ class DwProductionPlanSimulator(models.Model):
                     forecasts_to_set_as_launched |= existing_forecasts
                 else:
                     forecasts_values.append({
-                        'forecast_qty': 0,
+                        'forecasted_demand_qty': 0,
                         'date': simulation['date_stop'],
                         # 'procurement_launched': True,
                         'production_simulation_id': production_simulation.id
@@ -384,7 +384,7 @@ class DwProductionPlanSimulator(models.Model):
         For each schedule returns the fields on the model. And prepare the cells
         for each period depending the manufacturing period set on the company.
         The simulation cells contains the following information:
-        - forecast_qty: Demand simulation set by the user
+        - forecasted_demand_qty: Demand simulation set by the user
         - date_start: First day of the current period
         - date_stop: Last day of the current period
         - replenish_qty: The quantity to replenish for the current period. It
@@ -401,14 +401,12 @@ class DwProductionPlanSimulator(models.Model):
         order to create 1 product B. If the replenish quantity for product B is
         10, it will need 20 product A.
         - safety_stock_qty:
-        starting_inventory_qty - forecast_qty - indirect_demand_qty + replenish_qty
+        starting_inventory_qty - forecasted_demand_qty - indirect_demand_qty + replenish_qty
         """
-        company_id = self.env.company
-        date_range = company_id._get_date_range(start_date_range=start_date_range, end_date_range=end_date_range)
-        date_range_year_minus_1 = company_id._get_date_range(start_date_range=start_date_range,
-                                                             end_date_range=end_date_range, years=1)
-        date_range_year_minus_2 = company_id._get_date_range(start_date_range=start_date_range,
-                                                             end_date_range=end_date_range, years=2)
+        company_id = self.company_id or self.env.company
+        date_range = company_id._get_simulation_date_range()
+        date_range_year_minus_1 = company_id._get_simulation_date_range(years=1)
+        date_range_year_minus_2 = company_id._get_simulation_date_range(years=2)
 
         # We need to get the schedule that impact the schedules in self. Since
         # the state is not saved, it needs to recompute the quantity to
@@ -485,19 +483,42 @@ class DwProductionPlanSimulator(models.Model):
                         outgoing_qty_year_minus_2.get(key_y_2, 0.0), precision_rounding=rounding)
 
                     # ADDITION:
-                    forecast_values['sold_qty'] = float_round(outgoing_qty_done.get(key, 0.0),
-                                                              precision_rounding=rounding)
-                    forecast_values['sale_objective_qty'] = float_round(
-                        incoming_qty.get(key, 0.0), precision_rounding=rounding)
-                    forecast_values['production_objective_qty'] = float_round(
-                        incoming_qty.get(key, 0.0), precision_rounding=rounding)
+                    # forecast_values['sold_qty'] = float_round(outgoing_qty_done.get(key, 0.0),
+                    #                                           precision_rounding=rounding)
+                    # forecast_values['sale_objective_qty'] = float_round(
+                    #     incoming_qty.get(key, 0.0), precision_rounding=rounding)
+                    # forecast_values['production_objective_qty'] = float_round(
+                    #     incoming_qty.get(key, 0.0), precision_rounding=rounding)
 
                 forecast_values['indirect_demand_qty'] = float_round(indirect_demand_qty.get(key, 0.0),
                                                                      precision_rounding=rounding, rounding_method='UP')
                 replenish_qty_updated = False
                 if existing_forecasts:
-                    forecast_values['forecast_qty'] = float_round(sum(existing_forecasts.mapped('forecast_qty')),
-                                                                  precision_rounding=rounding)
+
+                    forecast_values['sold_qty'] = float_round(sum(existing_forecasts.mapped('sold_qty')),
+                                                              precision_rounding=rounding)
+
+                    forecast_values['sale_objective_qty'] = float_round(
+                        sum(existing_forecasts.mapped('sale_objective_qty')),
+                        precision_rounding=rounding)
+
+                    forecast_values['production_objective_qty'] = float_round(
+                        sum(existing_forecasts.mapped('production_objective_qty')),
+                        precision_rounding=rounding)
+
+                    forecast_values['planned_production_qty'] = float_round(
+                        sum(existing_forecasts.mapped('planned_production_qty')),
+                        precision_rounding=rounding)
+
+                    forecast_values['stock_level'] = float_round(sum(existing_forecasts.mapped('stock_level')),
+                                                                 precision_rounding=rounding)
+
+                    forecast_values['notes'] = existing_forecasts[0].notes
+
+                    forecast_values['forecasted_demand_qty'] = float_round(
+                        sum(existing_forecasts.mapped('forecasted_demand_qty')),
+                        precision_rounding=rounding)
+
                     forecast_values['replenish_qty'] = float_round(sum(existing_forecasts.mapped('replenish_qty')),
                                                                    precision_rounding=rounding)
 
@@ -506,11 +527,17 @@ class DwProductionPlanSimulator(models.Model):
                     replenish_qty_updated = any(existing_forecasts.mapped('replenish_qty_updated'))
                     forecast_values['replenish_qty_updated'] = replenish_qty_updated
                 else:
-                    forecast_values['forecast_qty'] = 0.0
+                    forecast_values['forecasted_demand_qty'] = 0.0
+                    forecast_values['sold_qty'] = 0.0
+                    forecast_values['sale_objective_qty'] = 0.0
+                    forecast_values['production_objective_qty'] = 0.0
+                    forecast_values['planned_production_qty'] = 0.0
+                    forecast_values['stock_level'] = 0.0
+                    forecast_values['notes'] = ''
 
                 if not replenish_qty_updated:
                     replenish_qty = production_simulation._get_replenish_qty(
-                        starting_inventory_qty - forecast_values['forecast_qty'] - forecast_values[
+                        starting_inventory_qty - forecast_values['forecasted_demand_qty'] - forecast_values[
                             'indirect_demand_qty'])
                     forecast_values['replenish_qty'] = float_round(replenish_qty, precision_rounding=rounding)
                     forecast_values['replenish_qty_updated'] = False
@@ -518,7 +545,8 @@ class DwProductionPlanSimulator(models.Model):
                 forecast_values['starting_inventory_qty'] = float_round(starting_inventory_qty,
                                                                         precision_rounding=rounding)
                 forecast_values['safety_stock_qty'] = float_round(
-                    starting_inventory_qty - forecast_values['forecast_qty'] - forecast_values['indirect_demand_qty'] +
+                    starting_inventory_qty - forecast_values['forecasted_demand_qty'] - forecast_values[
+                        'indirect_demand_qty'] +
                     forecast_values['replenish_qty'], precision_rounding=rounding)
 
                 if production_simulation in self:
@@ -546,66 +574,8 @@ class DwProductionPlanSimulator(models.Model):
                 for index, forecast_state in enumerate(forecasts_state):
                     production_simulation_state['product_plan_sim_ids'][index].update(forecast_state)
 
-                # The purpose is to hide indirect demand row if the schedule do not
-                # depends from another.
-                has_indirect_demand = any(
-                    simulation['indirect_demand_qty'] != 0 for simulation in
-                    production_simulation_state['product_plan_sim_ids'])
-                production_simulation_state['has_indirect_demand'] = has_indirect_demand
-
         return [p for p in production_simulation_states if p['id'] in self.ids]
 
-    def get_impacted_schedule(self, domain=False):
-        """ When the user modify the demand simulation on a schedule. The new
-        replenish quantity is computed from schedules that use the product in
-        self as component (no matter at which BoM level). It will also modify
-        the replenish quantity on self that will impact the schedule that use
-        the product in self as a finished product.
-
-        :param domain: filter supplied and supplying schedules with the domain
-        :return ids of supplied and supplying schedules
-        :rtype list
-        """
-        if not domain:
-            domain = []
-
-        def _used_in_bom(products, related_products):
-            """ Bottom up from bom line to finished products in order to get
-            all the finished products that use 'products' as component.
-            """
-            if not products:
-                return related_products
-            boms = products.bom_line_ids.mapped('bom_id')
-            products = boms.mapped('product_id') | boms.mapped('product_tmpl_id.product_variant_ids')
-            products -= related_products
-            related_products |= products
-            return _used_in_bom(products, related_products)
-
-        supplying_mps = self.env['dw.production.plan.simulation'].search(
-            AND([domain, [
-                ('warehouse_id', 'in', self.mapped('warehouse_id').ids),
-                ('product_id', 'in', _used_in_bom(self.mapped('product_id'), self.env['product.product']).ids)
-            ]]))
-
-        def _use_boms(products, related_products):
-            """ Explore bom line from products's BoMs in order to get components
-            used.
-            """
-            if not products:
-                return related_products
-            components = products.mapped(lambda product: product.bom_ids.bom_line_ids.filtered(
-                lambda line: not line._skip_bom_line(product)).mapped('product_id'))
-
-            components -= related_products
-            related_products |= components
-            return _use_boms(components, related_products)
-
-        supplied_mps = self.env['dw.production.plan.simulation'].search(
-            AND([domain, [
-                ('warehouse_id', 'in', self.mapped('warehouse_id').ids),
-                ('product_id', 'in', _use_boms(self.mapped('product_id'), self.env['product.product']).ids)
-            ]]))
-        return (supplying_mps | supplied_mps).ids
 
     def remove_replenish_qty(self, date_index):
         """ Remove the quantity to replenish on the simulation cell.
@@ -613,7 +583,7 @@ class DwProductionPlanSimulator(models.Model):
         param date_index: index of the period used to find start and stop date
         where the manual replenish quantity should be remove.
         """
-        date_start, date_stop = self.company_id._get_date_range()[date_index]
+        date_start, date_stop = self.company_id._get_simulation_date_range()[date_index]
         product_plan_sim_ids = self.product_plan_sim_ids.filtered(lambda f:
                                                                   f.date >= date_start and f.date <= date_stop)
         product_plan_sim_ids.write({
@@ -630,23 +600,154 @@ class DwProductionPlanSimulator(models.Model):
         """
         # Get the last date of current period
         self.ensure_one()
-        date_start, date_stop = self.company_id._get_date_range()[date_index]
+        date_start, date_stop = self.company_id._get_simulation_date_range()[date_index]
         existing_forecast = self.product_plan_sim_ids.filtered(lambda f:
                                                                f.date >= date_start and f.date <= date_stop)
         quantity = float_round(float(quantity), precision_rounding=self.product_uom_id.rounding)
-        quantity_to_add = quantity - sum(existing_forecast.mapped('forecast_qty'))
+        quantity_to_add = quantity - sum(existing_forecast.mapped('forecasted_demand_qty'))
         if existing_forecast:
-            new_qty = existing_forecast[0].forecast_qty + quantity_to_add
+            new_qty = existing_forecast[0].forecasted_demand_qty + quantity_to_add
             new_qty = float_round(new_qty, precision_rounding=self.product_uom_id.rounding)
-            existing_forecast[0].write({'forecast_qty': new_qty})
+            existing_forecast[0].write({'forecasted_demand_qty': new_qty})
         else:
             existing_forecast.create({
-                'forecast_qty': quantity,
+                'forecasted_demand_qty': quantity,
                 'date': date_stop,
                 'replenish_qty': 0,
                 'production_simulation_id': self.id
             })
         return True
+
+
+    # region: @bislem: Mocked data inputs
+    def set_sales_objective_qty(self, date_index, quantity):
+        """ Save the simulation quantity:
+
+        params quantity: The new total forecasted quantity
+        params date_index: The manufacturing period
+        """
+        # Get the last date of current period
+        self.ensure_one()
+        date_start, date_stop = self.company_id._get_simulation_date_range()[date_index]
+        existing_forecast = self.product_plan_sim_ids.filtered(lambda f:
+                                                               f.date >= date_start and f.date <= date_stop)
+        quantity = float_round(float(quantity), precision_rounding=self.product_uom_id.rounding)
+        if existing_forecast:
+            existing_forecast[0].write({'sale_objective_qty': quantity})
+        else:
+            existing_forecast.create({
+                'sale_objective_qty': quantity,
+                'date': date_stop,
+                # 'replenish_qty': 0,
+                'production_simulation_id': self.id
+            })
+        return True
+
+    def set_production_objective_qty(self, date_index, quantity):
+        """ Save the simulation production objective quantity:
+
+        params quantity: The new total production objective quantity
+        params date_index: The manufacturing period
+        """
+        self.ensure_one()
+        date_start, date_stop = self.company_id._get_simulation_date_range()[date_index]
+        existing_forecast = self.product_plan_sim_ids.filtered(lambda f:
+                                                               f.date >= date_start and f.date <= date_stop)
+        quantity = float_round(float(quantity), precision_rounding=self.product_uom_id.rounding)
+        if existing_forecast:
+            existing_forecast[0].write({'production_objective_qty': quantity})
+        else:
+            existing_forecast.create({
+                'production_objective_qty': quantity,
+                'date': date_stop,
+                'production_simulation_id': self.id
+            })
+        return True
+
+    def set_planned_production_qty(self, date_index, quantity):
+        """ Save the simulation planned production quantity:
+
+        params quantity: The new total planned production quantity
+        params date_index: The manufacturing period
+        """
+        self.ensure_one()
+        date_start, date_stop = self.company_id._get_simulation_date_range()[date_index]
+        existing_forecast = self.product_plan_sim_ids.filtered(lambda f:
+                                                               f.date >= date_start and f.date <= date_stop)
+        quantity = float_round(float(quantity), precision_rounding=self.product_uom_id.rounding)
+        if existing_forecast:
+            existing_forecast[0].write({'planned_production_qty': quantity})
+        else:
+            existing_forecast.create({
+                'planned_production_qty': quantity,
+                'date': date_stop,
+                'production_simulation_id': self.id
+            })
+        return True
+
+    def set_sold_qty(self, date_index, quantity):
+        """ Save the simulation sold quantity:
+
+        params quantity: The new total sold quantity
+        params date_index: The manufacturing period
+        """
+        self.ensure_one()
+        date_start, date_stop = self.company_id._get_simulation_date_range()[date_index]
+        existing_forecast = self.product_plan_sim_ids.filtered(lambda f:
+                                                               f.date >= date_start and f.date <= date_stop)
+        quantity = float_round(float(quantity), precision_rounding=self.product_uom_id.rounding)
+        if existing_forecast:
+            existing_forecast[0].write({'sold_qty': quantity})
+        else:
+            existing_forecast.create({
+                'sold_qty': quantity,
+                'date': date_stop,
+                'production_simulation_id': self.id
+            })
+        return True
+
+    def set_stock_level(self, date_index, quantity):
+        """ Save the simulation stock level:
+
+        params quantity: The new total stock level
+        params date_index: The manufacturing period
+        """
+        self.ensure_one()
+        date_start, date_stop = self.company_id._get_simulation_date_range()[date_index]
+        existing_forecast = self.product_plan_sim_ids.filtered(lambda f:
+                                                               f.date >= date_start and f.date <= date_stop)
+        quantity = float_round(float(quantity), precision_rounding=self.product_uom_id.rounding)
+        if existing_forecast:
+            existing_forecast[0].write({'stock_level': quantity})
+        else:
+            existing_forecast.create({
+                'stock_level': quantity,
+                'date': date_stop,
+                'production_simulation_id': self.id
+            })
+        return True
+
+    def set_notes(self, date_index, notes):
+        """ Save the simulation notes:
+
+        params notes: The new notes
+        params date_index: The manufacturing period
+        """
+        self.ensure_one()
+        date_start, date_stop = self.company_id._get_simulation_date_range()[date_index]
+        existing_forecast = self.product_plan_sim_ids.filtered(lambda f:
+                                                               f.date >= date_start and f.date <= date_stop)
+        if existing_forecast:
+            existing_forecast[0].write({'notes': notes})
+        else:
+            existing_forecast.create({
+                'notes': notes,
+                'date': date_stop,
+                'production_simulation_id': self.id
+            })
+        return True
+
+    # endregion: @bislem: Mocked data inputs
 
     def set_replenish_qty(self, date_index, quantity):
         """ Save the replenish quantity and mark the cells as manually updated.
@@ -656,7 +757,7 @@ class DwProductionPlanSimulator(models.Model):
         """
         # Get the last date of current period
         self.ensure_one()
-        date_start, date_stop = self.company_id._get_date_range()[date_index]
+        date_start, date_stop = self.company_id._get_simulation_date_range()[date_index]
         existing_forecast = self.product_plan_sim_ids.filtered(lambda f:
                                                                f.date >= date_start and f.date <= date_stop)
         quantity = float_round(float(quantity), precision_rounding=self.product_uom_id.rounding)
@@ -670,7 +771,7 @@ class DwProductionPlanSimulator(models.Model):
             })
         else:
             existing_forecast.create({
-                'forecast_qty': 0,
+                'forecasted_demand_qty': 0,
                 'date': date_stop,
                 'replenish_qty': quantity,
                 'replenish_qty_updated': True,
@@ -806,7 +907,7 @@ class DwProductionPlanSimulator(models.Model):
         index = 0
         for (line, date_planned) in rfq_lines_date_planned:
             # There are cases when we want to consider rfq_lines where their date_planned occurs before the after_date
-            # if lead times make their stock arrive at a relevant time. Therefore we need to ignore the lines that have
+            # if lead times make their stock arrive at a relevant time. Therefore we need to ignore the simulationLines that have
             # date_planned + lead time < after_date
             if date_planned < after_date:
                 continue
@@ -910,7 +1011,7 @@ class DwProductionPlanSimulator(models.Model):
     def _get_indirect_demand_tree(self):
         """ Get the tree architecture for all the BoM and BoM line that are
         related to production schedules in self. The purpose of the tree:
-        - Easier traversal than with BoM and BoM lines.
+        - Easier traversal than with BoM and BoM simulationLines.
         - Allow to determine the schedules evaluation order. (compute the
         schedule without indirect demand first)
         It also made the link between schedules even if some intermediate BoM
@@ -1035,7 +1136,7 @@ class DwProductionPlanSimulator(models.Model):
         index = 0
         for (move, date) in stock_moves_by_date:
             # There are cases when we want to consider moves where their (scheduled) date occurs before the after_date
-            # if lead times make their stock delivery at a relevant time. Therefore we need to ignore the lines that have
+            # if lead times make their stock delivery at a relevant time. Therefore we need to ignore the simulationLines that have
             # date + lead time < after_date. Similar logic with before_date
             if date < after_date or date > before_date:
                 continue
@@ -1098,6 +1199,58 @@ class DwProductionPlanSimulator(models.Model):
 
         return res_purchase_lines
 
+    def get_impacted_schedule(self, domain=False):
+        """ When the user modify the demand simulation on a schedule. The new
+        replenish quantity is computed from schedules that use the product in
+        self as component (no matter at which BoM level). It will also modify
+        the replenish quantity on self that will impact the schedule that use
+        the product in self as a finished product.
+
+        :param domain: filter supplied and supplying schedules with the domain
+        :return ids of supplied and supplying schedules
+        :rtype list
+        """
+        if not domain:
+            domain = []
+
+        def _used_in_bom(products, related_products):
+            """ Bottom up from bom line to finished products in order to get
+            all the finished products that use 'products' as component.
+            """
+            if not products:
+                return related_products
+            boms = products.bom_line_ids.mapped('bom_id')
+            products = boms.mapped('product_id') | boms.mapped('product_tmpl_id.product_variant_ids')
+            products -= related_products
+            related_products |= products
+            return _used_in_bom(products, related_products)
+
+        supplying_mps = self.env['dw.production.plan.simulation'].search(
+            AND([domain, [
+                ('warehouse_id', 'in', self.mapped('warehouse_id').ids),
+                ('product_id', 'in', _used_in_bom(self.mapped('product_id'), self.env['product.product']).ids)
+            ]]))
+
+        def _use_boms(products, related_products):
+            """ Explore bom line from products's BoMs in order to get components
+            used.
+            """
+            if not products:
+                return related_products
+            components = products.mapped(lambda product: product.bom_ids.bom_line_ids.filtered(
+                lambda line: not line._skip_bom_line(product)).mapped('product_id'))
+
+            components -= related_products
+            related_products |= components
+            return _use_boms(components, related_products)
+
+        supplied_mps = self.env['dw.production.plan.simulation'].search(
+            AND([domain, [
+                ('warehouse_id', 'in', self.mapped('warehouse_id').ids),
+                ('product_id', 'in', _use_boms(self.mapped('product_id'), self.env['product.product']).ids)
+            ]]))
+        return (supplying_mps | supplied_mps).ids
+
 
 class DwProductPlanSimulation(models.Model):
     _name = 'dw.product.production.plan.simulation'
@@ -1107,13 +1260,19 @@ class DwProductPlanSimulation(models.Model):
     production_simulation_id = fields.Many2one('dw.production.plan.simulation', required=True, ondelete='cascade')
     date = fields.Date('Date', required=True)
 
-    # forecast_qty = fields.Float('Demand Forecast')
-    replenish_qty = fields.Float('Qty To Produce')
-    # replenish_qty_updated = fields.Boolean('Replenish_qty has been manually updated')
+    forecasted_demand_qty = fields.Float('Demand Forecast', default=0.0)
+    replenish_qty_updated = fields.Boolean('Replenish_qty has been manually updated')
     # procurement_launched = fields.Boolean('Procurement has been run for this simulation')
 
-    sale_objective_qty = fields.Float('Sales Objective Qty')
-    production_objective_qty = fields.Float('Production Objective Qty')
-    sold_qty = fields.Float('Sales Qty')
-    stock_level = fields.Float('stock_level')
+    sale_objective_qty = fields.Float('Sales Objective Qty', default=0.0)
+    production_objective_qty = fields.Float('Production Objective Qty', default=0.0)
+
+    planned_production_qty = fields.Float('Planned Production Qty', default=0.0)
+
+    sold_qty = fields.Float('Sales Qty', default=0.0)
+
+    stock_level = fields.Float('stock_level', default=0.0)
+
+    replenish_qty = fields.Float('Qty To Produce', default=0.0)
+
     notes = fields.Text('Observations')

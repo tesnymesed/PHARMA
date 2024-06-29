@@ -27,6 +27,16 @@
             - <t t-esc="productionSimulation.warehouse_id[1]"
           /></span>
           <span> </span>
+          <button
+            type="button"
+            t-attf-class="{{! groups.mrp_mps_show_safety_stock and 'o_hidden' or 'btn btn-link text-muted o_no_padding o_prod_sim_edit'}}"
+            t-on-click.stop="(ev) => this._onClickEdit(ev, productionSimulation.id)"
+          >
+            <img
+              src="dw_production_plan_simulator/static/description/info.png"
+              alt="Icon"
+            />
+          </button>
           <!--          <a-->
           <!--            href="#"-->
           <!--            role="button"-->
@@ -72,7 +82,7 @@
         </t>
       </tr>
 
-      <tr name="sales_objective">
+      <tr t-ref="salesObjRow" name="sales_objective">
         <th />
         <th scope="row">
           <span>Sales Objective</span>
@@ -84,11 +94,20 @@
           t-key="simulation_index"
         >
           <th class="text-end pe-4">
-            <span t-esc="formatFloat(simulation.sale_objective_qty)" />
+            <!--            <span t-esc="formatFloat(simulation.sale_objective_qty)" />-->
+            <input
+              type="text"
+              t-att-data-date_index="simulation_index"
+              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"
+              t-att-value="formatFloat(simulation.sale_objective_qty)"
+              t-on-change.stop="(ev) => this.onChangeSalesObjectiveQty(ev, productionSimulation.id)"
+              t-on-focus.prevent="_onFocusInput"
+            />
           </th>
         </t>
       </tr>
-      <tr name="production_objective">
+
+      <tr t-ref="prodObjRow" name="production_objective">
         <th />
         <th scope="row">
           <span>Production Objective</span>
@@ -100,11 +119,20 @@
           t-key="simulation_index"
         >
           <th class="text-end pe-4">
-            <span t-esc="formatFloat(simulation.production_objective_qty)" />
+            <!--            <span t-esc="formatFloat(simulation.production_objective_qty)" />-->
+            <input
+              type="text"
+              t-att-data-date_index="simulation_index"
+              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"
+              t-att-value="formatFloat(simulation.production_objective_qty)"
+              t-on-change.stop="(ev) => this.onChangeProductionObjectiveQty(ev, productionSimulation.id)"
+              t-on-focus.prevent="_onFocusInput"
+            />
           </th>
         </t>
       </tr>
-      <tr name="sales_history">
+
+      <tr t-ref="salesHistoryRow" name="sales_history">
         <th />
         <th scope="row">
           <span>Sold Quantity</span>
@@ -116,10 +144,44 @@
           t-key="simulation_index"
         >
           <th class="text-end pe-4">
-            <span t-esc="formatFloat(simulation.sold_qty)" />
+            <!--            <span t-esc="formatFloat(simulation.sold_qty)" />-->
+            <input
+              type="text"
+              t-att-data-date_index="simulation_index"
+              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"
+              t-att-value="formatFloat(simulation.sold_qty)"
+              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"
+              t-on-focus.prevent="_onFocusInput"
+            />
           </th>
         </t>
       </tr>
+
+      <tr t-ref="prodPlanRow" name="production_plan">
+        <th />
+        <th scope="row">
+          <span>Production Plan</span>
+        </th>
+        <th></th>
+        <t
+          t-foreach="productionSimulation.product_plan_sim_ids"
+          t-as="simulation"
+          t-key="simulation_index"
+        >
+          <th class="text-end pe-4">
+            <span t-esc="formatFloat(simulation.planned_production_qty)" />
+            <!--            <input-->
+            <!--              type="text"-->
+            <!--              t-att-data-date_index="simulation_index"-->
+            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"-->
+            <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
+            <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
+            <!--              t-on-focus.prevent="_onFocusInput"-->
+            <!--            />-->
+          </th>
+        </t>
+      </tr>
+
       <tr
         name="demand_forecast_year_minus_1"
         t-attf-class="{{! groups.mrp_mps_show_actual_demand_year_minus_1 and 'o_hidden' or ''}}"
@@ -139,6 +201,7 @@
           </th>
         </t>
       </tr>
+
       <tr
         t-ref="forecastRow"
         name="demand_forecast"
@@ -195,39 +258,14 @@
               type="text"
               t-att-data-date_index="simulation_index"
               t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"
-              t-att-value="formatFloat(simulation.forecast_qty)"
+              t-att-value="formatFloat(simulation.forecasted_demand_qty)"
               t-on-change.stop="(ev) => this._onChangeForecast(ev, productionSimulation.id)"
               t-on-focus.prevent="_onFocusInput"
             />
           </th>
         </t>
       </tr>
-      <tr
-        name="indirect_demand"
-        t-attf-class="{{(! groups.mrp_mps_show_indirect_demand or ! productionSimulation.has_indirect_demand) and 'o_hidden' or ''}}"
-      >
-        <th />
-        <th
-          scope="row"
-          data-bs-toggle="tooltip"
-          data-bs-placement="bottom"
-          title="The forecasted demand to fulfill the needs in components of the Manufacturing Orders."
-        >
-          - Indirect Demand Forecast
-        </th>
-        <th />
-        <t
-          t-foreach="productionSimulation.product_plan_sim_ids"
-          t-as="simulation"
-          t-key="simulation_index"
-        >
-          <th
-            t-attf-class="text-end pe-4 {{simulation.indirect_demand_qty == 0 and 'text-muted' or ''}}"
-          >
-            <t t-esc="formatFloat(simulation.indirect_demand_qty)" />
-          </th>
-        </t>
-      </tr>
+
       <tr
         t-ref="replenishRow"
         name="to_replenish"
@@ -255,28 +293,8 @@
             title="The quantity to replenish through Purchase Orders or Manufacturing Orders."
             >Suggested Replenishment
           </span>
-          <button
-            type="button"
-            title="Replenish"
-            t-attf-class="{{! groups.mrp_mps_show_to_replenish and 'o_hidden' or 'btn btn-secondary o_no_padding o_prod_sim_procurement'}}"
-            t-on-click.stop="() => this._onClickReplenish(productionSimulation.id)"
-            t-on-mouseover.stop="_onMouseOverReplenish"
-            t-on-mouseout.stop="_onMouseOutReplenish"
-          >
-            Replenish
-          </button>
         </th>
-        <th class="text-end">
-          <button
-            type="button"
-            t-attf-class="{{! groups.mrp_mps_show_to_replenish and 'o_hidden' or 'btn btn-link o_no_padding o_prod_sim_edit'}}"
-            t-on-click.stop="(ev) => this._onClickEdit(ev, productionSimulation.id)"
-          >
-            <t t-esc="productionSimulation.min_to_replenish_qty" />
-            &#8804;&#8230;&#8804;
-            <t t-esc="productionSimulation.max_to_replenish_qty" />
-          </button>
-        </th>
+        <th class="text-end"></th>
         <t
           t-foreach="productionSimulation.product_plan_sim_ids"
           t-as="simulation"
@@ -372,21 +390,7 @@
             >Forecasted Stock</span
           >
         </th>
-        <th class="text-end">
-          <button
-            type="button"
-            t-attf-class="{{! groups.mrp_mps_show_safety_stock and 'o_hidden' or 'btn btn-link text-muted o_no_padding o_prod_sim_edit'}}"
-            t-on-click.stop="(ev) => this._onClickEdit(ev, productionSimulation.id)"
-          >
-            <span
-              class="fa fa-bullseye text-muted fa-fw"
-              role="img"
-              aria-label="Forecasted"
-              title="Forecasted"
-            />
-            <t t-esc="productionSimulation.safety_stock_target_qty or 0.0" />
-          </button>
-        </th>
+        <th class="text-end"></th>
         <t
           t-foreach="productionSimulation.product_plan_sim_ids"
           t-as="simulation"

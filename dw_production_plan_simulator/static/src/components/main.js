@@ -39,6 +39,7 @@ class ProductionPlanSimulatorComponent extends Component {
       domain: [],
       companies: [],
       products: [],
+      simulationLines: [],
       currentCompanyId: null,
       startDate: "2024-01-01",
       endDate: "2025-06-01",
@@ -111,7 +112,7 @@ class ProductionPlanSimulatorComponent extends Component {
         this.state.endDate
       );
       console.log("this.model.data", this.model.data);
-      console.log("onWillStart lines", this.lines);
+      console.log("onWillStart simulationLines", this.simulationLines);
       console.log(
         "onWillStart manufacturingPeriods",
         this.manufacturingPeriods
@@ -139,7 +140,7 @@ class ProductionPlanSimulatorComponent extends Component {
           console.error(error);
         });
       console.log("onMounted self.model.data", self.model.data);
-      console.log("onMounted lines", self.lines);
+      console.log("onMounted simulationLines", self.simulationLines);
 
       $("#submit").click(
         async function () {
@@ -153,15 +154,21 @@ class ProductionPlanSimulatorComponent extends Component {
             self.state.endDate
           );
           console.log("self.model.data", self.model.data);
-          console.log("lines", self.lines);
+          console.log("simulationLines", self.simulationLines);
         }.bind(this)
       );
 
       $('input[id="select-period"]').on(
         "apply.daterangepicker",
         function (ev, picker) {
-          console.log(picker.startDate.format("YYYY-MM-DD"));
-          console.log(picker.endDate.format("YYYY-MM-DD"));
+          console.log(
+            "apply.daterangepicker",
+            picker.startDate.format("YYYY-MM-DD")
+          );
+          console.log(
+            "apply.daterangepicker",
+            picker.endDate.format("YYYY-MM-DD")
+          );
         }
       );
     });
@@ -188,8 +195,9 @@ class ProductionPlanSimulatorComponent extends Component {
         var companiesSelect = document.getElementById("select-company");
         companiesSelect.innerHTML = "";
         result.forEach(
-          function (opt) {
+          function (opt, i) {
             var option = this.addSelectOption(opt["name"], opt["id"]);
+            option.selected = index === 0 ? true : false;
             companiesSelect.appendChild(option);
           }.bind(this)
         );
@@ -207,6 +215,22 @@ class ProductionPlanSimulatorComponent extends Component {
         ranges: {
           Today: [moment(), moment()],
           "This Year": [moment().startOf("year"), moment().endOf("year")],
+          "18 Months": [
+            moment().startOf("year"),
+            moment().add(17, "months").endOf("year"),
+          ],
+          "Next 18 Months": [
+            moment().add(1, "day"),
+            moment().add(18, "months").endOf("month"),
+          ],
+          "24 Months": [
+            moment().startOf("year"),
+            moment().add(23, "months").endOf("year"),
+          ],
+          "Next 24 Months": [
+            moment().startOf("month"),
+            moment().add(24, "months").endOf("month"),
+          ],
           "Last Year": [
             moment().subtract(1, "year").startOf("year"),
             moment().subtract(1, "year").endOf("year"),
@@ -234,7 +258,8 @@ class ProductionPlanSimulatorComponent extends Component {
     var companies = this.orm.searchRead(
       "res.company",
       [[1, "=", 1]],
-      ["id", "name"]
+      ["id", "name"],
+      { order: "id ASC" }
     );
     var res = [];
     await companies
@@ -289,12 +314,13 @@ class ProductionPlanSimulatorComponent extends Component {
     return this.model?.data?.dates || [];
   }
 
-  get lines() {
+  get simulationLines() {
     console.log(
-      "this.model?.data?.production_simulation_ids",
+      " get simulationLines()  this.model?.data?.production_simulation_ids",
       this.model?.data?.production_simulation_ids
     );
-    return this.model?.data?.production_simulation_ids || [];
+    this.state.simulationLines = this.model?.data?.production_simulation_ids;
+    return this.model?.data?.production_simulation_ids;
   }
   //
   get groups() {
@@ -302,7 +328,7 @@ class ProductionPlanSimulatorComponent extends Component {
   }
   //
   get isSelected() {
-    return this.model.selectedRecords.size === this.lines.length;
+    return this.model.selectedRecords.size === this.simulationLines.length;
   }
   //
   toggleSelection() {
@@ -325,6 +351,12 @@ class ProductionPlanSimulatorComponent extends Component {
       "captureInputSettings currentCompanyId",
       this.state.currentCompanyId
     );
+
+    this.model.saveDateRange(
+      this.state.currentCompanyId,
+      this.state.startDate,
+      this.state.endDate
+    );
   }
   /**
    * Handles the daterange input change.
@@ -335,7 +367,7 @@ class ProductionPlanSimulatorComponent extends Component {
     console.log("_onChangeDateRange", ev);
   }
 
-  _onChangeCompany(ev, productionSimulationId) {
+  async _onChangeCompany(ev, productionSimulationId) {
     console.log(
       "_onChangeCompany(ev, productionSimulationId)",
       ev,
@@ -343,30 +375,8 @@ class ProductionPlanSimulatorComponent extends Component {
     );
     this.state.currentCompanyId = parseInt(ev.target.value);
     this.captureInputSettings();
-
-    this.model.load(
-      this.state.domain,
-      this.env.config.offset,
-      this.env.config.limit,
-      this.state.startDate,
-      this.state.endDate
-    );
-    //        const dateIndex = parseInt(ev.target.dataset.date_index);
-    //        const replenishQty = ev.target.value;
-    //        if (replenishQty === "" || isNaN(replenishQty)) {
-    //            ev.target.value = this.model._getOriginValue(productionSimulationId, dateIndex, 'replenish_qty');
-    //        } else {
-    //            this.model._saveToReplenish(productionSimulationId, dateIndex, replenishQty).then(() => {
-    //                const inputSelector = 'input[data-date_index="' + (dateIndex + 1) + '"]';
-    //                const nextInput = this.replenishRow.el.querySelector(inputSelector);
-    //                if (nextInput) {
-    //                    nextInput.select();
-    //                }
-    //            }, () => {
-    //                ev.target.value = this.model._getOriginValue(productionSimulationId, dateIndex, 'replenish_qty');
-    //            });
-    //        }
   }
+
   //
   //    /**
   //     * Handles the click on replenish button. It will call action_replenish with
@@ -389,24 +399,48 @@ class ProductionPlanSimulatorComponent extends Component {
   //
   async _onClickCreate(ev) {
     this.captureInputSettings();
-    await this.model._createProducts(this.state);
+    this.model._createProducts(this.state);
+
     await this.model.load(
-        this.state.domain,
-        this.env.config.offset,
-        this.env.config.limit,
-        this.state.startDate,
-        this.state.endDate
+      this.state.domain,
+      this.env.config.offset,
+      this.env.config.limit,
+      this.state.startDate,
+      this.state.endDate
+    );
+    console.log("this.simulationLines", this.simulationLines);
+    console.log("this.state.simulationLines", this.state.simulationLines);
+
+    if (this.model.data.length > 0) {
+      var createProductNotif = this.notificationService.add(
+        "Load Products to " +
+          this.state.companies +
+          " Production Simulation successful",
+        {
+          title:
+            "Load Products to " +
+            this.state.companies +
+            " Production Simulation successful",
+          type: "success",
+        }
       );
-    //
-    //    this.state.currentCompanyId = parseInt($("#select-company").val());
-    //
-    //    await this.model.load(
-    //      this.state.domain,
-    //      this.env.config.offset,
-    //      this.env.config.limit,
-    //      this.state.startDate,
-    //      this.state.endDate
-    //    );
+      setTimeout(createProductNotif, 2000);
+      setTimeout(function () {
+        location.reload(true);
+      }, 2000);
+    } else {
+      var createProductNotif = this.notificationService.add(
+        "No products were found. ",
+        {
+          title:
+            "Load Products to " +
+            this.state.companies +
+            " Production Simulation successful",
+          type: "danger",
+        }
+      );
+      setTimeout(createProductNotif, 2000);
+    }
   }
   //
   //    get actionMenuItems() {

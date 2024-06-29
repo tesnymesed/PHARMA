@@ -21,7 +21,8 @@
                     <div class="card-body">
                       <div class="row mb-3">
                         <div class="col-sm-4">
-                          <label for="select-company" class="form-label">Company</label>
+                          <label for="select-company" class="form-label"
+                            >Company</label>
                           <select
                             class="form-select"
                             id="select-company"
@@ -34,8 +35,7 @@
                           <label
                             for="select-period"
                             class="col-sm-2 col-form-label"
-                            >Period</label
-                          >
+                            >Period</label>
                           <input
                             class="date-own form-control"
                             id="select-period"
@@ -52,8 +52,7 @@
                           <label
                             for="sales-avg-period"
                             class="col-sm-2 col-form-label"
-                            >Sales AVG</label
-                          >
+                            >Sales AVG</label>
                           <input
                             class="date-own form-control"
                             id="sales-avg-period"
@@ -97,7 +96,7 @@
                           <!--                            class="table table-hover"-->
                           <!--                          ></div>-->
 
-                          <t t-if="lines.length">
+                          <t t-if="state.simulationLines.length">
                             <div class="text-nowrap mr0 ml0">
                               <table class="table o_mps_product_table">
                                 <thead class="table-light">
@@ -118,7 +117,7 @@
                                 </thead>
 
                                 <t
-                                  t-foreach="lines"
+                                  t-foreach="state.simulationLines"
                                   t-as="productionSimulation"
                                   t-key="productionSimulation.id"
                                 >

@@ -26,20 +26,16 @@
     <record id="dw_product_template_purchase_lead_time_view_form_inherit" model="ir.ui.view">
         <field name="name">dw.product.template.purchase.lead.time.form.inherit</field>
         <field name="model">product.template</field>
-        <field name="inherit_id" ref="dw_pharma_base.product_template_pharma_form_view"/>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='seller_ids']" position="after">
+            <field name="default_code" position="after">
                 <group>
                     <group>
                         <field string="Purchase Lead Time" name="dw_purchase_lead"/>
                     </group>
                 </group>
-            </xpath>
-            <!--            <xpath expr="//field[@name='seller_ids']" position="before">-->
-            <!--                <group>-->
-            <!--                    <field name="dw_product_lead_time"/>-->
-            <!--                </group>-->
-            <!--            </xpath>-->
+            </field>
+
         </field>
     </record>
 

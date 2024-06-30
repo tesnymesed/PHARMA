@@ -14,3 +14,22 @@ def safe_divide(numerator, denominator, default_value=0.0):
         return numerator / denominator
     except ZeroDivisionError:
         return default_value
+
+
+def calculate_planned_production_qty(stock_level, safety_stock_target_qty, sales_average):
+    """
+    Calculate the planned production quantity based on the given parameters.
+
+    Args:
+        stock_level (float): The current stock level.
+        safety_stock_target_qty (float): The target safety stock quantity.
+        sales_average (float): The average sales.
+
+    Returns:
+        float: The planned production quantity.
+    """
+    if stock_level < safety_stock_target_qty:
+        planned_production_qty = 4 * sales_average - stock_level
+        return planned_production_qty if planned_production_qty > 0 else 0
+    else:
+        return 0

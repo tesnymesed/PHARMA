@@ -11,7 +11,7 @@ from odoo.osv.expression import OR, AND
 from odoo.tools.date_utils import add
 from odoo.tools.float_utils import float_round
 
-from .utils import safe_divide
+from .utils import calculate_planned_production_qty, safe_divide
 
 
 class DwProductionPlanSimulator(models.Model):
@@ -355,7 +355,7 @@ class DwProductionPlanSimulator(models.Model):
         products = self.env['product.product'].search([
             ('product_tmpl_id.type', '=', 'product'),
             ('product_tmpl_id.categ_id.is_final_product', '=', True),
-            ('product_tmpl_id.bom_ids', '!=', False),
+            # ('product_tmpl_id.bom_ids', '!=', False),
             ('product_tmpl_id.company_id', '=', company_id)
         ])
 
@@ -580,10 +580,9 @@ class DwProductionPlanSimulator(models.Model):
                 # @bislem: Additions
                 forecast_values['stock_level'] = forecast_values['starting_inventory_qty']
 
-                forecast_values['stock_coverage'] = safe_divide(forecast_values['stock_level'],
-                                                                production_simulation.sales_average)
 
-                forecast_values['planned_production_qty'] = self.calculate_planned_production_qty(
+
+                forecast_values['planned_production_qty'] = calculate_planned_production_qty(
                     forecast_values.get('stock_level'),
                     production_simulation.safety_stock_target_qty,
                     production_simulation.sales_average,
@@ -591,8 +590,15 @@ class DwProductionPlanSimulator(models.Model):
 
                 forecast_values['lot_size'] = production_simulation.lot_size
 
+                forecast_values['planned_production_batches'] = safe_divide(forecast_values['planned_production_qty'],
+                                                                forecast_values['lot_size'])
+
                 forecast_values['suggested_production_plan_qty'] = forecast_values['batch_count'] * forecast_values[
                     'lot_size']
+
+                forecast_values['stock_coverage'] = safe_divide(
+                    forecast_values['stock_level'] + forecast_values['suggested_production_plan_qty'],
+                    production_simulation.sales_average)
 
                 if production_simulation in self:
                     production_simulation_state['product_plan_sim_ids'].append(forecast_values)
@@ -1439,24 +1445,6 @@ class DwProductionPlanSimulator(models.Model):
 
         return _results
 
-    def calculate_planned_production_qty(self, stock_level, safety_stock_target_qty, sales_average):
-        """
-        Calculate the planned production quantity based on the given parameters.
-
-        Args:
-            stock_level (float): The current stock level.
-            safety_stock_target_qty (float): The target safety stock quantity.
-            sales_average (float): The average sales.
-
-        Returns:
-            float: The planned production quantity.
-        """
-        if stock_level < safety_stock_target_qty:
-            planned_production_qty = 4 * sales_average - stock_level
-            return planned_production_qty if planned_production_qty > 0 else 0
-        else:
-            return 0
-
     def calculate_average_qty_to_deliver(self, data, start_date=None, end_date=None):
         """
         Calculate the average of the 'qty_to_deliver' field in a list of dictionaries.
@@ -1495,7 +1483,7 @@ class DwProductPlanSimulation(models.Model):
     sale_objective_qty = fields.Float('Sales Objective Qty', default=0.0)
     production_objective_qty = fields.Float('Production Objective Qty', default=0.0)
 
-    planned_production_qty = fields.Float('Planned Production Qty', default=0.0)
+    planned_production_qty = fields.Float('Planned Production Qty', default=0.0, compute='_compute_planned_production_qty')
 
     sold_qty = fields.Float('Sales Qty', default=0.0)
 
@@ -1506,3 +1494,11 @@ class DwProductPlanSimulation(models.Model):
     replenish_qty = fields.Float('Qty To Produce', default=0.0)
 
     notes = fields.Text('Observations')
+
+    @api.depends('stock_level', 'production_simulation_id.safety_stock_target_qty',
+                 'production_simulation_id.sales_average')
+    def _compute_planned_production_qty(self):
+        for record in self:
+            record.planned_production_qty = calculate_planned_production_qty(record.stock_level,
+                                                                             record.production_simulation_id.safety_stock_target_qty,
+                                                                             record.production_simulation_id.sales_average)

@@ -182,6 +182,133 @@
         </t>
       </tr>
 
+      <tr t-ref="prodPlanBatchesRow" name="production_plan_batches">
+        <th />
+        <th scope="row">
+          <span>Production Plan Batches</span>
+        </th>
+        <th></th>
+        <t
+          t-foreach="productionSimulation.product_plan_sim_ids"
+          t-as="simulation"
+          t-key="simulation_index"
+        >
+          <th class="text-end pe-4">
+            <span t-esc="formatFloat(simulation.planned_production_batches)" />
+            <!--            <input-->
+            <!--              type="text"-->
+            <!--              t-att-data-date_index="simulation_index"-->
+            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"-->
+            <!--              t-att-value="formatFloat(simulation.planned_production_batches)"-->
+            <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
+            <!--              t-on-focus.prevent="_onFocusInput"-->
+            <!--            />-->
+          </th>
+        </t>
+      </tr>
+
+      <tr t-ref="stockLevelRow" name="stock_level">
+        <th />
+        <th scope="row">
+          <span>Stock level</span>
+        </th>
+        <th></th>
+        <t
+          t-foreach="productionSimulation.product_plan_sim_ids"
+          t-as="simulation"
+          t-key="simulation_index"
+        >
+          <th class="text-end pe-4">
+            <span t-esc="formatFloat(simulation.stock_level)" />
+            <!--            <input-->
+            <!--              type="text"-->
+            <!--              t-att-data-date_index="simulation_index"-->
+            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"-->
+            <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
+            <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
+            <!--              t-on-focus.prevent="_onFocusInput"-->
+            <!--            />-->
+          </th>
+        </t>
+      </tr>
+
+      <tr t-ref="stockCoverageRow" name="stock_coverage">
+        <th />
+        <th scope="row">
+          <span>Stock coverage</span>
+        </th>
+        <th></th>
+        <t
+          t-foreach="productionSimulation.product_plan_sim_ids"
+          t-as="simulation"
+          t-key="simulation_index"
+        >
+          <th class="text-end pe-4">
+            <span t-esc="formatFloat(simulation.stock_coverage)" />
+            <!--            <input-->
+            <!--              type="text"-->
+            <!--              t-att-data-date_index="simulation_index"-->
+            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"-->
+            <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
+            <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
+            <!--              t-on-focus.prevent="_onFocusInput"-->
+            <!--            />-->
+          </th>
+        </t>
+      </tr>
+
+      <tr t-ref="prodPlanBatchesRow" name="production_plan_batches">
+        <th />
+        <th scope="row">
+          <span>Production Plan Batches</span>
+        </th>
+        <th></th>
+        <t
+          t-foreach="productionSimulation.product_plan_sim_ids"
+          t-as="simulation"
+          t-key="simulation_index"
+        >
+          <th class="text-end pe-4">
+            <!--            <span t-esc="formatFloat(simulation.batch_count)" />-->
+            <input
+              type="text"
+              t-att-data-date_index="simulation_index"
+              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"
+              t-att-value="formatFloat(simulation.batch_count)"
+              t-on-change.stop="(ev) => this.onChangeBatchCount(ev, productionSimulation.id)"
+              t-on-focus.prevent="_onFocusInput"
+            />
+          </th>
+        </t>
+      </tr>
+
+      <tr t-ref="suggProdPlanRow" name="suggested_production_plan">
+        <th />
+        <th scope="row">
+          <span>Suggested Production Plan</span>
+        </th>
+        <th></th>
+        <t
+          t-foreach="productionSimulation.product_plan_sim_ids"
+          t-as="simulation"
+          t-key="simulation_index"
+        >
+          <th class="text-end pe-4">
+            <span
+              t-esc="formatFloat(simulation.batch_count * simulation.lot_size)"
+            />
+            <!--            <input-->
+            <!--              type="text"-->
+            <!--              t-att-data-date_index="simulation_index"-->
+            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"-->
+            <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
+            <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
+            <!--              t-on-focus.prevent="_onFocusInput"-->
+            <!--            />-->
+          </th>
+        </t>
+      </tr>
+
       <tr
         name="demand_forecast_year_minus_1"
         t-attf-class="{{! groups.mrp_mps_show_actual_demand_year_minus_1 and 'o_hidden' or ''}}"

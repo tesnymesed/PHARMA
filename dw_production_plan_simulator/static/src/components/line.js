@@ -18,6 +18,7 @@ export default class ProductionPlanSimulatorLine extends Component {
     this.prodObjRow = useRef("prodObjRow");
     this.salesHistoryRow = useRef("salesHistoryRow");
     this.prodPlanRow = useRef("prodPlanRow");
+    this.prodPlanBatchesRow = useRef("prodPlanBatchesRow");
 
     onPatched(() => {
       // after a replenishment, switch to next column if possible
@@ -297,6 +298,36 @@ export default class ProductionPlanSimulatorLine extends Component {
             productionSimulationId,
             dateIndex,
             "sold_qty"
+          );
+        }
+      );
+    }
+  }
+  onChangeBatchCount(ev, productionSimulationId) {
+    const dateIndex = parseInt(ev.target.dataset.date_index);
+    const batchCount = ev.target.value;
+    if (batchCount === "" || isNaN(batchCount)) {
+      ev.target.value = this.model._getOriginValue(
+        productionSimulationId,
+        dateIndex,
+        "batch_count"
+      );
+    } else {
+      this.model._saveBatchCount(productionSimulationId, dateIndex, batchCount).then(
+        () => {
+          const inputSelector =
+            'input[data-date_index="' + (dateIndex + 1) + '"]';
+          const nextInput =
+            this.prodPlanBatchesRow.el.querySelector(inputSelector);
+          if (nextInput) {
+            nextInput.select();
+          }
+        },
+        () => {
+          ev.target.value = this.model._getOriginValue(
+            productionSimulationId,
+            dateIndex,
+            "batch_count"
           );
         }
       );

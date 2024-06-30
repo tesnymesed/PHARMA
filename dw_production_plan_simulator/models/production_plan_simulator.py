@@ -582,6 +582,10 @@ class DwProductionPlanSimulator(models.Model):
 
                 forecast_values['lot_size'] = production_simulation.lot_size
 
+                forecast_values['batch_count'] = float_round(
+                    sum(existing_forecasts.mapped('batch_count')),
+                    precision_rounding=1, rounding_method='UP')
+
                 forecast_values['suggested_production_plan_qty'] = forecast_values['batch_count'] * forecast_values[
                     'lot_size']
 

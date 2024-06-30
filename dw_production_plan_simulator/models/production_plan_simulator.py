@@ -578,9 +578,15 @@ class DwProductionPlanSimulator(models.Model):
                     forecast_values['replenish_qty'], precision_rounding=rounding)
 
                 # @bislem: Additions
-                forecast_values['stock_level'] = forecast_values['starting_inventory_qty']
+                # forecast_values['stock_level'] = forecast_values['starting_inventory_qty']
 
+                forecast_values['lot_size'] = production_simulation.lot_size
 
+                forecast_values['suggested_production_plan_qty'] = forecast_values['batch_count'] * forecast_values[
+                    'lot_size']
+
+                forecast_values['stock_level'] = forecast_values['starting_inventory_qty'] + forecast_values[
+                    'suggested_production_plan_qty']
 
                 forecast_values['planned_production_qty'] = calculate_planned_production_qty(
                     forecast_values.get('stock_level'),
@@ -588,20 +594,16 @@ class DwProductionPlanSimulator(models.Model):
                     production_simulation.sales_average,
                 )
 
-                forecast_values['lot_size'] = production_simulation.lot_size
-
                 forecast_values['planned_production_batches'] = safe_divide(forecast_values['planned_production_qty'],
-                                                                forecast_values['lot_size'])
-
-                forecast_values['suggested_production_plan_qty'] = forecast_values['batch_count'] * forecast_values[
-                    'lot_size']
+                                                                            forecast_values['lot_size'])
 
                 forecast_values['stock_coverage'] = safe_divide(
-                    forecast_values['stock_level'] + forecast_values['suggested_production_plan_qty'],
+                    forecast_values['stock_level'],
                     production_simulation.sales_average)
 
                 if production_simulation in self:
                     production_simulation_state['product_plan_sim_ids'].append(forecast_values)
+
                 starting_inventory_qty = forecast_values['safety_stock_qty']
                 if not forecast_values['replenish_qty']:
                     continue
@@ -1483,7 +1485,8 @@ class DwProductPlanSimulation(models.Model):
     sale_objective_qty = fields.Float('Sales Objective Qty', default=0.0)
     production_objective_qty = fields.Float('Production Objective Qty', default=0.0)
 
-    planned_production_qty = fields.Float('Planned Production Qty', default=0.0, compute='_compute_planned_production_qty')
+    planned_production_qty = fields.Float('Planned Production Qty', default=0.0,
+                                          compute='_compute_planned_production_qty')
 
     sold_qty = fields.Float('Sales Qty', default=0.0)
 

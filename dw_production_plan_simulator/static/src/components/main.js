@@ -197,7 +197,7 @@ class ProductionPlanSimulatorComponent extends Component {
         result.forEach(
           function (opt, i) {
             var option = this.addSelectOption(opt["name"], opt["id"]);
-            option.selected = index === 0 ? true : false;
+            option.selected = i === 0 ? true : false;
             companiesSelect.appendChild(option);
           }.bind(this)
         );
@@ -357,6 +357,7 @@ class ProductionPlanSimulatorComponent extends Component {
       this.state.startDate,
       this.state.endDate
     );
+
   }
   /**
    * Handles the daterange input change.

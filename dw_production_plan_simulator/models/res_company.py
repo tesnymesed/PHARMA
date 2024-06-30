@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import datetime
-
 from odoo import fields, models
 from odoo.tools.date_utils import start_of, end_of, add, subtract
 
@@ -17,7 +15,11 @@ class DWCompany(models.Model):
     dw_prod_sim_date_range_end = fields.Date('ProdSim Range End', readonly=True)
 
     def set_prod_sim_date_range(self, date_start='', date_end=''):
-        self.ensure_one()
+        try:
+            self.ensure_one()
+        except ValueError:
+            # handle the case where there are 0 or multiple records
+            pass
 
         if date_start and date_end:
             date_start = fields.Date.from_string(date_start)
@@ -61,7 +63,6 @@ class DWCompany(models.Model):
 
         if not manufacturing_period_count:
             manufacturing_period_count = self.count_manufacturing_period_to_display(first_day, last_day, 'month')
-
 
         for columns in range(manufacturing_period_count):
             last_day = end_of(first_day, 'month')

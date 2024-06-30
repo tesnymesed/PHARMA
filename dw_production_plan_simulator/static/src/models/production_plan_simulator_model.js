@@ -67,6 +67,8 @@ export class ProductionPlanSimulatorModel extends EventBus {
       ])
       .then((productionSimulationIds) => {
         productionSimulationIds.push(productionSimulationId);
+        console.log('reload with ', productionSimulationId, )
+
         return this.orm.call(
           "dw.production.plan.simulation",
           "get_production_simulation_view_state",
@@ -90,6 +92,7 @@ export class ProductionPlanSimulatorModel extends EventBus {
             );
           }
         }
+        console.log('this.data.production_simulation_ids', this.data.production_simulation_ids)
         this.notify();
       });
   }
@@ -259,6 +262,28 @@ export class ProductionPlanSimulatorModel extends EventBus {
           productionSimulationId,
           dateIndex,
           soldQty,
+        ])
+        .then(() => {
+          return this.reload(productionSimulationId);
+        });
+    });
+  }
+
+    /**
+   * Save the batch count and reload the current schedule to update dependent data.
+   * @private
+   * @param {Integer} productionSimulationId dw.production.plan.simulation Id.
+   * @param {Integer} dateIndex period to save (column number)
+   * @param {Float} soldQty The new sold quantity
+   * @return {Promise}
+   */
+  _saveBatchCount(productionSimulationId, dateIndex, batchCount) {
+    return this.mutex.exec(() => {
+      this.orm
+        .call("dw.production.plan.simulation", "set_batch_count", [
+          productionSimulationId,
+          dateIndex,
+          batchCount,
         ])
         .then(() => {
           return this.reload(productionSimulationId);

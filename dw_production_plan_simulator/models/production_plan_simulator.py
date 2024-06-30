@@ -11,6 +11,8 @@ from odoo.osv.expression import OR, AND
 from odoo.tools.date_utils import add
 from odoo.tools.float_utils import float_round
 
+from .utils import safe_divide
+
 
 class DwProductionPlanSimulator(models.Model):
     _name = 'dw.production.plan.simulation'
@@ -50,15 +52,17 @@ class DwProductionPlanSimulator(models.Model):
     )
 
     lot_size = fields.Float(
-        # related='bom_id.product_qty',
-        # compute='_compute_lot_size',
+        related='bom_id.product_qty',
+        compute='_compute_lot_size',
+        readonly=False,
         store=True
     )
 
     workcenter_id = fields.Many2one('mrp.workcenter', string='Work Center', store=True)
 
     workcenter_default_capacity = fields.Float('Capacity', default=1.0,
-                                               # related="workcenter_id.default_capacity",
+                                               related="workcenter_id.default_capacity",
+                                               readonly=False,
                                                store=True,
                                                help="Default number of pieces (in product UoM) that can be produced in parallel (at the same time) at this work center.")
 
@@ -66,8 +70,15 @@ class DwProductionPlanSimulator(models.Model):
                                            'Simulation quantity at date')
 
     safety_stock_target_qty = fields.Float(
-        'Safety Stock Target (Months worth)',
+        'Safety Stock Target Qty (Months worth)',
+        compute='_compute_safety_stock_target_qty',
         help="This is the minimum free stock you want to keep for that product at all times.")
+
+    safety_stock_target = fields.Integer(
+        'Safety Stock Target (Months)',
+        help="This is the minimum free stock you want to keep for that product at all times (Months worth of sales).")
+
+    sales_average = fields.Float(compute='compute_sales_average', default=0.0, store=True)
 
     min_to_replenish_qty = fields.Float(
         'Minimum to Replenish',
@@ -75,8 +86,6 @@ class DwProductionPlanSimulator(models.Model):
     max_to_replenish_qty = fields.Float(
         'Maximum to Replenish', default=1000,
         help="The maximum replenishment you would like to launch for each period in the MPS. Note that if the demand is higher than that amount, the remaining quantity will be transferred to the next period automatically.")
-
-
 
     # replenish_state = fields.Selection([
     #     ('to_replenish', 'To Replenish'),
@@ -87,6 +96,20 @@ class DwProductionPlanSimulator(models.Model):
     # _sql_constraints = [
     #     ('warehouse_product_ref_uniq', 'unique (warehouse_id, product_id)', 'The combination of warehouse and product must be unique!'),
     # ]
+
+    @api.depends('safety_stock_target')
+    def compute_sales_average(self):
+        for record in self:
+            print(record)
+            qr = self._query(record.product_id.id)
+            sales = self._sales_query(qr)
+
+            record.sales_average = self.calculate_average_qty_to_deliver(sales)
+
+    @api.depends('safety_stock_target', 'sales_average')
+    def _compute_safety_stock_target_qty(self):
+        for record in self:
+            record.safety_stock_target_qty = record.safety_stock_target * record.sales_average
 
     @api.model
     def _default_warehouse_id(self):
@@ -506,12 +529,16 @@ class DwProductionPlanSimulator(models.Model):
                         sum(existing_forecasts.mapped('production_objective_qty')),
                         precision_rounding=rounding)
 
-                    forecast_values['planned_production_qty'] = float_round(
-                        sum(existing_forecasts.mapped('planned_production_qty')),
+                    forecast_values['batch_count'] = float_round(
+                        sum(existing_forecasts.mapped('batch_count')),
                         precision_rounding=rounding)
 
-                    forecast_values['stock_level'] = float_round(sum(existing_forecasts.mapped('stock_level')),
-                                                                 precision_rounding=rounding)
+                    #     forecast_values['planned_production_qty'] = float_round(
+                    #     sum(existing_forecasts.mapped('planned_production_qty')),
+                    #     precision_rounding=rounding)
+
+                    # forecast_values['stock_level'] = float_round(sum(existing_forecasts.mapped('stock_level')),
+                    #                                              precision_rounding=rounding)
 
                     forecast_values['notes'] = existing_forecasts[0].notes
 
@@ -531,8 +558,9 @@ class DwProductionPlanSimulator(models.Model):
                     forecast_values['sold_qty'] = 0.0
                     forecast_values['sale_objective_qty'] = 0.0
                     forecast_values['production_objective_qty'] = 0.0
-                    forecast_values['planned_production_qty'] = 0.0
-                    forecast_values['stock_level'] = 0.0
+                    # forecast_values['planned_production_qty'] = 0.0
+                    # forecast_values['stock_level'] = 0.0
+                    forecast_values['batch_count'] = 0.0
                     forecast_values['notes'] = ''
 
                 if not replenish_qty_updated:
@@ -548,6 +576,23 @@ class DwProductionPlanSimulator(models.Model):
                     starting_inventory_qty - forecast_values['forecasted_demand_qty'] - forecast_values[
                         'indirect_demand_qty'] +
                     forecast_values['replenish_qty'], precision_rounding=rounding)
+
+                # @bislem: Additions
+                forecast_values['stock_level'] = forecast_values['starting_inventory_qty']
+
+                forecast_values['stock_coverage'] = safe_divide(forecast_values['stock_level'],
+                                                                production_simulation.sales_average)
+
+                forecast_values['planned_production_qty'] = self.calculate_planned_production_qty(
+                    forecast_values.get('stock_level'),
+                    production_simulation.safety_stock_target_qty,
+                    production_simulation.sales_average,
+                )
+
+                forecast_values['lot_size'] = production_simulation.lot_size
+
+                forecast_values['suggested_production_plan_qty'] = forecast_values['batch_count'] * forecast_values[
+                    'lot_size']
 
                 if production_simulation in self:
                     production_simulation_state['product_plan_sim_ids'].append(forecast_values)
@@ -576,12 +621,11 @@ class DwProductionPlanSimulator(models.Model):
 
         return [p for p in production_simulation_states if p['id'] in self.ids]
 
-
     def remove_replenish_qty(self, date_index):
         """ Remove the quantity to replenish on the simulation cell.
 
         param date_index: index of the period used to find start and stop date
-        where the manual replenish quantity should be remove.
+        where the manual replenish quantity should be removed.
         """
         date_start, date_stop = self.company_id._get_simulation_date_range()[date_index]
         product_plan_sim_ids = self.product_plan_sim_ids.filtered(lambda f:
@@ -617,7 +661,6 @@ class DwProductionPlanSimulator(models.Model):
                 'production_simulation_id': self.id
             })
         return True
-
 
     # region: @bislem: Mocked data inputs
     def set_sales_objective_qty(self, date_index, quantity):
@@ -701,6 +744,27 @@ class DwProductionPlanSimulator(models.Model):
         else:
             existing_forecast.create({
                 'sold_qty': quantity,
+                'date': date_stop,
+                'production_simulation_id': self.id
+            })
+        return True
+
+    def set_batch_count(self, date_index, batch_count):
+        """ Save the simulation production plan batch count:
+
+        params batch_count: The new total production plan batch count
+        params date_index: The manufacturing period
+        """
+        self.ensure_one()
+        date_start, date_stop = self.company_id._get_simulation_date_range()[date_index]
+        existing_forecast = self.product_plan_sim_ids.filtered(lambda f:
+                                                               f.date >= date_start and f.date <= date_stop)
+        batch_count = float_round(float(batch_count), precision_rounding=self.product_uom_id.rounding)
+        if existing_forecast:
+            existing_forecast[0].write({'batch_count': batch_count})
+        else:
+            existing_forecast.create({
+                'batch_count': batch_count,
                 'date': date_stop,
                 'production_simulation_id': self.id
             })
@@ -1213,43 +1277,207 @@ class DwProductionPlanSimulator(models.Model):
         if not domain:
             domain = []
 
-        def _used_in_bom(products, related_products):
-            """ Bottom up from bom line to finished products in order to get
-            all the finished products that use 'products' as component.
-            """
-            if not products:
-                return related_products
-            boms = products.bom_line_ids.mapped('bom_id')
-            products = boms.mapped('product_id') | boms.mapped('product_tmpl_id.product_variant_ids')
-            products -= related_products
-            related_products |= products
-            return _used_in_bom(products, related_products)
+        # def _used_in_bom(products, related_products):
+        #     """ Bottom up from bom line to finished products in order to get
+        #     all the finished products that use 'products' as component.
+        #     """
+        #     if not products:
+        #         return related_products
+        #     boms = products.bom_line_ids.mapped('bom_id')
+        #     products = boms.mapped('product_id') | boms.mapped('product_tmpl_id.product_variant_ids')
+        #     products -= related_products
+        #     related_products |= products
+        #     return _used_in_bom(products, related_products)
 
         supplying_mps = self.env['dw.production.plan.simulation'].search(
             AND([domain, [
                 ('warehouse_id', 'in', self.mapped('warehouse_id').ids),
-                ('product_id', 'in', _used_in_bom(self.mapped('product_id'), self.env['product.product']).ids)
+                ('product_id', 'in', self.mapped('product_id').ids)
             ]]))
 
-        def _use_boms(products, related_products):
-            """ Explore bom line from products's BoMs in order to get components
-            used.
-            """
-            if not products:
-                return related_products
-            components = products.mapped(lambda product: product.bom_ids.bom_line_ids.filtered(
-                lambda line: not line._skip_bom_line(product)).mapped('product_id'))
+        # def _use_boms(products, related_products):
+        #     """ Explore bom line from products's BoMs in order to get components
+        #     used.
+        #     """
+        #     if not products:
+        #         return related_products
+        #     components = products.mapped(lambda product: product.bom_ids.bom_line_ids.filtered(
+        #         lambda line: not line._skip_bom_line(product)).mapped('product_id'))
+        #
+        #     components -= related_products
+        #     related_products |= components
+        #     return _use_boms(components, related_products)
+        #
+        # supplied_mps = self.env['dw.production.plan.simulation'].search(
+        #     AND([domain, [
+        #         ('warehouse_id', 'in', self.mapped('warehouse_id').ids),
+        #         ('product_id', 'in', _use_boms(self.mapped('product_id'), self.env['product.product']).ids)
+        #     ]]))
+        # return (supplying_mps | supplied_mps).ids
+        return supplying_mps.ids
 
-            components -= related_products
-            related_products |= components
-            return _use_boms(components, related_products)
+    def _query(self, product_id):
+        _QUERY = """
+                    
+            SELECT 
+            MIN(l.id) AS id,
+            l.product_id AS product_id,
+            t.uom_id AS product_uom,
+            CASE WHEN l.product_id IS NOT NULL THEN SUM(l.product_uom_qty / u.factor * u2.factor) ELSE 0 END AS product_uom_qty,
+            CASE WHEN l.product_id IS NOT NULL THEN SUM(l.qty_delivered / u.factor * u2.factor) ELSE 0 END AS qty_delivered,
+            CASE WHEN l.product_id IS NOT NULL THEN SUM((l.product_uom_qty - l.qty_delivered) / u.factor * u2.factor) ELSE 0 END AS qty_to_deliver,
+            CASE WHEN l.product_id IS NOT NULL THEN SUM(l.qty_invoiced / u.factor * u2.factor) ELSE 0 END AS qty_invoiced,
+            CASE WHEN l.product_id IS NOT NULL THEN SUM(l.qty_to_invoice / u.factor * u2.factor) ELSE 0 END AS qty_to_invoice,
+            CASE WHEN l.product_id IS NOT NULL THEN SUM(l.price_total
+                / CASE COALESCE(s.currency_rate, 0) WHEN 0 THEN 1.0 ELSE s.currency_rate END
+                * CASE COALESCE(currency_table.rate, 0) WHEN 0 THEN 1.0 ELSE currency_table.rate END
+                ) ELSE 0
+            END AS price_total,
+            CASE WHEN l.product_id IS NOT NULL THEN SUM(l.price_subtotal
+                / CASE COALESCE(s.currency_rate, 0) WHEN 0 THEN 1.0 ELSE s.currency_rate END
+                * CASE COALESCE(currency_table.rate, 0) WHEN 0 THEN 1.0 ELSE currency_table.rate END
+                ) ELSE 0
+            END AS price_subtotal,
+            CASE WHEN l.product_id IS NOT NULL THEN SUM(l.untaxed_amount_to_invoice
+                / CASE COALESCE(s.currency_rate, 0) WHEN 0 THEN 1.0 ELSE s.currency_rate END
+                * CASE COALESCE(currency_table.rate, 0) WHEN 0 THEN 1.0 ELSE currency_table.rate END
+                ) ELSE 0
+            END AS untaxed_amount_to_invoice,
+            CASE WHEN l.product_id IS NOT NULL THEN SUM(l.untaxed_amount_invoiced
+                / CASE COALESCE(s.currency_rate, 0) WHEN 0 THEN 1.0 ELSE s.currency_rate END
+                * CASE COALESCE(currency_table.rate, 0) WHEN 0 THEN 1.0 ELSE currency_table.rate END
+                ) ELSE 0
+            END AS untaxed_amount_invoiced,
+            COUNT(*) AS nbr,
+            s.name AS name,
+            s.date_order AS date,
+            s.state AS state,
+            s.invoice_status as invoice_status,
+            s.partner_id AS partner_id,
+            s.user_id AS user_id,
+            s.company_id AS company_id,
+            s.campaign_id AS campaign_id,
+            s.medium_id AS medium_id,
+            s.source_id AS source_id,
+            t.categ_id AS categ_id,
+            s.pricelist_id AS pricelist_id,
+            s.analytic_account_id AS analytic_account_id,
+            s.team_id AS team_id,
+            p.product_tmpl_id,
+            partner.commercial_partner_id AS commercial_partner_id,
+            partner.country_id AS country_id,
+            partner.industry_id AS industry_id,
+            partner.state_id AS state_id,
+            partner.zip AS partner_zip,
+            CASE WHEN l.product_id IS NOT NULL THEN SUM(p.weight * l.product_uom_qty / u.factor * u2.factor) ELSE 0 END AS weight,
+            CASE WHEN l.product_id IS NOT NULL THEN SUM(p.volume * l.product_uom_qty / u.factor * u2.factor) ELSE 0 END AS volume,
+            l.discount AS discount,
+            CASE WHEN l.product_id IS NOT NULL THEN SUM(l.price_unit * l.product_uom_qty * l.discount / 100.0
+                / CASE COALESCE(s.currency_rate, 0) WHEN 0 THEN 1.0 ELSE s.currency_rate END
+                * CASE COALESCE(currency_table.rate, 0) WHEN 0 THEN 1.0 ELSE currency_table.rate END
+                ) ELSE 0
+            END AS discount_amount,
+            concat('sale.order', ',', s.id) AS order_reference,
+            s.warehouse_id AS warehouse_id,
+            SUM(l.margin
+            / CASE COALESCE(s.currency_rate, 0) WHEN 0 THEN 1.0 ELSE s.currency_rate END
+            * CASE COALESCE(currency_table.rate, 0) WHEN 0 THEN 1.0 ELSE currency_table.rate END)
+         AS margin
+            FROM 
+            sale_order_line l
+            LEFT JOIN sale_order s ON s.id=l.order_id
+            JOIN res_partner partner ON s.partner_id = partner.id
+            LEFT JOIN product_product p ON l.product_id=p.id
+            LEFT JOIN product_template t ON p.product_tmpl_id=t.id
+            LEFT JOIN uom_uom u ON u.id=l.product_uom
+            LEFT JOIN uom_uom u2 ON u2.id=t.uom_id
+            JOIN (VALUES (1, 1.0, 2)) AS currency_table(company_id, rate, precision) ON currency_table.company_id = s.company_id
+            
+            WHERE 
+            l.display_type IS NULL and s.state = 'sale' and l.product_id = {product_id}
+            GROUP BY 
+            l.product_id,
+            l.order_id,
+            t.uom_id,
+            t.categ_id,
+            s.name,
+            s.date_order,
+            s.partner_id,
+            s.user_id,
+            s.state,
+            s.invoice_status,
+            s.company_id,
+            s.campaign_id,
+            s.medium_id,
+            s.source_id,
+            s.pricelist_id,
+            s.analytic_account_id,
+            s.team_id,
+            p.product_tmpl_id,
+            partner.commercial_partner_id,
+            partner.country_id,
+            partner.industry_id,
+            partner.state_id,
+            partner.zip,
+            l.discount,
+            s.id,
+            currency_table.rate,
+            s.warehouse_id
+        """.format(
+            product_id=product_id
+        )
+        return _QUERY
 
-        supplied_mps = self.env['dw.production.plan.simulation'].search(
-            AND([domain, [
-                ('warehouse_id', 'in', self.mapped('warehouse_id').ids),
-                ('product_id', 'in', _use_boms(self.mapped('product_id'), self.env['product.product']).ids)
-            ]]))
-        return (supplying_mps | supplied_mps).ids
+    def _sales_query(self, query_str):
+        res = self.env.cr.execute(query_str)
+
+        result = {}
+        _results = self.env.cr.dictfetchall()
+
+        for row in _results:
+            print(row)
+
+        return _results
+
+    def calculate_planned_production_qty(self, stock_level, safety_stock_target_qty, sales_average):
+        """
+        Calculate the planned production quantity based on the given parameters.
+
+        Args:
+            stock_level (float): The current stock level.
+            safety_stock_target_qty (float): The target safety stock quantity.
+            sales_average (float): The average sales.
+
+        Returns:
+            float: The planned production quantity.
+        """
+        if stock_level < safety_stock_target_qty:
+            planned_production_qty = 4 * sales_average - stock_level
+            return planned_production_qty if planned_production_qty > 0 else 0
+        else:
+            return 0
+
+    def calculate_average_qty_to_deliver(self, data, start_date=None, end_date=None):
+        """
+        Calculate the average of the 'qty_to_deliver' field in a list of dictionaries.
+
+        Args:
+            data (list of dict): The list of dictionaries containing the data.
+            start_date (datetime.datetime, optional): The start date for the date range filter.
+            end_date (datetime.datetime, optional): The end date for the date range filter.
+
+        Returns:
+            float: The average of the 'qty_to_deliver' field.
+        """
+        filtered_data = data
+        if start_date and end_date:
+            filtered_data = [item for item in data if
+                             start_date <= item.get('date').date() <= end_date]
+
+        if filtered_data:
+            return safe_divide(sum(item.get('qty_to_deliver', 0.0) for item in filtered_data), len(filtered_data))
+        else:
+            return safe_divide(sum(item.get('qty_to_deliver', 0.0) for item in data), len(data))
 
 
 class DwProductPlanSimulation(models.Model):
@@ -1272,6 +1500,8 @@ class DwProductPlanSimulation(models.Model):
     sold_qty = fields.Float('Sales Qty', default=0.0)
 
     stock_level = fields.Float('stock_level', default=0.0)
+
+    batch_count = fields.Float('Batches Count', default=0.0)
 
     replenish_qty = fields.Float('Qty To Produce', default=0.0)
 

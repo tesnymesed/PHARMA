@@ -257,10 +257,10 @@
         </t>
       </tr>
 
-      <tr t-ref="prodPlanBatchesRow" name="production_plan_batches">
+      <tr t-ref="suggProdPlanBatchesRow" name="production_plan_batches">
         <th />
         <th scope="row">
-          <span>Production Plan Batches</span>
+          <span>Suggested Production Plan Batches</span>
         </th>
         <th></th>
         <t

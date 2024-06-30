@@ -40,9 +40,8 @@ class DwPaymentRequest(models.Model):
 
     )
     dw_account_move_id = fields.Many2one('account.move', string='Account move')
-    dw_import_forlder_id = fields.Many2one('dw.import.folder', string='Import Folder')
 
-    amount_in_text = fields.Char(string="Amount in Text", compute="_compute_amount_in_text")
+    amount_in_text = fields.Char(string="Amount in Text")
     check_num = fields.Char(string="Check N°")
     Payment_order = fields.Char(string="Payment order")
     company_id = fields.Many2one(
@@ -50,14 +49,13 @@ class DwPaymentRequest(models.Model):
         default=lambda self: self.env.company,
     )
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', store=True)
-    Montant = fields.Monetary(string="Amount", currency_field="currency_id")
+    montant = fields.Monetary(string="Amount", currency_field="currency_id")
 
     @api.depends('dw_account_move_id.amount_total')  # Replace 'your_field_dependency' with the actual field dependency
     def _compute_amount_in_text(self):
         for rec in self:
             currency = self.env['res.currency'].search([('name', '=', rec.dw_account_move_id.currency_id.name)],
                                                        limit=1)
-            currency.ensure_one()
             # set the context to text
             ctx = self._context.copy()
             ctx['lang'] = 'fr_FR'

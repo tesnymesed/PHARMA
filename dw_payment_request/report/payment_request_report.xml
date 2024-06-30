@@ -110,7 +110,7 @@
                             en
                         </span>
                         <br/>
-                        lettre : <t t-if="o.amount_in_text" t-esc="o.amount_in_text"/>
+                        lettre : <t t-if="o.dw_account_move_id.amount_total" t-esc="o.dw_account_move_id.currency_id.with_context(lang='fr_FR').amount_to_text(o.dw_account_move_id.amount_total)"/>
                         <br/>
                         <span>En règlement de (s):.................. Référence de la facture/proforma</span>
 
@@ -189,7 +189,7 @@
                             </div>
                             <span style="margin-left:2%">Ordre de virement : </span> <t t-if="o.Payment_order" t-esc="o.Payment_order"/>
                             <br/>
-                            <span style="margin-left:2%">Montant :</span>    <t t-if="o.Montant" t-esc="'{0:,.2f}'.format(o.Montant).replace(',', ' ').replace('.', ',')"/> <t t-if="o.dw_account_move_id.currency_id.symbol" t-esc="o.dw_account_move_id.currency_id.symbol"/>
+                            <span style="margin-left:2%">Montant :</span>    <t t-if="o.montant" t-esc="'{0:,.2f}'.format(o.montant).replace(',', ' ').replace('.', ',')"/> <t t-if="o.dw_account_move_id.currency_id.symbol" t-esc="o.dw_account_move_id.currency_id.symbol"/>
                             <br/>
                             <span style="margin-left:2%">Le :</span>  <t t-esc="datetime.date.today().strftime('%d-%m-%Y')"/>
                             <br/>

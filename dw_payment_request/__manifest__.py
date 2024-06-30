@@ -7,7 +7,7 @@
 =        """,
     'author': 'DIGIWAVES - ALGERIA',
     'website': 'www.digiwaves.io',
-    'depends': ['dw_foreign_trade'],
+    'depends': ['account'],
     'data': [
         # data
 'data/souche.xml',

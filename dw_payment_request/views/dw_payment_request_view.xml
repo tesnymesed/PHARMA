@@ -73,7 +73,6 @@
                                 <field name="date" invisible="state != 'rejected'"/>
                                 <field name="reject_motif_id" invisible="state != 'rejected'"/>
                                 <field name="dw_account_move_id" invisible="1"/>
-                                <field name="dw_import_forlder_id" invisible="1"/>
                             </group>
 
                         </group>
@@ -81,7 +80,7 @@
                             <group>
                                 <field name="check_num"/>
                                 <field name="Payment_order"/>
-                                <field name="Montant" widget="monetary"/>
+                                <field name="montant" widget="monetary"/>
                             </group>
 
                         </group>

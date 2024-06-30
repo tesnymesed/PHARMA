@@ -9,23 +9,23 @@
             <field name="context">{}</field>
         </record>
 
-        <menuitem id="menu_payment_request_base_root"
-                  name="Payment Request"
-                  web_icon="dw_payment_request,static/description/icon.png"
-                  sequence="10"
-        />
+<!--        <menuitem id="menu_payment_request_base_root"-->
+<!--                  name="Payment Request"-->
+<!--                  web_icon="dw_payment_request,static/description/icon.png"-->
+<!--                  sequence="10"-->
+<!--        />-->
         <!--        web_icon="dw_supplier_approval,static/description/icon.png"-->
 
 
-        <menuitem id="menu_payment_request_root"
-                  name="Payment request"
-                  parent="dw_payment_request.menu_payment_request_base_root"
-                  sequence="10"
-        />
+<!--        <menuitem id="menu_payment_request_root"-->
+<!--                  name="Payment request"-->
+<!--                  parent="dw_payment_request.menu_payment_request_base_root"-->
+<!--                  sequence="10"-->
+<!--        />-->
 
         <menuitem id="menu_payment_request"
                   name="Payment request"
-                  parent="menu_payment_request_root"
+                  parent="account.menu_finance_entries"
                   action="action_payment_request"
                   sequence="10"
         />
@@ -37,17 +37,11 @@
             <field name="context">{}</field>
         </record>
 
-        <menuitem id="menu_payment_request_configuration_root"
-                  name="Configuration"
-                  sequence="20"
-                  parent="dw_payment_request.menu_payment_request_base_root"
-        />
+
         <menuitem id="menu_payment_request_configuration"
                   name="Reject reason"
                   sequence="20"
                   action="action_reject_reason"
-                  parent="dw_payment_request.menu_payment_request_configuration_root"/>
-
-
+                  parent="account.menu_finance_configuration"/>
     </data>
 </odoo>

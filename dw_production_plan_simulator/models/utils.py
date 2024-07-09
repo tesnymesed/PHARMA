@@ -32,4 +32,18 @@ def calculate_planned_production_qty(stock_level, safety_stock_target_qty, sales
         planned_production_qty = 4 * sales_average - stock_level
         return planned_production_qty if planned_production_qty > 0 else 0
     else:
-        return 0
+        return 0.0
+
+
+def round_up_to_nearest(value, multiplier):
+    """
+    Rounds up a value to the closest multiplier.
+
+    Args:
+        value (float): The value to be rounded up.
+        multiplier (float): The multiplier to use for rounding up.
+
+    Returns:
+        float: The rounded up value.
+    """
+    return (value + multiplier - 1) // multiplier * multiplier

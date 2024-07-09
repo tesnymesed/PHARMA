@@ -3,6 +3,7 @@
 
 from collections import OrderedDict
 from collections import defaultdict, namedtuple
+from itertools import groupby
 from math import log10
 
 from dateutil.relativedelta import relativedelta
@@ -11,7 +12,7 @@ from odoo.osv.expression import OR, AND
 from odoo.tools.date_utils import add
 from odoo.tools.float_utils import float_round
 
-from .utils import calculate_planned_production_qty, safe_divide
+from .utils import calculate_planned_production_qty, round_up_to_nearest, safe_divide
 
 
 class DwProductionPlanSimulator(models.Model):
@@ -140,6 +141,8 @@ class DwProductionPlanSimulator(models.Model):
         count = self.env['dw.production.plan.simulation'].search_count(domain or [])
         production_simulations_states = production_simulations.get_production_simulation_view_state(
             start_date_range=start_date, end_date_range=end_date)
+
+        workcenter_capacities = self._get_workcenter_capacities(production_simulations_states)
         company_groups = self.env.company.read([
             'mrp_mps_show_starting_inventory',
             'mrp_mps_show_demand_forecast',
@@ -158,10 +161,84 @@ class DwProductionPlanSimulator(models.Model):
                                                          end_date_range=end_date),
             # 'production_simulation_ids': proxy.get('production_simulation_ids'),
             'production_simulation_ids': production_simulations_states,
+            'workcenter_capacities': workcenter_capacities,
             'company_id': self.env.company.id,
             'groups': company_groups,
             'count': count,
         }
+
+    def _get_workcenter_capacities(self, production_simulations):
+        # Initialize a dictionary to store the grouped data
+        results = []
+
+        # Process each record in the data
+
+        # Group the product_plan_sim_ids by date_start and date_stop
+        grouped_simulations = groupby(production_simulations, key=lambda r: r["workcenter_id"])
+
+        for workcenter, group in grouped_simulations:
+
+            workcenter_id = workcenter[0]
+
+            l_group = list(group)
+            l_merged = []
+            for prdct_i in l_group:
+                l_merged.extend(prdct_i.get('product_plan_sim_ids'))
+
+            # Group by date_start and sum
+            res = []
+            for (date_start, date_stop), grp in groupby(l_merged, key=lambda r: (r["date_start"], r["date_stop"])):
+                group_data = list(grp)
+
+                total_required_capacity = sum(item["required_capacity"] for item in group_data)
+                total_production_objective_qty = sum(item["production_objective_qty"] for item in group_data)
+
+                if total_required_capacity < total_production_objective_qty:
+                    total_capacity_utilisation = sum(item["capacity_utilisation"] for item in group_data)
+
+                    _year = date_start.year
+                    _quarter = (date_start.month - 1) // 3 + 1
+                    _q_y_f = f"Q{_quarter} {_year}"
+
+                    res.append({
+                        "workcenter": workcenter,
+                        "workcenter_name": workcenter[1],
+                        "date_start": date_start,
+                        "date_stop": date_stop,
+                        "year": _year,
+                        "quarter": _q_y_f,
+                        "capacity_utilisation": total_capacity_utilisation,
+                        "required_capacity": total_required_capacity,
+                        "production_objective_qty": total_production_objective_qty,
+
+                    })
+
+            print(res)
+            results.extend(res)
+
+        print(results)
+        return results
+
+        # # Group the product_plan_sim_ids by date_start and date_stop
+        # grouped_simulators = groupby(group["product_plan_sim_ids"],
+        #                              key=lambda r: (r["date_start"], r["date_stop"]))
+
+        #     # Initialize a dictionary to store the required capacity sum for each date range
+        #     capacity_sums = {}
+        #
+        #     # Iterate over the groups and calculate the sum of required capacity for each date range
+        #     for (date_start, date_stop), group in grouped_simulators:
+        #         required_capacity_sum = sum(plan_sim["required_capacity"] for plan_sim in group)
+        #         capacity_sums[(date_start, date_stop)] = capacity_sums.get((date_start, date_stop),
+        #                                                                    0) + required_capacity_sum
+        #
+        #     # Add the required capacity sums to the corresponding workcenter
+        #     if workcenter_id in grouped_data:
+        #         grouped_data[workcenter_id].update(capacity_sums)
+        #     else:
+        #         grouped_data[workcenter_id] = capacity_sums
+        # for production_simulation in production_simulations:
+        #     pass
 
     def _search_replenish_state(self, operator, value):
         production_simulations = self.search([])
@@ -456,6 +533,7 @@ class DwProductionPlanSimulator(models.Model):
             'min_to_replenish_qty',
             'max_to_replenish_qty',
             'product_id',
+            'workcenter_id',
         ]
         if self.env.user.has_group('stock.group_stock_multi_warehouses'):
             read_fields.append('warehouse_id')
@@ -558,7 +636,7 @@ class DwProductionPlanSimulator(models.Model):
                     forecast_values['sold_qty'] = 0.0
                     forecast_values['sale_objective_qty'] = 0.0
                     forecast_values['production_objective_qty'] = 0.0
-                    # forecast_values['planned_production_qty'] = 0.0
+                    # forecast_values['planned_production_qty'] = 0.0+
                     # forecast_values['stock_level'] = 0.0
                     forecast_values['batch_count'] = 0.0
                     forecast_values['notes'] = ''
@@ -586,11 +664,14 @@ class DwProductionPlanSimulator(models.Model):
                     sum(existing_forecasts.mapped('batch_count')),
                     precision_rounding=1, rounding_method='UP')
 
-                forecast_values['suggested_production_plan_qty'] = forecast_values['batch_count'] * forecast_values[
-                    'lot_size']
+                forecast_values['suggested_production_plan_qty'] = (
+                        forecast_values['batch_count'] * forecast_values['lot_size'])
 
-                forecast_values['stock_level'] = forecast_values['starting_inventory_qty'] + forecast_values[
-                    'suggested_production_plan_qty']
+                forecast_values['stock_level'] = (forecast_values['starting_inventory_qty'] -
+                                                  production_simulation.sales_average)
+
+                forecast_values['updated_stock_level'] = forecast_values['starting_inventory_qty'] + forecast_values[
+                    'suggested_production_plan_qty'] - production_simulation.sales_average
 
                 forecast_values['planned_production_qty'] = calculate_planned_production_qty(
                     forecast_values.get('stock_level'),
@@ -598,12 +679,33 @@ class DwProductionPlanSimulator(models.Model):
                     production_simulation.sales_average,
                 )
 
+                forecast_values['eff_planned_production_qty'] = round_up_to_nearest(
+                    forecast_values['planned_production_qty'],
+                    production_simulation.lot_size)
+
+                forecast_values['stock_level'] = forecast_values['stock_level'] + forecast_values[
+                    'eff_planned_production_qty']
+
                 forecast_values['planned_production_batches'] = safe_divide(forecast_values['planned_production_qty'],
                                                                             forecast_values['lot_size'])
+
+                forecast_values['eff_planned_production_batches'] = safe_divide(
+                    forecast_values.get('eff_planned_production_qty'),
+                    forecast_values['lot_size'])
 
                 forecast_values['stock_coverage'] = safe_divide(
                     forecast_values['stock_level'],
                     production_simulation.sales_average)
+
+                forecast_values['updated_stock_coverage'] = safe_divide(
+                    forecast_values.get('updated_stock_level'),
+                    production_simulation.sales_average)
+
+                forecast_values['required_capacity'] = forecast_values.get('suggested_production_plan_qty', 0.0)
+
+                forecast_values['capacity_utilisation'] = float_round(100 * safe_divide(
+                    forecast_values.get('required_capacity', 0.0),
+                    production_simulation.workcenter_default_capacity), precision_rounding=2)
 
                 if production_simulation in self:
                     production_simulation_state['product_plan_sim_ids'].append(forecast_values)
@@ -953,6 +1055,14 @@ class DwProductionPlanSimulator(models.Model):
         rtype: float
         """
         optimal_qty = self.safety_stock_target_qty - after_forecast_qty
+
+        optimal = calculate_planned_production_qty(
+            after_forecast_qty,
+            self.safety_stock_target_qty,
+            self.sales_average,
+        )
+
+        return optimal_qty
 
         if optimal_qty > self.max_to_replenish_qty:
             replenish_qty = self.max_to_replenish_qty

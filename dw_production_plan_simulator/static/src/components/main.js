@@ -4,6 +4,7 @@ import { _t } from "@web/core/l10n/translation";
 //import { MrpMpsControlPanel, MrpMpsSearchBar } from "../search/mrp_mps_control_panel";
 //import { MrpMpsSearchModel } from '../search/mrp_mps_search_model';
 import ProductionPlanSimulatorLine from "@dw_production_plan_simulator/components/line";
+import ProductionPlanSimulationAlerts from "@dw_production_plan_simulator/components/alert_container";
 import { ProductionPlanSimulatorModel } from "@dw_production_plan_simulator/models/production_plan_simulator_model";
 import { registry } from "@web/core/registry";
 import { useService, useBus } from "@web/core/utils/hooks";
@@ -40,9 +41,11 @@ class ProductionPlanSimulatorComponent extends Component {
       companies: [],
       products: [],
       simulationLines: [],
+      workCenterCapacities: [],
       currentCompanyId: null,
       startDate: "2024-01-01",
       endDate: "2025-06-01",
+      isModalVisible: false,
     });
     this.data = {};
 
@@ -85,10 +88,14 @@ class ProductionPlanSimulatorComponent extends Component {
       //        "dw_production_plan_simulator/static/src/libs/css/perfect-scrollbar.css"
       //      );
       await loadCSS("shared_assets/static/libs/css/daterangepicker.css");
+      await loadCSS("shared_assets/static/libs/css/tabulator.min.css");
+      await loadCSS(
+        "dw_production_plan_simulator/static/src/components/main.css"
+      );
 
-      //      await loadJS(
-      //        "dw_production_plan_simulator/static/src/libs/js/perfect-scrollbar.js"
-      //      );
+      await loadJS(
+        "dw_production_plan_simulator/static/src/libs/js/perfect-scrollbar.js"
+      );
       await loadJS(
         "dw_production_plan_simulator/static/src/libs/js/helpers.js"
       );
@@ -122,7 +129,7 @@ class ProductionPlanSimulatorComponent extends Component {
     onMounted(async () => {
       var self = this;
       this.initFilterSettings();
-      //      this.initSimulatorTable();
+      //      this.initAlertsTable();
       this.captureInputSettings();
 
       await self.model
@@ -170,6 +177,12 @@ class ProductionPlanSimulatorComponent extends Component {
             picker.endDate.format("YYYY-MM-DD")
           );
         }
+      );
+
+      $("#show-alerts").click(
+        function () {
+          this.displayAlerts();
+        }.bind(this)
       );
     });
 
@@ -286,24 +299,52 @@ class ProductionPlanSimulatorComponent extends Component {
       layout: "fitColumns",
       columns: columns,
       data: data,
-      movableColumns: true,
+      groupBy: "workcenter_name",
       pagination: "local",
-      paginationSize: 6,
-      paginationSizeSelector: [3, 5, 8, 12, 20, 30],
+      paginationSize: 12,
+      paginationSizeSelector: [12, 18, 24, 30],
       paginationCounter: "rows",
     });
     return table;
   }
 
-  initSimulatorTable() {
-    let simulatorTable = this.initTabulator(
-      "#simulatorTable",
-      ["id", "name"],
-      this.state.companies
-    );
-    simulatorTable.on("tableBuilt", function () {
-      simulatorTable.redraw();
-    });
+  initAlertsTable() {
+    let data = [];
+    console.log("initAlertsTable", this.workCenterCapacities);
+    if (this.workCenterCapacities.length > 0) {
+      data = this.workCenterCapacities;
+      let keys = [
+        //        "workcenter",
+        "date_start",
+        //        "year",
+        //        "quarter",
+        "capacity_utilisation",
+        "required_capacity",
+        "production_objective_qty",
+      ];
+
+      let columns = this.prepareTableColumns(keys);
+      console.log("columns", columns);
+      console.log("data", data);
+      let alertsTable = this.initTabulator("#alertsTable", data, columns);
+      //      alertsTable.on("tableBuilt", function () {
+      //        alertsTable.redraw();
+      //      });
+    }
+  }
+
+  prepareTableColumns(columns) {
+    if (columns.length > 0) {
+      var columnsUp = columns.map((key) => {
+        return {
+          title: key,
+          field: key,
+        };
+      });
+      return columnsUp;
+    } else {
+      return [];
+    }
   }
 
   get companies() {
@@ -322,6 +363,16 @@ class ProductionPlanSimulatorComponent extends Component {
     this.state.simulationLines = this.model?.data?.production_simulation_ids;
     return this.model?.data?.production_simulation_ids;
   }
+
+  get workCenterCapacities() {
+    console.log(
+      " get workCenterCapacities()  this.model?.data?.workcenter_capacities",
+      this.model?.data?.workcenter_capacities
+    );
+    this.state.workCenterCapacities = this.model?.data?.workcenter_capacities;
+    return this.model?.data?.workcenter_capacities;
+  }
+
   //
   get groups() {
     return this.model?.data.groups[0];
@@ -357,7 +408,6 @@ class ProductionPlanSimulatorComponent extends Component {
       this.state.startDate,
       this.state.endDate
     );
-
   }
   /**
    * Handles the daterange input change.
@@ -443,6 +493,61 @@ class ProductionPlanSimulatorComponent extends Component {
       setTimeout(createProductNotif, 2000);
     }
   }
+
+  displayAlerts() {
+    //    var company_data = this.getCompanyData();
+    //    company_data
+    //      .then((result) => {
+    //        var selectCompanyMrpPlan = document.getElementById(
+    //          "select-mrp-plan-company"
+    //        );
+    //        selectCompanyMrpPlan.innerHTML = "";
+    //        result.forEach(
+    //          function (optionValue) {
+    //            var option = this.addSelectOption(
+    //              optionValue["name"],
+    //              optionValue["id"]
+    //            );
+    //            selectCompanyMrpPlan.appendChild(option);
+    //          }.bind(this)
+    //        );
+    //        var company_id = $("#select-mrp-plan-company").val();
+    //        var sale_plan_data = this.getSalePlanData(company_id);
+    //        sale_plan_data
+    //          .then((result) => {
+    //            var select_sale_plan = document.getElementById(
+    //              "select-mrp-sale-plan"
+    //            );
+    //            select_sale_plan.innerHTML = "";
+    //            result.forEach(
+    //              function (optionValue) {
+    //                var option = this.addSelectOption(
+    //                  optionValue["name"],
+    //                  optionValue["id"]
+    //                );
+    //                select_sale_plan.appendChild(option);
+    //              }.bind(this)
+    //            );
+    //            var df_option = this.addSelectOption("Empty", "");
+    //            select_sale_plan.appendChild(df_option);
+    //          })
+    //          .catch((error) => {
+    //            console.error(error); // Handle any errors
+    //          });
+    //      })
+    //      .catch((error) => {
+    //        console.error(error); // Handle any errors
+    //      });
+    //    $("#select-mrp-plan").val("Select Option ...");
+    $("#alertsModal").modal("show");
+    this.initAlertsTable();
+  }
+
+  toggleModal() {
+    this.state.isModalVisible = !this.state.isModalVisible;
+    this.displayAlerts();
+  }
+
   //
   //    get actionMenuItems() {
   //        return {
@@ -519,6 +624,7 @@ ProductionPlanSimulatorComponent.components = {
   //    MrpMpsControlPanel,
   //    WithSearch,
   ProductionPlanSimulatorLine,
+  ProductionPlanSimulationAlerts,
   CheckBox,
   //    MrpMpsSearchBar,
   //    ActionMenus,

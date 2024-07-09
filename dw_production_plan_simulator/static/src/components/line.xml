@@ -29,7 +29,9 @@
           <span> </span>
           <button
             type="button"
-            t-attf-class="{{! groups.mrp_mps_show_safety_stock and 'o_hidden' or 'btn btn-link text-muted o_no_padding o_prod_sim_edit'}}"
+            t-attf-class="{{
+              'btn btn-link text-muted o_no_padding o_prod_sim_edit'
+            }}"
             t-on-click.stop="(ev) => this._onClickEdit(ev, productionSimulation.id)"
           >
             <img
@@ -53,7 +55,7 @@
         >
           <th class="text-end pe-4">
             <span
-              t-attf-class="{{! groups.mrp_mps_show_starting_inventory and 'o_hidden' or 'text-end'}}"
+              t-attf-class="{{ 'text-end' }}"
               t-esc="formatFloat(simulation.starting_inventory_qty)"
               data-bs-toggle="tooltip"
               data-bs-placement="bottom"
@@ -62,25 +64,25 @@
           </th>
         </t>
       </tr>
-      <tr
-        name="demand_forecast_year_minus_2"
-        t-attf-class="{{! groups.mrp_mps_show_actual_demand_year_minus_2 and 'o_hidden' or ''}}"
-      >
-        <th />
-        <th scope="row">
-          <span>Actual Demand Y-2</span>
-        </th>
-        <th />
-        <t
-          t-foreach="productionSimulation.product_plan_sim_ids"
-          t-as="simulation"
-          t-key="simulation_index"
-        >
-          <th class="text-end pe-4">
-            <span t-esc="formatFloat(simulation.outgoing_qty_year_minus_2)" />
-          </th>
-        </t>
-      </tr>
+      <!--      <tr-->
+      <!--        name="demand_forecast_year_minus_2"-->
+      <!--        t-attf-class="{{! groups.mrp_mps_show_actual_demand_year_minus_2 and 'o_hidden' or ''}}"-->
+      <!--      >-->
+      <!--        <th />-->
+      <!--        <th scope="row">-->
+      <!--          <span>Actual Demand Y-2</span>-->
+      <!--        </th>-->
+      <!--        <th />-->
+      <!--        <t-->
+      <!--          t-foreach="productionSimulation.product_plan_sim_ids"-->
+      <!--          t-as="simulation"-->
+      <!--          t-key="simulation_index"-->
+      <!--        >-->
+      <!--          <th class="text-end pe-4">-->
+      <!--            <span t-esc="formatFloat(simulation.outgoing_qty_year_minus_2)" />-->
+      <!--          </th>-->
+      <!--        </t>-->
+      <!--      </tr>-->
 
       <tr t-ref="salesObjRow" name="sales_objective">
         <th />
@@ -98,7 +100,7 @@
             <input
               type="text"
               t-att-data-date_index="simulation_index"
-              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"
+              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty"
               t-att-value="formatFloat(simulation.sale_objective_qty)"
               t-on-change.stop="(ev) => this.onChangeSalesObjectiveQty(ev, productionSimulation.id)"
               t-on-focus.prevent="_onFocusInput"
@@ -123,7 +125,7 @@
             <input
               type="text"
               t-att-data-date_index="simulation_index"
-              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"
+              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty"
               t-att-value="formatFloat(simulation.production_objective_qty)"
               t-on-change.stop="(ev) => this.onChangeProductionObjectiveQty(ev, productionSimulation.id)"
               t-on-focus.prevent="_onFocusInput"
@@ -148,7 +150,7 @@
             <input
               type="text"
               t-att-data-date_index="simulation_index"
-              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"
+              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty o_mps_inline"
               t-att-value="formatFloat(simulation.sold_qty)"
               t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"
               t-on-focus.prevent="_onFocusInput"
@@ -170,6 +172,10 @@
         >
           <th class="text-end pe-4">
             <span t-esc="formatFloat(simulation.planned_production_qty)" />
+
+            ( ≈
+            <span t-esc="formatFloat(simulation.eff_planned_production_qty)" />
+            )
             <!--            <input-->
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
@@ -195,6 +201,12 @@
         >
           <th class="text-end pe-4">
             <span t-esc="formatFloat(simulation.planned_production_batches)" />
+
+            ( ≈
+            <span
+              t-esc="formatFloat(simulation.eff_planned_production_batches)"
+            />
+            )
             <!--            <input-->
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
@@ -273,7 +285,7 @@
             <input
               type="text"
               t-att-data-date_index="simulation_index"
-              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"
+              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty o_mps_inline"
               t-att-value="formatFloat(simulation.batch_count)"
               t-on-change.stop="(ev) => this.onChangeBatchCount(ev, productionSimulation.id)"
               t-on-focus.prevent="_onFocusInput"
@@ -309,13 +321,10 @@
         </t>
       </tr>
 
-      <tr
-        name="demand_forecast_year_minus_1"
-        t-attf-class="{{! groups.mrp_mps_show_actual_demand_year_minus_1 and 'o_hidden' or ''}}"
-      >
+      <tr t-ref="updatedStockLevelRow" name="updated_stock_level">
         <th />
         <th scope="row">
-          <span>Actual Demand Y-1</span>
+          <span>Updated Stock level</span>
         </th>
         <th></th>
         <t
@@ -324,33 +333,105 @@
           t-key="simulation_index"
         >
           <th class="text-end pe-4">
-            <span t-esc="formatFloat(simulation.outgoing_qty_year_minus_1)" />
+            <span t-esc="formatFloat(simulation.updated_stock_level)" />
+            <!--            <input-->
+            <!--              type="text"-->
+            <!--              t-att-data-date_index="simulation_index"-->
+            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"-->
+            <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
+            <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
+            <!--              t-on-focus.prevent="_onFocusInput"-->
+            <!--            />-->
+          </th>
+        </t>
+      </tr>
+      <tr t-ref="updatedStockCoverageRow" name="updated_stock_coverage">
+        <th />
+        <th scope="row">
+          <span>Updated stock coverage</span>
+        </th>
+        <th></th>
+        <t
+          t-foreach="productionSimulation.product_plan_sim_ids"
+          t-as="simulation"
+          t-key="simulation_index"
+        >
+          <th class="text-end pe-4">
+            <span t-esc="formatFloat(simulation.updated_stock_coverage)" />
+            <!--            <input-->
+            <!--              type="text"-->
+            <!--              t-att-data-date_index="simulation_index"-->
+            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"-->
+            <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
+            <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
+            <!--              t-on-focus.prevent="_onFocusInput"-->
+            <!--            />-->
           </th>
         </t>
       </tr>
 
-      <tr
-        t-ref="forecastRow"
-        name="demand_forecast"
-        t-attf-class="{{! (groups.mrp_mps_show_demand_forecast or groups.mrp_mps_show_actual_demand) and 'o_hidden' or ''}}"
-      >
+      <tr t-ref="reqCapacityPlanRow" name="required_capacity">
+        <th />
+        <th scope="row">
+          <span>Required Capacity</span>
+        </th>
+        <th></th>
+        <t
+          t-foreach="productionSimulation.product_plan_sim_ids"
+          t-as="simulation"
+          t-key="simulation_index"
+        >
+          <th class="text-end pe-4">
+            <span t-esc="formatFloat(simulation.required_capacity)" />
+            (
+            <span t-esc="formatFloat(simulation.capacity_utilisation)" />
+            % )
+            <!--            <input-->
+            <!--              type="text"-->
+            <!--              t-att-data-date_index="simulation_index"-->
+            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"-->
+            <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
+            <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
+            <!--              t-on-focus.prevent="_onFocusInput"-->
+            <!--            />-->
+          </th>
+        </t>
+      </tr>
+
+      <!--      <tr-->
+      <!--        name="demand_forecast_year_minus_1"-->
+      <!--        t-attf-class="{{! groups.mrp_mps_show_actual_demand_year_minus_1 and 'o_hidden' or ''}}"-->
+      <!--      >-->
+      <!--        <th />-->
+      <!--        <th scope="row">-->
+      <!--          <span>Actual Demand Y-1</span>-->
+      <!--        </th>-->
+      <!--        <th></th>-->
+      <!--        <t-->
+      <!--          t-foreach="productionSimulation.product_plan_sim_ids"-->
+      <!--          t-as="simulation"-->
+      <!--          t-key="simulation_index"-->
+      <!--        >-->
+      <!--          <th class="text-end pe-4">-->
+      <!--            <span t-esc="formatFloat(simulation.outgoing_qty_year_minus_1)" />-->
+      <!--          </th>-->
+      <!--        </t>-->
+      <!--      </tr>-->
+
+      <tr t-ref="forecastRow" name="demand_forecast" t-attf-class="{{ '' }}">
         <th />
         <th scope="row">
           -
           <span
-            t-attf-class="{{! groups.mrp_mps_show_actual_demand and 'o_hidden' or ''}}"
+            t-attf-class="{{ '' }}"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="The confirmed demand, based on the confirmed sales orders."
             >Actual</span
           >
+          <span t-attf-class="{{ '' }}"> / </span>
           <span
-            t-attf-class="{{! (groups.mrp_mps_show_actual_demand and groups.mrp_mps_show_demand_forecast) and 'o_hidden' or ''}}"
-          >
-            /
-          </span>
-          <span
-            t-attf-class="{{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or ''}}"
+            t-attf-class="{{ '' }}"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="The forecasted demand. This value has to be entered manually."
@@ -372,19 +453,17 @@
               t-att-data-date_index="simulation_index"
               t-att-data-date_start="simulation.date_start"
               t-att-data-date_stop="simulation.date_stop"
-              t-attf-class="{{! groups.mrp_mps_show_actual_demand and 'o_hidden' or 'o_prod_sim_open_details'}}"
+              t-attf-class="{{ 'o_prod_sim_open_details' }}"
             >
               <t t-esc="formatFloat(simulation.outgoing_qty)" />
             </a>
-            <span
-              t-attf-class="{{! (groups.mrp_mps_show_actual_demand and groups.mrp_mps_show_demand_forecast) and 'o_hidden' or ''}}"
-            >
-              /
-            </span>
+            <span t-attf-class="{{ '' }}"> / </span>
             <input
               type="text"
               t-att-data-date_index="simulation_index"
-              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"
+              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{
+                'o_mps_inline'
+              }}"
               t-att-value="formatFloat(simulation.forecasted_demand_qty)"
               t-on-change.stop="(ev) => this._onChangeForecast(ev, productionSimulation.id)"
               t-on-focus.prevent="_onFocusInput"
@@ -393,28 +472,20 @@
         </t>
       </tr>
 
-      <tr
-        t-ref="replenishRow"
-        name="to_replenish"
-        t-attf-class="{{! (groups.mrp_mps_show_to_replenish or groups.mrp_mps_show_actual_replenishment) and 'o_hidden' or ''}}"
-      >
+      <tr t-ref="replenishRow" name="to_replenish" t-attf-class="{{ '' }}">
         <th />
         <th scope="row">
           +
           <span
-            t-attf-class="{{! groups.mrp_mps_show_actual_replenishment and 'o_hidden' or ''}}"
+            t-attf-class="{{ '' }}"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="The quantity being replenished, based on the Requests for Quotation and the Manufacturing Orders."
             >Actual</span
           >
+          <span t-attf-class="{{ '' }}"> / </span>
           <span
-            t-attf-class="{{! (groups.mrp_mps_show_actual_replenishment and groups.mrp_mps_show_to_replenish) and 'o_hidden' or ''}}"
-          >
-            /
-          </span>
-          <span
-            t-attf-class="{{! groups.mrp_mps_show_to_replenish and 'o_hidden' or ''}}"
+            t-attf-class="{{ '' }}"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="The quantity to replenish through Purchase Orders or Manufacturing Orders."
@@ -443,8 +514,6 @@
               t-att-data-date_start="simulation.date_start"
               t-att-data-date_stop="simulation.date_stop"
               t-attf-class="o_prod_sim_open_details {{
-                            ! groups.mrp_mps_show_actual_replenishment and 'o_hidden'
-                            }} {{
                             simulation.to_replenish and 'o_prod_sim_to_replenish' or ''
                             }} {{
                             simulation.forced_replenish and 'o_prod_sim_forced_replenish' or ''
@@ -452,14 +521,8 @@
             >
               <t t-esc="formatFloat(simulation.incoming_qty)" />
             </a>
-            <span
-              t-attf-class="{{! (groups.mrp_mps_show_actual_replenishment and groups.mrp_mps_show_to_replenish) and 'o_hidden' or ''}}"
-            >
-              /
-            </span>
-            <div
-              t-attf-class="input-group {{! groups.mrp_mps_show_to_replenish and 'o_hidden' or  groups.mrp_mps_show_actual_replenishment and 'o_mps_inline' or ''}}"
-            >
+            <span t-attf-class="{{ '' }}"> / </span>
+            <div t-attf-class="input-group {{ 'o_mps_inline' }}">
               <button
                 type="button"
                 t-if="simulation.replenish_qty_updated"
@@ -490,27 +553,20 @@
           </th>
         </t>
       </tr>
-      <tr
-        name="safety_stock"
-        t-attf-class="{{! (groups.mrp_mps_show_safety_stock or groups.mrp_mps_show_available_to_promise) and 'o_hidden' or ''}}"
-      >
+      <tr name="safety_stock" t-attf-class="{{ '' }}">
         <th />
         <th scope="row">
           =
           <span
-            t-attf-class="{{! groups.mrp_mps_show_available_to_promise and 'o_hidden' or ''}}"
+            t-attf-class="{{ '' }}"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="Quantity predicted to be available for sale at the end of the period (= to replenish - actual demand)."
             >ATP</span
           >
+          <span t-attf-class="{{ '' }}"> / </span>
           <span
-            t-attf-class="{{! (groups.mrp_mps_show_safety_stock and groups.mrp_mps_show_available_to_promise) and 'o_hidden' or ''}}"
-          >
-            /
-          </span>
-          <span
-            t-attf-class="{{! groups.mrp_mps_show_safety_stock and 'o_hidden' or ''}}"
+            t-attf-class="{{ '' }}"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="The forecasted quantity in stock at the end of the period."
@@ -525,16 +581,12 @@
         >
           <th class="text-end pe-4">
             <span
-              t-attf-class="{{! groups.mrp_mps_show_available_to_promise and 'o_hidden' or ''}}"
+              t-attf-class="{{ '' }}"
               t-esc="formatFloat(simulation.starting_inventory_qty + simulation.replenish_qty - simulation.outgoing_qty)"
             />
+            <span t-attf-class="{{ '' }}"> / </span>
             <span
-              t-attf-class="{{! (groups.mrp_mps_show_safety_stock and groups.mrp_mps_show_available_to_promise) and 'o_hidden' or ''}}"
-            >
-              /
-            </span>
-            <span
-              t-attf-class="{{simulation.safety_stock_qty &lt; 0 and 'text-danger' or ''}} {{! groups.mrp_mps_show_safety_stock and 'o_hidden' or ''}}"
+              t-attf-class="{{simulation.safety_stock_qty &lt; 0 and 'text-danger' or ''}}"
               t-esc="formatFloat(simulation.safety_stock_qty)"
             />
           </th>

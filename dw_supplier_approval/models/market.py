@@ -69,17 +69,8 @@ class DwMarket(models.Model):
             record.supplier_homologuer_ids = record.homologation_ids.filtered(
                 lambda homologation: homologation.state == 'homologue').mapped("supplier_id")
 
-
-
-    def action_homologation(self):
-        if self.market_type_id and self.market_type_id.forced_nbr_supplier and self.len_supplier_market < self.market_type_id.nbr_supplier:
-            raise ValidationError(
-                _('The number of supplier must be greater than %(nbr_supplier)s.!',
-                  nbr_supplier=self.market_type_id.nbr_supplier)
-            )
-        self.write({"state": "homologation_cosultation"})
-
     def action_done(self):
+       if self.dw_for_homologation:
         if self.dw_homologate and self.market_type_id and self.market_type_id.forced_nbr_supplier and self.len_supplier_homologated_market < self.market_type_id.nbr_supplier:
             raise ValidationError(
                 _('The number of the Homologated  supplier must be greater than %(nbr_supplier)s.!',
@@ -90,13 +81,21 @@ class DwMarket(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Market Document',
             'res_model': 'dw.attribute.market.wizard',
-            'views': [[self.env.ref('dw_supplier_approval.dw_attribute_market_form_view').id, 'form']],
+            'views': [[self.env.ref('dw_procurement.dw_attribute_market_form_view').id, 'form']],
             'target': 'new',
 
             'context': {
                 'default_market_id': self.id
             }
         }
+       else :
+           res = super(DwMarket, self).action_done()
+           return res
+
+
+
+
+
     def action_show_homologations(self):
         return ({
             'res_model': 'dw.homologation',

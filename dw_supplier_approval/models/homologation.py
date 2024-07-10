@@ -79,7 +79,8 @@ class DwHomologation(models.Model):
     fichier_stabilite_attachment = fields.Binary(string="Fichier de stabilité")
     fichier_stabilite_file_name = fields.Char(string='File name')
     qty = fields.Float("Quantity")
-
+    dw_manufacturer = fields.Char(string="Manufacturer")
+    dw_product_pharma_family_name = fields.Char("Name", related="product_id.dw_pharma_family_id.name")
     @api.constrains('end_date', 'start_date')
     def _check_date_start_end(self):
       for record in self:

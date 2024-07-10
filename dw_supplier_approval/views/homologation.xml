@@ -147,10 +147,14 @@
 
                                 <field name="market_supplier_ids" invisible="1"/>
                                 <field name="consultation_id" invisible="1"/>
+                                <field name="product_id" readonly="state != 'prospection'" invisible="not market_id"
+                                       domain="[('id', 'in', product_ids)]"/>
                                 <field name="supplier_id" readonly="state != 'prospection'" invisible="not market_id"
                                        domain="[('id', 'in', market_supplier_ids)]"/>
                                 <field name="supplier_id" readonly="state != 'prospection'" invisible="market_id"/>
                                 <field name="dw_supplier_nature" readonly="state == 'homologue'" required="1"/>
+                                <field name="dw_product_pharma_family_name" required="1" />
+                                <field name="dw_manufacturer" readonly="state == 'homologue'" invisible="dw_supplier_nature == 'fabricant'" required="dw_product_pharma_family_name=='PA' and dw_supplier_nature == 'regroupeur'"/>
                                 <field name="state_market" readonly="state == 'homologue'" invisible="1"/>
                                 <label for="street"/>
                                 <div>
@@ -178,8 +182,7 @@
                                 <field name="start_date" required="1" readonly="state != 'draft'"/>
                                 <field name="end_date" required="1" readonly="0"/>
                                 <field name="market_id" invisible="1"/>
-                                <field name="product_id" readonly="state != 'prospection'" invisible="not market_id"
-                                       domain="[('id', 'in', product_ids)]"/>
+
                                 <field name="product_id" readonly="state != 'prospection'" invisible="market_id"/>
                                 <field name="product_ids" invisible="1"/>
                                 <field name="company_id" readonly="state != 'prospection'"/>

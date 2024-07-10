@@ -31,7 +31,7 @@
 
         # wizard
         'wizard/document_wizard.xml',
-        'wizard/dw_attribute_market_views.xml',
+
         'wizard/dw_homologate_market_views.xml',
 
     ],

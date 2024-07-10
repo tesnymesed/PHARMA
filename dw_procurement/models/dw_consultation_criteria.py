@@ -15,7 +15,8 @@ class DwConsultationCriteria(models.Model):
 
         ('amount', 'Based on Amount'),
         ('percentage', 'Based on Percentage'),
-        ('period', 'Based on Period')
+        ('period', 'Based on Period'),
+        ('boolean', 'Based on boolean'),
     ],
         string="Criteria Type",
         default="amount", )
@@ -44,6 +45,7 @@ class DwConsultationCriteriaLine(models.Model):
     criteria_type = fields.Selection(store=1, related="criteria_id.criteria_type")
     amount = fields.Float("Amount")
     percentage = fields.Float("Percentage")
+    completed = fields.Boolean(string="completed")
     number_days = fields.Float("Number Days")
     number_years = fields.Float("Number Years")
     number_months = fields.Float("Number Months")

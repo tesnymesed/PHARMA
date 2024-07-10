@@ -51,7 +51,7 @@
             <field name="model">dw.market</field>
             <field name="priority" eval="2"/>
             <field name="arch" type="xml">
-                <tree  decoration-danger="state != 'done' and end_date >= context_today().strftime('%Y-%m-%d')">
+                <tree decoration-danger="state != 'done' and end_date >= context_today().strftime('%Y-%m-%d')">
                     <field name="name" optional="show"/>
                     <field name="start_date" optional="show"/>
                     <field name="end_date" optional="show"/>
@@ -61,7 +61,6 @@
                     <field name="product_ids" optional="hide" widget="many2many_tags"/>
                     <field name="market_type_id"/>
                     <field name="state" optional="show"/>
-
 
 
                 </tree>
@@ -95,7 +94,14 @@
                                 invisible="state not in  ['draft']"
                                 confirm="Do you want to prospect this market"
                                 type="object"/>
-
+                        <button name="action_homologation" string="Confirm"
+                                class="btn-primary"
+                                invisible="state not in  ['prospection']"
+                                type="object"/>
+                        <button name="action_done" string="Assign"
+                                class="btn-primary"
+                                invisible="state not in  ['consultation']"
+                                type="object"/>
 
 
                         <button
@@ -112,7 +118,7 @@
 
                             <button name="action_show_consultations" type="object"
                                     class="oe_stat_button"
-                                    invisible="state not in ['done'] "
+                                    invisible="state not in ['done','consultation'] "
                                     icon="fa-list-alt">
                                 <div class="o_stat_info">
                                     <span class="o_stat_text">Consultations</span>
@@ -128,7 +134,7 @@
                             </button>
                             <button name="action_show_consultations_tco" type="object"
                                     class="oe_stat_button"
-                                    invisible="state not in ['done'] "
+                                    invisible="state not in ['done','consultation'] "
                                     icon="fa-list-alt">
                                 <div class="o_stat_info">
                                     <span class="o_stat_text">TCO</span>
@@ -158,12 +164,12 @@
                                        readonly="state != 'prospection'" required="state == 'prospection'"/>
 
 
-
                             </group>
                             <group>
                                 <field name="description" readonly="state != 'draft'"/>
                                 <field name="company_id" readonly="state != 'draft'"/>
                                 <field name="user_id" readonly="state != 'draft'"/>
+                                <field name="dw_for_homologation" invisible="1"/>
 
 
                             </group>
@@ -204,10 +210,11 @@
                                         </tree>
                                     </field>
                                 </page>
-                                <page name="Criteria" string="Criteria">
+                                <page name="Criteria" string="Criteria"
+                                      invisible="state != 'homologation_cosultation' and state != 'cosultation' and state != 'prospection'">
                                     <group>
                                         <field name="market_criteria_ids" widget="many2many_tags"
-                                               readonly="state != 'draft'" required="1"/>
+                                               readonly="state != 'prospection'" required="state == 'prospection'"/>
                                     </group>
                                 </page>
                             </notebook>

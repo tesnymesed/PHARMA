@@ -12,6 +12,7 @@ class DwConsultationCriteria(models.Model):
     supplier_id = fields.Many2one("res.partner", String="Supplier", domain='[("is_supplier","=", True)]',
                                   check_company=True, required=1)
     market_id = fields.Many2one('dw.market', string='Market')
+    dw_for_homologation = fields.Boolean("for homologation", related="market_id.dw_for_homologation")
 
 
     product_ids = fields.Many2many(related="market_id.product_ids")

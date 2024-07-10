@@ -50,13 +50,14 @@
                         </div>
                         <group>
                             <group>
-                                <field name="supplier_id" readonly="market_id"/>
-                                <field name="dw_supplier_nature" readonly="market_id"/>
+                                <field name="dw_for_homologation"> </field>
+                                <field name="supplier_id" readonly="market_id and dw_for_homologation "/>
+                                <field name="dw_supplier_nature" readonly="market_id and dw_for_homologation "/>
 
                                 <!--                                <field name="supplier_id" domain="[('id', 'in', supplier_market_id)]"-->
                                 <!--                                       invisible="not market_id"/>-->
                                 <!--                                <field name="product_id" invisible="market_id"/>-->
-                                <field name="product_id" readonly="market_id"/>
+                                <field name="product_id" readonly="market_id and dw_for_homologation "/>
                                 <field name="user_id"/>
                                 <!--                                <field name="display_name"/>-->
 
@@ -88,6 +89,9 @@
                                         <field name="number_days"
                                                readonly="criteria_type  != 'period' or period_type != 'days' "
                                                required="criteria_type  == 'period' and period_type == 'days' "/>
+                                        <field name="completed" readonly="criteria_type  != 'boolean'"
+                                               required="criteria_type  == 'boolean'"/>
+
 
                                         <!--                                        <field name="number_months"-->
                                         <!--                                               readonly="criteria_type  != 'period' or period_type != 'months' "-->
@@ -110,6 +114,8 @@
                                         <field name="number_days"
                                                readonly="criteria_type  != 'period' or period_type != 'days' "
                                                required="criteria_type  == 'period' and period_type == 'days' "/>
+                                        <field name="completed" readonly="criteria_type  != 'boolean'"
+                                               required="criteria_type  == 'boolean'"/>
 
                                         <!--                                        <field name="number_months"-->
                                         <!--                                               readonly="criteria_type  != 'period' or period_type != 'months' "-->

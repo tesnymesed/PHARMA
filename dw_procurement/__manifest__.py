@@ -35,6 +35,7 @@
         # wizard
 
         'wizard/document_market_wizard.xml',
+        'wizard/dw_attribute_market_views.xml',
 
 
     ],

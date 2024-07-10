@@ -12,7 +12,6 @@ class DwMarketLine(models.Model):
         'product.product',
         check_company=True,
         domain=[('purchase_ok', '=', True)],
-
     )
     supplier_ids = fields.Many2many(
         'res.partner',
@@ -65,7 +64,7 @@ class DwMarket(models.Model):
         check_company=True,
         domain=[('is_supplier', '=', True)]
     )
-    market_type_id = fields.Many2one('dw.market.type', string="Market type")
+    market_type_id = fields.Many2one('dw.market.type', string="Procurement method")
     market_criteria_ids = fields.Many2many('dw.consultation.criteria', string="Market Criteria")
     consultation_ids = fields.One2many("dw.consultation", 'market_id', string="Consultations")
 
@@ -78,6 +77,31 @@ class DwMarket(models.Model):
 
     start_date = fields.Date(string="Start Date", default=fields.Date.today)
     end_date = fields.Date(string="End Date", default=fields.Date.today)
+    dw_for_homologation = fields.Boolean("for homologation")
+
+    def action_done(self):
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Market Document',
+            'res_model': 'dw.attribute.market.wizard',
+            'views': [[self.env.ref('dw_procurement.dw_attribute_market_form_view').id, 'form']],
+            'target': 'new',
+
+            'context': {
+                'default_market_id': self.id
+            }
+        }
+    def action_homologation(self):
+        if self.market_type_id and self.market_type_id.forced_nbr_supplier and self.len_supplier_market < self.market_type_id.nbr_supplier:
+            raise ValidationError(
+                _('The number of supplier must be greater than %(nbr_supplier)s.!',
+                  nbr_supplier=self.market_type_id.nbr_supplier)
+            )
+        if self.dw_for_homologation :
+         self.write({"state": "homologation_cosultation"})
+        else :
+         self.write({"state": "consultation"})
 
     @api.constrains('end_date','start_date')
     def _check_date_start_end(self):
@@ -167,7 +191,11 @@ class DwMarket(models.Model):
         self.write({"state": "prospection"})
 
     def action_show_consultations(self):
-        return ({
+       if self.dw_for_homologation:
+           create=0
+       else :
+           create = 1
+       return ({
             'res_model': 'dw.consultation',
             'type': 'ir.actions.act_window',
             'name': _("%(market_name)s's Consultations", market_name=self.name),
@@ -177,8 +205,10 @@ class DwMarket(models.Model):
             ],
             'view_mode': 'tree,form',
 
-            'context': {'default_market_id': self.id, "create": 0},
+            'context': {'default_market_id': self.id, "create": create},
         })
+
+
 
 
 

@@ -50,7 +50,7 @@
                         </div>
                         <group>
                             <group>
-                                <field name="dw_for_homologation"> </field>
+                                <field name="dw_for_homologation" invisible="1"/>
                                 <field name="supplier_id" readonly="market_id and dw_for_homologation "/>
                                 <field name="dw_supplier_nature" readonly="market_id and dw_for_homologation "/>
 

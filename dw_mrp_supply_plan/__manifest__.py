@@ -22,11 +22,10 @@
 
         # views
         'views/dw_mrp_supply_plan_views.xml',
+        'views/dw_mrp_supply_plan_tool_views.xml',
 
         'views/menus.xml',
 
-        # wizard
-        'wizard/dw_mrp_supply_wizard.xml',
     ],
 
     'installable': True,

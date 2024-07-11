@@ -3,6 +3,7 @@
 from . import dw_01_mrp_supply_plan
 from . import dw_02_mrp_supply_plan_lines
 from . import dw_03_mrp_product_supply_plan
+from . import dw_mrp_supply_plan_tool
 from . import dw_mrp_wizard_grouping_option
 from . import res_company
 from . import utils

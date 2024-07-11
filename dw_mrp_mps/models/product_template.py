@@ -5,7 +5,7 @@ class DwProductTemplate(models.Model):
     _inherit = 'product.template'
 
     dw_purchase_lead = fields.Float(
-        "Computed Purchase Lead Time",  default=0.0, help="Lead days for each purchase operation (Used in MPS).",
+        "Computed Purchase Lead Time", default=0.0, help="Lead days for each purchase operation (Used in MPS).",
         compute='_compute_lead_time', inverse='_inverse_lead_time',
     )
 

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_dw_payment_request">
+
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="header">
+
+                    <table class="table table-bordered" width="100%">
+                        <tr>
+                            <td style="width: 15%;" rowspan="3" class="text-center article">
+                                <br/>
+                                <img src='/dw_payment_request/static/src/img/saidal.png' width="70%" height="40%"/>
+                            </td>
+                            <td style="width: 50;">
+                                <span>IMPRIME</span>
+
+                            </td>
+                            <td style="width: 25%;" colspan="2">Référence :
+                                IMP.04 (PR.G.DFC.05)
+                            </td>
+                        </tr>
+                        <tr>
+                            <br/>
+                            <td style="width: 40%;" rowspan="2" class="text-center">
+                                <strong>
+                                    <h4>DEMANDE DE PAIEMENT</h4>
+                                </strong>
+                            </td>
+                            <td style="width: 25%;" colspan="2">version :
+                                02
+                                <br/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 13%;">
+                                <strong>Page:</strong>
+                                <span class="page"/>
+                                sur
+                                <span class="topage"/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="footer">
+                    <b>La photocopie de ce document est interdite, document non valable en l'absence du tampon rouge «
+                        Copie contrôlée Assurance qualité »
+                    </b>
+                </div>
+                <br/>
+                <br/>
+                <div class="page article">
+                    <br/>
+                    <br/>
+                    <div style="float:right">
+                        <span>Date d’établissement :</span>
+                        <t t-if="o.request_date" t-esc="o.request_date"/>
+                        <br/>
+                        <br/>
+                        <span>N° :</span>
+                        <t t-if="o.name" t-esc="o.name"/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div>
+                        <span>Veuillez payer à l’ordre</span>
+                        <BR/>
+                        de :
+                        <t t-if="o.user_id.name" t-esc="o.user_id.name"/>
+                        <br/>
+                        <br/>
+                        <div class="row">
+                            <span>Adresse :<![CDATA[&nbsp;]]></span>
+                            <t t-if="o.dw_account_move_id.partner_id.street">
+                                <span>
+                                    <t t-esc="o.dw_account_move_id.partner_id.street"/>
+                                </span>
+                            </t>
+                            <span><![CDATA[&nbsp;]]>,<![CDATA[&nbsp;]]></span>
+                            <t t-if="o.dw_account_move_id.partner_id.street2">
+                                <span>
+                                    <t t-esc="o.dw_account_move_id.partner_id.street2"/>
+                                </span>
+                            </t>
+                            <span><![CDATA[&nbsp;]]>,<![CDATA[&nbsp;]]></span>
+                            <t t-if="o.dw_account_move_id.partner_id.city">
+                                <t t-esc="o.dw_account_move_id.partner_id.city"/>
+                            </t>
+                            <span><![CDATA[&nbsp;]]>,<![CDATA[&nbsp;]]></span>
+                            <t t-if="o.dw_account_move_id.partner_id.state_id.name">
+                                <t t-esc="o.dw_account_move_id.partner_id.state_id.name"/>
+                            </t>
+                            <span><![CDATA[&nbsp;]]>,<![CDATA[&nbsp;]]></span>
+                            <t t-if="o.dw_account_move_id.partner_id.country_id.name">
+                                <t t-esc="o.dw_account_move_id.partner_id.country_id.name"/>
+                            </t>
+                            <br/>
+                        </div>
+
+                        <br/>
+
+                        <span>La somme:
+                            <t t-if="o.dw_account_move_id.amount_total" t-esc="o.dw_account_move_id.amount_total"/> <t t-if="o.dw_account_move_id.currency_id.symbol" t-esc="o.dw_account_move_id.currency_id.symbol"/>
+                            en
+                        </span>
+                        <br/>
+                        lettre : <t t-if="o.dw_account_move_id.amount_total" t-esc="o.dw_account_move_id.currency_id.with_context(lang='fr_FR').amount_to_text(o.dw_account_move_id.amount_total)"/>
+                        <br/>
+                        <span>En règlement de (s):.................. Référence de la facture/proforma</span>
+
+                        <br/>
+                        <span>Se rapportant au :................... Référence du BC/Contrat/Avenant</span>
+                        <br/>
+                        <span>Livraison partielle : ...........................................</span>
+                        <br/>
+                        <br/>
+                        <span>Mode de paiement :
+                            <t t-if="o.payment_request_type.name" t-esc="o.payment_request_type.name"/>
+                            mentionné selon le mode de paiement éditer sur le bon de commande
+                        </span>
+                        <br/>
+                    </div>
+                    <br/>
+                    <br/>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <span>Vérifiée par:
+                                <t t-if="o.confirmed_by_id.name" t-esc="o.confirmed_by_id.name"/>
+                            </span>
+                        </div>
+                        <div class="col-6">
+                            <span>Reçu le :
+                                <t t-if="o.validation_date" t-esc="o.validation_date"/>
+                            </span>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <table class="table table-bordered"
+                           style="border:1px solid black; border-spacing: 0 15px;"
+                           width="100%">
+                        <thead>
+                            <tr>
+                                <th name="th_interesse" width="33%">
+                                    <strong>Signature de l’initiateur
+                                        De l’achat/prestation
+                                    </strong>
+                                </th>
+                                <th width="33%">
+                                    <strong>Signature de l’initiateur
+                                        De l’achat/prestation
+                                    </strong>
+                                </th>
+                                <th width="33%">
+                                    <strong>Paiement
+                                    </strong>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="height: 130px;">
+                                <td/>
+                                <td/>
+                                <td/>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div style="border:1px solid black;">
+                        <br/>
+                        <div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <span style="margin-left:5%">Chèque N° :</span>  <t t-if="o.check_num" t-esc="o.check_num"/>
+                                </div>
+                                <div class="col-6">
+                                    <span>N° :</span>
+                                </div>
+                            </div>
+                            <span style="margin-left:2%">Ordre de virement : </span> <t t-if="o.Payment_order" t-esc="o.Payment_order"/>
+                            <br/>
+                            <span style="margin-left:2%">Montant :</span>    <t t-if="o.montant" t-esc="'{0:,.2f}'.format(o.montant).replace(',', ' ').replace('.', ',')"/> <t t-if="o.dw_account_move_id.currency_id.symbol" t-esc="o.dw_account_move_id.currency_id.symbol"/>
+                            <br/>
+                            <span style="margin-left:2%">Le :</span>  <t t-esc="datetime.date.today().strftime('%d-%m-%Y')"/>
+                            <br/>
+                            <div class="row">
+                                <div class="col-7"></div>
+                                <div class="col-5">
+                                    <u>LE BENEFICIAIRE :</u>
+                                </div>
+                            </div>
+
+                            <br/>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+
+    </template>
+
+
+    <record id="action_report_payment_request" model="ir.actions.report">
+        <field name="name">Payment request</field>
+        <field name="model">dw.payment.request</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">dw_payment_request.report_dw_payment_request</field>
+        <field name="report_file">dw_payment_request.report_dw_payment_request</field>
+        <!--        <field name="paperformat_id" ref="dw_payment_request.paperformat_saidal_payment_request_report"/>-->
+
+        <field name="print_report_name">'Payement request N° %s '%(object.name)</field>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

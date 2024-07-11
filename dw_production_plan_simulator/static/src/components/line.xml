@@ -66,7 +66,8 @@
       </tr>
       <!--      <tr-->
       <!--        name="demand_forecast_year_minus_2"-->
-      <!--        t-attf-class="{{! groups.mrp_mps_show_actual_demand_year_minus_2 and 'o_hidden' or ''}}"-->
+      <!--        t-attf-class="{{! groups.mrp_mps_show_actual_demand_year_minus_2 and 'o_hidden' or
+      ''}}"-->
       <!--      >-->
       <!--        <th />-->
       <!--        <th scope="row">-->
@@ -179,7 +180,9 @@
             <!--            <input-->
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
-            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"-->
+            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
+            groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+            and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -210,7 +213,9 @@
             <!--            <input-->
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
-            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"-->
+            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
+            groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+            and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.planned_production_batches)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -235,7 +240,9 @@
             <!--            <input-->
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
-            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"-->
+            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
+            groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+            and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -260,7 +267,9 @@
             <!--            <input-->
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
-            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"-->
+            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
+            groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+            and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -312,7 +321,9 @@
             <!--            <input-->
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
-            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"-->
+            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
+            groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+            and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -337,7 +348,9 @@
             <!--            <input-->
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
-            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"-->
+            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
+            groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+            and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -361,7 +374,9 @@
             <!--            <input-->
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
-            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"-->
+            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
+            groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+            and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -389,7 +404,9 @@
             <!--            <input-->
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
-            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{! groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand and 'o_mps_inline' or ''}}"-->
+            <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
+            groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+            and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -400,7 +417,8 @@
 
       <!--      <tr-->
       <!--        name="demand_forecast_year_minus_1"-->
-      <!--        t-attf-class="{{! groups.mrp_mps_show_actual_demand_year_minus_1 and 'o_hidden' or ''}}"-->
+      <!--        t-attf-class="{{! groups.mrp_mps_show_actual_demand_year_minus_1 and 'o_hidden' or
+      ''}}"-->
       <!--      >-->
       <!--        <th />-->
       <!--        <th scope="row">-->

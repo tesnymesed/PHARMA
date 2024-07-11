@@ -605,11 +605,45 @@ class ProductionPlanSimulatorComponent extends Component {
     console.log(
       "🚀 ~ ProductionPlanSimulatorComponent ~ checkMaterialsAvailability ~ checkMaterialsAvailability:"
     );
-    this.model._createMPSEntries(
-      this.state.currentCompanyId,
-      this.simulationLines
-    );
-    // this.model._openMPS(this.state);
+    this.model
+      ._createMPSEntries(this.state.currentCompanyId, this.simulationLines)
+      .then((res) => {
+        console.log(
+          "🚀 ~ ProductionPlanSimulatorComponent ~ .then ~ res:",
+          res
+        );
+        var createMPSentriesNotif = this.notificationService.add(
+          "You will redirected shortly...",
+          {
+            title: "Master production schedule (MRP) update successful",
+            type: "success",
+          }
+        );
+        setTimeout(createMPSentriesNotif, 3000);
+        // setTimeout(function () {
+        //   location.reload(true);
+        // }, 3000);
+        this.model._openMPS(this.state);
+        // this.load([["company_id", "=", state.currentCompanyId]]);
+        // return this.data;
+        //                if (productionSimulationIds.length === 1) {
+        //                    this.reload(productionSimulationIds[0]);
+        //                } else {
+        //                    this.load();
+        //                }
+      })
+      .catch((error) => {
+        console.error("error", error);
+        var createMPSentriesNotif = this.notificationService.add(
+          "Master production schedule (MRP) creation error: \n" + error,
+          {
+            title: "Error",
+            type: "danger",
+          }
+        );
+        setTimeout(createMPSentriesNotif, 3000);
+        return error;
+      });
   }
 
   //

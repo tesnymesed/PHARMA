@@ -18,6 +18,12 @@ class DWCompany(models.Model):
         default='year_start', required=True,
         help="Default value for the time ranges start (Present Month, or current years's start) in DW Master Production Schedule report.")
 
+    dw_mrp_mps_show_stock_wout_safety_stock = fields.Boolean(
+        'Display Stock (Excluding Safety Stock)', default=True)
+
+    dw_mrp_mps_show_stock_coverage = fields.Boolean(
+        'Display Stock Coverage', default=True)
+
     def _get_date_range(self, start_date_range='', end_date_range='', years=False):
         """ Return the date range for a production schedule depending on the
         manufacturing period and the number of columns to display specified by the

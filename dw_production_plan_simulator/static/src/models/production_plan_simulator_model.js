@@ -374,7 +374,7 @@ export class ProductionPlanSimulatorModel extends EventBus {
    * @return {Promise}
    */
   _createMPSEntries(companyId, productionSimulations) {
-    this.mutex.exec(() => {
+    return this.mutex.exec(() => {
       return this.orm
         .call(
           "dw.production.plan.simulation",
@@ -390,9 +390,13 @@ export class ProductionPlanSimulatorModel extends EventBus {
           //                } else {
           //                    this.load();
           //                }
+
+          this.notify();
+          return res;
         })
         .catch((error) => {
           console.error("error", error);
+          return error;
         });
     });
   }
@@ -405,6 +409,7 @@ export class ProductionPlanSimulatorModel extends EventBus {
           type: "ir.actions.client",
           tag: "mrp_mps_client_action",
           target: "fullscreen",
+          domain: [["company_id", "=", state.currentCompanyId]],
           params: {
             company: state.currentCompanyId,
             startDate: state.startDate,

@@ -14,9 +14,11 @@ patch(MainComponent.prototype, {
 
     //        let dates = model.data.date_objs;
     //        console.log("MainComponent dates", dates);
+
     onWillStart(async () => {
       await loadCSS("shared_assets/static/libs/css/daterangepicker.css");
     });
+
     onMounted(async () => {
       $('input[name="dates"]').daterangepicker();
       var self = this;
@@ -53,33 +55,67 @@ patch(MainComponent.prototype, {
           }
         );
       });
-      console.log(
-        "🚀 ~ onMounted ~ this.action?.context:",
-        this.action?.context
-      );
+
+      let params = this.props.action?.params;
+      console.log("🚀 ~ HOT PATCHED setup ~ params:", params);
+      if (params) {
+        let domain = params?.domain || this.props.action?.domain;
+        console.log(
+          "🚀 ~ onMounted ~ this.props.action?.domain:",
+          this.props.action?.domain
+        );
+        let startDate = params?.startDate;
+        let endDate = params?.endDate;
+        if (startDate && endDate) {
+          let picker = document.getElementById("daterange");
+
+          // Construct the formatted date string
+          let _fStartDate = this.reformatDateString(startDate);
+          let _fEndDate = this.reformatDateString(endDate);
+          console.log(
+            "🚀 ~ onMounted ~ _fStartDate, _fEndDate:",
+            _fStartDate,
+            _fEndDate
+          );
+
+          picker.setAttribute("value", `${_fStartDate} - ${_fEndDate}`);
+
+          console.log("🚀 ~ onMounted ~ picker.value:", picker.value);
+          console.log("🚀 ~ onMounted ~ picker:", picker);
+
+          //change the selected date range of that picker
+          // picker.setStartDate(startDate);
+          // picker.setEndDate(endDate);
+          self.model.load(
+            domain,
+            self.env.config.offset,
+            self.env.config.limit,
+            startDate,
+            endDate
+          );
+        }
+      }
     });
-    console.log("🚀 ~ onMounted ~ this.action?.params:", this.action?.params);
   },
 
   get manufacturingPeriodDates() {
-    console.log(
-      "🚀 ~ get manufacturingPeriodDates ~ this.action?.context:",
-      this.action?.context
-    );
-    console.log(
-      "🚀 ~ getmanufacturingPeriodDates ~ this.action?.params:",
-      this.action?.params
-    );
-
     return this.model.data.date_objs;
   },
 
   onWillStart() {
     console.log(
-      "🚀 ~ onWillStart ~ this.action?.context:",
-      this.action?.context
+      "🚀 ~ onWillStart ~ this.props.action.params:",
+      this.props.action.params
     );
     this.manufacturingPeriodDates = this.manufacturingPeriodDates;
+  },
+
+  reformatDateString(dateString) {
+    // Split the dateString into year, month, and day components
+    const [year, month, day] = dateString.split("-");
+
+    // Construct the formatted date string
+    return `${month}/${day}/${year}`;
   },
 
   //  productionSchedule() {

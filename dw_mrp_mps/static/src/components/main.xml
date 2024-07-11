@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-inherit="mrp_mps.mrp_mps" t-inherit-mode="extension" owl="1">
-        <xpath expr="//button[contains(text(), 'Add a Product')]" position="after">
-               <input type="text" style=" width: 180px;" class="btn btn-primary" name="daterange"
-                      value="01/01/2024 - 01/01/2025"/>
-       </xpath>
-   </t>
+  <t t-inherit="mrp_mps.mrp_mps" t-inherit-mode="extension" owl="1">
+    <xpath expr="//button[contains(text(), 'Add a Product')]" position="after">
+      <input
+        type="text"
+        style="width: 180px"
+        class="btn btn-primary"
+        name="daterange"
+        id="daterange"
+        value="01/01/2024 - 01/01/2025"
+      />
+    </xpath>
+  </t>
 </templates>

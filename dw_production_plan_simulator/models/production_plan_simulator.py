@@ -456,7 +456,7 @@ class DwProductionPlanSimulator(models.Model):
     @api.model
     def create_mps_from_plan_simulations(self, company_id, production_simulations):
         print("🚀 ~ create_mps_from_plan_simulations:", self, production_simulations)
-
+        ids = []
         for prod_sim in production_simulations:
             vals = {
                 'product_id': prod_sim.get('product_id')[0],
@@ -475,8 +475,9 @@ class DwProductionPlanSimulator(models.Model):
             mps.write({
                 'forecast_target_qty': prod_sim.get('safety_stock_target_qty'),
                 'min_to_replenish_qty': pps.lot_size,
-                'max_to_replenish_qty': pps.lot_size,
+                'max_to_replenish_qty': 1000 * pps.lot_size,
             })
+
 
             product_plan_sim_ids = prod_sim.get('product_plan_sim_ids')
             for prdct_sim_i in product_plan_sim_ids:
@@ -498,6 +499,9 @@ class DwProductionPlanSimulator(models.Model):
                         'production_schedule_id': mps.id
                     })
 
+            ids.append(mps.id)
+
+        return ids
         # # Get the final products with BOMs for the given company
         # products = self.env['product.product'].search([
         #     ('product_tmpl_id.type', '=', 'product'),

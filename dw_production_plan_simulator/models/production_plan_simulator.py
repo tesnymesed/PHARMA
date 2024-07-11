@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import datetime
 from collections import OrderedDict
 from collections import defaultdict, namedtuple
 from itertools import groupby
@@ -192,7 +193,8 @@ class DwProductionPlanSimulator(models.Model):
 
                 total_required_capacity = sum(item["required_capacity"] for item in group_data)
                 total_production_objective_qty = sum(item["production_objective_qty"] for item in group_data)
-
+                # Sample list of strings
+                notes_str = "\n".join([item.get("note") for item in group_data if item.get("note")])
                 if total_required_capacity < total_production_objective_qty:
                     total_capacity_utilisation = sum(item["capacity_utilisation"] for item in group_data)
 
@@ -210,6 +212,7 @@ class DwProductionPlanSimulator(models.Model):
                         "capacity_utilisation": total_capacity_utilisation,
                         "required_capacity": total_required_capacity,
                         "production_objective_qty": total_production_objective_qty,
+                        "notes": notes_str
 
                     })
 
@@ -449,6 +452,73 @@ class DwProductionPlanSimulator(models.Model):
             ids.append(_id)
 
         return ids
+
+    @api.model
+    def create_mps_from_plan_simulations(self, company_id, production_simulations):
+        print("🚀 ~ create_mps_from_plan_simulations:", self, production_simulations)
+
+        for prod_sim in production_simulations:
+            vals = {
+                'product_id': prod_sim.get('product_id')[0],
+                'company_id': company_id,
+            }
+
+            _id = prod_sim.get('id')
+
+            pps = self.search([('id', '=', _id)], limit=1)
+
+            if pps:
+                vals['bom_id'] = pps.bom_id.id
+                vals['warehouse_id'] = pps.warehouse_id.id
+
+            mps = self.env['mrp.production.schedule'].create([vals])
+            mps.write({
+                'forecast_target_qty': prod_sim.get('safety_stock_target_qty'),
+                'min_to_replenish_qty': pps.lot_size,
+                'max_to_replenish_qty': pps.lot_size,
+            })
+
+            product_plan_sim_ids = prod_sim.get('product_plan_sim_ids')
+            for prdct_sim_i in product_plan_sim_ids:
+                date_start = datetime.datetime.strptime(prdct_sim_i.get('date_start'), "%Y-%m-%d").date()
+                date_stop = datetime.datetime.strptime(prdct_sim_i.get('date_stop'), "%Y-%m-%d").date()
+
+                existing_forecast = mps.forecast_ids.filtered(lambda f:
+                                                              f.date >= date_start
+                                                              and f.date <= date_stop)
+                _qty = float_round(prdct_sim_i.get('suggested_production_plan_qty'), precision_rounding=mps.product_uom_id.rounding)
+
+                if existing_forecast:
+                    existing_forecast[0].write({'forecast_qty': _qty})
+                else:
+                    self.env['mrp.product.forecast'].create({
+                        'forecast_qty': _qty,
+                        'date': date_stop,
+                        'replenish_qty': 0,
+                        'production_schedule_id': mps.id
+                    })
+
+        # # Get the final products with BOMs for the given company
+        # products = self.env['product.product'].search([
+        #     ('product_tmpl_id.type', '=', 'product'),
+        #     ('product_tmpl_id.categ_id.is_final_product', '=', True),
+        #     # ('product_tmpl_id.bom_ids', '!=', False),
+        #     ('product_tmpl_id.company_id', '=', company_id)
+        # ])
+
+        # # Create the simulation records
+        # ids = []
+        # for product in products:
+        #     _id = self.env['dw.production.plan.simulation'].create({
+        #         'company_id': company_id,
+        #         'product_id': product.id,
+        #         'warehouse_id': self._get_warehouse_id(company_id).id,
+        #         'bom_id': product.product_tmpl_id.bom_ids[0].id,
+        #         'lot_size': product.product_tmpl_id.bom_ids[0].product_qty
+        #     })
+        #     ids.append(_id)
+
+        # return ids
 
     @api.model_create_multi
     def create(self, vals_list):

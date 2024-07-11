@@ -84,9 +84,9 @@ class ProductionPlanSimulatorComponent extends Component {
       //      await loadCSS(
       //        "dw_production_plan_simulator/static/src/libs/css/theme-default.css"
       //      );
-      //      await loadCSS(
-      //        "dw_production_plan_simulator/static/src/libs/css/perfect-scrollbar.css"
-      //      );
+      await loadCSS(
+        "dw_production_plan_simulator/static/src/libs/css/perfect-scrollbar.css"
+      );
       await loadCSS("shared_assets/static/libs/css/daterangepicker.css");
       await loadCSS("shared_assets/static/libs/css/tabulator.min.css");
       await loadCSS(
@@ -177,12 +177,6 @@ class ProductionPlanSimulatorComponent extends Component {
             picker.endDate.format("YYYY-MM-DD")
           );
         }
-      );
-
-      $("#show-alerts").click(
-        function () {
-          this.displayAlerts();
-        }.bind(this)
       );
     });
 
@@ -299,7 +293,20 @@ class ProductionPlanSimulatorComponent extends Component {
       layout: "fitColumns",
       columns: columns,
       data: data,
-      groupBy: "workcenter_name",
+      groupBy: ["workcenter_name", "year", "quarter"],
+      groupHeader: function (value, count, data, group) {
+        //value - the value all members of this group share
+        //count - the number of rows in this group
+        //data - an array of all the row data objects in this group
+        //group - the group component for the group
+
+        return (
+          value +
+          "<span style='color:#d00; margin-left:10px;'>(" +
+          count +
+          " item)</span>"
+        );
+      },
       pagination: "local",
       paginationSize: 12,
       paginationSizeSelector: [12, 18, 24, 30],
@@ -321,9 +328,99 @@ class ProductionPlanSimulatorComponent extends Component {
         "capacity_utilisation",
         "required_capacity",
         "production_objective_qty",
+        "notes",
       ];
 
-      let columns = this.prepareTableColumns(keys);
+      // let columns = this.prepareTableColumns(keys);
+
+      // let columns = [
+      //   {
+      //     title: "Date Start",
+      //     field: "date_start",
+      //   },
+      //   {
+      //     title: "Capacity Utilisation",
+      //     field: "capacity_utilisation",
+      //   },
+      //   {
+      //     title: "Required Capacity",
+      //     field: "required_capacity",
+      //   },
+      //   {
+      //     title: "Production Objective Qty",
+      //     field: "production_objective_qty",
+      //   },
+      //   {
+      //     title: "Notes",
+      //     field: "notes",
+      //     editor: "textarea",
+      //     formatter: "textarea",
+      //   },
+      // ];
+
+      var columns = [
+        {
+          title: "Date Start",
+          field: "date_start",
+        },
+
+        {
+          title: "Required Capacity",
+          field: "required_capacity",
+        },
+        {
+          title: "Production Objective Qty",
+          field: "production_objective_qty",
+        },
+
+        {
+          title: "Capacity Utilisation",
+          field: "capacity_utilisation",
+          formatter: function (cell, formatterParams, onRendered) {
+            var value = cell.getValue();
+            var color;
+
+            if (value < 50) {
+              color = "green";
+            } else if (value >= 50 && value <= 100) {
+              color = "orange";
+            } else {
+              color = "red";
+            }
+
+            // return color;
+            return `<span style="color: ${color};">${value} %</span>`;
+          },
+          formatterParams: {
+            precision: 2,
+            symbol: " %",
+            // symbolAfter: "p",
+            min: 0,
+            color: function (cell, formatterParams, onRendered) {
+              var value = cell.getValue();
+              var color;
+
+              if (value < 50) {
+                color = "green";
+              } else if (value >= 50 && value <= 100) {
+                color = "orange";
+              } else {
+                color = "red";
+              }
+
+              return color;
+              return `<span style="color: ${color};">${value}%</span>`;
+            },
+            legend: false,
+          },
+        },
+        {
+          title: "Notes",
+          field: "notes",
+          editor: "textarea",
+          formatter: "textarea",
+        },
+      ];
       console.log("columns", columns);
       console.log("data", data);
       let alertsTable = this.initTabulator("#alertsTable", data, columns);
@@ -495,50 +592,6 @@ class ProductionPlanSimulatorComponent extends Component {
   }
 
   displayAlerts() {
-    //    var company_data = this.getCompanyData();
-    //    company_data
-    //      .then((result) => {
-    //        var selectCompanyMrpPlan = document.getElementById(
-    //          "select-mrp-plan-company"
-    //        );
-    //        selectCompanyMrpPlan.innerHTML = "";
-    //        result.forEach(
-    //          function (optionValue) {
-    //            var option = this.addSelectOption(
-    //              optionValue["name"],
-    //              optionValue["id"]
-    //            );
-    //            selectCompanyMrpPlan.appendChild(option);
-    //          }.bind(this)
-    //        );
-    //        var company_id = $("#select-mrp-plan-company").val();
-    //        var sale_plan_data = this.getSalePlanData(company_id);
-    //        sale_plan_data
-    //          .then((result) => {
-    //            var select_sale_plan = document.getElementById(
-    //              "select-mrp-sale-plan"
-    //            );
-    //            select_sale_plan.innerHTML = "";
-    //            result.forEach(
-    //              function (optionValue) {
-    //                var option = this.addSelectOption(
-    //                  optionValue["name"],
-    //                  optionValue["id"]
-    //                );
-    //                select_sale_plan.appendChild(option);
-    //              }.bind(this)
-    //            );
-    //            var df_option = this.addSelectOption("Empty", "");
-    //            select_sale_plan.appendChild(df_option);
-    //          })
-    //          .catch((error) => {
-    //            console.error(error); // Handle any errors
-    //          });
-    //      })
-    //      .catch((error) => {
-    //        console.error(error); // Handle any errors
-    //      });
-    //    $("#select-mrp-plan").val("Select Option ...");
     $("#alertsModal").modal("show");
     this.initAlertsTable();
   }
@@ -546,6 +599,17 @@ class ProductionPlanSimulatorComponent extends Component {
   toggleModal() {
     this.state.isModalVisible = !this.state.isModalVisible;
     this.displayAlerts();
+  }
+
+  checkMaterialsAvailability() {
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorComponent ~ checkMaterialsAvailability ~ checkMaterialsAvailability:"
+    );
+    this.model._createMPSEntries(
+      this.state.currentCompanyId,
+      this.simulationLines
+    );
+    // this.model._openMPS(this.state);
   }
 
   //

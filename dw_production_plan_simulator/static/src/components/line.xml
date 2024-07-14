@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-  <t t-name="dw_production_plan_simulator.ProductionPlanSimulatorLine">
+  <t t-name="dw_production_plan_simulator.ProductionPlanSimulatorLine" owl="1">
     <tbody
       class="o_mps_content"
       t-att-data-id="productionSimulation.id"
       t-att-data-warehouse_id="'warehouse_id' in productionSimulation and productionSimulation.warehouse_id[0]"
     >
       <tr class="bg-light">
-        <th></th>
+        <th scope="col" colspan="1">
+          <span class="bg-light o_prod_sim_record_url">
+            <!-- <CheckBox
+            value="isSelected"
+            onChange.bind="(ev) => this.toggleSelection(ev, productionSchedule.id)"
+            /> -->
+          </span>
+        </th>
         <th scope="col">
           <a
             href="#"
@@ -316,7 +323,21 @@
         >
           <th class="text-end pe-4">
             <span
+              t-att-data-date_index="simulation_index"
+              t-att-data-date_start="simulation.date_start"
+              t-att-data-date_stop="simulation.date_stop"
+              t-attf-class="{{simulation.batch_count * simulation.lot_size &lt; simulation.production_objective_qty and 'text-danger' or ''}}"
               t-esc="formatFloat(simulation.batch_count * simulation.lot_size)"
+            />
+            <span
+              t-if="simulation.batch_count * simulation.lot_size &lt; simulation.production_objective_qty"
+              t-att-data-date_index="simulation_index"
+              t-att-data-date_start="simulation.date_start"
+              t-att-data-date_stop="simulation.date_stop"
+              class="btn btn-link input-group-addon o_prod_sim_automatic_mode fa fa-exclamation-triangle text-warning oe_edit_only o_no_padding"
+              title="Production target unreached."
+              t-on-mouseover.stop="_onMouseOverAlert"
+              t-on-mouseout.stop="_onMouseOutAlert"
             />
             <!--            <input-->
             <!--              type="text"-->
@@ -397,10 +418,25 @@
           t-key="simulation_index"
         >
           <th class="text-end pe-4">
-            <span t-esc="formatFloat(simulation.required_capacity)" />
-            (
-            <span t-esc="formatFloat(simulation.capacity_utilisation)" />
-            % )
+            <span
+              t-if="simulation.capacity_utilisation &gt; 90.0"
+              t-att-data-date_index="simulation_index"
+              t-att-data-date_start="simulation.date_start"
+              t-att-data-date_stop="simulation.date_stop"
+              class="btn btn-link input-group-addon o_prod_sim_automatic_mode fa fa-exclamation-triangle text-warning oe_edit_only o_no_padding"
+              title="Capacity Alert."
+              t-on-mouseover.stop="_onMouseOverCapacityAlert"
+              t-on-mouseout.stop="_onMouseOutCapacityAlert"
+            />
+            <span
+              t-attf-class="{{simulation.capacity_utilisation &gt; 90.0 and 'text-warning' or ''}}"
+              t-esc="formatFloat(simulation.required_capacity)"
+            />
+            <span
+              t-attf-class="{{simulation.capacity_utilisation &gt; 90.0 and 'text-warning' or ''}}"
+              t-esc="' ( ' + formatFloat(simulation.capacity_utilisation)+ ' % )'"
+            />
+
             <!--            <input-->
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->

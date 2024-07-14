@@ -60,9 +60,9 @@ class DwMarket(models.Model):
         store="1"
     )
     supplier_ids = fields.Many2many(
-        'res.partner',
+        'res.partner',compute="compute_supplier_market",store="1",
         check_company=True,
-        domain=[('is_supplier', '=', True)]
+        domain=[('is_supplier', '=', True),]
     )
     market_type_id = fields.Many2one('dw.market.type', string="Procurement method")
     market_criteria_ids = fields.Many2many('dw.consultation.criteria', string="Market Criteria")
@@ -126,6 +126,11 @@ class DwMarket(models.Model):
     def compute_len_supplier_market(self):
         for record in self:
             record.len_supplier_market = len(record.market_line_ids.mapped('supplier_ids'))
+
+    @api.depends('market_line_ids')
+    def compute_supplier_market(self):
+        for record in self:
+            record.supplier_ids = record.market_line_ids.mapped('supplier_ids')
 
     def action_attribution_file(self):
         return {

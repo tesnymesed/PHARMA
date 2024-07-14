@@ -118,7 +118,15 @@
 
                             <button name="action_show_consultations" type="object"
                                     class="oe_stat_button"
-                                    invisible="state not in ['done','consultation'] "
+                                    invisible="state not in ['done','consultation'] and dw_for_homologation"
+                                    icon="fa-list-alt">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Consultations</span>
+                                </div>
+                            </button>
+                            <button name="action_show_consultations_homologation" type="object"
+                                    class="oe_stat_button"
+                                    invisible="state not in ['done','consultation'] and not dw_for_homologation"
                                     icon="fa-list-alt">
                                 <div class="o_stat_info">
                                     <span class="o_stat_text">Consultations</span>

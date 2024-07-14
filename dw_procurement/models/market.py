@@ -196,21 +196,35 @@ class DwMarket(models.Model):
         self.write({"state": "prospection"})
 
     def action_show_consultations(self):
-       if self.dw_for_homologation:
-           create=0
-       else :
-           create = 1
+
        return ({
             'res_model': 'dw.consultation',
             'type': 'ir.actions.act_window',
             'name': _("%(market_name)s's Consultations", market_name=self.name),
 
-            'domain': [
-                ('market_id', '=', self.id),
+            'domain': [('market_id','=',self.id)
             ],
             'view_mode': 'tree,form',
 
-            'context': {'default_market_id': self.id, "create": create},
+            'context': {'default_market_id': self.id, "create": 1,
+                        'default_criteria_line_ids': [
+            (0, 0, {'criteria_id': criteria.id}) for criteria in self.market_criteria_ids]
+                        },
+        })
+    def action_show_consultations_homologation(self):
+
+       return ({
+            'res_model': 'dw.consultation',
+            'type': 'ir.actions.act_window',
+            'name': _("%(market_name)s's Consultations", market_name=self.name),
+
+            'domain': ['|',
+                ('homologation_id', 'in', self.homologation_ids.ids),('market_id','=',self.id)
+            ],
+            'view_mode': 'tree,form',
+
+            'context': {'default_market_id': self.id, "create": 0,
+                        },
         })
 
 

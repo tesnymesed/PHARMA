@@ -11,6 +11,7 @@ class DwConsultationCriteria(models.Model):
     name = fields.Char(strong="Consultation")
     supplier_id = fields.Many2one("res.partner", String="Supplier", domain='[("is_supplier","=", True)]',
                                   check_company=True, required=1)
+    supplier_domain_ids = fields.Many2many("res.partner",String="Supplier",domain='[("is_supplier","=", True)]', compute="_compute_supplier_domain_ids")
     market_id = fields.Many2one('dw.market', string='Market')
     dw_for_homologation = fields.Boolean("for homologation", related="market_id.dw_for_homologation")
 
@@ -21,6 +22,11 @@ class DwConsultationCriteria(models.Model):
         'product.product', required=1,
         check_company=True,
         domain=[('purchase_ok', '=', True)],
+
+    )
+    product_domain_ids = fields.Many2many(
+        'product.product',
+        domain=[('purchase_ok', '=', True)],compute="_compute_product_domain_ids"
 
     )
     display_name = fields.Char("Dsiplay name", compute="_compute_display_name", store="1")
@@ -50,6 +56,23 @@ class DwConsultationCriteria(models.Model):
         [('fabricant', 'Fabricant'), ('regroupeur', 'Regroupeur')],
         string="Supplier nature", related="supplier_id.dw_supplier_nature", readonly=False, store=True,
     )
+
+    @api.depends('market_id')
+    def _compute_supplier_domain_ids(self):
+       for rec in self :
+           if rec.market_id:
+               rec.supplier_domain_ids = rec.market_id.supplier_ids
+           else :
+               rec.supplier_domain_ids = self.env['res.partner'].search([("is_supplier", "=", True)])
+
+    @api.depends('market_id')
+    def _compute_product_domain_ids(self):
+        for rec in self:
+            if rec.market_id:
+                rec.product_domain_ids = rec.market_id.product_ids
+            else:
+                rec.product_domain_ids = self.env['product.product'].search([('purchase_ok', '=', True)])
+
     @api.constrains('end_date', 'start_date')
     def _check_date_start_end(self):
        for record in self :

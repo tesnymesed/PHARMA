@@ -1,83 +1,125 @@
 .o_prod_sim {
-
-    button {
-        &.o_prod_sim_procurement {
-            background-color: $gray-200;
-            border: none;
-        }
-        &.o_no_padding {
-            padding: 0 0 0 0;
-        }
+  button {
+    &.o_prod_sim_procurement {
+      background-color: $gray-200;
+      border: none;
     }
 
-    input:not(.form-check-input) {
-        border-style: groove;
-        height: 100%;
-        padding-top: 0;
+    &.o_no_padding {
+      padding: 0 0 0 0;
     }
+  }
 
-    table {
-        thead th {
-            @include o-position-sticky($top: 0px, $left: 0px);
-            z-index: 10;
-            border-top: none;
-            &:first-child,&:nth-child(2) {
-                z-index: 11;
-                height: 1em;
-            }
-            &:nth-child(2) {
-                @include o-position-sticky($top: 0px, $left: 31px);
-            }
-        }
-        tbody th {
-            @include o-position-sticky($left: 0px);
-            &:first-child,&:nth-child(2) {
-                z-index: 1;
-                background-color: $gray-200;
-            }
-            &:nth-child(2){
-                @include o-position-sticky($left: 31px);
-                padding-left: 0;
-            }
-        }
-        th {
-            vertical-align: middle;
-        }
-        .o_mps_inline {
-            display: inline-flex;
-            max-width: 70%;
-        }
-    }
+  input:not(.form-check-input) {
+    border-style: groove;
+    height: 100%;
+    padding-top: 0;
+  }
 
-    tr {
-        line-height: 1em;
-        min-height: 1em;
+  table {
+    thead th {
+      @include o-position-sticky($top: 0px, $left: 0px);
+      z-index: 10;
+      border-top: none;
+
+      &:first-child,
+      &:nth-child(2) {
+        z-index: 11;
         height: 1em;
+      }
+
+      &:nth-child(2) {
+        @include o-position-sticky($top: 0px, $left: 31px);
+      }
     }
 
-    .btn {
-        line-height: 1em;
+    tbody th {
+      @include o-position-sticky($left: 0px);
+
+      &:first-child,
+      &:nth-child(2) {
+        z-index: 1;
+        background-color: $gray-200;
+      }
+
+      &:nth-child(2) {
+        @include o-position-sticky($left: 31px);
+        padding-left: 0;
+      }
     }
 
-    .form-control {
-        padding: 0em 0em;
-        color: $black;
+    th {
+      vertical-align: middle;
     }
 
-    .o_input {
-        line-height: 1em;
+    .o_mps_inline {
+      display: inline-flex;
+      max-width: 70%;
+    }
+  }
+
+  tr {
+    line-height: 1em;
+    min-height: 1em;
+    height: 1em;
+  }
+
+  .btn {
+    line-height: 1em;
+  }
+
+  .form-control {
+    padding: 0em 0em;
+    color: $black;
+  }
+
+  .o_input {
+    line-height: 1em;
+  }
+
+  .o_prod_sim_hover {
+    background-color: #d6d8d9;
+
+    &.alert-success {
+      background-color: darken(#dff0d8, 10%);
     }
 
-    .o_prod_sim_hover {
-        background-color: #d6d8d9;
-
-        &.alert-success {
-            background-color: darken(#dff0d8, 10%);
-        }
-
-        &.alert-warning {
-            background-color: darken(#fcf8e3, 10%);
-        }
+    &.alert-warning {
+      background-color: darken(#fcf8e3, 10%);
     }
+  }
 
+  .flash-pop {
+    animation-name: flashing, popping;
+    animation-duration: 0.8s, 0.8s;
+    animation-timing-function: linear, ease-in-out;
+    animation-iteration-count: infinite, infinite;
+    animation-delay: 0s, 0s;
+    transform-origin: center center;
+    font-weight: bold;
+  }
+
+  @keyframes flashing {
+    0% {
+      color: #000000;
+    }
+    50% {
+      color: #f1a200;
+    }
+    100% {
+      color: #000000;
+    }
+  }
+
+  @keyframes popping {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
 }

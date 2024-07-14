@@ -1,8 +1,11 @@
 /** @odoo-module **/
 
 import { _t } from "@web/core/l10n/translation";
-//import { MrpMpsControlPanel, MrpMpsSearchBar } from "../search/mrp_mps_control_panel";
-//import { MrpMpsSearchModel } from '../search/mrp_mps_search_model';
+// import {
+//   MrpMpsControlPanel,
+//   MrpMpsSearchBar,
+// } from "../search/mrp_mps_control_panel";
+// import { MrpMpsSearchModel } from "../search/mrp_mps_search_model";
 import ProductionPlanSimulatorLine from "@dw_production_plan_simulator/components/line";
 import ProductionPlanSimulationAlerts from "@dw_production_plan_simulator/components/alert_container";
 import { ProductionPlanSimulatorModel } from "@dw_production_plan_simulator/models/production_plan_simulator_model";
@@ -77,7 +80,7 @@ class ProductionPlanSimulatorComponent extends Component {
       },
     });
 
-    //        useBus(this.model, "update", () => this.render(true));
+    useBus(this.model, "update", () => this.render(true));
 
     onWillStart(async () => {
       //      await loadCSS(
@@ -202,18 +205,18 @@ class ProductionPlanSimulatorComponent extends Component {
       );
     });
 
-    //        usePager(() => {
-    //            return {
-    //                offset: this.env.config.offset,
-    //                limit: this.env.config.limit,
-    //                total: this.model?.data.count,
-    //                onUpdate: async ({ offset, limit }) => {
-    //                    this.env.config.offset = offset;
-    //                    this.env.config.limit = limit;
-    //                    this.model.load(undefined, offset, limit);
-    //                },
-    //            };
-    //        });
+    usePager(() => {
+      return {
+        offset: this.env.config.offset,
+        limit: this.env.config.limit,
+        total: this.model?.data.count,
+        onUpdate: async ({ offset, limit }) => {
+          this.env.config.offset = offset;
+          this.env.config.limit = limit;
+          this.model.load(undefined, offset, limit);
+        },
+      };
+    });
   }
 
   initCompaniesSelect() {
@@ -577,13 +580,13 @@ class ProductionPlanSimulatorComponent extends Component {
   //        this.model.replenishAll();
   //    }
   //
-  //    _onMouseOverReplenish(ev) {
-  //        this.model.mouseOverReplenish();
-  //    }
-  //
-  //    _onMouseOutReplenish(ev) {
-  //        this.model.mouseOutReplenish();
-  //    }
+  _onMouseOverAlert(ev) {
+    this.model.mouseOverAlert();
+  }
+
+  _onMouseOutAlert(ev) {
+    this.model.mouseOutAlert();
+  }
   //
   async _onClickCreate(ev) {
     this.captureInputSettings();
@@ -759,13 +762,13 @@ class ProductionPlanSimulatorComponent extends Component {
 ProductionPlanSimulatorComponent.template =
   "production_plan_simulator.prod_plan_sim_template";
 ProductionPlanSimulatorComponent.components = {
-  //    MrpMpsControlPanel,
-  //    WithSearch,
+  // MrpMpsControlPanel,
+  // WithSearch,
   ProductionPlanSimulatorLine,
   ProductionPlanSimulationAlerts,
   CheckBox,
-  //    MrpMpsSearchBar,
-  //    ActionMenus,
+  // MrpMpsSearchBar,
+  ActionMenus,
 };
 
 registry

@@ -19,6 +19,7 @@ export default class ProductionPlanSimulatorLine extends Component {
     this.salesHistoryRow = useRef("salesHistoryRow");
     this.prodPlanRow = useRef("prodPlanRow");
     this.prodPlanBatchesRow = useRef("prodPlanBatchesRow");
+    this.suggProdPlanRow = useRef("suggProdPlanRow");
 
     onPatched(() => {
       // after a replenishment, switch to next column if possible
@@ -35,8 +36,8 @@ export default class ProductionPlanSimulatorLine extends Component {
       }
     });
 
-    useBus(this.model, "mouse-over", () => this._onMouseOverReplenish());
-    useBus(this.model, "mouse-out", () => this._onMouseOutReplenish());
+    useBus(this.model, "mouse-over", () => this._onMouseOverAlert());
+    useBus(this.model, "mouse-out", () => this._onMouseOutAlert());
   }
 
   get productionSimulation() {
@@ -313,24 +314,26 @@ export default class ProductionPlanSimulatorLine extends Component {
         "batch_count"
       );
     } else {
-      this.model._saveBatchCount(productionSimulationId, dateIndex, batchCount).then(
-        () => {
-          const inputSelector =
-            'input[data-date_index="' + (dateIndex + 1) + '"]';
-          const nextInput =
-            this.prodPlanBatchesRow.el.querySelector(inputSelector);
-          if (nextInput) {
-            nextInput.select();
+      this.model
+        ._saveBatchCount(productionSimulationId, dateIndex, batchCount)
+        .then(
+          () => {
+            const inputSelector =
+              'input[data-date_index="' + (dateIndex + 1) + '"]';
+            const nextInput =
+              this.prodPlanBatchesRow.el.querySelector(inputSelector);
+            if (nextInput) {
+              nextInput.select();
+            }
+          },
+          () => {
+            ev.target.value = this.model._getOriginValue(
+              productionSimulationId,
+              dateIndex,
+              "batch_count"
+            );
           }
-        },
-        () => {
-          ev.target.value = this.model._getOriginValue(
-            productionSimulationId,
-            dateIndex,
-            "batch_count"
-          );
-        }
-      );
+        );
     }
   }
 
@@ -453,29 +456,95 @@ export default class ProductionPlanSimulatorLine extends Component {
     ev.target.select();
   }
 
-  _onMouseOverReplenish(ev) {
-    const el = this.replenishRow.el.getElementsByClassName(
-      "o_prod_sim_forced_replenish"
+  _onMouseOverAlert(ev) {
+    const productionSimulationId = Number(
+      ev.target.closest(".o_mps_content").dataset.id
     );
-    if (el && el[0]) {
-      el[0].classList.add("o_prod_sim_hover");
+    const dateStart = ev.target.dataset.date_start;
+    const dateStop = ev.target.dataset.date_stop;
+    const dateIndex = parseInt(ev.target.dataset.date_index);
+
+    const inputEl = this.prodObjRow.el.querySelector(
+      'input[data-date_index="' + dateIndex + '"]'
+    );
+
+    if (inputEl) {
+      inputEl.classList.add("o_prod_sim_hover");
+      inputEl.classList.add("flash-pop");
     }
   }
 
-  _onMouseOutReplenish(ev) {
-    const el = this.replenishRow.el.getElementsByClassName("o_prod_sim_hover");
-    if (el && el[0]) {
-      el[0].classList.remove("o_prod_sim_hover");
+  _onMouseOutAlert(ev) {
+    const productionSimulationId = Number(
+      ev.target.closest(".o_mps_content").dataset.id
+    );
+    const dateStart = ev.target.dataset.date_start;
+    const dateStop = ev.target.dataset.date_stop;
+    const dateIndex = parseInt(ev.target.dataset.date_index);
+
+    const inputEl = this.prodObjRow.el.querySelector(
+      'input[data-date_index="' + dateIndex + '"]'
+    );
+
+    if (inputEl) {
+      inputEl.classList.remove("o_prod_sim_hover");
+      inputEl.classList.remove("flash-pop");
     }
   }
 
+  _onMouseOverCapacityAlert(ev) {
+    const productionSimulationId = Number(
+      ev.target.closest(".o_mps_content").dataset.id
+    );
+    const dateStart = ev.target.dataset.date_start;
+    const dateStop = ev.target.dataset.date_stop;
+    const dateIndex = parseInt(ev.target.dataset.date_index);
+
+    const el = this.suggProdPlanRow.el.querySelector(
+      'span[data-date_index="' + dateIndex + '"]'
+    );
+
+    if (el) {
+      el.classList.add("flash-pop");
+    }
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorLine ~ _onMouseOverCapacityAlert ~ ev:",
+      ev
+    );
+  }
+
+  _onMouseOutCapacityAlert(ev) {
+    const productionSimulationId = Number(
+      ev.target.closest(".o_mps_content").dataset.id
+    );
+    const dateStart = ev.target.dataset.date_start;
+    const dateStop = ev.target.dataset.date_stop;
+    const dateIndex = parseInt(ev.target.dataset.date_index);
+
+    const el = this.suggProdPlanRow.el.querySelector(
+      'span[data-date_index="' + dateIndex + '"]'
+    );
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorLine ~ _onMouseOutCapacityAlert ~ el:",
+      el
+    );
+
+    if (el) {
+      el.classList.remove("o_prod_sim_hover");
+      el.classList.remove("flash-pop");
+    }
+  }
   toggleSelection(ev, productionSimulationId) {
-    this.model.toggleRecordSelection(productionSimulationId);
+    try {
+      this.model.toggleRecordSelection(productionSimulationId);
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
 
 ProductionPlanSimulatorLine.template =
   "dw_production_plan_simulator.ProductionPlanSimulatorLine";
-//ProductionPlanSimulatorLine.components = {
-//    CheckBox,
-//};
+ProductionPlanSimulatorLine.components = {
+  CheckBox,
+};

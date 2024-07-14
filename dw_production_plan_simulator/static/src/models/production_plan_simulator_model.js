@@ -66,13 +66,7 @@ export class ProductionPlanSimulatorModel extends EventBus {
     });
   }
 
-  async load(
-    domain,
-    offset,
-    limit,
-    startDate,
-    endDate
-  ) {
+  async load(domain, offset, limit, startDate, endDate) {
     if (domain !== undefined) {
       this.domain = domain;
     }
@@ -92,13 +86,7 @@ export class ProductionPlanSimulatorModel extends EventBus {
     this.data = await this.orm.call(
       "dw.production.plan.simulation",
       "get_prod_simulator_view_state",
-      [
-        this.domain,
-        this.offset,
-        this.limit,
-        this.startDate,
-        this.endDate
-      ]
+      [this.domain, this.offset, this.limit, this.startDate, this.endDate]
     );
     this.notify();
   }
@@ -634,11 +622,11 @@ export class ProductionPlanSimulatorModel extends EventBus {
     });
   }
 
-  mouseOverReplenish() {
+  mouseOverAlert() {
     this.trigger("mouse-over");
   }
 
-  mouseOutReplenish() {
+  mouseOutAlert() {
     this.trigger("mouse-out");
   }
 

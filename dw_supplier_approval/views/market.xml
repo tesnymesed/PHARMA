@@ -47,9 +47,7 @@
 <!--                    <button name="action_done" type="object" icon="fa-check"-->
 <!--                            invisible="line_homlogated or not supplier_ids or not parent.dw_for_homologation"/>-->
                 </xpath>
-                <xpath expr="//button[@name='action_show_consultations']" position="attributes">
-                    <attribute name="invisible">state not in ['homologation_cosultation','done','consultation']</attribute>
-                </xpath>
+
                 <xpath expr="//button[@name='action_show_consultations_tco']" position="attributes">
                     <attribute name="invisible">state not in ['homologation_cosultation','consultation','done']</attribute>
                 </xpath>

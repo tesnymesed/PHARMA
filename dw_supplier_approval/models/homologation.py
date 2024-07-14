@@ -188,7 +188,7 @@ class DwHomologation(models.Model):
             'supplier_id': self.supplier_id.id if self.supplier_id else False,
             'dw_supplier_nature': self.dw_supplier_nature if self.supplier_id else False,
             'product_id': self.product_id.id if self.product_id else False,
-            'market_id': self.market_ids.active_id if self.market_id else False,
+            'market_id': self.market_ids.active_id if self.market_ids else False,
             'homologation_id': self.id,
             'qty': self.qty,
             'company_id': self.company_id.id if self.company_id else False,

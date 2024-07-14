@@ -35,7 +35,44 @@ export class ProductionPlanSimulatorModel extends EventBus {
     });
   }
 
-  async load(domain, offset, limit, startDate, endDate) {
+  saveSalesDateRange(companyId, startDate, endDate) {
+    return this.mutex.exec(() => {
+      this.orm
+        .call("res.company", "set_prod_sim_sales_date_range", [
+          companyId,
+          startDate,
+          endDate,
+        ])
+        .then((res) => {
+          console.log("Updated Sales Date Range");
+        });
+    });
+  }
+
+  calculateSalesAverage(companyId, startDate, endDate) {
+    return this.mutex.exec(() => {
+      this.orm
+        .call("dw.production.plan.simulation", "calculate_sales_average", [
+          companyId,
+          startDate,
+          endDate,
+        ])
+        .then((res) => {
+          console.log("Updated sales average ", res);
+        })
+        .catch((error) => {
+          console.error("error", error);
+        });
+    });
+  }
+
+  async load(
+    domain,
+    offset,
+    limit,
+    startDate,
+    endDate
+  ) {
     if (domain !== undefined) {
       this.domain = domain;
     }
@@ -51,10 +88,17 @@ export class ProductionPlanSimulatorModel extends EventBus {
     if (endDate !== undefined) {
       this.endDate = endDate;
     }
+
     this.data = await this.orm.call(
       "dw.production.plan.simulation",
       "get_prod_simulator_view_state",
-      [this.domain, this.offset, this.limit, this.startDate, this.endDate]
+      [
+        this.domain,
+        this.offset,
+        this.limit,
+        this.startDate,
+        this.endDate
+      ]
     );
     this.notify();
   }

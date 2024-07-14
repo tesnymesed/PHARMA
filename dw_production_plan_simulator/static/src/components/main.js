@@ -45,6 +45,8 @@ class ProductionPlanSimulatorComponent extends Component {
       currentCompanyId: null,
       startDate: "2024-01-01",
       endDate: "2025-06-01",
+      salesStartDate: "2024-01-01",
+      salesEndDate: "2024-03-01",
       isModalVisible: false,
     });
     this.data = {};
@@ -174,6 +176,26 @@ class ProductionPlanSimulatorComponent extends Component {
           );
           console.log(
             "apply.daterangepicker",
+            picker.endDate.format("YYYY-MM-DD")
+          );
+        }
+      );
+
+      $('input[id="sales-avg-period"]').on(
+        "apply.daterangepicker",
+        function (ev, picker) {
+          console.log(
+            "apply.daterangepicker",
+            picker.startDate.format("YYYY-MM-DD")
+          );
+          console.log(
+            "apply.daterangepicker",
+            picker.endDate.format("YYYY-MM-DD")
+          );
+
+          self.model.calculateSalesAverage(
+            self.state.currentCompanyId,
+            picker.startDate.format("YYYY-MM-DD"),
             picker.endDate.format("YYYY-MM-DD")
           );
         }
@@ -490,6 +512,18 @@ class ProductionPlanSimulatorComponent extends Component {
     this.state.startDate = picker.startDate.format("YYYY-MM-DD");
     this.state.endDate = picker.endDate.format("YYYY-MM-DD");
 
+    let salesPicker = $('input[id="sales-avg-period"]').data("daterangepicker");
+    this.state.salesStartDate = salesPicker.startDate.format("YYYY-MM-DD");
+    this.state.salesEndDate = salesPicker.endDate.format("YYYY-MM-DD");
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorComponent ~ captureInputSettings ~ this.state.salesStartDate:",
+      this.state.salesStartDate
+    );
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorComponent ~ captureInputSettings ~ this.state.salesEndDate:",
+      this.state.salesEndDate
+    );
+
     this.state.domain = [["company_id", "=", this.state.currentCompanyId]];
 
     console.log("captureInputSettings startDate", this.state.startDate);
@@ -504,6 +538,12 @@ class ProductionPlanSimulatorComponent extends Component {
       this.state.currentCompanyId,
       this.state.startDate,
       this.state.endDate
+    );
+
+    this.model.saveSalesDateRange(
+      this.state.currentCompanyId,
+      this.state.salesStartDate,
+      this.state.salesEndDate
     );
   }
   /**

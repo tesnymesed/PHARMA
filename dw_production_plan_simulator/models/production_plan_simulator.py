@@ -99,8 +99,30 @@ class DwProductionPlanSimulator(models.Model):
     #     ('warehouse_product_ref_uniq', 'unique (warehouse_id, product_id)', 'The combination of warehouse and product must be unique!'),
     # ]
 
-    @api.depends('safety_stock_target')
+    @api.depends('company_id.dw_prod_sim_date_sales_range_start',
+                 'company_id.dw_prod_sim_date_sales_range_end',
+                 'product_plan_sim_ids.sold_qty',
+                 'safety_stock_target')
     def compute_sales_average(self):
+        for record in self:
+            found_in_range = False
+
+            print(record)
+            existing_prdct_sim_ids = record.product_plan_sim_ids.filtered(
+                lambda p: p.date >= record.company_id.dw_prod_sim_date_sales_range_start and
+                          p.date <= record.company_id.dw_prod_sim_date_sales_range_end)
+            if existing_prdct_sim_ids:
+                sales = existing_prdct_sim_ids.mapped('sold_qty')
+                found_in_range = True
+            else:
+                sales = record.product_plan_sim_ids.mapped('sold_qty')
+
+            sales_avg = safe_divide(sum(sales), len(sales))
+            record.sales_average = sales_avg
+
+        return True
+
+    def calculate_sales_average(self, company_id, start_date=None, end_date=None):
         for record in self:
             print(record)
             qr = self._query(record.product_id.id)
@@ -478,7 +500,6 @@ class DwProductionPlanSimulator(models.Model):
                 'max_to_replenish_qty': 1000 * pps.lot_size,
             })
 
-
             product_plan_sim_ids = prod_sim.get('product_plan_sim_ids')
             for prdct_sim_i in product_plan_sim_ids:
                 date_start = datetime.datetime.strptime(prdct_sim_i.get('date_start'), "%Y-%m-%d").date()
@@ -487,7 +508,8 @@ class DwProductionPlanSimulator(models.Model):
                 existing_forecast = mps.forecast_ids.filtered(lambda f:
                                                               f.date >= date_start
                                                               and f.date <= date_stop)
-                _qty = float_round(prdct_sim_i.get('suggested_production_plan_qty'), precision_rounding=mps.product_uom_id.rounding)
+                _qty = float_round(prdct_sim_i.get('suggested_production_plan_qty'),
+                                   precision_rounding=mps.product_uom_id.rounding)
 
                 if existing_forecast:
                     existing_forecast[0].write({'forecast_qty': _qty})

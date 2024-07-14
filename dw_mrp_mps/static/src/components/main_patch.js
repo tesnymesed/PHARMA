@@ -118,6 +118,16 @@ patch(MainComponent.prototype, {
     return `${month}/${day}/${year}`;
   },
 
+  displayAlerts() {
+    $("#alertsModal").modal("show");
+    this.initAlertsTable();
+  },
+
+  toggleModal() {
+    this.state.isModalVisible = !this.state?.isModalVisible;
+    this.displayAlerts();
+  },
+
   //  productionSchedule() {
   //    console.log("this", this);
   //    let _data = super.productionSchedule;

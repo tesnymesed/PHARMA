@@ -14,6 +14,9 @@ class DWCompany(models.Model):
     dw_prod_sim_date_range_start = fields.Date('ProdSim Range Start', readonly=True)
     dw_prod_sim_date_range_end = fields.Date('ProdSim Range End', readonly=True)
 
+    dw_prod_sim_date_sales_range_start = fields.Date('ProdSim Sales Range Start', readonly=True)
+    dw_prod_sim_date_sales_range_end = fields.Date('ProdSim Sales Range End', readonly=True)
+
     def set_prod_sim_date_range(self, date_start='', date_end=''):
         try:
             self.ensure_one()
@@ -31,6 +34,23 @@ class DWCompany(models.Model):
                 'dw_prod_sim_date_range_end': date_end,
                 'dw_prod_sim_periods_to_display': _period_count,
 
+            })
+
+    def set_prod_sim_sales_date_range(self, date_start='', date_end=''):
+        try:
+            self.ensure_one()
+        except ValueError:
+            # handle the case where there are 0 or multiple records
+            pass
+
+        if date_start and date_end:
+            date_start = fields.Date.from_string(date_start)
+            date_end = fields.Date.from_string(date_end)
+            date_start = start_of(date_start, 'month')
+            date_end = end_of(date_end, 'month')
+            self.write({
+                'dw_prod_sim_date_sales_range_start': date_start,
+                'dw_prod_sim_date_sales_range_end': date_end,
             })
 
     def _get_simulation_date_range(self, years=False):

@@ -32,10 +32,11 @@ class DwHomologation(models.Model):
         default=lambda self: self.env.company,
     )
     market_id = fields.Many2one('dw.market', string='Market')
+    market_ids = fields.Many2many('dw.market', string='Market')
     product_id = fields.Many2one(
         'product.product',
         check_company=True,
-        compute="_compute_product", readonly=False, store=True, required="1",
+         readonly=False, store=True, required="1",
         domain=['|', '|', ('homologue', '=', True), ('categ_id.homologue', '=', True),
                 ('product_tmpl_id.homologue', '=', True), ('purchase_ok', '=', True)],
     )
@@ -97,13 +98,13 @@ class DwHomologation(models.Model):
     #     for record in self :
     #         record.market_supplier_ids = record.market_id.market_line_ids.mapped('supplier_ids')
     #         record.product_ids = record.market_id.market_line_ids.mapped('product_id')
-    @api.depends('market_id')
-    def _compute_product(self):
-        for rec in self:
-            if rec.market_id and rec.market_id.product_ids:
-                rec.product_id = rec.market_id.product_ids[0]
-            else:
-                rec.product_id = False
+    # @api.depends('market_id')
+    # def _compute_product(self):
+    #     for rec in self:
+    #         if rec.market_id and rec.market_id.product_ids:
+    #             rec.product_id = rec.market_id.product_ids[0]
+    #         else:
+    #             rec.product_id = False
 
     def action_to_analyse(self):
         if self.dw_supplier_nature == 'regroupeur':
@@ -123,7 +124,18 @@ class DwHomologation(models.Model):
 
     def action_reject(self):
         self.write({"state": "rejected"})
+    def market_assign(self):
+        return {
+                    'type': 'ir.actions.act_window',
+                    'name': 'Market assign',
+                    'res_model': 'dw.market.assign.wizard',
+                    'views': [[self.env.ref('dw_supplier_approval.dw_market_assign_form_view').id, 'form']],
+                    'target': 'new',
 
+                    'context': {
+                        'default_homologation_id': self.id
+                    }
+                }
     def show_purchase_order(self):
         self.ensure_one()
 
@@ -176,7 +188,7 @@ class DwHomologation(models.Model):
             'supplier_id': self.supplier_id.id if self.supplier_id else False,
             'dw_supplier_nature': self.dw_supplier_nature if self.supplier_id else False,
             'product_id': self.product_id.id if self.product_id else False,
-            'market_id': self.market_id.id if self.market_id else False,
+            'market_id': self.market_ids.active_id if self.market_id else False,
             'homologation_id': self.id,
             'qty': self.qty,
             'company_id': self.company_id.id if self.company_id else False,

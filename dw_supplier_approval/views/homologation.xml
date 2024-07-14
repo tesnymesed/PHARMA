@@ -20,6 +20,7 @@
                     <field name="end_date" optional="show"/>
                     <field name="consultation_id" column_invisible="1"/>
                     <field name="market_id" optional="hide"/>
+                    <field name="market_ids" optional="hide"/>
                     <field name="state" optional="show"/>
                     <field name="lot_validation" optional="show"/>
                     <field name="company_id" optional="hide"/>
@@ -96,10 +97,16 @@
                                 invisible="state in ['prospection','cancel','homologue'] "
                         />
                         <button
+                                name="market_assign" string="Assign market"
+                                type="object" class="btn-primary" data-hotkey="q"
+                                invisible="state in ['prospection','cancel','qualification','rejected'] "
+                        />
+                        <button
                                 name="action_reject" string="Reject"
                                 type="object" class="btn-primary" data-hotkey="q"
                                 invisible="state in ['prospection','qualification','rejected'] "
                         />
+
                         <field name="state" widget="statusbar"
                                statusbar_visible="prospection,analyse,audit,lot_validation,qualification"/>
                         <!--                        rescind,cancel-->
@@ -118,7 +125,7 @@
                             </button>
                             <button name="action_show_market" type="object"
                                     class="oe_stat_button"
-                                    invisible="not market_id "
+                                    invisible="not market_ids "
                                     icon="fa-list-alt">
                                 <div class="o_stat_info">
                                     <span class="o_stat_text">Market</span>
@@ -182,6 +189,7 @@
                                 <field name="start_date" required="1" readonly="state != 'draft'"/>
                                 <field name="end_date" required="1" readonly="0"/>
                                 <field name="market_id" invisible="1"/>
+                                <field name="market_ids" invisible="1"/>
 
                                 <field name="product_id" readonly="state != 'prospection'" invisible="market_id"/>
                                 <field name="product_ids" invisible="1"/>

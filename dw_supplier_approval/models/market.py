@@ -17,27 +17,27 @@ class DwMarketLine(models.Model):
 
 
     line_homlogated = fields.Boolean(default=False)
-    def action_done(self):
-        market_id = self.market_id
-        if market_id.dw_homologate:
-            if market_id.market_type_id and market_id.market_type_id.forced_nbr_supplier and len(
-                    self.supplier_ids) < market_id.market_type_id.nbr_supplier:
-                raise ValidationError(
-                    _('The number of the Homologated  supplier must be greater than %(nbr_supplier)s.!',
-                      nbr_supplier=market_id.market_type_id.nbr_supplier)
-                )
-
-            return {
-                'type': 'ir.actions.act_window',
-                'name': 'Market Document',
-                'res_model': 'dw.homologate.market.wizard',
-                'views': [[self.env.ref('dw_supplier_approval.dw_homologate_market_form_view').id, 'form']],
-                'target': 'new',
-
-                'context': {
-                    'default_line_id': self.id
-                }
-            }
+    # def action_done(self):
+    #     market_id = self.market_id
+    #     if market_id.dw_homologate:
+    #         if market_id.market_type_id and market_id.market_type_id.forced_nbr_supplier and len(
+    #                 self.supplier_ids) < market_id.market_type_id.nbr_supplier:
+    #             raise ValidationError(
+    #                 _('The number of the Homologated  supplier must be greater than %(nbr_supplier)s.!',
+    #                   nbr_supplier=market_id.market_type_id.nbr_supplier)
+    #             )
+    #
+    #         return {
+    #             'type': 'ir.actions.act_window',
+    #             'name': 'Market Document',
+    #             'res_model': 'dw.homologate.market.wizard',
+    #             'views': [[self.env.ref('dw_supplier_approval.dw_homologate_market_form_view').id, 'form']],
+    #             'target': 'new',
+    #
+    #             'context': {
+    #                 'default_line_id': self.id
+    #             }
+    #         }
 
 
 class DwMarket(models.Model):
@@ -49,7 +49,7 @@ class DwMarket(models.Model):
     dw_homologate = fields.Boolean(string="This market is used for homologation", default=True)
 
 
-    homologation_ids = fields.One2many("dw.homologation", 'market_id', string="Homologation")
+    homologation_ids = fields.Many2many("dw.homologation", 'market_id', string="Homologation")
     supplier_homologuer_ids = fields.Many2many(
         'res.partner',
         compute="_compute_homolgated_supplier"
@@ -103,7 +103,7 @@ class DwMarket(models.Model):
             'name': _("%(market_name)s's homologation", market_name=self.name),
 
             'domain': [
-                ('market_id', '=', self.id),
+                ('market_ids', 'in', self.id),
             ],
             'view_mode': 'tree,form',
 

@@ -7,7 +7,7 @@ class DwConsultationCriteria(models.Model):
 
     market_id = fields.Many2one(domain="[('state','=','homologation_cosultation')]")
     supplier_market_id = fields.Many2many(related="market_id.supplier_homologuer_ids")
-    homologation_ids = fields.One2many(related="market_id.homologation_ids")
+    homologation_ids = fields.Many2many(related="market_id.homologation_ids")
    
     homologation_id = fields.Many2one('dw.homologation', string='Homologation', domain="[('state','in',['homologue'])]")
     product_id = fields.Many2one(

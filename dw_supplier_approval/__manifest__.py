@@ -31,8 +31,9 @@
 
         # wizard
         'wizard/document_wizard.xml',
+        'wizard/dw_market_assign_view.xml',
 
-        'wizard/dw_homologate_market_views.xml',
+
 
     ],
     'qweb': [

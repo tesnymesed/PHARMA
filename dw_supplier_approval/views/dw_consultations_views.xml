@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//button[@name='action_show_market']" position="after">
                     <button name="action_show_homologation" type="object" class="oe_stat_button"
-                            icon="fa-list-alt" invisible=" not homologation_id">
+                            icon="fa-list-alt" invisible="not homologation_id">
                         <div class="o_stat_info">
 
                             <span class="o_stat_text">Homologation</span>

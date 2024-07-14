@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+  <t t-inherit="mrp_mps.GroupMenu" t-inherit-mode="extension" owl="1">
+    <xpath expr="//div[hasclass('o_dropdown_container')]" position="inside">
+      <CheckboxItem
+        class="{ o_menu_item: true, selected: items.dw_mrp_mps_show_stock_coverage }"
+        checked="items.dw_mrp_mps_show_stock_coverage"
+        parentClosingMode="'none'"
+        onSelected="() => this._toggle_group('dw_mrp_mps_show_stock_coverage')"
+      >
+        Stock Coverage
+      </CheckboxItem>
+
+      <CheckboxItem
+        class="{ o_menu_item: true, selected: items.dw_mrp_mps_show_stock_wout_safety_stock }"
+        checked="items.dw_mrp_mps_show_stock_wout_safety_stock"
+        parentClosingMode="'none'"
+        onSelected="() => this._toggle_group('dw_mrp_mps_show_stock_wout_safety_stock')"
+      >
+        Stock (Excl. Safety Stock)
+      </CheckboxItem>
+    </xpath>
+  </t>
+</templates>

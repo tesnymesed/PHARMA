@@ -36,7 +36,38 @@ class DWMrpProductionSchedule(models.Model):
                                                               end_date_range=end_date_range)
         config['production_schedule_ids'] = productions_schedules.get_production_schedule_view_state(
             start_date_range=start_date_range, end_date_range=end_date_range)
+
+        dw_company_groups = self.env.company.read([
+            'dw_mrp_mps_show_stock_wout_safety_stock',
+            'dw_mrp_mps_show_stock_coverage',
+        ])
+
+        config['groups'][0].update(dw_company_groups[0])
+
         return config
+
+    def _get_replenish_qty_wout_ss(self, after_forecast_qty):
+        """ Modify the quantity to replenish depending on the min/max and targeted
+        quantity for safety stock.
+
+        param after_forecast_qty: The quantity to replenish in order to reach a
+        safety stock of 0.
+        return: quantity to replenish
+        rtype: float
+        """
+        optimal_qty = 0.0 - after_forecast_qty
+
+        if optimal_qty > self.max_to_replenish_qty:
+            replenish_qty = self.max_to_replenish_qty
+        elif optimal_qty <= 0:
+            replenish_qty = 0
+            # replenish_qty = optimal_qty
+        elif optimal_qty < self.min_to_replenish_qty:
+            replenish_qty = self.min_to_replenish_qty
+        else:
+            replenish_qty = optimal_qty
+
+        return replenish_qty
 
     def get_production_schedule_view_state(self, start_date_range='', end_date_range=''):
 
@@ -184,6 +215,18 @@ class DWMrpProductionSchedule(models.Model):
                 forecast_values['safety_stock_qty'] = float_round(
                     starting_inventory_qty - forecast_values['forecast_qty'] - forecast_values['indirect_demand_qty'] +
                     forecast_values['replenish_qty'], precision_rounding=rounding)
+
+                # @bislem:
+
+                replenish_qty_wout_ss = production_schedule._get_replenish_qty_wout_ss(
+                    starting_inventory_qty - forecast_values['forecast_qty'] - forecast_values['indirect_demand_qty'])
+                forecast_values['replenish_qty_wout_ss'] = float_round(replenish_qty_wout_ss, precision_rounding=rounding)
+
+                forecast_values['safety_stock_qty_wout_ss'] = float_round(
+                    starting_inventory_qty - forecast_values['forecast_qty'] - forecast_values['indirect_demand_qty'] +
+                    forecast_values['replenish_qty_wout_ss'], precision_rounding=rounding)
+
+
 
                 if production_schedule in self:
                     production_schedule_state['forecast_ids'].append(forecast_values)

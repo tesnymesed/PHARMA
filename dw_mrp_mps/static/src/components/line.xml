@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+  <t t-inherit="mrp_mps.MpsLineComponent" t-inherit-mode="extension" owl="1">
+
+    <xpath expr="//tr[hasclass('bg-light')]" position="after">
+      <tr name="stock_coverage" t-attf-class="{{! groups.dw_mrp_mps_show_stock_coverage and 'o_hidden' or ''}}">
+        <th />
+        <th scope="row">
+          <span>Stock Coverage</span>
+        </th>
+        <th />
+        <t
+          t-foreach="productionSchedule.forecast_ids"
+          t-as="forecast"
+          t-key="forecast_index"
+        >
+          <th class="text-end pe-4">
+            <span t-esc="formatFloat(forecast.safety_stock_qty)" />
+          </th>
+        </t>
+      </tr>
+    </xpath>
+
+    <xpath expr="//tr[@name='safety_stock']" position="after">
+      <tr name="stock_wout_safety_stock" t-attf-class="{{! groups.dw_mrp_mps_show_stock_wout_safety_stock and 'o_hidden' or ''}}">
+        <th />
+        <th scope="row">
+          <span>Forecasted Stock (Excl. Safety Stock)</span>
+        </th>
+        <th />
+        <t
+          t-foreach="productionSchedule.forecast_ids"
+          t-as="forecast"
+          t-key="forecast_index"
+        >
+          <th class="text-end pe-4">
+            <span
+              t-attf-class="{{forecast.safety_stock_qty &lt; 0 and 'text-danger' or ''}}"
+              t-esc="formatFloat(forecast.safety_stock_qty_wout_ss)"
+            />
+          </th>
+        </t>
+      </tr>
+    </xpath>
+  </t>
+</templates>

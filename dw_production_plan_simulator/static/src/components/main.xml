@@ -76,7 +76,7 @@
                       </div>
 
                       <div class="row justify-content-end">
-                        <div class="col-sm-10">
+                        <div class="col-sm-4">
                           <button
                             type="submit"
                             id="submit"
@@ -86,7 +86,7 @@
                           </button>
                         </div>
 
-                        <div class="col-sm-2">
+                        <div class="col-sm-4">
                           <t t-if="workCenterCapacities.length">
                             <button
                               type="show-alerts"
@@ -98,6 +98,19 @@
                             </button>
                           </t>
                         </div>
+
+                        <div class="col-sm-4">
+                          <t t-if="simulationLines.length">
+                            <button
+                              type="show-alerts"
+                              id="check-mrp"
+                              class="btn btn-primary"
+                              t-on-click="checkMaterialsAvailability"
+                            >
+                              Check Materials availability
+                            </button>
+                          </t>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -106,7 +119,7 @@
 
               <div class="row">
                 <div class="col-xxl">
-                  <div class="card mb-4" style="height: 1000px">
+                  <div class="card mb-4" style="max-height: 100%">
                     <div
                       class="card-header d-flex align-items-center justify-content-between"
                     >

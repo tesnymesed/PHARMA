@@ -35,7 +35,44 @@ export class ProductionPlanSimulatorModel extends EventBus {
     });
   }
 
-  async load(domain, offset, limit, startDate, endDate) {
+  saveSalesDateRange(companyId, startDate, endDate) {
+    return this.mutex.exec(() => {
+      this.orm
+        .call("res.company", "set_prod_sim_sales_date_range", [
+          companyId,
+          startDate,
+          endDate,
+        ])
+        .then((res) => {
+          console.log("Updated Sales Date Range");
+        });
+    });
+  }
+
+  calculateSalesAverage(companyId, startDate, endDate) {
+    return this.mutex.exec(() => {
+      this.orm
+        .call("dw.production.plan.simulation", "calculate_sales_average", [
+          companyId,
+          startDate,
+          endDate,
+        ])
+        .then((res) => {
+          console.log("Updated sales average ", res);
+        })
+        .catch((error) => {
+          console.error("error", error);
+        });
+    });
+  }
+
+  async load(
+    domain,
+    offset,
+    limit,
+    startDate,
+    endDate
+  ) {
     if (domain !== undefined) {
       this.domain = domain;
     }
@@ -51,10 +88,17 @@ export class ProductionPlanSimulatorModel extends EventBus {
     if (endDate !== undefined) {
       this.endDate = endDate;
     }
+
     this.data = await this.orm.call(
       "dw.production.plan.simulation",
       "get_prod_simulator_view_state",
-      [this.domain, this.offset, this.limit, this.startDate, this.endDate]
+      [
+        this.domain,
+        this.offset,
+        this.limit,
+        this.startDate,
+        this.endDate
+      ]
     );
     this.notify();
   }
@@ -67,7 +111,7 @@ export class ProductionPlanSimulatorModel extends EventBus {
       ])
       .then((productionSimulationIds) => {
         productionSimulationIds.push(productionSimulationId);
-        console.log('reload with ', productionSimulationId, )
+        console.log("reload with ", productionSimulationId);
 
         return this.orm.call(
           "dw.production.plan.simulation",
@@ -92,7 +136,10 @@ export class ProductionPlanSimulatorModel extends EventBus {
             );
           }
         }
-        console.log('this.data.production_simulation_ids', this.data.production_simulation_ids)
+        console.log(
+          "this.data.production_simulation_ids",
+          this.data.production_simulation_ids
+        );
         this.notify();
       });
   }
@@ -269,7 +316,7 @@ export class ProductionPlanSimulatorModel extends EventBus {
     });
   }
 
-    /**
+  /**
    * Save the batch count and reload the current schedule to update dependent data.
    * @private
    * @param {Integer} productionSimulationId dw.production.plan.simulation Id.
@@ -361,6 +408,71 @@ export class ProductionPlanSimulatorModel extends EventBus {
         .catch((error) => {
           console.error("error", error);
         });
+    });
+  }
+
+  /**
+   * Open the dw.production.plan.simulation form view in order to create the MPS records.
+   * Once the record is created get its state and render it.
+   * @private
+   * @return {Promise}
+   */
+  _createMPSEntries(companyId, productionSimulations) {
+    return this.mutex.exec(() => {
+      return this.orm
+        .call(
+          "dw.production.plan.simulation",
+          "create_mps_from_plan_simulations",
+          [companyId, productionSimulations]
+        )
+        .then((res) => {
+          console.log("🚀 ~ ProductionPlanSimulatorModel ~ .then ~ res:", res);
+          // this.load([["company_id", "=", state.currentCompanyId]]);
+          // return this.data;
+          //                if (productionSimulationIds.length === 1) {
+          //                    this.reload(productionSimulationIds[0]);
+          //                } else {
+          //                    this.load();
+          //                }
+
+          this.notify();
+          return res;
+        })
+        .catch((error) => {
+          console.error("error", error);
+          return error;
+        });
+    });
+  }
+
+  _openMPS(state) {
+    this.mutex.exec(() => {
+      this.action.doAction(
+        {
+          name: "Materials Availability",
+          type: "ir.actions.client",
+          tag: "mrp_mps_client_action",
+          target: "fullscreen",
+          domain: [["company_id", "=", state.currentCompanyId]],
+          params: {
+            company: state.currentCompanyId,
+            startDate: state.startDate,
+            endDate: state.endDate,
+          },
+          context: {
+            company: state.currentCompanyId,
+            startDate: state.startDate,
+            endDate: state.endDate,
+          },
+
+          //          views: [[false, "form"]],
+          //          res_model: "dw.production.plan.simulation",
+          //          res_id: productionSimulationId,
+        }
+        //        {
+        //          onClose: () => this.reload(productionSimulationId),
+        //        }
+      );
     });
   }
 

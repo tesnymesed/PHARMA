@@ -219,6 +219,7 @@ class DwProductionPlanSimulator(models.Model):
                 notes_str = "\n".join([item.get("note") for item in group_data if item.get("note")])
                 if total_required_capacity < total_production_objective_qty:
                     pass
+
                 total_capacity_utilisation = sum(item["capacity_utilisation"] for item in group_data)
 
                 _year = date_start.year

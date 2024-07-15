@@ -344,7 +344,9 @@ class ProductionPlanSimulatorComponent extends Component {
     let data = [];
     console.log("initAlertsTable", this.workCenterCapacities);
     if (this.workCenterCapacities.length > 0) {
-      data = this.workCenterCapacities;
+      data = this.workCenterCapacities.filter(
+        (cp) => cp.capacity_utilisation >= 90
+      );
       let keys = [
         //        "workcenter",
         "date_start",
@@ -580,12 +582,34 @@ class ProductionPlanSimulatorComponent extends Component {
   //        this.model.replenishAll();
   //    }
   //
-  _onMouseOverAlert(ev) {
-    this.model.mouseOverAlert();
+
+  // t-on-mouseover.stop="_onMouseOverProdPlanAlert"
+  // t-on-mouseout.stop="_onMouseOutProdPlanAlert"
+  _onMouseOverCapacityAlert(ev) {
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorComponent ~ _onMouseOverCapacityAlert ~ ev:",
+      ev
+    );
+    const highCapacityCells = document.querySelectorAll(".high-capacity");
+    highCapacityCells.forEach((cell) => {
+      cell.classList.add("flash-pop");
+      console.log(cell.innerText);
+    });
+
+    // this.model.mouseOverAlert();
   }
 
-  _onMouseOutAlert(ev) {
-    this.model.mouseOutAlert();
+  _onMouseOutCapacityAlert(ev) {
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorComponent ~ _onMouseOutCapacityAlert ~ ev:",
+      ev
+    );
+    const highCapacityCells = document.querySelectorAll(".high-capacity");
+    highCapacityCells.forEach((cell) => {
+      cell.classList.remove("flash-pop");
+      console.log(cell.innerText);
+    });
+    // this.model.mouseOutAlert();
   }
   //
   async _onClickCreate(ev) {
@@ -656,7 +680,7 @@ class ProductionPlanSimulatorComponent extends Component {
           res
         );
         var createMPSentriesNotif = this.notificationService.add(
-          "You will redirected shortly...",
+          "You will be redirected shortly...",
           {
             title: "Master production schedule (MRP) update successful",
             type: "success",

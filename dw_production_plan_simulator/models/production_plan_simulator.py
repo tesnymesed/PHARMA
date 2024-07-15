@@ -218,30 +218,29 @@ class DwProductionPlanSimulator(models.Model):
                 # Sample list of strings
                 notes_str = "\n".join([item.get("note") for item in group_data if item.get("note")])
                 if total_required_capacity < total_production_objective_qty:
-                    total_capacity_utilisation = sum(item["capacity_utilisation"] for item in group_data)
+                    pass
+                total_capacity_utilisation = sum(item["capacity_utilisation"] for item in group_data)
 
-                    _year = date_start.year
-                    _quarter = (date_start.month - 1) // 3 + 1
-                    _q_y_f = f"Q{_quarter} {_year}"
+                _year = date_start.year
+                _quarter = (date_start.month - 1) // 3 + 1
+                _q_y_f = f"Q{_quarter} {_year}"
 
-                    res.append({
-                        "workcenter": workcenter,
-                        "workcenter_name": workcenter[1],
-                        "date_start": date_start,
-                        "date_stop": date_stop,
-                        "year": _year,
-                        "quarter": _q_y_f,
-                        "capacity_utilisation": total_capacity_utilisation,
-                        "required_capacity": total_required_capacity,
-                        "production_objective_qty": total_production_objective_qty,
-                        "notes": notes_str
+                res.append({
+                    "workcenter": workcenter,
+                    "workcenter_name": workcenter[1],
+                    "date_start": date_start,
+                    "date_stop": date_stop,
+                    "year": _year,
+                    "quarter": _q_y_f,
+                    "capacity_utilisation": total_capacity_utilisation,
+                    "required_capacity": total_required_capacity,
+                    "production_objective_qty": total_production_objective_qty,
+                    "notes": notes_str
 
                     })
 
-            print(res)
             results.extend(res)
 
-        print(results)
         return results
 
         # # Group the product_plan_sim_ids by date_start and date_stop

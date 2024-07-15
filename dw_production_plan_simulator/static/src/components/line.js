@@ -36,8 +36,8 @@ export default class ProductionPlanSimulatorLine extends Component {
       }
     });
 
-    useBus(this.model, "mouse-over", () => this._onMouseOverAlert());
-    useBus(this.model, "mouse-out", () => this._onMouseOutAlert());
+    useBus(this.model, "mouse-over", () => this._onMouseOverProdPlanAlert());
+    useBus(this.model, "mouse-out", () => this._onMouseOutProdPlanAlert());
   }
 
   get productionSimulation() {
@@ -456,7 +456,7 @@ export default class ProductionPlanSimulatorLine extends Component {
     ev.target.select();
   }
 
-  _onMouseOverAlert(ev) {
+  _onMouseOverProdPlanAlert(ev) {
     const productionSimulationId = Number(
       ev.target.closest(".o_mps_content").dataset.id
     );
@@ -474,7 +474,7 @@ export default class ProductionPlanSimulatorLine extends Component {
     }
   }
 
-  _onMouseOutAlert(ev) {
+  _onMouseOutProdPlanAlert(ev) {
     const productionSimulationId = Number(
       ev.target.closest(".o_mps_content").dataset.id
     );
@@ -505,8 +505,13 @@ export default class ProductionPlanSimulatorLine extends Component {
     );
 
     if (el) {
-      el.classList.add("flash-pop");
+      const divEl = el.closest(".span-group");
+      if ("text-danger" in divEl.classList) {
+        divEl.classList.remove("text-danger");
+      }
+      divEl.classList.add("flash-pop");
     }
+
     console.log(
       "🚀 ~ ProductionPlanSimulatorLine ~ _onMouseOverCapacityAlert ~ ev:",
       ev
@@ -530,10 +535,11 @@ export default class ProductionPlanSimulatorLine extends Component {
     );
 
     if (el) {
-      el.classList.remove("o_prod_sim_hover");
-      el.classList.remove("flash-pop");
+      const divEl = el.closest(".span-group");
+      divEl.classList.remove("flash-pop");
     }
   }
+
   toggleSelection(ev, productionSimulationId) {
     try {
       this.model.toggleRecordSelection(productionSimulationId);

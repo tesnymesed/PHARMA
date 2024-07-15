@@ -344,7 +344,9 @@ class ProductionPlanSimulatorComponent extends Component {
     let data = [];
     console.log("initAlertsTable", this.workCenterCapacities);
     if (this.workCenterCapacities.length > 0) {
-      data = this.workCenterCapacities;
+      data = this.workCenterCapacities.filter(
+        (cp) => cp.capacity_utilisation >= 90
+      );
       let keys = [
         //        "workcenter",
         "date_start",
@@ -580,11 +582,14 @@ class ProductionPlanSimulatorComponent extends Component {
   //        this.model.replenishAll();
   //    }
   //
-  _onMouseOverAlert(ev) {
+
+  // t-on-mouseover.stop="_onMouseOverProdPlanAlert"
+  // t-on-mouseout.stop="_onMouseOutProdPlanAlert"
+  _onMouseOverProdPlanAlert(ev) {
     this.model.mouseOverAlert();
   }
 
-  _onMouseOutAlert(ev) {
+  _onMouseOutProdPlanAlert(ev) {
     this.model.mouseOutAlert();
   }
   //
@@ -656,7 +661,7 @@ class ProductionPlanSimulatorComponent extends Component {
           res
         );
         var createMPSentriesNotif = this.notificationService.add(
-          "You will redirected shortly...",
+          "You will be redirected shortly...",
           {
             title: "Master production schedule (MRP) update successful",
             type: "success",

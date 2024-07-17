@@ -93,8 +93,8 @@
                               id="show-alerts"
                               class="btn btn-primary"
                               t-on-click="toggleModal"
-                              t-on-mouseover.stop="_onMouseOverAlert"
-                              t-on-mouseout.stop="_onMouseOutAlert"
+                              t-on-mouseover.stop="_onMouseOverCapacityAlert"
+                              t-on-mouseout.stop="_onMouseOutCapacityAlert"
                             >
                               Display Alerts
                             </button>

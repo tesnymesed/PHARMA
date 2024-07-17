@@ -234,7 +234,7 @@
       <tr t-ref="stockLevelRow" name="stock_level">
         <th />
         <th scope="row">
-          <span>Stock level</span>
+          <span>Closing Stock level</span>
         </th>
         <th></th>
         <t
@@ -358,7 +358,7 @@
       <tr t-ref="updatedStockLevelRow" name="updated_stock_level">
         <th />
         <th scope="row">
-          <span>Updated Stock level</span>
+          <span>Updated Closing Stock level</span>
         </th>
         <th></th>
         <t

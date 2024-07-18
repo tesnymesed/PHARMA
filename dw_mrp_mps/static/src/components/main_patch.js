@@ -21,30 +21,59 @@ patch(MainComponent.prototype, {
     });
 
     onMounted(async () => {
-      $('input[name="dates"]').daterangepicker();
+      $('input[name="daterange"]').daterangepicker();
       var self = this;
+      let conf = {
+        opens: "right",
+        ranges: {
+          Today: [moment(), moment()],
+          Yesterday: [
+            moment().subtract(1, "days"),
+            moment().subtract(1, "days"),
+          ],
+          "Last 7 Days": [moment().subtract(6, "days"), moment()],
+          "Last 30 Days": [moment().subtract(29, "days"), moment()],
+          "This Month": [moment().startOf("month"), moment().endOf("month")],
+          "Last Month": [
+            moment().subtract(1, "month").startOf("month"),
+            moment().subtract(1, "month").endOf("month"),
+          ],
+        },
+      };
+
+      let params = this.props.action?.params;
+      if (params) {
+        let domain = params?.domain || this.props.action?.domain;
+        console.log(
+          "🚀 ~ onMounted ~ this.props.action?.domain:",
+          this.props.action?.domain
+        );
+        let startDate = params?.startDate;
+        let endDate = params?.endDate;
+
+        if (startDate && endDate) {
+          let _fStartDate = this.reformatDateString(startDate);
+          let _fEndDate = this.reformatDateString(endDate);
+
+          conf.startDate = _fStartDate;
+          conf.endDate = _fEndDate;
+
+          $("#daterange").data().daterangepicker.startDate = _fStartDate;
+          $("#daterange").data().daterangepicker.endDate = _fEndDate;
+
+          self.model.load(
+            domain,
+            self.env.config.offset,
+            self.env.config.limit,
+            startDate,
+            endDate
+          );
+        }
+      }
+
       $(function () {
         $('input[name="daterange"]').daterangepicker(
-          {
-            opens: "left",
-            ranges: {
-              Today: [moment(), moment()],
-              Yesterday: [
-                moment().subtract(1, "days"),
-                moment().subtract(1, "days"),
-              ],
-              "Last 7 Days": [moment().subtract(6, "days"), moment()],
-              "Last 30 Days": [moment().subtract(29, "days"), moment()],
-              "This Month": [
-                moment().startOf("month"),
-                moment().endOf("month"),
-              ],
-              "Last Month": [
-                moment().subtract(1, "month").startOf("month"),
-                moment().subtract(1, "month").endOf("month"),
-              ],
-            },
-          },
+          conf,
           function (start, end, label) {
             self.model.load(
               [],
@@ -57,45 +86,8 @@ patch(MainComponent.prototype, {
         );
       });
 
-      let params = this.props.action?.params;
-      console.log("🚀 ~ HOT PATCHED setup ~ params:", params);
-      if (params) {
-        let domain = params?.domain || this.props.action?.domain;
-        console.log(
-          "🚀 ~ onMounted ~ this.props.action?.domain:",
-          this.props.action?.domain
-        );
-        let startDate = params?.startDate;
-        let endDate = params?.endDate;
-        if (startDate && endDate) {
-          let picker = document.getElementById("daterange");
-
-          // Construct the formatted date string
-          let _fStartDate = this.reformatDateString(startDate);
-          let _fEndDate = this.reformatDateString(endDate);
-          console.log(
-            "🚀 ~ onMounted ~ _fStartDate, _fEndDate:",
-            _fStartDate,
-            _fEndDate
-          );
-
-          picker.setAttribute("value", `${_fStartDate} - ${_fEndDate}`);
-
-          console.log("🚀 ~ onMounted ~ picker.value:", picker.value);
-          console.log("🚀 ~ onMounted ~ picker:", picker);
-
-          //change the selected date range of that picker
-          // picker.setStartDate(startDate);
-          // picker.setEndDate(endDate);
-          self.model.load(
-            domain,
-            self.env.config.offset,
-            self.env.config.limit,
-            startDate,
-            endDate
-          );
-        }
-      }
+      $("#daterange").data().daterangepicker.startDate = conf.startDate;
+      $("#daterange").data().daterangepicker.endDate = conf.endDate;
     });
   },
 
@@ -129,10 +121,6 @@ patch(MainComponent.prototype, {
   },
 
   onWillStart() {
-    console.log(
-      "🚀 ~ onWillStart ~ this.props.action.params:",
-      this.props.action.params
-    );
     this.manufacturingPeriodDates = this.manufacturingPeriodDates;
   },
 
@@ -151,7 +139,6 @@ patch(MainComponent.prototype, {
 
   initAlertsTable() {
     let data = [];
-    console.log("initAlertsTable ==> this.lowStockLines", this.lowStockLines);
     if (this.lines.length > 0) {
       data = this.lowStockLines;
       let keys = [
@@ -183,8 +170,6 @@ patch(MainComponent.prototype, {
           cellEdited: this.notesCellEdited.bind(this),
         },
       ];
-      console.log("columns", columns);
-      console.log("data", data);
       let alertsTable = this.initTabulator("#alertsTable", data, columns);
       //      alertsTable.on("tableBuilt", function () {
       //        alertsTable.redraw();
@@ -222,36 +207,13 @@ patch(MainComponent.prototype, {
   },
 
   async notesCellEdited(cell) {
-    console.log("🚀 ~ notesCellEdited ~ cell:", cell);
     const notes = cell.getValue();
-    console.log("🚀 ~ notesCellEdited ~ notes:", notes);
     const cellData = cell.getData();
 
     await this.model
       ._saveNotes(cellData.id, cellData.date_start, cellData.date_stop, notes)
-      .then((result) => {
-        console.log("🚀 ~ notesCellEdited ~ result:", result);
-      })
-      .catch((err) => {
-        console.error("🚀 ~ notesCellEdited ~ error:", err);
-      });
-    // var pdp_validated = this.searchItem(this.state.weekly_mrp_plan_product_data, 'date', columnField, 'product', prod, 'pdp_validation')
-    // if(pdp_validated === true){
-    //      cell.getElement().style.backgroundColor = "#ADD8E6";
-    //      cell.restoreOldValue();
-    // }else{
-    //     var record_id_to_update = this.searchItem(this.state.weekly_mrp_plan_product_data, 'date', columnField, 'product', prod, 'id')
-    //     try {
-    //         var prod_name = cell.getData()['Product']
-    //         await this.orm.write('product.mrp.plan.weekly', [record_id_to_update], {
-    //             ['quantity']: editedValue
-    //         });
-    //         this.state.weekly_mrp_plan_product_data = this.updateObjectById(this.state.weekly_mrp_plan_product_data , record_id_to_update, 'quantity', editedValue)
-    //         console.log('Field value updated successfully');
-    //     } catch (error) {
-    //         console.error('Error updating field value:', error);
-    //     }
-    // }
+      .then((result) => {})
+      .catch((err) => {});
   },
 
   toggleModal() {

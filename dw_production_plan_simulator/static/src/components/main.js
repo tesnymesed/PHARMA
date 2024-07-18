@@ -123,12 +123,6 @@ class ProductionPlanSimulatorComponent extends Component {
         this.state.startDate,
         this.state.endDate
       );
-      console.log("this.model.data", this.model.data);
-      console.log("onWillStart simulationLines", this.simulationLines);
-      console.log(
-        "onWillStart manufacturingPeriods",
-        this.manufacturingPeriods
-      );
     });
 
     onMounted(async () => {
@@ -151,8 +145,6 @@ class ProductionPlanSimulatorComponent extends Component {
         .catch((error) => {
           console.error(error);
         });
-      console.log("onMounted self.model.data", self.model.data);
-      console.log("onMounted simulationLines", self.simulationLines);
 
       $("#submit").click(
         async function () {
@@ -165,8 +157,6 @@ class ProductionPlanSimulatorComponent extends Component {
             self.state.startDate,
             self.state.endDate
           );
-          console.log("self.model.data", self.model.data);
-          console.log("simulationLines", self.simulationLines);
         }.bind(this)
       );
 
@@ -448,8 +438,6 @@ class ProductionPlanSimulatorComponent extends Component {
           formatter: "textarea",
         },
       ];
-      console.log("columns", columns);
-      console.log("data", data);
       let alertsTable = this.initTabulator("#alertsTable", data, columns);
       //      alertsTable.on("tableBuilt", function () {
       //        alertsTable.redraw();
@@ -480,10 +468,6 @@ class ProductionPlanSimulatorComponent extends Component {
   }
 
   get simulationLines() {
-    console.log(
-      " get simulationLines()  this.model?.data?.production_simulation_ids",
-      this.model?.data?.production_simulation_ids
-    );
     this.state.simulationLines = this.model?.data?.production_simulation_ids;
     return this.model?.data?.production_simulation_ids;
   }
@@ -520,24 +504,8 @@ class ProductionPlanSimulatorComponent extends Component {
     let salesPicker = $('input[id="sales-avg-period"]').data("daterangepicker");
     this.state.salesStartDate = salesPicker.startDate.format("YYYY-MM-DD");
     this.state.salesEndDate = salesPicker.endDate.format("YYYY-MM-DD");
-    console.log(
-      "🚀 ~ ProductionPlanSimulatorComponent ~ captureInputSettings ~ this.state.salesStartDate:",
-      this.state.salesStartDate
-    );
-    console.log(
-      "🚀 ~ ProductionPlanSimulatorComponent ~ captureInputSettings ~ this.state.salesEndDate:",
-      this.state.salesEndDate
-    );
 
     this.state.domain = [["company_id", "=", this.state.currentCompanyId]];
-
-    console.log("captureInputSettings startDate", this.state.startDate);
-    console.log("captureInputSettings endDate", this.state.endDate);
-    console.log("captureInputSettings this.state.domain", this.state.domain);
-    console.log(
-      "captureInputSettings currentCompanyId",
-      this.state.currentCompanyId
-    );
 
     this.model.saveDateRange(
       this.state.currentCompanyId,
@@ -561,11 +529,6 @@ class ProductionPlanSimulatorComponent extends Component {
   }
 
   async _onChangeCompany(ev, productionSimulationId) {
-    console.log(
-      "_onChangeCompany(ev, productionSimulationId)",
-      ev,
-      productionSimulationId
-    );
     this.state.currentCompanyId = parseInt(ev.target.value);
     this.captureInputSettings();
   }
@@ -586,28 +549,18 @@ class ProductionPlanSimulatorComponent extends Component {
   // t-on-mouseover.stop="_onMouseOverProdPlanAlert"
   // t-on-mouseout.stop="_onMouseOutProdPlanAlert"
   _onMouseOverCapacityAlert(ev) {
-    console.log(
-      "🚀 ~ ProductionPlanSimulatorComponent ~ _onMouseOverCapacityAlert ~ ev:",
-      ev
-    );
     const highCapacityCells = document.querySelectorAll(".high-capacity");
     highCapacityCells.forEach((cell) => {
       cell.classList.add("flash-pop");
-      console.log(cell.innerText);
     });
 
     // this.model.mouseOverAlert();
   }
 
   _onMouseOutCapacityAlert(ev) {
-    console.log(
-      "🚀 ~ ProductionPlanSimulatorComponent ~ _onMouseOutCapacityAlert ~ ev:",
-      ev
-    );
     const highCapacityCells = document.querySelectorAll(".high-capacity");
     highCapacityCells.forEach((cell) => {
       cell.classList.remove("flash-pop");
-      console.log(cell.innerText);
     });
     // this.model.mouseOutAlert();
   }
@@ -623,8 +576,6 @@ class ProductionPlanSimulatorComponent extends Component {
       this.state.startDate,
       this.state.endDate
     );
-    console.log("this.simulationLines", this.simulationLines);
-    console.log("this.state.simulationLines", this.state.simulationLines);
 
     if (this.model.data.length > 0) {
       var createProductNotif = this.notificationService.add(
@@ -669,16 +620,9 @@ class ProductionPlanSimulatorComponent extends Component {
   }
 
   checkMaterialsAvailability() {
-    console.log(
-      "🚀 ~ ProductionPlanSimulatorComponent ~ checkMaterialsAvailability ~ checkMaterialsAvailability:"
-    );
     this.model
       ._createMPSEntries(this.state.currentCompanyId, this.simulationLines)
       .then((res) => {
-        console.log(
-          "🚀 ~ ProductionPlanSimulatorComponent ~ .then ~ res:",
-          res
-        );
         var createMPSentriesNotif = this.notificationService.add(
           "You will be redirected shortly...",
           {

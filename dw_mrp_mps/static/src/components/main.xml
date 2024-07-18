@@ -10,6 +10,7 @@
         id="daterange"
         value="01/01/2024 - 01/01/2025"
       />
+
       <button
         t-if="lowStockLines.length"
         type="show-alerts"

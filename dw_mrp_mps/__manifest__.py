@@ -20,8 +20,6 @@
         'web.assets_backend': [
             'dw_mrp_mps/static/src/**/*',
             'dw_mrp_mps/static/src/**/*',
-            'dw_mrp_mps/static/src/components/line.xml',
-            'dw_mrp_mps/static/src/components/main.xml',
         ],
     },
     'installable': True,

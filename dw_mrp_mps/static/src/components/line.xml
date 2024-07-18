@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
   <t t-inherit="mrp_mps.MpsLineComponent" t-inherit-mode="extension" owl="1">
-
     <xpath expr="//tr[hasclass('bg-light')]" position="after">
-      <tr name="stock_coverage" t-attf-class="{{! groups.dw_mrp_mps_show_stock_coverage and 'o_hidden' or ''}}">
+      <tr
+        name="stock_coverage"
+        t-attf-class="{{! groups.dw_mrp_mps_show_stock_coverage and 'o_hidden' or ''}}"
+      >
         <th />
         <th scope="row">
           <span>Stock Coverage</span>
@@ -22,7 +24,10 @@
     </xpath>
 
     <xpath expr="//tr[@name='safety_stock']" position="after">
-      <tr name="stock_wout_safety_stock" t-attf-class="{{! groups.dw_mrp_mps_show_stock_wout_safety_stock and 'o_hidden' or ''}}">
+      <tr
+        name="stock_wout_safety_stock"
+        t-attf-class="{{! groups.dw_mrp_mps_show_stock_wout_safety_stock and 'o_hidden' or ''}}"
+      >
         <th />
         <th scope="row">
           <span>Forecasted Stock (Excl. Safety Stock)</span>
@@ -34,10 +39,22 @@
           t-key="forecast_index"
         >
           <th class="text-end pe-4">
-            <span
-              t-attf-class="{{forecast.safety_stock_qty &lt; 0 and 'text-danger' or ''}}"
-              t-esc="formatFloat(forecast.safety_stock_qty_wout_ss)"
-            />
+            <div
+              t-attf-class="{{forecast.safety_stock_qty_wout_ss &lt;= 0.0 and 'low-stock' or 'stock-grp'}}"
+            >
+              <span
+                t-if="forecast.safety_stock_qty_wout_ss &lt;= 0.0"
+                t-att-data-date_index="forecast_index"
+                t-att-data-date_start="forecast.date_start"
+                t-att-data-date_stop="forecast.date_stop"
+                class="btn btn-link input-group-addon fa fa-exclamation-triangle text-warning oe_edit_only o_no_padding"
+                title="Low Stock Alert."
+              />
+              <span
+                t-attf-class="{{forecast.safety_stock_qty &lt; 0 and 'text-danger' or ''}}"
+                t-esc="formatFloat(forecast.safety_stock_qty_wout_ss)"
+              />
+            </div>
           </th>
         </t>
       </tr>

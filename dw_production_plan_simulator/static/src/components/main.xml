@@ -30,8 +30,7 @@
                       <div class="row mb-3">
                         <div class="col-sm-4">
                           <label for="select-company" class="form-label"
-                            >Company</label
-                          >
+                            >Company</label>
                           <select
                             class="form-select"
                             id="select-company"
@@ -44,8 +43,7 @@
                           <label
                             for="select-period"
                             class="col-sm-2 col-form-label"
-                            >Period</label
-                          >
+                            >Period</label>
                           <input
                             class="date-own form-control"
                             id="select-period"
@@ -62,8 +60,7 @@
                           <label
                             for="sales-avg-period"
                             class="col-sm-2 col-form-label"
-                            >Sales AVG</label
-                          >
+                            >Sales AVG</label>
                           <input
                             class="date-own form-control"
                             id="sales-avg-period"
@@ -93,6 +90,8 @@
                               id="show-alerts"
                               class="btn btn-primary"
                               t-on-click="toggleModal"
+                              t-on-mouseover.stop="_onMouseOverCapacityAlert"
+                              t-on-mouseout.stop="_onMouseOutCapacityAlert"
                             >
                               Display Alerts
                             </button>
@@ -195,7 +194,7 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body" id="PDPValidationmodalBody">
+          <div class="modal-body" id="alertsModal">
             <!--          Body -->
             <center><h3 id="bodyTitle"></h3></center>
 
@@ -208,7 +207,7 @@
             <div id="dynamic-input-form">
               <div id="newRow"></div>
             </div>
-            <!--          Body End-->
+            <!--Body End-->
           </div>
           <div class="modal-footer">
             <button

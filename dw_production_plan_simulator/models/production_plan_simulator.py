@@ -78,6 +78,7 @@ class DwProductionPlanSimulator(models.Model):
 
     safety_stock_target = fields.Integer(
         'Safety Stock Target (Months)',
+        default=4,
         help="This is the minimum free stock you want to keep for that product at all times (Months worth of sales).")
 
     sales_average = fields.Float(compute='compute_sales_average', default=0.0, store=True)
@@ -218,30 +219,30 @@ class DwProductionPlanSimulator(models.Model):
                 # Sample list of strings
                 notes_str = "\n".join([item.get("note") for item in group_data if item.get("note")])
                 if total_required_capacity < total_production_objective_qty:
-                    total_capacity_utilisation = sum(item["capacity_utilisation"] for item in group_data)
+                    pass
 
-                    _year = date_start.year
-                    _quarter = (date_start.month - 1) // 3 + 1
-                    _q_y_f = f"Q{_quarter} {_year}"
+                total_capacity_utilisation = sum(item["capacity_utilisation"] for item in group_data)
 
-                    res.append({
-                        "workcenter": workcenter,
-                        "workcenter_name": workcenter[1],
-                        "date_start": date_start,
-                        "date_stop": date_stop,
-                        "year": _year,
-                        "quarter": _q_y_f,
-                        "capacity_utilisation": total_capacity_utilisation,
-                        "required_capacity": total_required_capacity,
-                        "production_objective_qty": total_production_objective_qty,
-                        "notes": notes_str
+                _year = date_start.year
+                _quarter = (date_start.month - 1) // 3 + 1
+                _q_y_f = f"Q{_quarter} {_year}"
 
-                    })
+                res.append({
+                    "workcenter": workcenter,
+                    "workcenter_name": workcenter[1],
+                    "date_start": date_start,
+                    "date_stop": date_stop,
+                    "year": _year,
+                    "quarter": _q_y_f,
+                    "capacity_utilisation": total_capacity_utilisation,
+                    "required_capacity": total_required_capacity,
+                    "production_objective_qty": total_production_objective_qty,
+                    "notes": notes_str
 
-            print(res)
+                })
+
             results.extend(res)
 
-        print(results)
         return results
 
         # # Group the product_plan_sim_ids by date_start and date_stop
@@ -654,12 +655,14 @@ class DwProductionPlanSimulator(models.Model):
 
             starting_inventory_qty = production_simulation.product_id.with_context(
                 warehouse=production_simulation.warehouse_id.id).qty_available
+            starting_inventory_qty_up = starting_inventory_qty
             if len(date_range):
                 starting_inventory_qty -= incoming_qty_done.get(
                     (date_range[0], production_simulation.product_id, production_simulation.warehouse_id), 0.0)
                 starting_inventory_qty += outgoing_qty_done.get(
                     (date_range[0], production_simulation.product_id, production_simulation.warehouse_id), 0.0)
 
+                starting_inventory_qty_up = starting_inventory_qty
             for index, (date_start, date_stop) in enumerate(date_range):
                 forecast_values = {}
                 key = ((date_start, date_stop), production_simulation.product_id, production_simulation.warehouse_id)
@@ -738,14 +741,24 @@ class DwProductionPlanSimulator(models.Model):
                     forecast_values['notes'] = ''
 
                 if not replenish_qty_updated:
+                    # starting_inventory_qty: starting_inventory_qty
+                    # forecasted_demand_qty & indirect_demand_qty: sales forecast
+                    # replenish_qty: net PPQty
+                    # replenish_qty: ROUND UP net PPQty to lot size
+                    # replenish_qty = production_simulation._get_replenish_qty(
+                    #     starting_inventory_qty - forecast_values['forecasted_demand_qty'] - forecast_values[
+                    #         'indirect_demand_qty'])
                     replenish_qty = production_simulation._get_replenish_qty(
-                        starting_inventory_qty - forecast_values['forecasted_demand_qty'] - forecast_values[
-                            'indirect_demand_qty'])
+                        starting_inventory_qty - production_simulation.sales_average)
                     forecast_values['replenish_qty'] = float_round(replenish_qty, precision_rounding=rounding)
                     forecast_values['replenish_qty_updated'] = False
 
                 forecast_values['starting_inventory_qty'] = float_round(starting_inventory_qty,
                                                                         precision_rounding=rounding)
+
+                forecast_values['starting_inventory_qty_up'] = float_round(starting_inventory_qty_up,
+                                                                        precision_rounding=rounding)
+
                 forecast_values['safety_stock_qty'] = float_round(
                     starting_inventory_qty - forecast_values['forecasted_demand_qty'] - forecast_values[
                         'indirect_demand_qty'] +
@@ -766,21 +779,32 @@ class DwProductionPlanSimulator(models.Model):
                 forecast_values['stock_level'] = (forecast_values['starting_inventory_qty'] -
                                                   production_simulation.sales_average)
 
-                forecast_values['updated_stock_level'] = forecast_values['starting_inventory_qty'] + forecast_values[
-                    'suggested_production_plan_qty'] - production_simulation.sales_average
+                forecast_values['updated_stock_level'] = (forecast_values['starting_inventory_qty_up'] -
+                                                          production_simulation.sales_average)
 
                 forecast_values['planned_production_qty'] = calculate_planned_production_qty(
                     forecast_values.get('stock_level'),
                     production_simulation.safety_stock_target_qty,
                     production_simulation.sales_average,
+                    production_simulation.safety_stock_target,
                 )
 
                 forecast_values['eff_planned_production_qty'] = round_up_to_nearest(
                     forecast_values['planned_production_qty'],
                     production_simulation.lot_size)
 
+                forecast_values['replenish_qty'] = forecast_values['eff_planned_production_qty']
+
                 forecast_values['stock_level'] = forecast_values['stock_level'] + forecast_values[
                     'eff_planned_production_qty']
+
+                forecast_values['safety_stock_qty'] = float_round(
+                    starting_inventory_qty - production_simulation.sales_average +
+                    forecast_values['eff_planned_production_qty'], precision_rounding=rounding)
+
+                forecast_values['safety_stock_qty_up'] = float_round(
+                    starting_inventory_qty_up - production_simulation.sales_average +
+                    forecast_values['suggested_production_plan_qty'], precision_rounding=rounding)
 
                 forecast_values['planned_production_batches'] = safe_divide(forecast_values['planned_production_qty'],
                                                                             forecast_values['lot_size'])
@@ -792,6 +816,9 @@ class DwProductionPlanSimulator(models.Model):
                 forecast_values['stock_coverage'] = safe_divide(
                     forecast_values['stock_level'],
                     production_simulation.sales_average)
+
+                forecast_values['updated_stock_level'] = forecast_values['updated_stock_level'] + forecast_values[
+                    'suggested_production_plan_qty']
 
                 forecast_values['updated_stock_coverage'] = safe_divide(
                     forecast_values.get('updated_stock_level'),
@@ -807,6 +834,8 @@ class DwProductionPlanSimulator(models.Model):
                     production_simulation_state['product_plan_sim_ids'].append(forecast_values)
 
                 starting_inventory_qty = forecast_values['safety_stock_qty']
+                starting_inventory_qty_up = forecast_values['safety_stock_qty_up']
+                # starting_inventory_qty = forecast_values['updated_stock_level']
                 if not forecast_values['replenish_qty']:
                     continue
 
@@ -1156,9 +1185,10 @@ class DwProductionPlanSimulator(models.Model):
             after_forecast_qty,
             self.safety_stock_target_qty,
             self.sales_average,
+            self.safety_stock_target,
         )
 
-        return optimal_qty
+        return optimal
 
         if optimal_qty > self.max_to_replenish_qty:
             replenish_qty = self.max_to_replenish_qty
@@ -1714,4 +1744,5 @@ class DwProductPlanSimulation(models.Model):
         for record in self:
             record.planned_production_qty = calculate_planned_production_qty(record.stock_level,
                                                                              record.production_simulation_id.safety_stock_target_qty,
-                                                                             record.production_simulation_id.sales_average)
+                                                                             record.production_simulation_id.sales_average,
+                                                                             record.production_simulation_id.safety_stock_target)

@@ -585,12 +585,31 @@ class ProductionPlanSimulatorComponent extends Component {
 
   // t-on-mouseover.stop="_onMouseOverProdPlanAlert"
   // t-on-mouseout.stop="_onMouseOutProdPlanAlert"
-  _onMouseOverProdPlanAlert(ev) {
-    this.model.mouseOverAlert();
+  _onMouseOverCapacityAlert(ev) {
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorComponent ~ _onMouseOverCapacityAlert ~ ev:",
+      ev
+    );
+    const highCapacityCells = document.querySelectorAll(".high-capacity");
+    highCapacityCells.forEach((cell) => {
+      cell.classList.add("flash-pop");
+      console.log(cell.innerText);
+    });
+
+    // this.model.mouseOverAlert();
   }
 
-  _onMouseOutProdPlanAlert(ev) {
-    this.model.mouseOutAlert();
+  _onMouseOutCapacityAlert(ev) {
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorComponent ~ _onMouseOutCapacityAlert ~ ev:",
+      ev
+    );
+    const highCapacityCells = document.querySelectorAll(".high-capacity");
+    highCapacityCells.forEach((cell) => {
+      cell.classList.remove("flash-pop");
+      console.log(cell.innerText);
+    });
+    // this.model.mouseOutAlert();
   }
   //
   async _onClickCreate(ev) {

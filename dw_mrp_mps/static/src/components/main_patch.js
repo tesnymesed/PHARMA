@@ -17,6 +17,7 @@ patch(MainComponent.prototype, {
 
     onWillStart(async () => {
       await loadCSS("shared_assets/static/libs/css/daterangepicker.css");
+      await loadCSS("shared_assets/static/libs/css/tabulator.min.css");
     });
 
     onMounted(async () => {
@@ -102,6 +103,31 @@ patch(MainComponent.prototype, {
     return this.model.data.date_objs;
   },
 
+  get lowStockLines() {
+    let res = [];
+    let count = this.lines.map((item) =>
+      item.forecast_ids.filter((f) => f.safety_stock_qty_wout_ss <= 0)
+    );
+    this.lines.forEach((item) => {
+      const filteredForecastIds = item.forecast_ids.filter(
+        (forecast) => forecast.safety_stock_qty_wout_ss <= 0
+      );
+      if (filteredForecastIds.length) {
+        filteredForecastIds.forEach((alert) => {
+          let prx = {
+            id: item.id,
+            product: item.product_id,
+            product_id: item.product_id[0],
+            product_name: item.product_id[1],
+            ...alert,
+          };
+          res.push(prx);
+        });
+      }
+    });
+    return res;
+  },
+
   onWillStart() {
     console.log(
       "🚀 ~ onWillStart ~ this.props.action.params:",
@@ -123,9 +149,130 @@ patch(MainComponent.prototype, {
     this.initAlertsTable();
   },
 
+  initAlertsTable() {
+    let data = [];
+    console.log("initAlertsTable ==> this.lowStockLines", this.lowStockLines);
+    if (this.lines.length > 0) {
+      data = this.lowStockLines;
+      let keys = [
+        "product_name",
+        "date_start",
+        //        "year",
+        //        "quarter",
+        "safety_stock_qty_wout_ss",
+        // "required_capacity",
+        // "production_objective_qty",
+        "notes",
+      ];
+
+      var columns = [
+        {
+          title: "Period",
+          field: "date_start",
+        },
+
+        {
+          title: "Closing Stock Level",
+          field: "safety_stock_qty_wout_ss",
+        },
+        {
+          title: "Notes",
+          field: "notes",
+          editor: "textarea",
+          formatter: "textarea",
+          cellEdited: this.notesCellEdited.bind(this),
+        },
+      ];
+      console.log("columns", columns);
+      console.log("data", data);
+      let alertsTable = this.initTabulator("#alertsTable", data, columns);
+      //      alertsTable.on("tableBuilt", function () {
+      //        alertsTable.redraw();
+      //      });
+    }
+  },
+
+  initTabulator(elt, data, columns) {
+    var table = new Tabulator(elt, {
+      height: "auto",
+      layout: "fitColumns",
+      columns: columns,
+      data: data,
+      groupBy: ["product_name"],
+      groupHeader: function (value, count, data, group) {
+        //value - the value all members of this group share
+        //count - the number of rows in this group
+        //data - an array of all the row data objects in this group
+        //group - the group component for the group
+
+        return (
+          value +
+          "<span style='color:#d00; margin-left:10px;'>(" +
+          count +
+          " item)</span>"
+        );
+      },
+      pagination: true,
+      paginationSize: 15,
+      paginationSizeSelector: [15, 30, 45, 60, true],
+      paginationCounter: "rows",
+      paginationAddRow: "table",
+    });
+    return table;
+  },
+
+  async notesCellEdited(cell) {
+    console.log("🚀 ~ notesCellEdited ~ cell:", cell);
+    const notes = cell.getValue();
+    console.log("🚀 ~ notesCellEdited ~ notes:", notes);
+    const cellData = cell.getData();
+
+    await this.model
+      ._saveNotes(cellData.id, cellData.date_start, cellData.date_stop, notes)
+      .then((result) => {
+        console.log("🚀 ~ notesCellEdited ~ result:", result);
+      })
+      .catch((err) => {
+        console.error("🚀 ~ notesCellEdited ~ error:", err);
+      });
+    // var pdp_validated = this.searchItem(this.state.weekly_mrp_plan_product_data, 'date', columnField, 'product', prod, 'pdp_validation')
+    // if(pdp_validated === true){
+    //      cell.getElement().style.backgroundColor = "#ADD8E6";
+    //      cell.restoreOldValue();
+    // }else{
+    //     var record_id_to_update = this.searchItem(this.state.weekly_mrp_plan_product_data, 'date', columnField, 'product', prod, 'id')
+    //     try {
+    //         var prod_name = cell.getData()['Product']
+    //         await this.orm.write('product.mrp.plan.weekly', [record_id_to_update], {
+    //             ['quantity']: editedValue
+    //         });
+    //         this.state.weekly_mrp_plan_product_data = this.updateObjectById(this.state.weekly_mrp_plan_product_data , record_id_to_update, 'quantity', editedValue)
+    //         console.log('Field value updated successfully');
+    //     } catch (error) {
+    //         console.error('Error updating field value:', error);
+    //     }
+    // }
+  },
+
   toggleModal() {
-    this.state.isModalVisible = !this.state?.isModalVisible;
+    // this.state.isModalVisible = !this.state?.isModalVisible;
     this.displayAlerts();
+  },
+
+  _onMouseOverStockAlert(ev) {
+    const highCapacityCells = document.querySelectorAll(".low-stock");
+    highCapacityCells.forEach((cell) => {
+      cell.classList.add("flash-pop");
+    });
+    // this.model.mouseOverAlert();
+  },
+
+  _onMouseOutStockAlert(ev) {
+    const highCapacityCells = document.querySelectorAll(".low-stock");
+    highCapacityCells.forEach((cell) => {
+      cell.classList.remove("flash-pop");
+    });
+    // this.model.mouseOutAlert();
   },
 
   //  productionSchedule() {

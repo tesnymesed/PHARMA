@@ -1,0 +1,74 @@
+.flash {
+  animation-name: flash;
+  animation-duration: 1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-delay: 0s;
+  font-weight: bold;
+}
+
+.pop {
+  animation-name: pop;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  transform-origin: center center;
+}
+
+@keyframes flash {
+  0% {
+    color: #000000;
+  }
+  50% {
+    color: #f1a200;
+  }
+  100% {
+    color: #000000;
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.flash-pop {
+  animation-name: flashing, popping;
+  animation-duration: 1s, 1s;
+  animation-timing-function: linear, ease-in-out;
+  animation-iteration-count: infinite, infinite;
+  animation-delay: 0s, 0s;
+  transform-origin: center center;
+  font-weight: bold;
+}
+
+@keyframes flashing {
+  0% {
+    color: #000000;
+  }
+  50% {
+    color: #f1a200;
+  }
+  100% {
+    color: #000000;
+  }
+}
+
+@keyframes popping {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

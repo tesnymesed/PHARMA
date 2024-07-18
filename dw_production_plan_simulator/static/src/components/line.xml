@@ -234,7 +234,7 @@
       <tr t-ref="stockLevelRow" name="stock_level">
         <th />
         <th scope="row">
-          <span>Stock level</span>
+          <span>Closing Stock level</span>
         </th>
         <th></th>
         <t
@@ -358,7 +358,7 @@
       <tr t-ref="updatedStockLevelRow" name="updated_stock_level">
         <th />
         <th scope="row">
-          <span>Updated Stock level</span>
+          <span>Updated Closing Stock level</span>
         </th>
         <th></th>
         <t
@@ -420,24 +420,29 @@
           t-key="simulation_index"
         >
           <th class="text-end pe-4">
-            <span
-              t-if="simulation.capacity_utilisation &gt; 90.0"
-              t-att-data-date_index="simulation_index"
-              t-att-data-date_start="simulation.date_start"
-              t-att-data-date_stop="simulation.date_stop"
-              class="btn btn-link input-group-addon o_prod_sim_automatic_mode fa fa-exclamation-triangle text-warning oe_edit_only o_no_padding"
-              title="Capacity Alert."
-              t-on-mouseover.stop="_onMouseOverCapacityAlert"
-              t-on-mouseout.stop="_onMouseOutCapacityAlert"
-            />
-            <span
-              t-attf-class="{{simulation.capacity_utilisation &gt; 90.0 and 'text-warning' or ''}}"
-              t-esc="formatFloat(simulation.required_capacity)"
-            />
-            <span
-              t-attf-class="{{simulation.capacity_utilisation &gt; 90.0 and 'text-warning' or ''}}"
-              t-esc="' ( ' + formatFloat(simulation.capacity_utilisation)+ ' % )'"
-            />
+            <div
+              t-attf-class="{{simulation.capacity_utilisation &gt; 90.0 and 'high-capacity' or 'capacity-grp'}}"
+            >
+              <span
+                t-if="simulation.capacity_utilisation &gt; 90.0"
+                t-att-data-date_index="simulation_index"
+                t-att-data-date_start="simulation.date_start"
+                t-att-data-date_stop="simulation.date_stop"
+                class="btn btn-link input-group-addon o_prod_sim_automatic_mode fa fa-exclamation-triangle text-warning oe_edit_only o_no_padding"
+                title="Capacity Alert."
+                t-on-mouseover.stop="_onMouseOverCapacityAlert"
+                t-on-mouseout.stop="_onMouseOutCapacityAlert"
+              />
+
+              <span
+                t-attf-class="{{simulation.capacity_utilisation &gt; 90.0 and 'text-warning' or ''}}"
+                t-esc="formatFloat(simulation.required_capacity)"
+              />
+              <span
+                t-attf-class="{{simulation.capacity_utilisation &gt; 90.0 and 'text-warning' or ''}}"
+                t-esc="' ( ' + formatFloat(simulation.capacity_utilisation)+ ' % )'"
+              />
+            </div>
 
             <!--            <input-->
             <!--              type="text"-->

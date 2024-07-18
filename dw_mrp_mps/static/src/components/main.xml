@@ -11,14 +11,66 @@
         value="01/01/2024 - 01/01/2025"
       />
       <button
-        t-if="lines.length"
+        t-if="lowStockLines.length"
         type="show-alerts"
         id="show-alerts"
         class="btn btn-primary"
         t-on-click="toggleModal"
+        t-on-mouseover.stop="_onMouseOverStockAlert"
+        t-on-mouseout.stop="_onMouseOutStockAlert"
       >
         Display Alerts
       </button>
+    </xpath>
+    <xpath expr="//div[hasclass('o_mrp_mps')]" position="after">
+      <div
+        class="modal fade"
+        id="alertsModal"
+        tabindex="-1"
+        aria-labelledby="ModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-scrollable modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="ModalTitle"></h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body" id="alertsModal">
+              <!--          Body -->
+              <center><h3 id="bodyTitle"></h3></center>
+
+              <div id="alertsTable" class="table table-hover"></div>
+
+              <table class="table table-striped">
+                <thead id="tableHead"></thead>
+                <tbody id="tableBody"></tbody>
+              </table>
+              <div id="dynamic-input-form">
+                <div id="newRow"></div>
+              </div>
+              <!--          Body End-->
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" id="save" class="btn btn-primary">
+                Validate
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </xpath>
   </t>
 </templates>

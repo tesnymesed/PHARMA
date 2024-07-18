@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
+from datetime import datetime
 from math import log10
 
 from odoo import api, fields, models
@@ -191,6 +192,8 @@ class DWMrpProductionSchedule(models.Model):
                                                                      precision_rounding=rounding, rounding_method='UP')
                 replenish_qty_updated = False
                 if existing_forecasts:
+                    forecast_values['notes'] = existing_forecasts[0].notes
+
                     forecast_values['forecast_qty'] = float_round(sum(existing_forecasts.mapped('forecast_qty')),
                                                                   precision_rounding=rounding)
                     forecast_values['replenish_qty'] = float_round(sum(existing_forecasts.mapped('replenish_qty')),
@@ -202,6 +205,7 @@ class DWMrpProductionSchedule(models.Model):
                     forecast_values['replenish_qty_updated'] = replenish_qty_updated
                 else:
                     forecast_values['forecast_qty'] = 0.0
+                    forecast_values['notes'] = ''
 
                 if not replenish_qty_updated:
                     replenish_qty = production_schedule._get_replenish_qty(
@@ -220,13 +224,12 @@ class DWMrpProductionSchedule(models.Model):
 
                 replenish_qty_wout_ss = production_schedule._get_replenish_qty_wout_ss(
                     starting_inventory_qty - forecast_values['forecast_qty'] - forecast_values['indirect_demand_qty'])
-                forecast_values['replenish_qty_wout_ss'] = float_round(replenish_qty_wout_ss, precision_rounding=rounding)
+                forecast_values['replenish_qty_wout_ss'] = float_round(replenish_qty_wout_ss,
+                                                                       precision_rounding=rounding)
 
                 forecast_values['safety_stock_qty_wout_ss'] = float_round(
                     starting_inventory_qty - forecast_values['forecast_qty'] - forecast_values['indirect_demand_qty'] +
                     forecast_values['replenish_qty_wout_ss'], precision_rounding=rounding)
-
-
 
                 if production_schedule in self:
                     production_schedule_state['forecast_ids'].append(forecast_values)
@@ -278,3 +281,33 @@ class DWMrpProductionSchedule(models.Model):
         """
         rules = self.product_id._get_rules_from_location(self.warehouse_id.lot_stock_id)
         return rules._get_lead_days(self.product_id, bom=self.bom_id)[0]
+
+    def set_notes(self, date_start, date_stop, notes):
+        """ Save the forecast notes:
+
+        params notes: The new notes
+        params date_start: The manufacturing period start
+        params date_start: The manufacturing period end
+        """
+        self.ensure_one()
+        if date_start and date_stop:
+            date_start = datetime.strptime(date_start, '%Y-%m-%d').date()
+            date_stop = datetime.strptime(date_stop, '%Y-%m-%d').date()
+
+        existing_forecast = self.forecast_ids.filtered(lambda f: f.date >= date_start and
+                                                                         f.date <= date_stop)
+        if existing_forecast:
+            existing_forecast[0].write({'notes': notes})
+        else:
+            existing_forecast.create({
+                'notes': notes,
+                'date': date_stop,
+                'production_schedule_id': self.id
+            })
+        return True
+
+
+class DWMrpProductForecast(models.Model):
+    _inherit = 'mrp.product.forecast'
+
+    notes = fields.Text('Observations')

@@ -4,39 +4,38 @@
 
         <!-- Top menu item -->
         <menuitem name="Supply Plan"
-                  id="menu_dw_mrp_supply_plan_root"
-                  groups="dw_mrp_supply_plan_group_manager,dw_mrp_supply_plan_group_user"
-                  web_icon="dw_mrp_supply_plan,static/description/icon.png"
-                  sequence="140"
+            id="menu_dw_mrp_supply_plan_root"
+            groups="dw_mrp_supply_plan_group_manager,dw_mrp_supply_plan_group_user"
+            web_icon="dw_mrp_supply_plan,static/description/icon.png"
+            sequence="140"
         />
 
         <menuitem
-                id="menu_dw_mrp_supply_plan"
-                name="Supply Plans"
-                parent="dw_mrp_supply_plan.menu_dw_mrp_supply_plan_root"
-                sequence="1"
-                action="dw_mrp_supply_plan.dw_mrp_supply_plan_action"
+            id="menu_dw_mrp_supply_plan"
+            name="Supply Plans"
+            parent="dw_mrp_supply_plan.menu_dw_mrp_supply_plan_root"
+            sequence="1"
+            action="dw_mrp_supply_plan.dw_mrp_supply_plan_action"
         />
         <menuitem
-                id="menu_dw_mrp_product_supply_plan"
-                name="Supply Plan Lines"
-                parent="dw_mrp_supply_plan.menu_dw_mrp_supply_plan_root"
-                sequence="2"
-                action="dw_mrp_supply_plan.dw_mrp_product_supply_plan_action"
+            id="menu_dw_mrp_product_supply_plan"
+            name="Supply Plan Lines"
+            parent="dw_mrp_supply_plan.menu_dw_mrp_supply_plan_root"
+            sequence="2"
+            action="dw_mrp_supply_plan.dw_mrp_product_supply_plan_action"
         />
 
 
         <menuitem id="dw_mrp_supply_plan_config_menu"
-                  name="Configuration"
-                  sequence="10"
-                  parent="dw_mrp_supply_plan.menu_dw_mrp_supply_plan_root"
-
+            name="Configuration"
+            sequence="10"
+            parent="dw_mrp_supply_plan.menu_dw_mrp_supply_plan_root"
         />
         <menuitem id="dw_mrp_supply_wizard_grouping_option_menu"
-                  name="Grouping Options"
-                  parent="dw_mrp_supply_plan.dw_mrp_supply_plan_config_menu"
-                  action="dw_mrp_supply_wizard_grouping_option_action"
-                  sequence="4"
+            name="Grouping Options"
+            parent="dw_mrp_supply_plan.dw_mrp_supply_plan_config_menu"
+            action="dw_mrp_supply_wizard_grouping_option_action"
+            sequence="4"
         />
 
     </data>

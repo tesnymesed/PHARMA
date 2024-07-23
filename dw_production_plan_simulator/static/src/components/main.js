@@ -473,10 +473,6 @@ class ProductionPlanSimulatorComponent extends Component {
   }
 
   get workCenterCapacities() {
-    console.log(
-      " get workCenterCapacities()  this.model?.data?.workcenter_capacities",
-      this.model?.data?.workcenter_capacities
-    );
     this.state.workCenterCapacities = this.model?.data?.workcenter_capacities;
     return this.model?.data?.workcenter_capacities;
   }

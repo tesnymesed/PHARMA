@@ -294,6 +294,7 @@ class DwProductionPlanSimulator(models.Model):
 
         return [('id', operator, ids)]
 
+    # TODO: get From
     def action_open_actual_demand_details(self, date_str, date_start_str, date_stop_str):
         """ Open the picking list view for the actual demand for the current
         schedule.
@@ -757,7 +758,7 @@ class DwProductionPlanSimulator(models.Model):
                                                                         precision_rounding=rounding)
 
                 forecast_values['starting_inventory_qty_up'] = float_round(starting_inventory_qty_up,
-                                                                        precision_rounding=rounding)
+                                                                           precision_rounding=rounding)
 
                 forecast_values['safety_stock_qty'] = float_round(
                     starting_inventory_qty - forecast_values['forecasted_demand_qty'] - forecast_values[

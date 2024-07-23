@@ -55,12 +55,6 @@ class DwMrpSupplyPlan(models.Model):
             'Dec-' + _year,
         ]
 
-    def run_action(self):
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'owl.main_dashboard'
-        }
-
     # def action_print(self):
     #     return self.env.ref('dw_mrp_supply_plan.action_mrp_plan_report').report_action(self)
 

@@ -237,6 +237,10 @@ patch(MainComponent.prototype, {
     // this.model.mouseOutAlert();
   },
 
+  createSupplyPlan() {
+    console.log("createSupplyPlan", this.lines);
+    // this.model.createSupplyPlan();
+  },
   //  productionSchedule() {
   //    console.log("this", this);
   //    let _data = super.productionSchedule;

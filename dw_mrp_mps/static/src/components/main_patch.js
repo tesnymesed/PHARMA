@@ -27,17 +27,32 @@ patch(MainComponent.prototype, {
         opens: "right",
         ranges: {
           Today: [moment(), moment()],
-          Yesterday: [
-            moment().subtract(1, "days"),
-            moment().subtract(1, "days"),
+          "This Year": [moment().startOf("year"), moment().endOf("year")],
+          "18 Months": [
+            moment().startOf("year"),
+            moment().add(17, "months").endOf("year"),
           ],
-          "Last 7 Days": [moment().subtract(6, "days"), moment()],
-          "Last 30 Days": [moment().subtract(29, "days"), moment()],
-          "This Month": [moment().startOf("month"), moment().endOf("month")],
+          "Next 18 Months": [
+            moment().add(1, "day"),
+            moment().add(18, "months").endOf("month"),
+          ],
+          "24 Months": [
+            moment().startOf("year"),
+            moment().add(23, "months").endOf("year"),
+          ],
+          "Next 24 Months": [
+            moment().startOf("month"),
+            moment().add(24, "months").endOf("month"),
+          ],
+          "Last Year": [
+            moment().subtract(1, "year").startOf("year"),
+            moment().subtract(1, "year").endOf("year"),
+          ],
           "Last Month": [
             moment().subtract(1, "month").startOf("month"),
             moment().subtract(1, "month").endOf("month"),
           ],
+          "This Month": [moment().startOf("month"), moment().endOf("month")],
         },
       };
 

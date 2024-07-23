@@ -65,7 +65,7 @@ patch(MasterProductionScheduleModel.prototype, {
                 group_by: ["state", "supply_plan_id", "product_id"],
                 expand: true,
               },
-              target: "current",
+              target: "new",
               search_view_id: false,
               filter: false,
             };

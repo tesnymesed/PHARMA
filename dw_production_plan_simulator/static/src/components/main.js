@@ -46,6 +46,7 @@ class ProductionPlanSimulatorComponent extends Component {
       simulationLines: [],
       workCenterCapacities: [],
       currentCompanyId: null,
+      currentCompanyName: "",
       startDate: "2024-01-01",
       endDate: "2025-06-01",
       salesStartDate: "2024-01-01",
@@ -113,6 +114,9 @@ class ProductionPlanSimulatorComponent extends Component {
       this.env.config.setDisplayName(_t("Production Plan Simulation Tool"));
 
       this.state.currentCompanyId = parseInt($("#select-company").val());
+      this.state.currentCompanyName = $(
+        "#select-company option:selected"
+      ).text();
 
       this.state.domain = [["company_id", "=", this.state.currentCompanyId]];
 
@@ -491,7 +495,10 @@ class ProductionPlanSimulatorComponent extends Component {
   }
 
   captureInputSettings() {
-    this.state.currentCompanyId = parseInt($("#select-company").val());
+    this.state.currentCompanyId = parseInt(
+      $("#select-company option:selected").val()
+    );
+    this.state.currentCompanyName = $("#select-company option:selected").text();
 
     let picker = $('input[id="select-period"]').data("daterangepicker");
     this.state.startDate = picker.startDate.format("YYYY-MM-DD");
@@ -575,33 +582,41 @@ class ProductionPlanSimulatorComponent extends Component {
 
     if (this.model.data.length > 0) {
       var createProductNotif = this.notificationService.add(
-        "Load Products to " +
-          this.state.companies +
-          " Production Simulation successful",
+        _t(
+          "Load Products to " +
+            companyName +
+            "'s site Production Simulation successful"
+        ),
         {
-          title:
+          title: _t(
             "Load Products to " +
-            this.state.companies +
-            " Production Simulation successful",
+              this.state.currentCompanyName +
+              "'s site Production Simulation successful"
+          ),
           type: "success",
         }
       );
-      setTimeout(createProductNotif, 2000);
+      setTimeout(createProductNotif, 3000);
       setTimeout(function () {
         location.reload(true);
-      }, 2000);
+      }, 3000);
     } else {
       var createProductNotif = this.notificationService.add(
-        "No products were found. ",
+        _t(
+          "No products were found in " +
+            this.state.currentCompanyName +
+            "'s site "
+        ),
         {
-          title:
+          title: _t(
             "Load Products to " +
-            this.state.companies +
-            " Production Simulation successful",
+              this.state.currentCompanyName +
+              "'s site Production Simulation failed"
+          ),
           type: "danger",
         }
       );
-      setTimeout(createProductNotif, 2000);
+      setTimeout(createProductNotif, 3000);
     }
   }
 
@@ -620,9 +635,12 @@ class ProductionPlanSimulatorComponent extends Component {
       ._createMPSEntries(this.state.currentCompanyId, this.simulationLines)
       .then((res) => {
         var createMPSentriesNotif = this.notificationService.add(
-          "You will be redirected shortly...",
+          _t("You will be redirected shortly..."),
           {
-            title: "Master production schedule (MRP) update successful",
+            title: _t(
+              this.state.currentCompanyName +
+                "'s site Master production schedule (MRP) update successful"
+            ),
             type: "success",
           }
         );
@@ -642,9 +660,13 @@ class ProductionPlanSimulatorComponent extends Component {
       .catch((error) => {
         console.error("error", error);
         var createMPSentriesNotif = this.notificationService.add(
-          "Master production schedule (MRP) creation error: \n" + error,
+          _t(
+            this.state.currentCompanyName +
+              "'s site Master production schedule (MRP) creation error: \n" +
+              error
+          ),
           {
-            title: "Error",
+            title: _t("Error"),
             type: "danger",
           }
         );

@@ -119,17 +119,17 @@
                 </div>
               </div>
 
-              <div class="row">
-                <div class="col-xxl">
-                  <div class="card mb-4" style="max-height: 100%">
-                    <div
-                      class="card-header d-flex align-items-center justify-content-between"
-                    >
-                      <h5 class="mb-0">Planner</h5>
-                    </div>
-                    <div class="o_prod_sim o_content bg-view">
-                      <div class="row">
-                        <t t-if="state.simulationLines.length">
+              <t t-if="state.simulationLines.length">
+                <div class="row">
+                  <div class="col-xxl">
+                    <div class="card mb-4" style="max-height: 100%">
+                      <div
+                        class="card-header d-flex align-items-center justify-content-between"
+                      >
+                        <h5 class="mb-0">Planner</h5>
+                      </div>
+                      <div class="o_prod_sim o_content bg-view">
+                        <div class="row">
                           <div class="text-nowrap mr0 ml0">
                             <table class="table o_mps_product_table">
                               <thead class="table-light">
@@ -162,15 +162,29 @@
                               </t>
                             </table>
                           </div>
-                        </t>
-                        <t t-else="">
-                          <t t-call="prod_sim_nocontent_helper" />
-                        </t>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </t>
+
+              <t t-if="!state.simulationLines.length">
+                <div class="row">
+                  <div class="col-xxl">
+                    <div class="card mb-4" style="height: 500px">
+                      <div
+                        class="card-header d-flex align-items-center justify-content-between"
+                      >
+                        <h5 class="mb-0">Planner</h5>
+                      </div>
+                      <div class="o_prod_sim o_content bg-view">
+                        <t t-call="prod_sim_nocontent_helper" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </t>
             </div>
           </div>
         </div>

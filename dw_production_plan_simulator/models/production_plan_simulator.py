@@ -60,7 +60,8 @@ class DwProductionPlanSimulator(models.Model):
         store=True
     )
 
-    workcenter_id = fields.Many2one('mrp.workcenter', string='Work Center', store=True)
+    workcenter_id = fields.Many2one('mrp.workcenter', string='Work Center',
+                                    default=lambda self: self._default_workcenter_id(), store=True)
 
     workcenter_default_capacity = fields.Float('Capacity', default=1.0,
                                                related="workcenter_id.default_capacity",
@@ -141,6 +142,11 @@ class DwProductionPlanSimulator(models.Model):
         return self.env['stock.warehouse'].search(self.env['stock.warehouse']._check_company_domain(self.env.company),
                                                   limit=1)
 
+    @api.model
+    def _default_workcenter_id(self):
+        return self.env['mrp.workcenter'].search(self.env['mrp.workcenter']._check_company_domain(self.env.company),
+                                                 limit=1)
+
     @api.depends('bom_id')
     def _compute_lot_size(self):
         for record in self:
@@ -202,46 +208,47 @@ class DwProductionPlanSimulator(models.Model):
 
         for workcenter, group in grouped_simulations:
 
-            workcenter_id = workcenter[0]
+            if workcenter:
+                l_group = list(group)
+                l_merged = []
+                for prdct_i in l_group:
+                    l_merged.extend(prdct_i.get('product_plan_sim_ids'))
 
-            l_group = list(group)
-            l_merged = []
-            for prdct_i in l_group:
-                l_merged.extend(prdct_i.get('product_plan_sim_ids'))
+                # Group by date_start and sum
+                res = []
+                for (date_start, date_stop), grp in groupby(l_merged, key=lambda r: (r["date_start"], r["date_stop"])):
+                    group_data = list(grp)
 
-            # Group by date_start and sum
-            res = []
-            for (date_start, date_stop), grp in groupby(l_merged, key=lambda r: (r["date_start"], r["date_stop"])):
-                group_data = list(grp)
+                    total_required_capacity = sum(item["required_capacity"] for item in group_data)
+                    total_production_objective_qty = sum(item["production_objective_qty"] for item in group_data)
+                    # Sample list of strings
+                    notes_str = "\n".join([item.get("note") for item in group_data if item.get("note")])
+                    if total_required_capacity < total_production_objective_qty:
+                        pass
 
-                total_required_capacity = sum(item["required_capacity"] for item in group_data)
-                total_production_objective_qty = sum(item["production_objective_qty"] for item in group_data)
-                # Sample list of strings
-                notes_str = "\n".join([item.get("note") for item in group_data if item.get("note")])
-                if total_required_capacity < total_production_objective_qty:
-                    pass
+                    total_capacity_utilisation = sum(item["capacity_utilisation"] for item in group_data)
 
-                total_capacity_utilisation = sum(item["capacity_utilisation"] for item in group_data)
+                    _year = date_start.year
+                    _quarter = (date_start.month - 1) // 3 + 1
+                    _q_y_f = f"Q{_quarter} {_year}"
 
-                _year = date_start.year
-                _quarter = (date_start.month - 1) // 3 + 1
-                _q_y_f = f"Q{_quarter} {_year}"
+                    res.append({
+                        "workcenter": workcenter,
+                        "workcenter_name": workcenter[1],
+                        "date_start": date_start,
+                        "date_stop": date_stop,
+                        "year": _year,
+                        "quarter": _q_y_f,
+                        "capacity_utilisation": total_capacity_utilisation,
+                        "required_capacity": total_required_capacity,
+                        "production_objective_qty": total_production_objective_qty,
+                        "notes": notes_str
 
-                res.append({
-                    "workcenter": workcenter,
-                    "workcenter_name": workcenter[1],
-                    "date_start": date_start,
-                    "date_stop": date_stop,
-                    "year": _year,
-                    "quarter": _q_y_f,
-                    "capacity_utilisation": total_capacity_utilisation,
-                    "required_capacity": total_required_capacity,
-                    "production_objective_qty": total_production_objective_qty,
-                    "notes": notes_str
+                    })
 
-                })
-
-            results.extend(res)
+                results.extend(res)
+            else:
+                continue
 
         return results
 
@@ -458,7 +465,7 @@ class DwProductionPlanSimulator(models.Model):
         # Get the final products with BOMs for the given company
         products = self.env['product.product'].search([
             ('product_tmpl_id.type', '=', 'product'),
-            ('product_tmpl_id.categ_id.is_final_product', '=', True),
+            # ('product_tmpl_id.categ_id.is_final_product', '=', True),
             # ('product_tmpl_id.bom_ids', '!=', False),
             ('product_tmpl_id.company_id', '=', company_id)
         ])

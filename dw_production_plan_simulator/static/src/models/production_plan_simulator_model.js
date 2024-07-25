@@ -489,6 +489,30 @@ export class ProductionPlanSimulatorModel extends EventBus {
   }
 
   /**
+   * Open the dw.production.plan.simulation form view in order to edit the record.
+   * Once the record is edited get its state and render it.
+   * @private
+   * @param {Integer} productionSimulationId dw.production.plan.simulation Id.
+   */
+  _editWorkCenter(productionSimulationId) {
+    this.mutex.exec(() => {
+      this.action.doAction(
+        {
+          name: "Edit Production Plan Simulation",
+          type: "ir.actions.act_window",
+          res_model: "dw.production.plan.simulation",
+          views: [[false, "form"]],
+          target: "new",
+          res_id: productionSimulationId,
+        },
+        {
+          onClose: () => this.reload(productionSimulationId),
+        }
+      );
+    });
+  }
+
+  /**
    * Unlink the production schedule and remove it from the DOM. Use a
    * confirmation dialog in order to avoid a mistake from the user.
    * @private

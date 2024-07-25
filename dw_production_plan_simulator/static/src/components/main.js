@@ -476,6 +476,13 @@ class ProductionPlanSimulatorComponent extends Component {
     return this.model?.data?.production_simulation_ids;
   }
 
+  get workCenters() {
+    return d3
+      .nest()
+      .key((d) => d.workcenter_id)
+      .entries(this.simulationLines);
+  }
+
   get workCenterCapacities() {
     this.state.workCenterCapacities = this.model?.data?.workcenter_capacities;
     return this.model?.data?.workcenter_capacities;
@@ -673,6 +680,31 @@ class ProductionPlanSimulatorComponent extends Component {
         setTimeout(createMPSentriesNotif, 3000);
         return error;
       });
+  }
+
+  _onClickWorkCenterLink(ev) {
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorComponent ~ _onClickWorkCenterLink ~ ev:",
+      ev
+    );
+
+    this.action.doAction({
+      type: "ir.actions.act_window",
+      res_model: ev.currentTarget.dataset.model,
+      res_id: Number(ev.currentTarget.dataset.resId),
+      views: [[false, "form"]],
+      target: "current",
+    });
+  }
+
+  _onClickWorkCenterEdit(ev, id) {
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorComponent ~ _onClickWorkCenterEdit ~ ev, id:",
+      ev,
+      id
+    );
+
+    this.model._editWorkCenter(id);
   }
 
   //

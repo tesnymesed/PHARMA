@@ -10,7 +10,7 @@
     'summary': 'DW Master Production Schedule',
     'author': 'DIGIWAVES - ALGERIA',
     'website': 'www.digiwaves.io',
-    'depends': ['web', 'mrp_mps', 'shared_assets'],
+    'depends': ['web', 'mrp_mps', 'shared_assets', 'dw_mrp_alert_decision'],
     'data': [
         'views/product_template_views.xml',
         'views/res_config_settings_views.xml',

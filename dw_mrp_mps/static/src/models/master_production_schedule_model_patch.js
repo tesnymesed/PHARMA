@@ -49,4 +49,27 @@ patch(MasterProductionScheduleModel.prototype, {
         });
     });
   },
+  /**
+   * Save the decision ID (int).
+   * @private
+   * @param {Integer} productionScheduleId mrp.production.schedule Id.
+   * @param {String} dateStart period to save
+   * @param {String} dateStop period to save
+   * @param {String} decisionId The new decision ID (int)
+   * @return {Promise}
+   */
+  _saveDecision(productionScheduleId, dateStart, dateStop, decisionId) {
+    return this.mutex.exec(() => {
+      this.orm
+        .call("mrp.production.schedule", "set_decision", [
+          productionScheduleId,
+          dateStart,
+          dateStop,
+          decisionId,
+        ])
+        .then(() => {
+          return this.reload(productionScheduleId);
+        });
+    });
+  },
 });

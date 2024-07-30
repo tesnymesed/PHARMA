@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import random
 from collections import defaultdict
 from datetime import datetime
 from math import log10
@@ -42,8 +43,11 @@ class DWMrpProductionSchedule(models.Model):
             'dw_mrp_mps_show_stock_wout_safety_stock',
             'dw_mrp_mps_show_stock_coverage',
         ])
-
         config['groups'][0].update(dw_company_groups[0])
+
+        decision_action_ids = self.env['dw.mrp.alert.decision'].get_decision_action_items()
+
+        config['decision_action_ids'] = decision_action_ids
 
         return config
 
@@ -192,8 +196,8 @@ class DWMrpProductionSchedule(models.Model):
                                                                      precision_rounding=rounding, rounding_method='UP')
                 replenish_qty_updated = False
                 if existing_forecasts:
-                    forecast_values['notes'] = existing_forecasts[0].notes
-
+                    forecast_values['notes'] = existing_forecasts[0].notes or ''
+                    forecast_values['decision'] = existing_forecasts[0].dw_alert_decision_id.id or -1
                     forecast_values['forecast_qty'] = float_round(sum(existing_forecasts.mapped('forecast_qty')),
                                                                   precision_rounding=rounding)
                     forecast_values['replenish_qty'] = float_round(sum(existing_forecasts.mapped('replenish_qty')),
@@ -206,6 +210,7 @@ class DWMrpProductionSchedule(models.Model):
                 else:
                     forecast_values['forecast_qty'] = 0.0
                     forecast_values['notes'] = ''
+                    # forecast_values['notes'] = -1
 
                 if not replenish_qty_updated:
                     replenish_qty = production_schedule._get_replenish_qty(
@@ -295,7 +300,7 @@ class DWMrpProductionSchedule(models.Model):
             date_stop = datetime.strptime(date_stop, '%Y-%m-%d').date()
 
         existing_forecast = self.forecast_ids.filtered(lambda f: f.date >= date_start and
-                                                                         f.date <= date_stop)
+                                                                 f.date <= date_stop)
         if existing_forecast:
             existing_forecast[0].write({'notes': notes})
         else:
@@ -306,8 +311,40 @@ class DWMrpProductionSchedule(models.Model):
             })
         return True
 
+    def set_decision(self, date_start, date_stop, decision_id):
+        """ Save the forecast decision:
+
+        params decision_id: The new decision id
+        params date_start: The manufacturing period start
+        params date_start: The manufacturing period end
+        """
+        try:
+            decision_id = int(decision_id)
+        except ValueError as e:
+            decision_id = None
+
+        self.ensure_one()
+        if date_start and date_stop:
+            date_start = datetime.strptime(date_start, '%Y-%m-%d').date()
+            date_stop = datetime.strptime(date_stop, '%Y-%m-%d').date()
+
+        existing_forecast = self.forecast_ids.filtered(lambda f: f.date >= date_start and
+                                                                 f.date <= date_stop)
+        if existing_forecast:
+            existing_forecast[0].write({'dw_alert_decision_id': decision_id})
+        elif decision_id is not None:
+            existing_forecast.create({
+                'dw_alert_decision_id': decision_id,
+                'date': date_stop,
+                'production_schedule_id': self.id
+            })
+
+        return True
+
 
 class DWMrpProductForecast(models.Model):
     _inherit = 'mrp.product.forecast'
 
     notes = fields.Text('Observations')
+
+    dw_alert_decision_id = fields.Many2one('dw.mrp.alert.decision', string='Decision')

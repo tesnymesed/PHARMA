@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_dw_mrp_alert_decision_tree" model="ir.ui.view">
+        <field name="name">dw.mrp.alert.decision.tree</field>
+        <field name="model">dw.mrp.alert.decision</field>
+        <field name="arch" type="xml">
+            <tree string="MRP Alert Decisions">
+                <field name="name"/>
+                <field name="sequence" widget="handle"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_dw_mrp_alert_decision_form" model="ir.ui.view">
+        <field name="name">dw.mrp.alert.decision.form</field>
+        <field name="model">dw.mrp.alert.decision</field>
+        <field name="arch" type="xml">
+            <form string="MRP Alert Decision">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="sequence"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dw_mrp_alert_decision" model="ir.actions.act_window">
+        <field name="name">Alert Decisions</field>
+        <field name="res_model">dw.mrp.alert.decision</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <menuitem id="menu_dw_mrp_alert_decision"
+              action="action_dw_mrp_alert_decision"
+              parent="mrp.menu_mrp_configuration"
+              sequence="90"/>
+
+
+    <menuitem id="menu_dw_mrp_alert_decision_config"
+              action="action_dw_mrp_alert_decision"
+              parent="dw_production_plan_simulator.menu_dw_production_plan_simulator_config"
+              sequence="20"/>
+
+
+</odoo>

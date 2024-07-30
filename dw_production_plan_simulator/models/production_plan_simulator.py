@@ -172,7 +172,7 @@ class DwProductionPlanSimulator(models.Model):
         production_simulations_states = production_simulations.get_production_simulation_view_state(
             start_date_range=start_date, end_date_range=end_date)
 
-        workcenter_capacities = self._get_workcenter_capacities(production_simulations_states)
+        workcenter_capacities = self.get_workcenter_capacities(production_simulations_states)
         company_groups = self.env.company.read([
             'mrp_mps_show_starting_inventory',
             'mrp_mps_show_demand_forecast',
@@ -186,23 +186,30 @@ class DwProductionPlanSimulator(models.Model):
             'mrp_mps_show_actual_demand_year_minus_2',
         ])
 
+        decision_action_ids = self.env['dw.mrp.alert.decision'].get_decision_action_items()
+
         return {
             'dates': self.env.company._date_range_to_str(start_date_range=start_date,
                                                          end_date_range=end_date),
             # 'production_simulation_ids': proxy.get('production_simulation_ids'),
             'production_simulation_ids': production_simulations_states,
             'workcenter_capacities': workcenter_capacities,
+            'decision_action_ids': decision_action_ids,
             'company_id': self.env.company.id,
             'groups': company_groups,
             'count': count,
         }
 
-    def _get_workcenter_capacities(self, production_simulations):
-        # Initialize a dictionary to store the grouped data
+    def get_workcenter_capacities(self, production_simulations):
+
+        def key_func(k):
+            return k['date_start']
+
         results = []
 
         # Process each record in the data
-
+        company_id = self.company_id or self.env.company
+        date_range = company_id._get_simulation_date_range()
         # Group the product_plan_sim_ids by date_start and date_stop
         grouped_simulations = groupby(production_simulations, key=lambda r: r["workcenter_id"])
 
@@ -211,40 +218,55 @@ class DwProductionPlanSimulator(models.Model):
             if workcenter:
                 l_group = list(group)
                 l_merged = []
+                l_merged2 = []
                 for prdct_i in l_group:
-                    l_merged.extend(prdct_i.get('product_plan_sim_ids'))
+                    product_plan_sim_ids = prdct_i.get('product_plan_sim_ids')
+                    for plan_sim_i in product_plan_sim_ids:
+                        plan_sim_i.update({'id': prdct_i.get('id')})
+
+                    l_merged.extend(product_plan_sim_ids)
 
                 # Group by date_start and sum
                 res = []
-                for (date_start, date_stop), grp in groupby(l_merged, key=lambda r: (r["date_start"], r["date_stop"])):
-                    group_data = list(grp)
+                # for (date_start, date_stop), grp in groupby(l_merged, key=lambda r: (r["date_start"], r["date_stop"])):
+                for index, (date_start, date_stop) in enumerate(date_range):
+
+                    group_data = [i for i in l_merged if (isinstance(i['date_start'], str) and
+                                                          datetime.datetime.strptime(i['date_start'],
+                                                                                     '%Y-%m-%d').date() == date_start)
+                                  or (isinstance(i['date_start'], datetime.date) and i['date_start'] == date_start)]
 
                     total_required_capacity = sum(item["required_capacity"] for item in group_data)
                     total_production_objective_qty = sum(item["production_objective_qty"] for item in group_data)
                     # Sample list of strings
-                    notes_str = "\n".join([item.get("note") for item in group_data if item.get("note")])
+                    # notes_str = "\n".join([item.get("notes") for item in group_data if item.get("notes")])
+                    notes_str = group_data[0].get("notes")
+                    decision = group_data[0].get("decision")
+
                     if total_required_capacity < total_production_objective_qty:
                         pass
 
                     total_capacity_utilisation = sum(item["capacity_utilisation"] for item in group_data)
 
-                    _year = date_start.year
-                    _quarter = (date_start.month - 1) // 3 + 1
-                    _q_y_f = f"Q{_quarter} {_year}"
+                    if total_capacity_utilisation >= 90:
+                        _year = date_start.year
+                        _quarter = (date_start.month - 1) // 3 + 1
+                        _q_y_f = f"Q{_quarter} {_year}"
 
-                    res.append({
-                        "workcenter": workcenter,
-                        "workcenter_name": workcenter[1],
-                        "date_start": date_start,
-                        "date_stop": date_stop,
-                        "year": _year,
-                        "quarter": _q_y_f,
-                        "capacity_utilisation": total_capacity_utilisation,
-                        "required_capacity": total_required_capacity,
-                        "production_objective_qty": total_production_objective_qty,
-                        "notes": notes_str
-
-                    })
+                        res.append({
+                            "id": [i.get('id') for i in group_data],
+                            "workcenter": workcenter,
+                            "workcenter_name": workcenter[1],
+                            "date_start": date_start,
+                            "date_stop": date_stop,
+                            "year": _year,
+                            "quarter": _q_y_f,
+                            "capacity_utilisation": total_capacity_utilisation,
+                            "required_capacity": total_required_capacity,
+                            "production_objective_qty": total_production_objective_qty,
+                            "notes": notes_str,
+                            "decision": decision
+                        })
 
                 results.extend(res)
             else:
@@ -463,7 +485,7 @@ class DwProductionPlanSimulator(models.Model):
     @api.model
     def create_product_simulations(self, company_id):
         # Get the final products with BOMs for the given company
-        products = self.env['product.product'].search([
+        products_list = self.env['product.product'].search([
             ('product_tmpl_id.type', '=', 'product'),
             # ('product_tmpl_id.categ_id.is_final_product', '=', True),
             # ('product_tmpl_id.bom_ids', '!=', False),
@@ -472,15 +494,29 @@ class DwProductionPlanSimulator(models.Model):
 
         # Create the simulation records
         ids = []
-        for product in products:
-            _id = self.env['dw.production.plan.simulation'].create({
-                'company_id': company_id,
-                'product_id': product.id,
-                'warehouse_id': self._get_warehouse_id(company_id).id,
-                'bom_id': product.product_tmpl_id.bom_ids[0].id,
-                'lot_size': product.product_tmpl_id.bom_ids[0].product_qty
-            })
-            ids.append(_id)
+        existing_pps = []
+
+        for i, product in enumerate(products_list):
+            pps = self.env['dw.production.plan.simulation'].search([
+                ('company_id', '=', company_id),
+                ('product_id', '=', product.id),
+                # ('bom_id', '=', product.product_tmpl_id.bom_ids[0].id),
+            ], limit=1)
+            if pps:
+                existing_pps.append((i, pps.id))
+
+            # for i_remove, __ in reversed(existing_pps):
+            #     del products_list[i_remove]
+            else:
+                pps = self.env['dw.production.plan.simulation'].create({
+                    'company_id': company_id,
+                    'product_id': product.id,
+                    'warehouse_id': self._get_warehouse_id(company_id).id,
+                    'bom_id': product.product_tmpl_id.bom_ids[0].id,
+                    'lot_size': product.product_tmpl_id.bom_ids[0].product_qty
+                })
+
+            ids.append(pps)
 
         return ids
 
@@ -725,7 +761,9 @@ class DwProductionPlanSimulator(models.Model):
                     # forecast_values['stock_level'] = float_round(sum(existing_forecasts.mapped('stock_level')),
                     #                                              precision_rounding=rounding)
 
-                    forecast_values['notes'] = existing_forecasts[0].notes
+                    forecast_values['notes'] = existing_forecasts[0].notes or ''
+
+                    forecast_values['decision'] = existing_forecasts[0].dw_alert_decision_id.id or -1
 
                     forecast_values['forecasted_demand_qty'] = float_round(
                         sum(existing_forecasts.mapped('forecasted_demand_qty')),
@@ -1038,24 +1076,58 @@ class DwProductionPlanSimulator(models.Model):
             })
         return True
 
-    def set_notes(self, date_index, notes):
+    def set_notes(self, date_start, date_stop, notes):
         """ Save the simulation notes:
 
         params notes: The new notes
         params date_index: The manufacturing period
         """
-        self.ensure_one()
-        date_start, date_stop = self.company_id._get_simulation_date_range()[date_index]
-        existing_forecast = self.product_plan_sim_ids.filtered(lambda f:
-                                                               f.date >= date_start and f.date <= date_stop)
-        if existing_forecast:
-            existing_forecast[0].write({'notes': notes})
-        else:
-            existing_forecast.create({
-                'notes': notes,
-                'date': date_stop,
-                'production_simulation_id': self.id
-            })
+        # self.ensure_one()
+        if date_start and date_stop:
+            date_start = datetime.datetime.strptime(date_start, '%Y-%m-%d').date()
+            date_stop = datetime.datetime.strptime(date_stop, '%Y-%m-%d').date()
+
+            existing_forecasts = self.product_plan_sim_ids.filtered(lambda f:
+                                                                   f.date >= date_start and f.date <= date_stop)
+            if existing_forecasts:
+                existing_forecasts.write({'notes': notes})
+            else:
+                existing_forecasts.create({
+                    'notes': notes,
+                    'date': date_stop,
+                    'production_simulation_id': self.id
+                })
+
+        return True
+
+    def set_decision(self, date_start, date_stop, decision_id):
+        """ Save the forecast decision:
+
+        params decision_id: The new decision id
+        params date_start: The manufacturing period start
+        params date_start: The manufacturing period end
+        """
+        try:
+            decision_id = int(decision_id)
+        except ValueError as e:
+            decision_id = None
+
+        # self.ensure_one()
+        if date_start and date_stop:
+            date_start = datetime.datetime.strptime(date_start, '%Y-%m-%d').date()
+            date_stop = datetime.datetime.strptime(date_stop, '%Y-%m-%d').date()
+
+            existing_forecasts = self.product_plan_sim_ids.filtered(lambda f: f.date >= date_start and
+                                                                              f.date <= date_stop)
+            if existing_forecasts:
+                existing_forecasts.write({'dw_alert_decision_id': decision_id})
+            elif decision_id is not None:
+                existing_forecasts.create({
+                    'dw_alert_decision_id': decision_id,
+                    'date': date_stop,
+                    'production_schedule_id': self.id
+                })
+
         return True
 
     # endregion: @bislem: Mocked data inputs
@@ -1743,6 +1815,8 @@ class DwProductPlanSimulation(models.Model):
     batch_count = fields.Float('Batches Count', default=0.0)
 
     replenish_qty = fields.Float('Qty To Produce', default=0.0)
+
+    dw_alert_decision_id = fields.Many2one('dw.mrp.alert.decision', string='Decision')
 
     notes = fields.Text('Observations')
 

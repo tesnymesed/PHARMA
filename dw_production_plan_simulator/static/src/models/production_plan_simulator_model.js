@@ -124,10 +124,30 @@ export class ProductionPlanSimulatorModel extends EventBus {
             );
           }
         }
+        this.orm
+          .call("dw.production.plan.simulation", "get_workcenter_capacities", [
+            productionSimulationId,
+            this.data.production_simulation_ids,
+          ])
+          .then((workcentersCapacities) => {
+            console.log(
+              "🚀 ~ ProductionPlanSimulatorModel ~ .then ~ workcentersCapacities:",
+              workcentersCapacities
+            );
+            this.data.workcenter_capacities = workcentersCapacities;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
         console.log(
           "this.data.production_simulation_ids",
           this.data.production_simulation_ids
         );
+        console.log(
+          "🚀 ~ ProductionPlanSimulatorModel ~ .then ~ this.data.workcenter_capacities:",
+          this.data.workcenter_capacities
+        );
+
         this.notify();
       });
   }
@@ -356,16 +376,41 @@ export class ProductionPlanSimulatorModel extends EventBus {
    * @param {String} notes The new notes (text)
    * @return {Promise}
    */
-  _saveNotes(productionSimulationId, dateIndex, notes) {
+  _saveNotes(productionSimulationId, dateStart, dateStop, notes) {
     return this.mutex.exec(() => {
       this.orm
         .call("dw.production.plan.simulation", "set_notes", [
           productionSimulationId,
-          dateIndex,
+          dateStart,
+          dateStop,
           notes,
         ])
         .then(() => {
-          return this.reload(productionSimulationId);
+          // return this.reload(productionSimulationId);
+        });
+    });
+  }
+
+  /**
+   * Save the decision ID (int).
+   * @private
+   * @param {Integer} productionScheduleId dw.production.plan.simulation Id.
+   * @param {String} dateStart period to save
+   * @param {String} dateStop period to save
+   * @param {String} decisionId The new decision ID (int)
+   * @return {Promise}
+   */
+  _saveDecision(productionScheduleId, dateStart, dateStop, decisionId) {
+    return this.mutex.exec(() => {
+      this.orm
+        .call("dw.production.plan.simulation", "set_decision", [
+          productionScheduleId,
+          dateStart,
+          dateStop,
+          decisionId,
+        ])
+        .then(() => {
+          // return this.reload(productionScheduleId);
         });
     });
   }

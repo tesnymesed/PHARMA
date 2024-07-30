@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_dw_mrp_alert_decision_user,dw_mrp_alert_decision_user,model_dw_mrp_alert_decision,base.group_user,1,1,1,1
+access_dw_mrp_alert_decision_manager,dw_mrp_alert_decision_manager,model_dw_mrp_alert_decision,base.group_system,1,1,1,1

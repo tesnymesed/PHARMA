@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+  <t t-inherit="mrp_mps.mrp_mps" t-inherit-mode="extension" owl="1">
+    <xpath expr="//button[@id='show-alerts']" position="after">
+      <button
+        type="create-supply-plan"
+        id="create-supply-plan"
+        class="btn btn-primary"
+        t-on-click="createSupplyPlans"
+      >
+        Create Supply Plan
+      </button>
+    </xpath>
+  </t>
+</templates>

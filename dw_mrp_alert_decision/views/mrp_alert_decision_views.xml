@@ -39,10 +39,10 @@
               sequence="90"/>
 
 
-    <menuitem id="menu_dw_mrp_alert_decision_config"
-              action="action_dw_mrp_alert_decision"
-              parent="dw_production_plan_simulator.menu_dw_production_plan_simulator_config"
-              sequence="20"/>
+<!--    <menuitem id="menu_dw_mrp_alert_decision_config"-->
+<!--              action="action_dw_mrp_alert_decision"-->
+<!--              parent="dw_production_plan_simulator.menu_dw_production_plan_simulator_config"-->
+<!--              sequence="20"/>-->
 
 
 </odoo>

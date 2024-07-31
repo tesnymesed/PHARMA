@@ -485,7 +485,7 @@ export class ProductionPlanSimulatorModel extends EventBus {
           name: "Materials Availability",
           type: "ir.actions.client",
           tag: "mrp_mps_client_action",
-          target: "fullscreen",
+          target: "current",
           domain: [["company_id", "=", state.currentCompanyId]],
           params: {
             company: state.currentCompanyId,

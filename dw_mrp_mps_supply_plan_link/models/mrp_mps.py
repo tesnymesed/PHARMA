@@ -30,7 +30,6 @@ class DWMrpProductionSchedule(models.Model):
             for comp in comp_mps:
                 ids = self.process_data(comp, company_id)
                 if ids:
-                    print(comp)
                     result.extend(ids)
 
             return result

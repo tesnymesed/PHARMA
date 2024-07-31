@@ -170,7 +170,7 @@
   <menuitem
     id="dw_mrp_supply_wizard_menu"
     name="MRP Supply Wizard"
-    parent="dw_mrp_supply_plan.menu_dw_mrp_supply_plan_root"
+    parent="menu_dw_mrp_supply_plan_root"
     sequence="2"
     action="dw_mrp_supply_wizard_action"
   />
@@ -179,7 +179,7 @@
   <menuitem
     id="dw_purchase_order_preview_menu"
     name="Purchase Orders Plan"
-    parent="dw_mrp_supply_plan.menu_dw_mrp_supply_plan_root"
+    parent="menu_dw_mrp_supply_plan_root"
     action="action_dw_purchase_order_preview"
     sequence="5"
   />

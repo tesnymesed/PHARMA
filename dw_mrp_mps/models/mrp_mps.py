@@ -14,6 +14,8 @@ from odoo.tools.float_utils import float_round
 class DWMrpProductionSchedule(models.Model):
     _inherit = 'mrp.production.schedule'
 
+
+
     @api.model
     def get_mps_view_state(self, domain=False, offset=0, limit=False, start_date_range='', end_date_range=''):
         """ Return the global information about MPS and a list of production

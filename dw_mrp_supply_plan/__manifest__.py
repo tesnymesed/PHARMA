@@ -8,6 +8,7 @@
     'author': 'DIGIWAVES - ALGERIA',
     'website': 'www.digiwaves.io',
     'depends': [
+        'dw_base',
         'purchase',
         'custom_widget',
     ],
@@ -22,9 +23,9 @@
 
         # views
         'views/dw_mrp_supply_plan_views.xml',
+        'views/menus.xml',
         'views/dw_mrp_supply_plan_tool_views.xml',
 
-        'views/menus.xml',
 
     ],
 

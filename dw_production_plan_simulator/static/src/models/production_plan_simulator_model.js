@@ -124,10 +124,30 @@ export class ProductionPlanSimulatorModel extends EventBus {
             );
           }
         }
+        this.orm
+          .call("dw.production.plan.simulation", "get_workcenter_capacities", [
+            productionSimulationId,
+            this.data.production_simulation_ids,
+          ])
+          .then((workcentersCapacities) => {
+            console.log(
+              "🚀 ~ ProductionPlanSimulatorModel ~ .then ~ workcentersCapacities:",
+              workcentersCapacities
+            );
+            this.data.workcenter_capacities = workcentersCapacities;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
         console.log(
           "this.data.production_simulation_ids",
           this.data.production_simulation_ids
         );
+        console.log(
+          "🚀 ~ ProductionPlanSimulatorModel ~ .then ~ this.data.workcenter_capacities:",
+          this.data.workcenter_capacities
+        );
+
         this.notify();
       });
   }
@@ -356,16 +376,41 @@ export class ProductionPlanSimulatorModel extends EventBus {
    * @param {String} notes The new notes (text)
    * @return {Promise}
    */
-  _saveNotes(productionSimulationId, dateIndex, notes) {
+  _saveNotes(productionSimulationId, dateStart, dateStop, notes) {
     return this.mutex.exec(() => {
       this.orm
         .call("dw.production.plan.simulation", "set_notes", [
           productionSimulationId,
-          dateIndex,
+          dateStart,
+          dateStop,
           notes,
         ])
         .then(() => {
-          return this.reload(productionSimulationId);
+          // return this.reload(productionSimulationId);
+        });
+    });
+  }
+
+  /**
+   * Save the decision ID (int).
+   * @private
+   * @param {Integer} productionScheduleId dw.production.plan.simulation Id.
+   * @param {String} dateStart period to save
+   * @param {String} dateStop period to save
+   * @param {String} decisionId The new decision ID (int)
+   * @return {Promise}
+   */
+  _saveDecision(productionScheduleId, dateStart, dateStop, decisionId) {
+    return this.mutex.exec(() => {
+      this.orm
+        .call("dw.production.plan.simulation", "set_decision", [
+          productionScheduleId,
+          dateStart,
+          dateStop,
+          decisionId,
+        ])
+        .then(() => {
+          // return this.reload(productionScheduleId);
         });
     });
   }
@@ -440,7 +485,7 @@ export class ProductionPlanSimulatorModel extends EventBus {
           name: "Materials Availability",
           type: "ir.actions.client",
           tag: "mrp_mps_client_action",
-          target: "fullscreen",
+          target: "current",
           domain: [["company_id", "=", state.currentCompanyId]],
           params: {
             company: state.currentCompanyId,
@@ -471,6 +516,30 @@ export class ProductionPlanSimulatorModel extends EventBus {
    * @param {Integer} productionSimulationId dw.production.plan.simulation Id.
    */
   _editProduct(productionSimulationId) {
+    this.mutex.exec(() => {
+      this.action.doAction(
+        {
+          name: "Edit Production Plan Simulation",
+          type: "ir.actions.act_window",
+          res_model: "dw.production.plan.simulation",
+          views: [[false, "form"]],
+          target: "new",
+          res_id: productionSimulationId,
+        },
+        {
+          onClose: () => this.reload(productionSimulationId),
+        }
+      );
+    });
+  }
+
+  /**
+   * Open the dw.production.plan.simulation form view in order to edit the record.
+   * Once the record is edited get its state and render it.
+   * @private
+   * @param {Integer} productionSimulationId dw.production.plan.simulation Id.
+   */
+  _editWorkCenter(productionSimulationId) {
     this.mutex.exec(() => {
       this.action.doAction(
         {

@@ -13,7 +13,10 @@
       />
     </head>
     <!-- Layout wrapper -->
-    <div class="layout-wrapper layout-content-navbar">
+    <div
+      class="layout-wrapper layout-content-navbar"
+      style="max-height: 100%; overflow: auto"
+    >
       <div class="layout-container">
         <div class="layout-page">
           <div class="content-wrapper">
@@ -87,7 +90,7 @@
                         </div>
 
                         <div class="col-sm-4">
-                          <t t-if="workCenterCapacities.length">
+                          <t t-if="workCenterCapacities.length > 0">
                             <button
                               type="show-alerts"
                               id="show-alerts"
@@ -119,10 +122,10 @@
                 </div>
               </div>
 
-              <t t-if="state.simulationLines.length">
+              <t t-if="simulationLines.length">
                 <div class="row">
                   <div class="col-xxl">
-                    <div class="card mb-4" style="max-height: 100%">
+                    <div class="card mb-4" style="max-height: 90%">
                       <div
                         class="card-header d-flex align-items-center justify-content-between"
                       >
@@ -131,36 +134,86 @@
                       <div class="o_prod_sim o_content bg-view">
                         <div class="row">
                           <div class="text-nowrap mr0 ml0">
-                            <table class="table o_mps_product_table">
-                              <thead class="table-light">
-                                <tr class="o_mps_period">
-                                  <th></th>
-                                  <th />
-                                  <th />
-                                  <th
-                                    class="text-end pe-4"
-                                    scope="col"
-                                    t-foreach="manufacturingPeriods"
-                                    t-as="period"
-                                    t-key="period"
-                                  >
-                                    <div><t t-esc="period" /></div>
-                                  </th>
-                                </tr>
-                              </thead>
+                            <div id="wrap" class="oe_structure">
+                              <table class="table o_mps_product_table">
+                                <t
+                                  t-foreach="workCenters"
+                                  t-as="workCenter"
+                                  t-key="workCenter.key"
+                                >
+                                  <thead class="table-light">
+                                    <tr>
+                                      <th
+                                        scope="row"
+                                        t-attf-colspan="{{
+                                          manufacturingPeriods.length + 3
+                                        }}"
+                                      >
+                                        <a
+                                          href="#"
+                                          class="o_prod_sim_record_url"
+                                          t-att-data-res-id="workCenter.key[0]"
+                                          t-att-data-model="'mrp.workcenter'"
+                                          t-on-click.prevent="_onClickWorkCenterLink"
+                                        >
+                                          <t
+                                            t-esc="workCenter.key.split(',')[1]"
+                                          />
+                                        </a>
 
-                              <t
-                                t-foreach="state.simulationLines"
-                                t-as="productionSimulation"
-                                t-key="productionSimulation.id"
-                              >
-                                <!--                                  <div><t t-esc="productionSimulation.id" /></div>-->
-                                <ProductionPlanSimulatorLine
-                                  data="productionSimulation"
-                                  groups="groups"
-                                />
-                              </t>
-                            </table>
+                                        <!-- <span> </span>
+                                          <button
+                                            type="button"
+                                            t-attf-class="{{
+                                              'btn btn-link text-muted o_no_padding o_prod_sim_edit'
+                                            }}"
+                                            t-on-click.stop="(ev) => this._onClickWorkCenterEdit(ev, workCenter.key[0])"
+                                          >
+                                            <img
+                                              src="dw_production_plan_simulator/static/description/info.png"
+                                              alt="Icon"
+                                            />
+                                          </button> -->
+                                      </th>
+                                    </tr>
+                                  </thead>
+
+                                  <tbody>
+                                    <tr>
+                                      <table class="table o_mps_product_table">
+                                        <thead class="table-light">
+                                          <tr class="o_mps_period">
+                                            <th></th>
+                                            <th />
+                                            <th />
+                                            <th
+                                              class="text-end pe-4"
+                                              scope="col"
+                                              t-foreach="manufacturingPeriods"
+                                              t-as="period"
+                                              t-key="period"
+                                            >
+                                              <div><t t-esc="period" /></div>
+                                            </th>
+                                          </tr>
+                                        </thead>
+
+                                        <t
+                                          t-foreach="workCenter.values"
+                                          t-as="productionSimulation"
+                                          t-key="productionSimulation.id"
+                                        >
+                                          <ProductionPlanSimulatorLine
+                                            data="productionSimulation"
+                                            groups="groups"
+                                          />
+                                        </t>
+                                      </table>
+                                    </tr>
+                                  </tbody>
+                                </t>
+                              </table>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -169,7 +222,7 @@
                 </div>
               </t>
 
-              <t t-if="!state.simulationLines.length">
+              <t t-if="!simulationLines.length">
                 <div class="row">
                   <div class="col-xxl">
                     <div class="card mb-4" style="height: 500px">
@@ -225,7 +278,7 @@
               <div id="newRow"></div>
             </div>
             <!--Body
-            End-->
+                End-->
           </div>
           <div class="modal-footer">
             <button

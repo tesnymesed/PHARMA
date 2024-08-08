@@ -17,7 +17,8 @@ patch(MainComponent.prototype, {
 
     onWillStart(async () => {
       await loadCSS("shared_assets/static/libs/css/daterangepicker.css");
-      await loadCSS("shared_assets/static/libs/css/tabulator.min.css");
+      await loadCSS("shared_assets/static/libs/css/tabulator.6.2.min.css");
+      //      await loadCSS("shared_assets/static/libs/css/tabulator.min.css");
     });
 
     onMounted(async () => {
@@ -135,6 +136,10 @@ patch(MainComponent.prototype, {
     return res;
   },
 
+  get decisionActions() {
+    return this.model?.data?.decision_action_ids;
+  },
+
   onWillStart() {
     this.manufacturingPeriodDates = this.manufacturingPeriodDates;
   },
@@ -176,6 +181,16 @@ patch(MainComponent.prototype, {
         {
           title: "Closing Stock Level",
           field: "safety_stock_qty_wout_ss",
+        },
+        {
+          title: "Decision",
+          field: "decision",
+          editable: true,
+          formatter: "lookup",
+          formatterParams: this.decisionActions,
+          editor: "list",
+          editorParams: { values: this.decisionActions },
+          cellEdited: this.decisionCellEdited.bind(this),
         },
         {
           title: "Notes",
@@ -227,6 +242,21 @@ patch(MainComponent.prototype, {
 
     await this.model
       ._saveNotes(cellData.id, cellData.date_start, cellData.date_stop, notes)
+      .then((result) => {})
+      .catch((err) => {});
+  },
+
+  async decisionCellEdited(cell) {
+    const decision = cell.getValue();
+    const cellData = cell.getData();
+
+    await this.model
+      ._saveDecision(
+        cellData.id,
+        cellData.date_start,
+        cellData.date_stop,
+        decision
+      )
       .then((result) => {})
       .catch((err) => {});
   },

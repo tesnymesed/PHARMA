@@ -45,6 +45,7 @@ class ProductionPlanSimulatorComponent extends Component {
       products: [],
       simulationLines: [],
       workCenterCapacities: [],
+      decisionActions: [],
       currentCompanyId: null,
       currentCompanyName: "",
       startDate: "2024-01-01",
@@ -94,7 +95,8 @@ class ProductionPlanSimulatorComponent extends Component {
         "dw_production_plan_simulator/static/src/libs/css/perfect-scrollbar.css"
       );
       await loadCSS("shared_assets/static/libs/css/daterangepicker.css");
-      await loadCSS("shared_assets/static/libs/css/tabulator.min.css");
+      await loadCSS("shared_assets/static/libs/css/tabulator.6.2.min.css");
+      //      await loadCSS("shared_assets/static/libs/css/tabulator.min.css");
       await loadCSS(
         "dw_production_plan_simulator/static/src/components/main.css"
       );
@@ -335,12 +337,11 @@ class ProductionPlanSimulatorComponent extends Component {
   }
 
   initAlertsTable() {
-    let data = [];
-    console.log("initAlertsTable", this.workCenterCapacities);
+    let data = this.workCenterCapacities;
     if (this.workCenterCapacities.length > 0) {
-      data = this.workCenterCapacities.filter(
-        (cp) => cp.capacity_utilisation >= 90
-      );
+      // data = this.workCenterCapacities.filter(
+      //   (cp) => cp.capacity_utilisation >= 90
+      // );
       let keys = [
         //        "workcenter",
         "date_start",
@@ -349,6 +350,7 @@ class ProductionPlanSimulatorComponent extends Component {
         "capacity_utilisation",
         "required_capacity",
         "production_objective_qty",
+        "decision",
         "notes",
       ];
 
@@ -436,10 +438,21 @@ class ProductionPlanSimulatorComponent extends Component {
           },
         },
         {
+          title: "Decision",
+          field: "decision",
+          editable: true,
+          formatter: "lookup",
+          formatterParams: this.decisionActions,
+          editor: "list",
+          editorParams: { values: this.decisionActions },
+          cellEdited: this.decisionCellEdited.bind(this),
+        },
+        {
           title: "Notes",
           field: "notes",
           editor: "textarea",
           formatter: "textarea",
+          cellEdited: this.notesCellEdited.bind(this),
         },
       ];
       let alertsTable = this.initTabulator("#alertsTable", data, columns);
@@ -476,9 +489,21 @@ class ProductionPlanSimulatorComponent extends Component {
     return this.model?.data?.production_simulation_ids;
   }
 
+  get workCenters() {
+    return d3
+      .nest()
+      .key((d) => d.workcenter_id)
+      .entries(this.simulationLines);
+  }
+
   get workCenterCapacities() {
     this.state.workCenterCapacities = this.model?.data?.workcenter_capacities;
     return this.model?.data?.workcenter_capacities;
+  }
+
+  get decisionActions() {
+    this.state.decisionActions = this.model?.data?.decision_action_ids;
+    return this.model?.data?.decision_action_ids;
   }
 
   //
@@ -630,6 +655,35 @@ class ProductionPlanSimulatorComponent extends Component {
     this.displayAlerts();
   }
 
+  async notesCellEdited(cell) {
+    const notes = cell.getValue();
+    const cellData = cell.getData();
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorComponent ~ notesCellEdited ~ cellData:",
+      cellData
+    );
+
+    await this.model
+      ._saveNotes(cellData.id, cellData.date_start, cellData.date_stop, notes)
+      .then((result) => {})
+      .catch((err) => {});
+  }
+
+  async decisionCellEdited(cell) {
+    const decision = cell.getValue();
+    const cellData = cell.getData();
+
+    await this.model
+      ._saveDecision(
+        cellData.id,
+        cellData.date_start,
+        cellData.date_stop,
+        decision
+      )
+      .then((result) => {})
+      .catch((err) => {});
+  }
+
   checkMaterialsAvailability() {
     this.model
       ._createMPSEntries(this.state.currentCompanyId, this.simulationLines)
@@ -673,6 +727,31 @@ class ProductionPlanSimulatorComponent extends Component {
         setTimeout(createMPSentriesNotif, 3000);
         return error;
       });
+  }
+
+  _onClickWorkCenterLink(ev) {
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorComponent ~ _onClickWorkCenterLink ~ ev:",
+      ev
+    );
+
+    this.action.doAction({
+      type: "ir.actions.act_window",
+      res_model: ev.currentTarget.dataset.model,
+      res_id: Number(ev.currentTarget.dataset.resId),
+      views: [[false, "form"]],
+      target: "current",
+    });
+  }
+
+  _onClickWorkCenterEdit(ev, id) {
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorComponent ~ _onClickWorkCenterEdit ~ ev, id:",
+      ev,
+      id
+    );
+
+    this.model._editWorkCenter(id);
   }
 
   //

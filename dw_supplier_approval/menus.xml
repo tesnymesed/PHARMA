@@ -1,34 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="action_supplier_approval" model="ir.actions.act_window">
-            <field name="name">Market</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">dw.market</field>
-            <field name="view_mode">kanban,tree,form</field>
-            <field name="context">{}</field>
 
-        </record>
         <record id="action_identification_besoin" model="ir.actions.act_window">
             <field name="name">Identification of the need</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">product.product</field>
             <field name="view_mode">tree,form</field>
-             <field name="view_ids" eval="[(5, 0, 0),
+            <field name="view_ids" eval="[(5, 0, 0),
 
             (0, 0, {'view_mode': 'tree' , 'view_id': ref('dw_supplier_approval.view_identification_besoin_product_tree')}),
             ]"/>
             <field name="search_view_id" ref="dw_supplier_approval.product_template_search_view_inherit"/>
 
-           <field name="domain">['|', '|',('homologue', '=', True), ('categ_id.homologue', '=', True),
+            <field name="domain">['|', '|',('homologue', '=', True), ('categ_id.homologue', '=', True),
                 ('product_tmpl_id.homologue', '=', True),('purchase_ok', '=',
                 True),'|','|','|',('number_fournisseur2', '&lt;',2),('has_backliested_supplier2','=',True),('expired_homologation2','=',True),('expired_contract2','=',True)]
             </field>
         </record>
-<!--         <field name="domain">['|', '|',('homologue', '=', True), ('categ_id.homologue', '=', True),
-                ('product_tmpl_id.homologue', '=', True),('purchase_ok', '=',
-                True),('number_fournisseur', '&lt;',2)]
-            </field>-->
+        <!--         <field name="domain">['|', '|',('homologue', '=', True), ('categ_id.homologue', '=', True),
+                        ('product_tmpl_id.homologue', '=', True),('purchase_ok', '=',
+                        True),('number_fournisseur', '&lt;',2)]
+                    </field>-->
         <record id="action_view_article_homologue" model="ir.actions.act_window">
             <field name="name">Article</field>
             <field name="type">ir.actions.act_window</field>
@@ -38,14 +31,7 @@
                 ('product_tmpl_id.homologue', '=', True), ('purchase_ok', '=', True)]
             </field>
         </record>
-        <record id="action_market_type" model="ir.actions.act_window">
-            <field name="name">Market</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">dw.market.type</field>
-            <field name="view_mode">tree,form</field>
-            <field name="context">{}</field>
 
-        </record>
         <record id="action_dw_homologation" model="ir.actions.act_window">
             <field name="name">supplier approval</field>
             <field name="type">ir.actions.act_window</field>
@@ -57,70 +43,51 @@
             <field name="context">{}</field>
 
         </record>
-        <menuitem id="menu_supplier_approval_root"
-                  name="homologation fournisseur"
-                  web_icon="dw_supplier_approval,static/description/icon.png"
-                  sequence="10"
-                  groups="dw_supplier_approval.group_user_dw_homologation"
-        />
-        <menuitem id="menu_supplier_approval_configuration"
-                  name="Configuration"
-                  sequence="20"
-                  groups="dw_supplier_approval.group_manager_dw_homologation"
-                  parent="dw_supplier_approval.menu_supplier_approval_root"
-
-        />
-        <menuitem id="menu_market_type"
-                  name="Market Type"
-                  parent="dw_supplier_approval.menu_supplier_approval_configuration"
-                  action="action_market_type"
-                  sequence="20"
 
 
-        />
-        <menuitem id="menu_market_root"
-                  name="Market"
-                  parent="menu_supplier_approval_root"
-                  sequence="10"
-        />
         <menuitem id="menu_identification_besoin_root"
                   name="Identification of the need"
-                  parent="menu_supplier_approval_root"
+                  parent="dw_procurement.menu_supplier_approval_root"
                   action="action_identification_besoin"
                   sequence="11"
         />
         <menuitem id="menu_article_homologation"
                   name="Article"
-                  parent="dw_supplier_approval.menu_supplier_approval_configuration"
+                  parent="dw_procurement.menu_supplier_approval_configuration"
                   action="action_view_article_homologue"
                   sequence="21"
-        />
-        <menuitem id="menu_market"
-                  name="Market"
-                  parent="menu_market_root"
-                  action="action_supplier_approval"
-                  sequence="10"
         />
 
         <menuitem id="menu_homologation_root"
                   name="approval"
-                  parent="menu_supplier_approval_root"
+                  parent="dw_procurement.menu_supplier_approval_root"
                   sequence="11"
         />
+
         <menuitem id="menu_homologation"
                   name="approval"
                   parent="menu_homologation_root"
                   action="action_dw_homologation"
+                  groups="dw_supplier_approval.group_user_dw_homologation"
                   sequence="11"
         />
-        <menuitem name="Consultation" id="dw_consultation_menu" parent="menu_supplier_approval_root"
-                  action="dw_consultation_act_window" sequence="15"/>
-        <menuitem name="Consultation Criteria" id="dw_consultation_criteria_menu"
-                  parent="menu_supplier_approval_configuration"
-                  action="dw_consultation_criteria_act_window"
-                  sequence="20"
-        />
 
+        <record id="action_supplier_approval_with" model="ir.actions.act_window">
+            <field name="name">Market with homologation</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dw.market</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{'default_dw_for_homologation':True,'dw_used_for_homologation':True}</field>
+            <field name="domain">[('dw_for_homologation','=',True)]</field>
+        </record>
+
+        <menuitem id="menu_market_with_homologation"
+                  name="Market with homologation"
+                  parent="dw_procurement.menu_market_root"
+                  action="action_supplier_approval_with"
+                  groups="dw_supplier_approval.group_user_dw_homologation"
+                  sequence="11"
+        />
 
     </data>
 </odoo>

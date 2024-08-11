@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="dw_product_template_purchase_lead_time_view_tree" model="ir.ui.view">
+        <field name="name">dw.product.template.purchase.lead.time.view.tree</field>
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <tree string="Product Purchase Lead Time">
+                <field name="currency_id" column_invisible="True" readonly="1"/>
+                <field name="cost_currency_id" column_invisible="True" readonly="1"/>
+                <field name="name" string="Product Name" readonly="1"/>
+                <field name="default_code" optional="show" readonly="1"/>
+                <field name="product_tag_ids" widget="many2many_tags" optional="hide" readonly="1"/>
+                <field name="standard_price" widget='monetary' options="{'currency_field': 'cost_currency_id'}"
+                       optional="show" readonly="1"/>
+                <field name="categ_id" optional="show" readonly="1"/>
+                <field name="detailed_type" optional="hide" readonly="1"/>
+                <field name="type" column_invisible="True" readonly="1"/>
+                <field name="uom_id" string="Unit" readonly="1" optional="hide" groups="uom.group_uom"/>
+                <field string="Lead Time" name="dw_purchase_lead" optional="show"/>
+                <field string="Lead Time (Set manually)" name="dw_set_lead_time" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="dw_product_template_purchase_lead_time_view_form_inherit" model="ir.ui.view">
+        <field name="name">dw.product.template.purchase.lead.time.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <field name="default_code" position="after">
+                <group>
+                    <group>
+                        <field string="Purchase Lead Time" name="dw_purchase_lead"/>
+                    </group>
+                </group>
+            </field>
+
+        </field>
+    </record>
+
+    <record id="dw_product_lead_time_action" model="ir.actions.act_window">
+        <field name="name">Product Lead Time</field>
+        <field name="res_model">product.template</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_id" ref="dw_product_template_purchase_lead_time_view_tree"/>
+        <field name="view_ids" eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('dw_product_template_purchase_lead_time_view_tree')})]"/>
+        <!--        <field name="search_view_id" ref="view_mrp_workcenter_search"/>-->
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new product
+            </p>
+            <p>
+                Attribute lead times to products.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_dw_product_lead_time_action"
+              action="dw_product_lead_time_action"
+              parent="mrp.menu_mrp_bom"
+              sequence="3"
+    />
+
+</odoo>

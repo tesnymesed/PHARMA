@@ -1,0 +1,13 @@
+<odoo>
+    <menuitem
+            id="dw_product_purchase_class_config_menu_item" name="Product Purchase Class"
+            parent="purchase.menu_purchase_config" sequence="60"/>
+
+    <menuitem id="dw_product_purchase_class_menu"
+              name="Product Purchase Classes"
+              action="action_dw_product_purchase_class"
+              parent="dw_product_purchase_class.dw_product_purchase_class_config_menu_item"
+              sequence="1"/>
+
+
+</odoo>

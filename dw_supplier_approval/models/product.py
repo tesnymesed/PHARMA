@@ -34,7 +34,7 @@ class DwProduct(models.Model):
         default=False
     )
     number_fournisseur = fields.Integer('Number of fournisseur', compute="_compute_number_fournisseur")
-    number_fournisseur2 = fields.Integer('Number of fournisseur', related="number_fournisseur", store=True)
+    number_fournisseur2 = fields.Integer('Number of fournisseur', compute="_compute_number_fournisseur2", store=True)
 
     homologation_ids = fields.One2many("dw.homologation", 'product_id', string="Homologation")
     homologation_ids = fields.One2many("dw.homologation", 'product_id', string="Homologation")
@@ -47,6 +47,12 @@ class DwProduct(models.Model):
 
     expired_contract = fields.Boolean('Expired contract', compute="_compute_expired_contract")
     expired_contract2 = fields.Boolean('Expired contract', related="expired_contract", store=True)
+
+    @api.depends('number_fournisseur')
+    def _compute_number_fournisseur2(self):
+        for record in self:
+            record.number_fournisseur2 = record.number_fournisseur
+
     def action_show_homologations(self):
         return ({
             'res_model': 'dw.homologation',
@@ -61,38 +67,6 @@ class DwProduct(models.Model):
             'context': {"create": 0},
         })
 
-    def diff_month(self, d1, d2):
-        return (d1.year - d2.year) * 12 + d1.month - d2.month
-
-    def _compute_expired_contract(self):
-        today = date.today()
-
-        for record in self:
-            record.expired_contract = True if any(
-                seller.purchase_requisition_id and seller.purchase_requisition_id.date_end and
-                self.diff_month(seller.purchase_requisition_id.date_end, today) <= 18 for seller in
-                record.seller_ids) else False
-
-    def _compute_expired_homologation(self):
-        # Get today's date
-        today = date.today()
-        for record in self:
-            record.expired_homologation = True if any(homologation.end_date and homologation.state == 'homologue' and
-                                                      self.diff_month(homologation.end_date, today) <= 18 for
-                                                      homologation in record.homologation_ids) else False
-
-    def _compute_has_blacklisted(self):
-        for record in self:
-            blacklist1 = True if any(
-                homologation.supplier_id.is_blacklisted == True and homologation.state == 'homologue' for homologation
-                in record.homologation_ids) else False
-            blacklist2 = True if any(
-                seller.partner_id.is_blacklisted == True for seller in
-                record.seller_ids) else False
-            if blacklist1 or blacklist2:
-                record.has_backliested_supplier = True
-            else :
-                record.has_backliested_supplier = False
     # @api.depends('homologation_ids')
     def _compute_number_fournisseur(self):
         for record in self:
@@ -118,3 +92,35 @@ class DwProduct(models.Model):
         for rec in self:
             market_list.append(rec._prepare_market())
         DwMarket.create(market_list)
+
+    def diff_month(self, d1, d2):
+        return (d1.year - d2.year) * 12 + d1.month - d2.month
+
+    def _compute_expired_contract(self):
+        today = date.today()
+
+        for record in self:
+            record.expired_contract = True if any(
+                seller.purchase_requisition_id and seller.purchase_requisition_id.date_end and
+                self.diff_month(seller.purchase_requisition_id.date_end, today) <= 18 for seller in
+                record.seller_ids) else False
+
+    def _compute_expired_homologation(self):
+        today = date.today()
+        for record in self:
+            record.expired_homologation = True if any(homologation.end_date and homologation.state == 'homologue' and
+                                                      self.diff_month(homologation.end_date, today) <= 18 for
+                                                      homologation in record.homologation_ids) else False
+
+    def _compute_has_blacklisted(self):
+        for record in self:
+            blacklist1 = True if any(
+                homologation.supplier_id.is_blacklisted == True and homologation.state == 'homologue' for homologation
+                in record.homologation_ids) else False
+            blacklist2 = True if any(
+                seller.partner_id.is_blacklisted == True for seller in
+                record.seller_ids) else False
+            if blacklist1 or blacklist2:
+                record.has_backliested_supplier = True
+            else:
+                record.has_backliested_supplier = False

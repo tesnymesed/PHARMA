@@ -19,9 +19,9 @@ class DocumentWizard(models.TransientModel):
         ],
         string="State",
 
-        related ="homologation_id.state"
-,
-    store="1",
+        related="homologation_id.state"
+        ,
+        store="1",
     )
 
     rapport_expertise_attachment = fields.Binary(string="Expert report")
@@ -29,8 +29,6 @@ class DocumentWizard(models.TransientModel):
 
     rapport_technique_attachment = fields.Binary(string="Technical control report")
     rapport_technique_name = fields.Char(string='File name')
-
-
 
     rapport_audit_attachment = fields.Binary(string="Supplier audit report")
     rapport_audit_file_name = fields.Char(string='File name')
@@ -40,6 +38,7 @@ class DocumentWizard(models.TransientModel):
 
     Pre_eval_quest_attachment = fields.Binary(string="Pre-evaluation questionnaire")
     Pre_eval_quest_name = fields.Char(string='File name')
+
     def action_Pre_eval_quest(self):
         if self.Pre_eval_quest_attachment and self.Pre_eval_quest_name:
             self.env['documents.document'].create({
@@ -52,8 +51,9 @@ class DocumentWizard(models.TransientModel):
                 'datas': self.Pre_eval_quest_attachment,
                 'folder_id': self.env.ref('dw_supplier_approval.folder_homologation').id,
             })
+
     def action_exper_techn_report(self):
-        if self.rapport_expertise_attachment and self.rapport_expertise_file_name :
+        if self.rapport_expertise_attachment and self.rapport_expertise_file_name:
             self.env['documents.document'].create({
                 'res_model': 'dw.homologation',
                 'res_id': self.homologation_id.id,
@@ -64,7 +64,7 @@ class DocumentWizard(models.TransientModel):
                 'datas': self.rapport_expertise_attachment,
                 'folder_id': self.env.ref('dw_supplier_approval.folder_homologation').id,
             })
-        if self.rapport_technique_attachment and self.rapport_technique_name :
+        if self.rapport_technique_attachment and self.rapport_technique_name:
             self.env['documents.document'].create({
                 'res_model': 'dw.homologation',
                 'res_id': self.homologation_id.id,
@@ -76,6 +76,7 @@ class DocumentWizard(models.TransientModel):
                 'datas': self.rapport_technique_attachment,
                 'folder_id': self.env.ref('dw_supplier_approval.folder_homologation').id,
             })
+
     @api.depends('manufacturing_file_name')
     def _compute_name(self):
         for record in self:
@@ -96,9 +97,6 @@ class DocumentWizard(models.TransientModel):
                 'folder_id': self.env.ref('dw_supplier_approval.folder_homologation').id,
             })
             self.homologation_id.write({"state": "analyse"})
-
-
-
 
     def action_audit(self):
         if self.rapport_audit_attachment and self.rapport_audit_file_name and self.state_homologation == 'audit':
@@ -125,4 +123,3 @@ class DocumentWizard(models.TransientModel):
                 'datas': self.fichier_stabilite_attachment,
                 'folder_id': self.env.ref('dw_supplier_approval.folder_homologation').id,
             })
-

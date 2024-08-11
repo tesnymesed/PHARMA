@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+  <div
+    t-name="production_plan_simulator.prod_plan_sim_template"
+    class="main o_action"
+    owl="1"
+  >
+    <head>
+      <link
+        rel="stylesheet"
+        type="text/css"
+        href="dw_mrp_plan/static/src/components/tab/main_dashboard.css"
+      />
+    </head>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <div class="layout-page">
+          <div class="content-wrapper">
+            <div class="container-fluid flex-grow-1 container-p-y">
+              <div class="row">
+                <div class="col-xxl">
+                  <div class="card mb-4">
+                    <div
+                      class="card-header d-flex align-items-center justify-content-between"
+                    >
+                      <h5 class="mb-0">Settings</h5>
+                    </div>
+                    <div class="card-body">
+                      <div class="row mb-3">
+                        <div class="col-sm-4">
+                          <label for="select-company" class="form-label"
+                            >Company</label
+                          >
+                          <select
+                            class="form-select"
+                            id="select-company"
+                            data-placeholder="Company ..."
+                            t-on-change.stop="(ev) => this._onChangeCompany(ev)"
+                          ></select>
+                        </div>
+
+                        <div class="col-sm-4">
+                          <label
+                            for="select-period"
+                            class="col-sm-2 col-form-label"
+                            >Period</label
+                          >
+                          <input
+                            class="date-own form-control"
+                            id="select-period"
+                            name="daterange"
+                            type="text"
+                            value="01/01/2024 - 06/01/2025"
+                            t-on-input="(ev) => this._onChangeDateRange(ev)"
+                            t-on-change="(ev) => this._onChangeDateRange(ev)"
+                            style="width: 200px"
+                          />
+                        </div>
+
+                        <div class="col-sm-4">
+                          <label
+                            for="sales-avg-period"
+                            class="col-sm-2 col-form-label"
+                            >Sales AVG</label
+                          >
+                          <input
+                            class="date-own form-control"
+                            id="sales-avg-period"
+                            name="daterange"
+                            type="text"
+                            value="01/01/2024 - 03/01/2024"
+                            style="width: 200px"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="row justify-content-end">
+                        <div class="col-sm-10">
+                          <button
+                            type="submit"
+                            id="submit"
+                            class="btn btn-primary"
+                          >
+                            Submit
+                          </button>
+                        </div>
+
+                        <div class="col-sm-2">
+                          <t t-if="workCenterCapacities.length">
+                            <button
+                              type="show-alerts"
+                              id="show-alerts"
+                              class="btn btn-primary"
+                              t-on-click="toggleModal"
+                            >
+                              Display Alerts
+                            </button>
+                          </t>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xxl">
+                  <div class="card mb-4" style="height: 1000px">
+                    <div
+                      class="card-header d-flex align-items-center justify-content-between"
+                    >
+                      <h5 class="mb-0">Planner</h5>
+                    </div>
+                    <div class="o_prod_sim o_content bg-view">
+                      <div class="row">
+                        <t t-if="state.simulationLines.length">
+                          <div class="text-nowrap mr0 ml0">
+                            <table class="table o_mps_product_table">
+                              <thead class="table-light">
+                                <tr class="o_mps_period">
+                                  <th></th>
+                                  <th />
+                                  <th />
+                                  <th
+                                    class="text-end pe-4"
+                                    scope="col"
+                                    t-foreach="manufacturingPeriods"
+                                    t-as="period"
+                                    t-key="period"
+                                  >
+                                    <div><t t-esc="period" /></div>
+                                  </th>
+                                </tr>
+                              </thead>
+
+                              <t
+                                t-foreach="state.simulationLines"
+                                t-as="productionSimulation"
+                                t-key="productionSimulation.id"
+                              >
+                                <!--                                  <div><t t-esc="productionSimulation.id" /></div>-->
+                                <ProductionPlanSimulatorLine
+                                  data="productionSimulation"
+                                  groups="groups"
+                                />
+                              </t>
+                            </table>
+                          </div>
+                        </t>
+                        <t t-else="">
+                          <t t-call="prod_sim_nocontent_helper" />
+                        </t>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ProductionPlanSimulationAlerts t-if="isModalVisible" />
+
+    <div
+      class="modal fade"
+      id="alertsModal"
+      tabindex="-1"
+      aria-labelledby="ModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ModalTitle"></h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="PDPValidationmodalBody">
+            <!--          Body -->
+            <center><h3 id="bodyTitle"></h3></center>
+
+            <div id="alertsTable" class="table table-hover"></div>
+
+            <table class="table table-striped">
+              <thead id="tableHead"></thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+            <div id="dynamic-input-form">
+              <div id="newRow"></div>
+            </div>
+            <!--          Body End-->
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" id="save" class="btn btn-primary">
+              Validate
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <t t-name="prod_sim_nocontent_helper">
+    <div class="o_view_nocontent">
+      <div class="o_nocontent_help">
+        <!--        <p class="o_view_nocontent_smiling_face">-->
+        <!--          No company was selected. Select one to start simulating.-->
+        <!--        </p>-->
+        <p>
+          The Production Plan Simulator translates your sales and demand
+          forecasts into a production and purchase planning for each finished
+          product. It ensures everything gets scheduled on time, based on
+          constraints such as: safety stock, production capacity, lead times.
+          It's the perfect tool to support your S&amp;OP meetings.
+        </p>
+        <div class="row justify-content-end">
+          <div class="col-sm-12">
+            <button
+              type="submit"
+              id="add-products"
+              class="btn btn-primary"
+              t-on-click.stop="_onClickCreate"
+            >
+              Load Products
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </t>
+</templates>

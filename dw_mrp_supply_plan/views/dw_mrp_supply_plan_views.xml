@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--    Client action  -->
+    <record id="action_mrp_product_supply_plan" model="ir.actions.client">
+        <field name="name">Product Supply Plan</field>
+        <field name="tag">mrp_product_supply_plan</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_mrp_supply_plan_form" model="ir.ui.view">
+        <field name="name">dw.mrp.supply.plan.form</field>
+        <field name="model">dw.mrp.supply.plan</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <!--                    <button string="Monthly Product QTY" name="run_action" type="object"/>-->
+                    <button type="object" name="action_approve" string="Approve" class="oe_highlight"
+                            invisible="state in ('approved', 'done', 'cancelled')"/>
+                    <button type="object" name="action_done" string="Mark as Done" class="oe_highlight"
+                            invisible="state in ('draft', 'done', 'cancelled')"/>
+                    <!--                    <button name="action_draft" invisible="state != 'cancelled'" string="Set to Draft" type="object"/>-->
+                    <button name="action_cancel" invisible="state not in ('draft', 'approved')" string="Cancel"
+                            type="object"/>
+
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approved,done"/>
+                </header>
+                <!--                <div class="oe_button_box" name="button_box">-->
+                <!--                    <button-->
+                <!--                            type="object"-->
+                <!--                            name="action_print"-->
+                <!--                            class="oe_stat_button"-->
+                <!--                            icon="fa-folder-open-o"-->
+                <!--                            string="Overview"-->
+                <!--                    />-->
+                <!--                    <button-->
+                <!--                            type="object"-->
+                <!--                            name="action_display_all_roadmaps"-->
+                <!--                            class="oe_stat_button"-->
+                <!--                            icon="fa-sitemap"-->
+                <!--                            string="Roadmaps"-->
+                <!--                    />-->
+                <!--                </div>-->
+                <group>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group name="season_date_grp">
+                        <field name="season_date" widget="yearPicker" required="1"/>
+                    </group>
+                    <group>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                    </group>
+                </group>
+
+                <notebook>
+                    <page name="product_plan" string="Product Supply Plan">
+                        <field name="product_supply_plan_ids">
+                            <tree editable="bottom">
+                                <field name="company_id" column_invisible="1"/>
+                                <field name="sequence" widget="handle"/>
+                                <field name="product_id" required="1"/>
+                                <field name="uom_id" optional="hide"/>
+                                <field name="quantity_planned"/>
+                                <field name="quantity_approved" optional="show"/>
+                                <field name="quantity_to_order" optional="show"/>
+                                <field name="quantity_done" optional="show"/>
+                                <field name="partner_id" optional="hide" readonly="0"/>
+                                <button name="action_view_product_monthly_supply_plan" type="object"
+                                        class="oe_stat_button"
+                                        title="Monthly" icon="fa-calendar"/>
+                                <!-- <button name="print_plan_summary_report" type="object" title="Summary" icon="fa-desktop"/> -->
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dw_mrp_product_monthly_supply_plan_tree" model="ir.ui.view">
+        <field name="name">dw.mrp.product.supply.plan.tree</field>
+        <field name="model">dw.mrp.product.supply.plan</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom" create="0">
+                <field name="company_id" column_invisible="1"/>
+                <field name="product_supply_plan_id" column_invisible="1"/>
+                <field name="date" readonly="1" force_save="1"/>
+                <field name="date_launch" optional="hide" readonly="0" force_save="1"/>
+
+                <field name="product_id" readonly="1" force_save="1" optional="hide"/>
+
+                <field name="quantity_planned" readonly="state == 'approved'"/>
+                <field name="quantity_approved" optional="show" readonly="state == 'approved'"/>
+                <field name="quantity_to_order" optional="show" readonly="state == 'approved'"/>
+                <field name="quantity_done" optional="show" readonly="state == 'done'"/>
+
+                <button name="action_approve" string="Approve" invisible="state in ['approved', 'done']"
+                        type="object" icon="fa-check"/>
+                <!-- <button name="action_cancel" string="Refuse" invisible="status in ['accepted', 'refused']"-->
+                <!-- type="object" icon="fa-times"/>-->
+
+                <field name="state" optional="hide" readonly="1"/>
+                <field name="partner_id" optional="hide" readonly="0"/>
+
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="view_dw_mrp_product_monthly_supply_plan_tree2" model="ir.ui.view">
+        <field name="name">dw.mrp.product.supply.plan.tree2</field>
+        <field name="model">dw.mrp.product.supply.plan</field>
+        <field name="arch" type="xml">
+            <tree create="0">
+                <field name="supply_plan_id"/>
+                <field name="product_supply_plan_id"/>
+                <field name="company_id"/>
+                <field name="product_id" readonly="1" force_save="1" optional="hide"/>
+                <field name="date" readonly="1" force_save="1"/>
+                <field name="date_launch" optional="hide" readonly="0" force_save="1"/>
+
+                <field name="quantity_planned" readonly="state == 'approved'"/>
+                <field name="quantity_approved" optional="show" readonly="state == 'approved'"/>
+                <field name="quantity_to_order" optional="show" readonly="state == 'approved'"/>
+                <field name="quantity_done" optional="show" readonly="state == 'done'"/>
+                <!--                <button name="action_approve" string="Approve" invisible="state in ['approved', 'done']"-->
+                <!--                        type="object" icon="fa-check"/>-->
+
+                <field name="state" optional="hide" readonly="1"/>
+                <field name="partner_id" optional="hide" readonly="0"/>
+
+            </tree>
+        </field>
+    </record>
+
+    <record id="dw_mrp_product_supply_plan_view_search" model="ir.ui.view">
+        <field name="name">dw.mrp.product.supply.plan.view.search</field>
+        <field name="model">dw.mrp.product.supply.plan</field>
+        <field name="arch" type="xml">
+            <search string="Search Purchase Order">
+                <group expand="0" string="Group By">
+                    <filter string="Company" name="company" domain="[]"
+                            context="{'group_by': 'company_id'}"/>
+                    <filter string="Supply Plan" name="supply_plan" domain="[]"
+                            context="{'group_by': 'supply_plan_id'}"/>
+                    <filter string="Product Supply Plan" name="product_supply_plan" domain="[]"
+                            context="{'group_by': 'product_supply_plan_id'}"/>
+                    <filter string="Supplier" name="supplier" domain="[]"
+                            context="{'group_by': 'partner_id'}"/>
+                    <filter string="Product" name="product" domain="[]"
+                            context="{'group_by': 'product_id'}"/>
+                    <filter string="Requirement Date" name="requirement_date" domain="[]"
+                            context="{'group_by': 'date'}"/>
+                    <filter string="Launch Date" name="launch_date" domain="[]"
+                            context="{'group_by': 'date_launch'}"/>
+                </group>
+
+            </search>
+        </field>
+    </record>
+
+    <record id="view_dw_mrp_product_supply_plan_form" model="ir.ui.view">
+        <field name="name">dw.mrp.product.supply.plan.form</field>
+        <field name="model">dw.mrp.product.supply.plan</field>
+        <field name="arch" type="xml">
+            <form string="Product Supply Plan">
+                <header>
+                    <button string="Approve" type="object" name="action_approve" class="oe_highlight"
+                            invisible="state != 'draft'"/>
+                    <button string="Mark as Done" type="object" name="action_done" class="oe_highlight"
+                            invisible="not state == 'approved' and state == 'done'"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"
+                            invisible="state == 'done'"/>
+
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approved,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name" readonly="1"/>
+                        <field name="date"/>
+                        <field name="date_launch"/>
+                        <field name="state" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="quantity_planned"/>
+                        <field name="quantity_approved" readonly="1"/>
+                        <field name="quantity_done" readonly="1"/>
+                        <field name="quantity_to_order" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="product_supply_plan_id"/>
+                        <field name="supply_plan_id" readonly="1"/>
+                        <field name="company_id" readonly="1"/>
+                        <field name="product_id" readonly="1"/>
+                        <field name="uom_id" readonly="1"/>
+                        <field name="partner_id"/>
+                    </group>
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+    <record id="view_dw_mrp_supply_plan_tree" model="ir.ui.view">
+        <field name="name">dw.mrp.supply.plan.tree</field>
+        <field name="model">dw.mrp.supply.plan</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="season_date"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="dw_mrp_supply_plan_action" model="ir.actions.act_window">
+        <field name="name">MRP Supply Plan</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">dw.mrp.supply.plan</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create new MRP Supply Plan.
+            </p>
+        </field>
+    </record>
+
+    <record id="dw_mrp_product_supply_plan_action" model="ir.actions.act_window">
+        <field name="name">MRP Product Supply Plan</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">dw.mrp.product.supply.plan</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_dw_mrp_product_monthly_supply_plan_tree2"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create new MRP Product Supply Plan.
+            </p>
+        </field>
+    </record>
+
+
+    <!--   Grouping Options-->
+    <record id="dw_mrp_supply_wizard_grouping_option_view_tree" model="ir.ui.view">
+        <field name="name">dw.mrp.supply.wizard.grouping.option.view.tree</field>
+        <field name="model">dw.mrp.supply.wizard.grouping.option</field>
+        <field name="arch" type="xml">
+            <tree string="MRP Wizard Grouping Options">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="dw_mrp_supply_wizard_grouping_option_view_form" model="ir.ui.view">
+        <field name="name">dw.mrp.supply.wizard.grouping.option.view.form</field>
+        <field name="model">dw.mrp.supply.wizard.grouping.option</field>
+        <field name="arch" type="xml">
+            <form string="MRP Wizard Grouping Option">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="dw_mrp_supply_wizard_grouping_option_action" model="ir.actions.act_window">
+        <field name="name">Grouping Options</field>
+        <field name="res_model">dw.mrp.supply.wizard.grouping.option</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

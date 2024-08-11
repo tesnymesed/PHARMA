@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_supplier_approval" model="ir.actions.act_window">
+            <field name="name">Market</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dw.market</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('dw_for_homologation','=',False)]</field>
+            <field name="context">{'default_dw_for_homologation':False}</field>
+
+        </record>
+
+        <!--         <field name="domain">['|', '|',('homologue', '=', True), ('categ_id.homologue', '=', True),
+                        ('product_tmpl_id.homologue', '=', True),('purchase_ok', '=',
+                        True),('number_fournisseur', '&lt;',2)]
+                    </field>-->
+
+        <record id="action_market_type" model="ir.actions.act_window">
+            <field name="name">Market</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">dw.market.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{}</field>
+
+        </record>
+
+        <menuitem id="menu_supplier_approval_root"
+                  name="Procurement"
+                  web_icon="dw_procurement,static/description/icon.png"
+                  sequence="10"
+
+        />
+        <menuitem id="menu_supplier_approval_configuration"
+                  name="Configuration"
+                  sequence="20"
+
+                  parent="dw_procurement.menu_supplier_approval_root"
+
+        />
+        <menuitem id="menu_market_type"
+                  name="Market Type"
+                  parent="dw_procurement.menu_supplier_approval_configuration"
+                  action="action_market_type"
+                  sequence="20"
+
+        />
+        <menuitem id="menu_market_root"
+                  name="Market"
+                  parent="menu_supplier_approval_root"
+                  sequence="10"
+        />
+
+
+        <menuitem id="menu_market"
+                  name="Market"
+                  parent="menu_market_root"
+                  action="action_supplier_approval"
+                  sequence="10"
+        />
+
+
+        <menuitem name="Consultation" id="dw_consultation_menu" parent="menu_supplier_approval_root"
+                  action="dw_consultation_act_window" sequence="15"/>
+        <menuitem name="Consultation Criteria" id="dw_consultation_criteria_menu"
+                  parent="menu_supplier_approval_configuration"
+                  action="dw_consultation_criteria_act_window"
+                  sequence="20"
+        />
+
+
+    </data>
+</odoo>

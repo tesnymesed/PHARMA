@@ -35,7 +35,7 @@ class DwAttributeMarket(models.TransientModel):
                             (0, 0, {'product_id': consultation_id.product_id.id, 'product_qty': consultation_id.qty,
                                     'price_unit': criteria_line_ids.filtered(
                                         lambda line: line.criteria_id.id == self.env.ref(
-                                            "dw_supplier_approval.dw_criteria_consultation_price_unit_ht").id).amount or 0,
+                                            "dw_procurement.dw_criteria_consultation_price_unit_ht").id).amount or 0,
 
                                     })]
                         }

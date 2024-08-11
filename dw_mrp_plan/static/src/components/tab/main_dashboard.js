@@ -13,23 +13,9 @@ export class OwlMainDashboard extends Component {
                 weekly_mrp_plan_product_data : [],
                 product_list: [],
             })
-
-        onWillStart(async()=>{
-
-        })
+        
 
          onMounted(async ()=>{
-            var cuurent_year = new Date().getFullYear()
-            this.state.monthly_data = await this.get_mrp_plan_product_data(cuurent_year.toString())
-            var [original_data, data] = this.data_nest(this.state.monthly_data,'monthly')
-            var monthly_tab
-            var weekly_tab
-            this.state.mrp_plan_product_data = original_data
-            var monthly_columns = this.getTabCols(data)
-            monthly_tab = this.setupTabulator(data,monthly_columns,"#tab");
-            monthly_tab.on("tableBuilt", function() {
-                monthly_tab.redraw();
-            });
             $('.select2').select2({
                 closeOnSelect: false
             });
@@ -43,6 +29,21 @@ export class OwlMainDashboard extends Component {
             }.bind(this));
             const create_option = this.addSelectOption('Create MRP Plan...', 'createMrpPlan')
             selectMrpPlan.appendChild(create_option);
+
+            //Load tab data
+            var selected_plan_id = $('#select-mrp-plan').val()
+            // var cuurent_year = new Date().getFullYear()
+            this.state.monthly_data = await this.get_mrp_plan_product_data('', selected_plan_id == 'createMrpPlan' ? -1 : selected_plan_id)
+            var [original_data, data] = this.data_nest(this.state.monthly_data,'monthly')
+            var monthly_tab
+            var weekly_tab
+            this.state.mrp_plan_product_data = original_data
+            var monthly_columns = this.getTabCols(data)
+            monthly_tab = this.setupTabulator(data,monthly_columns,"#tab");
+            monthly_tab.on("tableBuilt", function() {
+                monthly_tab.redraw();
+            });
+           
 
             $('#create-plan').click(function() {
                 this.btnCreateMrpPla()
@@ -289,6 +290,8 @@ export class OwlMainDashboard extends Component {
                             title: key,
                             field: key,
                             editor: 'number',
+                            formatterParams:{'type':'monthly'},
+                            formatter: this.actionFormatterSplitCell.bind(this),
                             cellEdited: this.monthlycellEdited.bind(this),
 
                         }
@@ -308,6 +311,8 @@ export class OwlMainDashboard extends Component {
                             title: key,
                             field: key,
                             editor: 'number',
+                            formatterParams:{'type':'weekly'},
+                            formatter: this.actionFormatterSplitCell.bind(this),
                             cellEdited: this.weeklyCellEdited.bind(this),
                         }
                     }
@@ -318,6 +323,67 @@ export class OwlMainDashboard extends Component {
         }else{
              return []
         }
+    }
+
+    actionFormatterSplitCell(cell, formatterParams, onRendered) {
+        var cellElement = cell.getElement();
+        // Create the split cell container
+        var container = document.createElement('div');
+        container.classList.add('split-cell');
+        // Create the cell value container
+        var valueContainer = document.createElement('div');
+        valueContainer.classList.add('cell-content');
+        valueContainer.textContent = cell.getValue();
+        // Create the button container
+        var buttonContainer = document.createElement('div');
+        buttonContainer.classList.add('button-container');
+        // Create the button element
+        var button = document.createElement('button');
+        button.classList.add('badge');
+        button.classList.add('btn-outline-secondary');
+        // button.classList.add('rounded-pill');
+        button.classList.add('road-map-qty');
+        
+        container.appendChild(valueContainer);
+        buttonContainer.appendChild(button);
+        container.appendChild(buttonContainer);
+        var product = cell.getTable().getData()[0]['Product'];
+        if(formatterParams['type'] === 'monthly'){
+            var date = this.formatDate(cell.getColumn().getField(),-1)
+            var prod_id = this.searchItem(this.state.monthly_data, 'date', date, 'product', product, 'productID')
+        }else{
+            var date = cell.getColumn().getField()
+            var prod_id = this.searchItem(this.state.weekly_mrp_plan_product_data, 'date', date, 'product', product, 'productID')
+        }
+        var roadMap = this.getRoadMapData(prod_id,date)
+        var recordId = -1
+        roadMap.then((result) => {
+            // console.log('getRoadMapData',result)
+            if (result.length > 0){
+                button.textContent = result[0]['quantity'];
+                recordId = result[0]['id'];
+            }else{
+                button.textContent = 0;
+            }
+        }).catch((error) => {
+            console.log("ERR: ",error)
+        });
+
+        button.addEventListener('click', function(e) {
+            if (e.target) {
+                e.stopPropagation();
+                if (recordId != -1){
+                    this.env.services.action.doAction({
+                        type: 'ir.actions.act_window',
+                        res_model: 'mrp.roadmap',
+                        res_id: recordId,
+                        views: [[false, 'form']],
+                        target: 'current',
+                    });
+                }
+            }
+        }.bind(this))
+        return container;
     }
 
     actionButtonFormatter(cell, formatterParams, onRendered) {
@@ -540,7 +606,7 @@ export class OwlMainDashboard extends Component {
                             paginationSizeSelector:[3, 5, 8, 12,20,30],
                             movableColumns:true,
                             paginationCounter:"rows",
-                            columns: columns,
+                            columns: columns
                         });
         return table
     }
@@ -567,6 +633,33 @@ export class OwlMainDashboard extends Component {
         return ids;
     }
 
+    customEditor(cell, onRendered, success, cancel) {
+        console.log("=== inside etidor -----")
+        // Create and style input element
+        var input = document.createElement("input");
+        input.setAttribute("type", "text");
+        input.style.width = "100%";
+        input.style.boxSizing = "border-box";
+
+        // Set initial value
+        input.value = cell.getValue();
+
+        // Focus on input element when editor is rendered
+        onRendered(function(){
+            input.focus();
+            input.style.height = "100%";
+        });
+
+        // When user presses enter, update cell value and close editor
+        input.addEventListener("blur", function(e){
+            success(input.value);
+        });
+
+        // Add input to cell
+        cell.getElement().appendChild(input);
+        return input;
+    }
+
     async monthlycellEdited(cell){
         const editedValue = cell.getValue();
         const columnField = cell.getField();
@@ -586,7 +679,7 @@ export class OwlMainDashboard extends Component {
                 console.log('Field value updated successfully');
                 this.state.mrp_plan_product_data = this.updateObjectById(this.state.mrp_plan_product_data , record_id_to_update, 'quantity', editedValue)
             } catch (error) {
-                console.error('Error updating field value:', error);
+                console.error('Catching Error updating field value:', error);
             }
         }
     }
@@ -618,7 +711,8 @@ export class OwlMainDashboard extends Component {
         if (id){
             var data =  this.orm.searchRead("product.mrp.plan",[[1,'=',1],['product_plan_id.plan_id.id','=',id]],['quantity','date','product_id','expected_start_quantity','sale_planned_quantity','lot_size','expected_final_quantity','sale_capacity','autonomy','pdp_validation'])
         }else{
-            var data =  this.orm.searchRead("product.mrp.plan",[[1,'=',1],['product_plan_id.plan_id.season_date','=',year]],['quantity','date','product_id','expected_start_quantity','sale_planned_quantity','lot_size','expected_final_quantity','sale_capacity','autonomy','pdp_validation'])
+            var data =  this.orm.searchRead("product.mrp.plan",[[1,'=',1],['product_plan_id.plan_id.season_date','=',year]],['product_plan_id','quantity','date','product_id','expected_start_quantity','sale_planned_quantity','lot_size','expected_final_quantity','sale_capacity','autonomy','pdp_validation'])
+        
         }
         var res = []
         await data.then(result => {
@@ -719,6 +813,10 @@ export class OwlMainDashboard extends Component {
                 div.style.display = "block";
             }
         }
+    }
+
+    async getRoadMapData(product,date) {
+        return await this.orm.searchRead("mrp.roadmap",[['product_id.id','=',product],['date','=',date]],[])
     }
 
     btnCreateMrpPla(){

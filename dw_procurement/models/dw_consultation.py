@@ -11,10 +11,10 @@ class DwConsultationCriteria(models.Model):
     name = fields.Char(strong="Consultation")
     supplier_id = fields.Many2one("res.partner", String="Supplier", domain='[("is_supplier","=", True)]',
                                   check_company=True, required=1)
-    supplier_domain_ids = fields.Many2many("res.partner",String="Supplier",domain='[("is_supplier","=", True)]', compute="_compute_supplier_domain_ids")
+    supplier_domain_ids = fields.Many2many("res.partner", String="Supplier", domain='[("is_supplier","=", True)]',
+                                           compute="_compute_supplier_domain_ids")
     market_id = fields.Many2one('dw.market', string='Market')
     dw_for_homologation = fields.Boolean("for homologation", related="market_id.dw_for_homologation")
-
 
     product_ids = fields.Many2many(related="market_id.product_ids")
 
@@ -26,13 +26,13 @@ class DwConsultationCriteria(models.Model):
     )
     product_domain_ids = fields.Many2many(
         'product.product',
-        domain=[('purchase_ok', '=', True)],compute="_compute_product_domain_ids"
+        domain=[('purchase_ok', '=', True)], compute="_compute_product_domain_ids"
 
     )
     display_name = fields.Char("Dsiplay name", compute="_compute_display_name", store="1")
     company_id = fields.Many2one(
-        'res.company',
-        default=lambda self: self.env.company,
+        'res.company', required=1,
+        default=lambda self: self.env.company if not self.market_id else self.market_id.company_id.id,
     )
     criteria_line_ids = fields.One2many(
         'dw.consultation.criteria.line',
@@ -59,28 +59,37 @@ class DwConsultationCriteria(models.Model):
 
     @api.depends('market_id')
     def _compute_supplier_domain_ids(self):
-       for rec in self :
-           if rec.market_id:
-               rec.supplier_domain_ids = rec.market_id.supplier_ids
-           else :
-               rec.supplier_domain_ids = self.env['res.partner'].search([("is_supplier", "=", True)])
+        ResPartner = self.env['res.partner']
+        for rec in self:
+            if rec.market_id:
+                rec.supplier_domain_ids = rec.market_id.supplier_ids
+            else:
+                rec.supplier_domain_ids = ResPartner.search([('is_supplier', '=', True),
+                                                             '|',
+                                                             ('company_id', '=', self.company_id.id),
+                                                             ('company_id', '=', False)])
 
     @api.depends('market_id')
     def _compute_product_domain_ids(self):
+        ProductProduct = self.env['product.product']
         for rec in self:
             if rec.market_id:
                 rec.product_domain_ids = rec.market_id.product_ids
             else:
-                rec.product_domain_ids = self.env['product.product'].search([('purchase_ok', '=', True)])
+                rec.product_domain_ids = ProductProduct.search(
+                    [('purchase_ok', '=', True), '|',
+                     ('company_id', '=', self.company_id.id),
+                     ('company_id', '=', False)])
 
     @api.constrains('end_date', 'start_date')
     def _check_date_start_end(self):
-       for record in self :
-        if record.start_date and record.end_date:
+        for record in self:
+            if record.start_date and record.end_date:
 
-            if record.start_date > record.end_date:
-                raise ValidationError(
-                    _('start date can\'t be greater that end date'))
+                if record.start_date > record.end_date:
+                    raise ValidationError(
+                        _('start date can\'t be greater that end date'))
+
     @api.depends('name', 'supplier_id')
     def _compute_display_name(self):
         for record in self:
@@ -139,9 +148,8 @@ class DwConsultationCriteria(models.Model):
             'context': {'create': False},
         })
 
-
     def action_show_Attribution(self):
-        if self.market_id :
+        if self.market_id:
             return ({
                 'res_model': 'purchase.requisition',
                 'type': 'ir.actions.act_window',

@@ -28,7 +28,7 @@ class DwConsultationCriteria(models.Model):
         ('years', 'Based on Years')
     ],
         string="Period Type",
-        )
+    )
 
 
 class DwConsultationCriteriaLine(models.Model):

@@ -11,10 +11,10 @@
 
         </record>
 
-<!--         <field name="domain">['|', '|',('homologue', '=', True), ('categ_id.homologue', '=', True),
-                ('product_tmpl_id.homologue', '=', True),('purchase_ok', '=',
-                True),('number_fournisseur', '&lt;',2)]
-            </field>-->
+        <!--         <field name="domain">['|', '|',('homologue', '=', True), ('categ_id.homologue', '=', True),
+                        ('product_tmpl_id.homologue', '=', True),('purchase_ok', '=',
+                        True),('number_fournisseur', '&lt;',2)]
+                    </field>-->
 
         <record id="action_market_type" model="ir.actions.act_window">
             <field name="name">Market</field>

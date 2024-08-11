@@ -7,7 +7,7 @@
 =        """,
     'author': 'DIGIWAVES - ALGERIA',
     'website': 'www.digiwaves.io',
-    'depends': ['dw_base', 'purchase', 'purchase_requisition', 'documents'],
+    'depends': ['dw_base', 'dw_pharma_base', 'purchase_requisition', 'documents'],
     'data': [
         # data
         'data/documents_data.xml',
@@ -20,7 +20,6 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         # views
-
 
         'views/market.xml',
         'views/market_type_views.xml',
@@ -36,7 +35,6 @@
 
         'wizard/document_market_wizard.xml',
         'wizard/dw_attribute_market_views.xml',
-
 
     ],
     'qweb': [

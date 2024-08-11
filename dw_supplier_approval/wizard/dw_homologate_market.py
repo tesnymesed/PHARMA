@@ -1,6 +1,7 @@
 from odoo import fields, models, _, api
 from odoo import Command
 
+
 class DwAttributeMarket(models.TransientModel):
     _name = "dw.homologate.market.wizard"
 
@@ -28,6 +29,6 @@ class DwAttributeMarket(models.TransientModel):
                     self.prepare_homologation_values(market_id, line.product_id, supplier_id, line.quantity))
         new_homologation = self.env['dw.homologation'].create(homologation)
         for hom in new_homologation:
-         market_id.write({'homologation_ids':[Command.link(hom.id)]})
+            market_id.write({'homologation_ids': [Command.link(hom.id)]})
         self.line_id.line_homlogated = True
         # self.action_confirm()

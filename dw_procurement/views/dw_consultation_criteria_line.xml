@@ -15,6 +15,7 @@
                     <field name="amount"/>
                     <field name="percentage"/>
                     <field name="number_days"/>
+                    <field name="completed"/>
                 </tree>
             </field>
         </record>

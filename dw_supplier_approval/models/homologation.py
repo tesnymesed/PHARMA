@@ -32,10 +32,11 @@ class DwHomologation(models.Model):
         default=lambda self: self.env.company,
     )
     market_id = fields.Many2one('dw.market', string='Market')
+    market_ids = fields.Many2many('dw.market', string='Market')
     product_id = fields.Many2one(
         'product.product',
         check_company=True,
-        compute="_compute_product", readonly=False, store=True, required="1",
+        readonly=False, store=True, required="1",
         domain=['|', '|', ('homologue', '=', True), ('categ_id.homologue', '=', True),
                 ('product_tmpl_id.homologue', '=', True), ('purchase_ok', '=', True)],
     )
@@ -79,15 +80,18 @@ class DwHomologation(models.Model):
     fichier_stabilite_attachment = fields.Binary(string="Fichier de stabilité")
     fichier_stabilite_file_name = fields.Char(string='File name')
     qty = fields.Float("Quantity")
+    dw_manufacturer = fields.Char(string="Manufacturer")
+    dw_product_pharma_family_name = fields.Char("Name", related="product_id.dw_pharma_family_id.name")
 
     @api.constrains('end_date', 'start_date')
     def _check_date_start_end(self):
-      for record in self:
-        if record.start_date and record.end_date:
+        for record in self:
+            if record.start_date and record.end_date:
 
-            if record.start_date > record.end_date:
-                raise ValidationError(
-                    _('start date can\'t be greater that end date'))
+                if record.start_date > record.end_date:
+                    raise ValidationError(
+                        _('start date can\'t be greater that end date'))
+
     def _expand_states(self, states, domain, order):
         return [key for key, dummy in self._fields['state'].selection]
 
@@ -96,13 +100,13 @@ class DwHomologation(models.Model):
     #     for record in self :
     #         record.market_supplier_ids = record.market_id.market_line_ids.mapped('supplier_ids')
     #         record.product_ids = record.market_id.market_line_ids.mapped('product_id')
-    @api.depends('market_id')
-    def _compute_product(self):
-        for rec in self:
-            if rec.market_id and rec.market_id.product_ids:
-                rec.product_id = rec.market_id.product_ids[0]
-            else:
-                rec.product_id = False
+    # @api.depends('market_id')
+    # def _compute_product(self):
+    #     for rec in self:
+    #         if rec.market_id and rec.market_id.product_ids:
+    #             rec.product_id = rec.market_id.product_ids[0]
+    #         else:
+    #             rec.product_id = False
 
     def action_to_analyse(self):
         if self.dw_supplier_nature == 'regroupeur':
@@ -122,6 +126,19 @@ class DwHomologation(models.Model):
 
     def action_reject(self):
         self.write({"state": "rejected"})
+
+    def market_assign(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Market assign',
+            'res_model': 'dw.market.assign.wizard',
+            'views': [[self.env.ref('dw_supplier_approval.dw_market_assign_form_view').id, 'form']],
+            'target': 'new',
+
+            'context': {
+                'default_homologation_id': self.id
+            }
+        }
 
     def show_purchase_order(self):
         self.ensure_one()
@@ -160,28 +177,6 @@ class DwHomologation(models.Model):
                         }
         }
 
-    def button_prospection(self):
-        self.write({"state": "prospection"})
-
-    def _prepare_criteria_line_consultation(self, market_id):
-        if not market_id:
-            return []
-        vals_dict = [
-            (0, 0, {'criteria_id': criteria.id}) for criteria in market_id.market_criteria_ids]
-        return vals_dict
-
-    def _prepare_consultation(self):
-        return {
-            'supplier_id': self.supplier_id.id if self.supplier_id else False,
-            'dw_supplier_nature': self.dw_supplier_nature if self.supplier_id else False,
-            'product_id': self.product_id.id if self.product_id else False,
-            'market_id': self.market_id.id if self.market_id else False,
-            'homologation_id': self.id,
-            'qty': self.qty,
-            'company_id': self.company_id.id if self.company_id else False,
-            "criteria_line_ids": self._prepare_criteria_line_consultation(self.market_id)
-        }
-
     def action_lunch_consultation(self):
         self.consultation_id = self.env['dw.consultation'].create(self._prepare_consultation())
         if self.consultation_id:
@@ -189,10 +184,21 @@ class DwHomologation(models.Model):
                 'type': 'ir.actions.act_window',
                 'name': 'Consultation',
                 'res_model': 'dw.consultation',
-                'views': [[self.env.ref('dw_supplier_approval.dw_consultation_form_view').id, 'form']],
+                'views': [[self.env.ref('dw_procurement.dw_consultation_form_view').id, 'form']],
                 'res_id': self.consultation_id.id,
                 'context': {"create": 0},
             }
+
+    def button_prospection(self):
+        self.write({"state": "prospection"})
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        IrSequence = self.env['ir.sequence']
+        for vals in vals_list:
+            if not vals.get("name") or vals['name'] == _('New'):
+                vals['name'] = IrSequence.next_by_code('dw.homologation') or _('New')
+        return super().create(vals_list)
 
     def action_create_consultation(self):
         DwConsultatio = self.env['dw.consultation']
@@ -204,14 +210,6 @@ class DwHomologation(models.Model):
                       supplier_name=record.supplier_id.name, product_name=record.product_id.name)
                 )
             record.consultation_id = DwConsultatio.create(record._prepare_consultation())
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        IrSequence = self.env['ir.sequence']
-        for vals in vals_list:
-            if not vals.get("name") or vals['name'] == _('New'):
-                vals['name'] = IrSequence.next_by_code('dw.homologation') or _('New')
-        return super().create(vals_list)
 
     def action_load_Pre_eval_quest_file(self):
         return {
@@ -225,6 +223,25 @@ class DwHomologation(models.Model):
                 'default_homologation_id': self.id,
 
             }
+        }
+
+    def _prepare_criteria_line_consultation(self, market_id):
+        if not market_id:
+            return []
+        vals_dict = [
+            (0, 0, {'criteria_id': criteria.id}) for criteria in market_id.market_criteria_ids]
+        return vals_dict
+
+    def _prepare_consultation(self):
+        return {
+            'supplier_id': self.supplier_id.id if self.supplier_id else False,
+            'dw_supplier_nature': self.dw_supplier_nature if self.supplier_id else False,
+            'product_id': self.product_id.id if self.product_id else False,
+            'market_id': self.market_ids.active_id if self.market_ids else False,
+            'homologation_id': self.id,
+            'qty': self.qty,
+            'company_id': self.company_id.id if self.company_id else False,
+            "criteria_line_ids": self._prepare_criteria_line_consultation(self.market_id)
         }
 
     def action_load_stabilite_file(self):

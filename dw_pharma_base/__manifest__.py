@@ -6,10 +6,8 @@
     'sequence': 10,
     'author': 'DIDIWAVES - ALGERIA',
     'website': 'www.digiwaves.io',
-    'depends': ['dw_base','stock', ],
-    'images': [
-        'static/src/img/icon.png',
-    ],
+    'depends': ['dw_base', 'stock', ],
+    'images': ['static/description/icon.png'],
     'data': [
         'security/ir.model.access.csv',
         'views/product.xml',

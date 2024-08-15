@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models
+from odoo import api, models
 
 
 class DwMrpSimulationWorkCenter(models.Model):
-    _name = "dw.mrp.simulation.workcenter"
-    _inherit = "mrp.workcenter"
+    _name = 'mrp.workcenter'
+    _inherit = ['mrp.workcenter', 'dw.pharma.resource.access.mixin']
 
+    def create(self, vals):
+        records = super().create(vals)
+        for record in records:
+            if not record.dw_simulation_ok:
+                # vals['dw_simulation_ok'] = True
+                cloned_records = super(DwMrpSimulationWorkCenter, self).with_context(dw_pharma_simulation=True).create(vals)
 
-class DwMrpWorkCenterClone(models.Model):
-    _inherit = "mrp.workcenter"
-
-    def create(self, vals_list):
-        records = super().create(vals_list)
-        cloned_records = self.env['dw.mrp.simulation.workcenter'].create(vals_list)
         return records
+

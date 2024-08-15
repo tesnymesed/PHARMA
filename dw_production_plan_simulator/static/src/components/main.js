@@ -740,6 +740,7 @@ class ProductionPlanSimulatorComponent extends Component {
       res_model: ev.currentTarget.dataset.model,
       res_id: Number(ev.currentTarget.dataset.resId),
       views: [[false, "form"]],
+      context: { dw_pharma_simulation: true },
       target: "current",
     });
   }

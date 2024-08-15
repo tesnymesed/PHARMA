@@ -28,7 +28,7 @@ class DwProductionPlanSimulator(models.Model):
                                  # domain=['|', ('product_tmpl_id.company_id', '=', company_id), ('product_tmpl_id.company_id', '=', False)],
                                  domain=[
                                      ('product_tmpl_id.categ_id.is_final_product', '=', True),
-                                     ('product_tmpl_id.bom_ids', '!=', False),
+                                     # ('product_tmpl_id.bom_ids', '!=', False),
                                      '|',
                                      ('product_tmpl_id.company_id', '=', company_id),
                                      ('product_tmpl_id.company_id', '=', False)
@@ -61,6 +61,8 @@ class DwProductionPlanSimulator(models.Model):
     )
 
     workcenter_id = fields.Many2one('mrp.workcenter', string='Work Center',
+                                    # domain="[('dw_simulation_ok', '=', True)]",
+                                    context={"dw_pharma_simulation": True, "dw_bypass_pharma_simulation": False},
                                     default=lambda self: self._default_workcenter_id(), store=True)
 
     workcenter_default_capacity = fields.Float('Capacity', default=1.0,
@@ -100,6 +102,9 @@ class DwProductionPlanSimulator(models.Model):
     # _sql_constraints = [
     #     ('warehouse_product_ref_uniq', 'unique (warehouse_id, product_id)', 'The combination of warehouse and product must be unique!'),
     # ]
+    def apply_search_filter(self):
+        pass
+
 
     @api.depends('company_id.dw_prod_sim_date_sales_range_start',
                  'company_id.dw_prod_sim_date_sales_range_end',
@@ -144,8 +149,9 @@ class DwProductionPlanSimulator(models.Model):
 
     @api.model
     def _default_workcenter_id(self):
-        return self.env['mrp.workcenter'].search(self.env['mrp.workcenter']._check_company_domain(self.env.company),
-                                                 limit=1)
+        return self.env['mrp.workcenter'].with_context(dw_pharma_simulation=True).search(
+            self.env['mrp.workcenter']._check_company_domain(self.env.company),
+            limit=1)
 
     @api.depends('bom_id')
     def _compute_lot_size(self):
@@ -1088,7 +1094,7 @@ class DwProductionPlanSimulator(models.Model):
             date_stop = datetime.datetime.strptime(date_stop, '%Y-%m-%d').date()
 
             existing_forecasts = self.product_plan_sim_ids.filtered(lambda f:
-                                                                   f.date >= date_start and f.date <= date_stop)
+                                                                    f.date >= date_start and f.date <= date_stop)
             if existing_forecasts:
                 existing_forecasts.write({'notes': notes})
             else:

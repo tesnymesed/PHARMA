@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+ <record id="dw_market_assign_form_view" model="ir.ui.view">
+            <field name="name">Market Assign Wizard</field>
+            <field name="model">dw.market.assign.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+
+
+
+                            <field name="homologation_id" invisible="1"/>
+                            <field name="supplier_id" invisible="1"/>
+                            <field name="product_id" invisible="1"/>
+                            <field name="market_ids" invisible="1"/>
+                            <field name="market_id" domain=" [('id', 'in', market_ids)]"/>
+                        </group>
+                        <footer>
+
+                            <button
+                                    name="action_market_assign_confirm"
+                                    string="Assign"
+                                    type="object"
+                                    class="btn-primary"/>
+                            <button special="cancel" string="Cancel" class="oe_link"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+            </data>
+</odoo>

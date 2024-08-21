@@ -1,4 +1,5 @@
 from odoo import fields, models, _, api
+from odoo import Command
 
 
 class DwAttributeMarket(models.TransientModel):
@@ -9,7 +10,7 @@ class DwAttributeMarket(models.TransientModel):
     def prepare_homologation_values(self, market_id, product_id, supplier_id, qty):
         return {
             'name': 'New',
-            'market_id': market_id.id,
+            'market_ids': [Command.link(market_id.id)],
             'product_id': product_id.id,
             'supplier_id': supplier_id.id,
             'qty': qty,
@@ -26,6 +27,8 @@ class DwAttributeMarket(models.TransientModel):
             for supplier_id in line.supplier_ids:
                 homologation.append(
                     self.prepare_homologation_values(market_id, line.product_id, supplier_id, line.quantity))
-        self.env['dw.homologation'].create(homologation)
+        new_homologation = self.env['dw.homologation'].create(homologation)
+        for hom in new_homologation:
+            market_id.write({'homologation_ids': [Command.link(hom.id)]})
         self.line_id.line_homlogated = True
         # self.action_confirm()

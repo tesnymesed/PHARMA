@@ -18,7 +18,7 @@
                                invisible="state_market != 'draft'"/>
 
                         <field name="cahier_charge_name" invisible="1"/>
-                        <field name="cahier_charge_attachment" widget="binary" filename="fiche_specification_name"
+                        <field name="cahier_charge_attachment" widget="binary" filename="cahier_charge_name"
                                invisible="state_market != 'prospection'"/>
 
                         <field name="pv_attribution_name" invisible="1"/>

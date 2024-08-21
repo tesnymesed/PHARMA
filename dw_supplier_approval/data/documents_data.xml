@@ -5,8 +5,6 @@
         <record id="folder_homologation" model="documents.folder">
             <field name="name">Homologation</field>
         </record>
-         <record id="folder_dw_market" model="documents.folder">
-            <field name="name">Market</field>
-        </record>
+
         </data>
     </odoo>

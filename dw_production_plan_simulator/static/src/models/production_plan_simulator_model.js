@@ -369,14 +369,14 @@ export class ProductionPlanSimulatorModel extends EventBus {
   }
 
   /**
-   * Save the notes (text) and reload the current schedule to update dependent data.
+   * Save the alert notes (text) and reload the current schedule to update dependent data.
    * @private
    * @param {Integer} productionSimulationId dw.production.plan.simulation Id.
    * @param {Integer} dateIndex period to save (column number)
    * @param {String} notes The new notes (text)
    * @return {Promise}
    */
-  _saveNotes(productionSimulationId, dateStart, dateStop, notes) {
+  _saveAlertNotes(productionSimulationId, dateStart, dateStop, notes) {
     return this.mutex.exec(() => {
       this.orm
         .call("dw.production.plan.simulation", "set_notes", [
@@ -410,7 +410,37 @@ export class ProductionPlanSimulatorModel extends EventBus {
           decisionId,
         ])
         .then(() => {
-          // return this.reload(productionScheduleId);
+          return this.reload(productionScheduleId);
+        });
+    });
+  }
+
+  /**
+   * Save the Production Plan Batch notes (text) and reload the current schedule to update dependent data.
+   * @private
+   * @param {Integer} productionSimulationId dw.production.plan.simulation Id.
+   * @param {Integer} dateIndex period to save (column number)
+   * @param {String} dateStart period to save
+   * @param {String} dateStop period to save
+   * @param {String} notes The new notes (text)
+   * @return {Promise}
+   */
+  _saveProductionPlanBatchesNotes(
+    productionSimulationId,
+    dateIndex,
+    dateStart,
+    dateStop,
+    notes
+  ) {
+    return this.mutex.exec(() => {
+      this.orm
+        .call(
+          "dw.production.plan.simulation",
+          "set_production_plan_batch_notes",
+          [productionSimulationId, dateIndex, dateStart, dateStop, notes]
+        )
+        .then(() => {
+          return this.reload(productionSimulationId);
         });
     });
   }

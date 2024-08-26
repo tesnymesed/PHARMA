@@ -351,7 +351,7 @@ class ProductionPlanSimulatorComponent extends Component {
         "required_capacity",
         "production_objective_qty",
         "decision",
-        "notes",
+        "alert_notes",
       ];
 
       // let columns = this.prepareTableColumns(keys);
@@ -375,7 +375,7 @@ class ProductionPlanSimulatorComponent extends Component {
       //   },
       //   {
       //     title: "Notes",
-      //     field: "notes",
+      //     field: "alert_notes",
       //     editor: "textarea",
       //     formatter: "textarea",
       //   },
@@ -445,14 +445,14 @@ class ProductionPlanSimulatorComponent extends Component {
           formatterParams: this.decisionActions,
           editor: "list",
           editorParams: { values: this.decisionActions },
-          cellEdited: this.decisionCellEdited.bind(this),
+          cellEdited: this.alertDecisionCellEdited.bind(this),
         },
         {
           title: "Notes",
-          field: "notes",
+          field: "alert_notes",
           editor: "textarea",
           formatter: "textarea",
-          cellEdited: this.notesCellEdited.bind(this),
+          cellEdited: this.alertNotesCellEdited.bind(this),
         },
       ];
       let alertsTable = this.initTabulator("#alertsTable", data, columns);
@@ -655,21 +655,30 @@ class ProductionPlanSimulatorComponent extends Component {
     this.displayAlerts();
   }
 
-  async notesCellEdited(cell) {
+  closeAlertsModal() {
+    $("#alertsModal").modal("hide");
+  }
+
+  async alertNotesCellEdited(cell) {
     const notes = cell.getValue();
     const cellData = cell.getData();
     console.log(
-      "🚀 ~ ProductionPlanSimulatorComponent ~ notesCellEdited ~ cellData:",
+      "🚀 ~ ProductionPlanSimulatorComponent ~ alertNotesCellEdited ~ cellData:",
       cellData
     );
 
     await this.model
-      ._saveNotes(cellData.id, cellData.date_start, cellData.date_stop, notes)
+      ._saveAlertNotes(
+        cellData.id,
+        cellData.date_start,
+        cellData.date_stop,
+        notes
+      )
       .then((result) => {})
       .catch((err) => {});
   }
 
-  async decisionCellEdited(cell) {
+  async alertDecisionCellEdited(cell) {
     const decision = cell.getValue();
     const cellData = cell.getData();
 

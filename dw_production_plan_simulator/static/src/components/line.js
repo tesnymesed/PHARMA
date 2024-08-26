@@ -4,12 +4,14 @@ import { CheckBox } from "@web/core/checkbox/checkbox";
 import { useService, useBus } from "@web/core/utils/hooks";
 import { formatFloat } from "@web/core/utils/numbers";
 import { Component, useRef, onPatched } from "@odoo/owl";
+import { _t } from "@web/core/l10n/translation";
 
 export default class ProductionPlanSimulatorLine extends Component {
   setup() {
     this.actionService = useService("action");
     this.dialogService = useService("dialog");
     this.orm = useService("orm");
+    this.notificationService = useService("notification");
     this.model = this.env.model;
     this.forecastRow = useRef("forecastRow");
     this.replenishRow = useRef("replenishRow");
@@ -20,6 +22,19 @@ export default class ProductionPlanSimulatorLine extends Component {
     this.prodPlanRow = useRef("prodPlanRow");
     this.prodPlanBatchesRow = useRef("prodPlanBatchesRow");
     this.suggProdPlanRow = useRef("suggProdPlanRow");
+    this.suggProdPlanBatchesRow = useRef("suggProdPlanBatchesRow");
+
+    this.periodsRow = useRef("periodsRow");
+
+    this.formVals = {
+      title: "",
+      headerTitle: "",
+      modalPeriodText: "",
+      notes: "",
+      batch_count: 0.0,
+      eff_planned_production_batches: 0.0,
+    };
+    // this.formVals = {};
 
     onPatched(() => {
       // after a replenishment, switch to next column if possible
@@ -145,6 +160,7 @@ export default class ProductionPlanSimulatorLine extends Component {
           () => {
             const inputSelector =
               'input[data-date_index="' + (dateIndex + 1) + '"]';
+
             const nextInput = this.forecastRow.el.querySelector(inputSelector);
             if (nextInput) {
               nextInput.select();
@@ -475,6 +491,182 @@ export default class ProductionPlanSimulatorLine extends Component {
   }
 
   _onMouseOutProdPlanAlert(ev) {
+    const productionSimulationId = Number(
+      ev.target.closest(".o_mps_content").dataset.id
+    );
+    const dateStart = ev.target.dataset.date_start;
+    const dateStop = ev.target.dataset.date_stop;
+    const dateIndex = parseInt(ev.target.dataset.date_index);
+
+    const inputEl = this.prodObjRow.el.querySelector(
+      'input[data-date_index="' + dateIndex + '"]'
+    );
+
+    if (inputEl) {
+      inputEl.classList.remove("o_prod_sim_hover");
+      inputEl.classList.remove("flash-pop");
+    }
+  }
+
+  _onClickProdPlanBatchesNotes(ev) {
+    this.formVals = {};
+
+    const productionSimulationId = Number(
+      ev.target.closest(".o_mps_content").dataset.id
+    );
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorLine ~ _onClickProdPlanBatchesNotes ~ productionSimulationId:",
+      productionSimulationId
+    );
+
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorLine ~ _onClickProdPlanBatchesNotes ~ ev.target.dataset:",
+      ev.target.dataset
+    );
+    const dateStart = ev.target.dataset.date_start;
+    const dateStop = ev.target.dataset.date_stop;
+    const dateIndex = parseInt(ev.target.dataset.date_index);
+    const dateStr = this.model.data.dates[dateIndex];
+
+    const notes = ev.target.dataset.notes;
+    const op = notes ? "Edit " : "Add ";
+
+    this.formVals = {
+      id: productionSimulationId,
+      dateIndex: dateIndex,
+      dateStart: dateStart,
+      dateStop: dateStop,
+      title: op + dateStr + " notes",
+      headerTitle: "Period: " + dateStr,
+      modalPeriodText: "Period: " + dateStr,
+      batch_count: parseFloat(ev.target.dataset.batch_count),
+      eff_planned_production_batches: parseFloat(
+        ev.target.dataset.eff_planned_production_batches
+      ),
+      notes: notes,
+    };
+
+    let prodPlanBatchesEl = document.getElementById("production-plan-batches");
+    let suggProdPlanBatchesEl = document.getElementById(
+      "suggested-production-plan-batches"
+    );
+
+    document.getElementById("prodPlanBatchNotesModalHeadTitle").textContent =
+      this.formVals.title;
+    document.getElementById("modalPeriodText").textContent =
+      this.formVals.modalPeriodText;
+    prodPlanBatchesEl.textContent =
+      this.formVals.eff_planned_production_batches;
+    suggProdPlanBatchesEl.textContent = this.formVals.batch_count;
+    document.getElementById("notes").value = notes;
+    document.getElementById("notes").textContent = notes;
+
+    // Color the greatest value in green and the other in red
+    if (
+      parseFloat(prodPlanBatchesEl.textContent) >=
+      parseFloat(suggProdPlanBatchesEl.textContent)
+    ) {
+      prodPlanBatchesEl.classList.add("text-success");
+      suggProdPlanBatchesEl.classList.add("text-danger");
+      prodPlanBatchesEl.classList.remove("text-danger");
+      suggProdPlanBatchesEl.classList.remove("text-success");
+    } else {
+      suggProdPlanBatchesEl.classList.add("text-success");
+      prodPlanBatchesEl.classList.add("text-danger");
+      suggProdPlanBatchesEl.classList.remove("text-danger");
+      prodPlanBatchesEl.classList.remove("text-success");
+    }
+
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorLine ~ _onClickProdPlanBatchesNotes ~ formVals:",
+      this.formVals
+    );
+
+    $("#prodPlanBatchNotesModal").modal("show");
+  }
+
+  async saveProdPlanBatchesNotes(ev) {
+    console.log(
+      "��� ~ ProductionPlanSimulatorLine ~ saveProdPlanBatchesNotes ~ called this.formVals",
+      this.formVals
+    );
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorLine ~ saveProdPlanBatchesNotes ~ ev:",
+      ev
+    );
+
+    const notesEl = document.getElementById("notes");
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorLine ~ saveProdPlanBatchesNotes ~ notesEl:",
+      notesEl
+    );
+    const notes = notesEl.value;
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorLine ~ saveProdPlanBatchesNotes ~ notes:",
+      notes
+    );
+
+    await this.model
+      ._saveProductionPlanBatchesNotes(
+        this.formVals.id,
+        this.formVals.dateIndex,
+        this.formVals.dateStart,
+        this.formVals.dateStop,
+        notes
+      )
+      .then((result) => {
+        this.formVals.notes = notes;
+        console.log(
+          "🚀 ~ ProductionPlanSimulatorLine ~ saveProdPlanBatchesNotes ~ result:",
+          result
+        );
+
+        var notesNotif = this.notificationService.add(
+          _t(this.formVals.title + " successful"),
+          {
+            title: _t(this.formVals.title + " successful"),
+            type: "success",
+          }
+        );
+        setTimeout(notesNotif, 3000);
+      })
+      .catch((err) => {
+        console.error(
+          "🚀 ~ ProductionPlanSimulatorLine ~ saveProdPlanBatchesNotes ~ err:",
+          err
+        );
+        var notesNotif = this.notificationService.add(
+          _t(this.formVals.title + " failed"),
+          {
+            title: _t(this.formVals.title + " failed"),
+            type: "danger",
+          }
+        );
+        setTimeout(notesNotif, 3000);
+      });
+
+    $("#prodPlanBatchNotesModal").modal("hide");
+  }
+
+  _onMouseOverProdPlanBatchesNotes(ev) {
+    const productionSimulationId = Number(
+      ev.target.closest(".o_mps_content").dataset.id
+    );
+    const dateStart = ev.target.dataset.date_start;
+    const dateStop = ev.target.dataset.date_stop;
+    const dateIndex = parseInt(ev.target.dataset.date_index);
+
+    const inputEl = this.prodObjRow.el.querySelector(
+      'input[data-date_index="' + dateIndex + '"]'
+    );
+
+    if (inputEl) {
+      inputEl.classList.add("o_prod_sim_hover");
+      inputEl.classList.add("flash-pop");
+    }
+  }
+
+  _onMouseOutProdPlanBatchesNotes(ev) {
     const productionSimulationId = Number(
       ev.target.closest(".o_mps_content").dataset.id
     );

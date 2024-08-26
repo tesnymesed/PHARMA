@@ -164,3 +164,56 @@
     }
   }
 }
+
+.notes-wizard {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+.period {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.batch-quantities {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 30px;
+}
+
+.batch-quantity-container {
+  text-align: center;
+}
+
+.batch-quantity-label {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.batch-quantity {
+  font-size: 48px;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.notes-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.notes-label {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.notes-textarea {
+  width: 100%;
+  max-width: 600px;
+  height: 150px;
+  font-size: 16px;
+  padding: 10px;
+  box-sizing: border-box;
+  resize: vertical;
+}

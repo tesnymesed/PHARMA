@@ -224,7 +224,6 @@ class DwProductionPlanSimulator(models.Model):
             if workcenter:
                 l_group = list(group)
                 l_merged = []
-                l_merged2 = []
                 for prdct_i in l_group:
                     product_plan_sim_ids = prdct_i.get('product_plan_sim_ids')
                     for plan_sim_i in product_plan_sim_ids:
@@ -246,7 +245,7 @@ class DwProductionPlanSimulator(models.Model):
                     total_production_objective_qty = sum(item["production_objective_qty"] for item in group_data)
                     # Sample list of strings
                     # notes_str = "\n".join([item.get("notes") for item in group_data if item.get("notes")])
-                    notes_str = group_data[0].get("notes")
+                    notes_str = group_data[0].get("alert_notes")
                     decision = group_data[0].get("decision")
 
                     if total_required_capacity < total_production_objective_qty:
@@ -270,7 +269,7 @@ class DwProductionPlanSimulator(models.Model):
                             "capacity_utilisation": total_capacity_utilisation,
                             "required_capacity": total_required_capacity,
                             "production_objective_qty": total_production_objective_qty,
-                            "notes": notes_str,
+                            "alert_notes": notes_str,
                             "decision": decision
                         })
 
@@ -767,6 +766,7 @@ class DwProductionPlanSimulator(models.Model):
                     # forecast_values['stock_level'] = float_round(sum(existing_forecasts.mapped('stock_level')),
                     #                                              precision_rounding=rounding)
 
+                    forecast_values['alert_notes'] = existing_forecasts[0].alert_notes or ''
                     forecast_values['notes'] = existing_forecasts[0].notes or ''
 
                     forecast_values['decision'] = existing_forecasts[0].dw_alert_decision_id.id or -1
@@ -790,6 +790,7 @@ class DwProductionPlanSimulator(models.Model):
                     # forecast_values['planned_production_qty'] = 0.0+
                     # forecast_values['stock_level'] = 0.0
                     forecast_values['batch_count'] = 0.0
+                    forecast_values['alert_notes'] = ''
                     forecast_values['notes'] = ''
 
                 if not replenish_qty_updated:
@@ -1096,10 +1097,10 @@ class DwProductionPlanSimulator(models.Model):
             existing_forecasts = self.product_plan_sim_ids.filtered(lambda f:
                                                                     f.date >= date_start and f.date <= date_stop)
             if existing_forecasts:
-                existing_forecasts.write({'notes': notes})
+                existing_forecasts.write({'alert_notes': notes})
             else:
                 existing_forecasts.create({
-                    'notes': notes,
+                    'alert_notes': notes,
                     'date': date_stop,
                     'production_simulation_id': self.id
                 })
@@ -1132,6 +1133,32 @@ class DwProductionPlanSimulator(models.Model):
                     'dw_alert_decision_id': decision_id,
                     'date': date_stop,
                     'production_schedule_id': self.id
+                })
+
+        return True
+
+
+
+    def set_production_plan_batch_notes(self, date_index, date_start, date_stop, notes):
+        """ Save the simulation notes:
+
+        params notes: The new notes
+        params date_index: The manufacturing period
+        """
+        # self.ensure_one()
+        if date_start and date_stop:
+            date_start = datetime.datetime.strptime(date_start, '%Y-%m-%d').date()
+            date_stop = datetime.datetime.strptime(date_stop, '%Y-%m-%d').date()
+
+            existing_forecasts = self.product_plan_sim_ids.filtered(lambda f:
+                                                                    f.date >= date_start and f.date <= date_stop)
+            if existing_forecasts:
+                existing_forecasts.write({'notes': notes})
+            else:
+                existing_forecasts.create({
+                    'notes': notes,
+                    'date': date_stop,
+                    'production_simulation_id': self.id
                 })
 
         return True
@@ -1825,6 +1852,8 @@ class DwProductPlanSimulation(models.Model):
     dw_alert_decision_id = fields.Many2one('dw.mrp.alert.decision', string='Decision')
 
     notes = fields.Text('Observations')
+
+    alert_notes = fields.Text('Alert Observations')
 
     @api.depends('stock_level', 'production_simulation_id.safety_stock_target_qty',
                  'production_simulation_id.sales_average')

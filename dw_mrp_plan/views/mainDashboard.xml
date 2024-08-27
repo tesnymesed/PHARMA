@@ -5,6 +5,5 @@
             <field name="name">Main Dashboard</field>
             <field name="tag">owl.main_dashboard</field>
         </record>
-            <menuitem name="Main Dashboard" id="menu_owl_main_dashboard" parent="dw_mrp_plan.menu_mrp_production" sequence="10" action="action_main_dashboard"/>
     </data>
 </odoo>

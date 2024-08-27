@@ -18,6 +18,11 @@
                 parent="dw_mrp_plan.menu_mrp_production"
                 action="dw_mrp_plan.mrp_roadmap_action"
         />
+        <menuitem name="Main Dashboard"
+                  id="menu_owl_main_dashboard"
+                  parent="dw_mrp_plan.menu_mrp_production"
+                  sequence="10"
+                  action="action_main_dashboard"/>
 
     </data>
 </odoo>

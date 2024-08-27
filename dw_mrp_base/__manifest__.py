@@ -9,6 +9,7 @@
     'website': 'www.digiwaves.io',
     'depends': [
         'mrp',
+        'product_expiry'
     ],
     'data': [
         'security/ir.model.access.csv',

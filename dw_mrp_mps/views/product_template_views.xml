@@ -29,11 +29,7 @@
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="arch" type="xml">
             <field name="default_code" position="after">
-                <group>
-                    <group>
-                        <field string="Purchase Lead Time" name="dw_purchase_lead"/>
-                    </group>
-                </group>
+                <field string="Purchase Lead Time" name="dw_purchase_lead"/>
             </field>
 
         </field>

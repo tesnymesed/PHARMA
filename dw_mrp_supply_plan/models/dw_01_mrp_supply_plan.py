@@ -5,14 +5,22 @@ class DwMrpSupplyPlan(models.Model):
     _name = 'dw.mrp.supply.plan'
     _description = 'MRP Yearly Supply plan'
 
+    # _sql_constraints = [
+    #     ('unique_season_date_company', 'unique(season_date, company_id)',
+    #      'Season Date must be unique within the same company!')
+    # ]
+
     _sql_constraints = [
-        ('unique_season_date_company', 'unique(season_date, company_id)',
-         'Season Date must be unique within the same company!')
+        ('unique_supply_dates_company', 'unique(start_date, end_date, company_id)',
+         'Start Date and End Date must be unique within the same company!')
     ]
 
     name = fields.Char('Ref', copy=False, required=True, default=_('New'))
 
-    season_date = fields.Char(required=True)
+    season_date = fields.Char(required=False)
+
+    start_date = fields.Date(string="Start Date", required=True)
+    end_date = fields.Date(string="End Date", required=True)
 
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -86,25 +94,3 @@ class DwMrpSupplyPlan(models.Model):
                 plan.monthly_supply_plan_ids.unlink()
                 plan.unlink()
         return super().unlink()
-
-    def action_display_all_roadmaps(self):
-        datas = self.product_supply_plan_ids.get_roadmaps_per_lines()
-        action = self.env["ir.actions.actions"]._for_xml_id("dw_mrp_supply_plan.mrp_roadmap_action")
-        action['domain'] = [('id', '=', datas)]
-        return action
-
-    def action_import_excel_view(self):
-        form_view = self.env.ref('dw_mrp_supply_plan.view_mrp_plan_import_excel_form')
-        action = {
-            'name': _('Excel'),
-            'type': 'ir.actions.act_window',
-            'res_model': self._name,
-        }
-
-        action['views'] = [(form_view.id, 'form')]
-        action['view_mode'] = 'form'
-        action['res_id'] = self.id
-
-        action['target'] = 'new'
-
-        return action

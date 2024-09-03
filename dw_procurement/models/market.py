@@ -1,5 +1,4 @@
 # -*- coding:utf-8 -*-
-
 from odoo import fields, models, api, _
 from odoo.exceptions import ValidationError
 
@@ -271,3 +270,4 @@ class DwMarket(models.Model):
 
                 vals['name'] = seq_name or _('New')
         return super().create(vals_list)
+

@@ -122,13 +122,14 @@ class DwMrpSupplyPlanTool(models.Model):
                 'product_qty': rec.quantity_to_order,
                 # 'price_unit': rec.unit_price,
                 'date_planned': rec.date_launch,
-            }) for rec in records]
+            }) for rec in records if rec.quantity_to_order != 0.0]
 
-            _prx['order_line_ids'] = order_line_vals
+            if order_line_vals:
+                _prx['order_line_ids'] = order_line_vals
 
-            purchase_order_preview = self.env['dw.purchase.order.preview'].create(_prx)
+                purchase_order_preview = self.env['dw.purchase.order.preview'].create(_prx)
 
-            self.purchase_order_preview_ids += purchase_order_preview
+                self.purchase_order_preview_ids += purchase_order_preview
         #
         # return {
         #     'type': 'ir.actions.act_window',
@@ -138,24 +139,26 @@ class DwMrpSupplyPlanTool(models.Model):
         #     'target': 'new',
         #     'res_id': self.id,
         # }
-        action = self.env['ir.actions.act_window']._for_xml_id('dw_mrp_supply_plan.action_dw_purchase_order_preview')
+        if self.purchase_order_preview_ids.ids:
 
-        if action:
-            _ctx = {
-                'group_by': ['company_id', 'date_planned'],
-                'expand': True,
-            }
+            action = self.env['ir.actions.act_window']._for_xml_id('dw_mrp_supply_plan.action_dw_purchase_order_preview')
 
-            if 'partner' in [o.name for o in self.grouping_options]:
-                _ctx['group_by'].insert(1, 'partner_id')
+            if action:
+                _ctx = {
+                    'group_by': ['company_id', 'date_planned'],
+                    'expand': True,
+                }
 
-            action.update({
-                'target': 'current',
-                'domain': [('id', 'in', self.purchase_order_preview_ids.ids)],
-                'context': _ctx
-                # 'res_id': self.id,
-            })
-            return action
+                if 'partner' in [o.name for o in self.grouping_options]:
+                    _ctx['group_by'].insert(1, 'partner_id')
+
+                action.update({
+                    'target': 'current',
+                    'domain': [('id', 'in', self.purchase_order_preview_ids.ids)],
+                    'context': _ctx
+                    # 'res_id': self.id,
+                })
+                return action
 
 
 class DWPurchaseOrderPreview(models.Model):

@@ -1,5 +1,4 @@
-from datetime import date
-
+from dateutil.relativedelta import relativedelta
 from odoo import fields, api, models, _
 
 from .utils import _domain_supply_products
@@ -63,20 +62,47 @@ class DwMrpSupplyPlanLines(models.Model):
                                  domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
                                  help="You can find a vendor by its Name, TIN, Email or Internal Reference.")
 
+    #
+    # def get_monthly_supply_plans(self):
+    #     datas = []
+    #     current_year = int(self.supply_plan_id.get_season_year())
+    #     for month in range(1, 13):
+    #         _date = date(current_year, month, 1)
+    #         datas.append(
+    #             (0, 0, {
+    #                 'date': _date,
+    #                 'date_launch': _date,
+    #                 'product_supply_plan_id': self.id,
+    #                 'product_id': self.product_id.id,
+    #                 # 'start_quantity': self.product_id.product_tmpl_id.qty_available if month == 1 else 0
+    #             })
+    #         )
+    #
+    #     return datas
+
     def get_monthly_supply_plans(self):
         datas = []
-        current_year = int(self.supply_plan_id.get_season_year())
-        for month in range(1, 13):
-            _date = date(current_year, month, 1)
+        start_date = self.supply_plan_id.start_date
+        end_date = self.supply_plan_id.end_date
+
+        # Ensure start_date and end_date are valid
+        if not start_date or not end_date or start_date > end_date:
+            return datas  # Return an empty list if dates are invalid
+
+        current_date = start_date
+
+        while current_date <= end_date:
             datas.append(
                 (0, 0, {
-                    'date': _date,
-                    'date_launch': _date,
+                    'date': current_date,
+                    'date_launch': current_date,
                     'product_supply_plan_id': self.id,
                     'product_id': self.product_id.id,
-                    # 'start_quantity': self.product_id.product_tmpl_id.qty_available if month == 1 else 0
+                    # 'start_quantity': self.product_id.product_tmpl_id.qty_available if current_date.month == 1 else 0
                 })
             )
+            # Move to the first day of the next month
+            current_date += relativedelta(months=1)
 
         return datas
 
@@ -118,6 +144,16 @@ class DwMrpSupplyPlanLines(models.Model):
         company_id = vals.get('company_id', self.default_get(['company_id'])['company_id'])
         self_comp = self.with_company(company_id)
 
+        # Check for supply_plan_id in vals
+        supply_plan_id = vals.get('supply_plan_id')
+        if supply_plan_id:
+            supply_plan = self_comp.env['dw.mrp.supply.plan'].browse(supply_plan_id)
+            if supply_plan.exists():
+                product = self_comp.env['product.product'].browse(vals.get('product_id'))
+                if product.exists():
+                    internal_reference = product.default_code  # Assuming 'default_code' is the internal reference
+                    vals['name'] = f"{supply_plan.name}-{internal_reference}"
+
         if vals.get('name', _('New')) == _('New'):
             seq_date = None
             if 'create_date' in vals:
@@ -133,17 +169,19 @@ class DwMrpSupplyPlanLines(models.Model):
 
         return result
 
-    # @api.depends('bom_id')
-    # def _compute_lot_size(self):
-    #     for record in self:
-    #         record.lot_size = record.bom_id.product_qty
 
-    def get_roadmaps_per_lines(self):
-        datas = []
-        for record in self:
-            datas.extend(
-                record.monthly_supply_plan_ids.filtered(lambda l: l if l.roadmap_id else None).mapped('roadmap_id').ids)
-        return datas
+# @api.depends('bom_id')
+# def _compute_lot_size(self):
+#     for record in self:
+#         record.lot_size = record.bom_id.product_qty
 
-    def print_plan_summary_report(self):
-        return self.env.ref('dw_mrp_supply_plan.action_mrp_monthly_supply_plan_report').report_action(self)
+def get_roadmaps_per_lines(self):
+    datas = []
+    for record in self:
+        datas.extend(
+            record.monthly_supply_plan_ids.filtered(lambda l: l if l.roadmap_id else None).mapped('roadmap_id').ids)
+    return datas
+
+
+def print_plan_summary_report(self):
+    return self.env.ref('dw_mrp_supply_plan.action_mrp_monthly_supply_plan_report').report_action(self)

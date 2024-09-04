@@ -10,10 +10,10 @@ class DwMrpSupplyPlan(models.Model):
     #      'Season Date must be unique within the same company!')
     # ]
 
-    _sql_constraints = [
-        ('unique_supply_dates_company', 'unique(start_date, end_date, company_id)',
-         'Start Date and End Date must be unique within the same company!')
-    ]
+    # _sql_constraints = [
+    #     ('unique_supply_dates_company', 'unique(start_date, end_date, company_id)',
+    #      'Start Date and End Date must be unique within the same company!')
+    # ]
 
     name = fields.Char('Ref', copy=False, required=True, default=_('New'))
 

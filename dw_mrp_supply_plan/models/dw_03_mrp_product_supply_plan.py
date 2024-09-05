@@ -53,6 +53,11 @@ class DwMrpProductSupplyPlan(models.Model):
                                  domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
                                  help="You can find a vendor by its Name, TIN, Email or Internal Reference.")
 
+    dw_mps_forecast_notes = fields.Text('MRP Observations')
+
+    dw_mps_forecast_decision_id = fields.Many2one('dw.mrp.alert.decision', string='MRP Decision')
+
+
     # roadmap_id = fields.Many2one('mrp.roadmap')
 
     # @api.depends('roadmap_id')

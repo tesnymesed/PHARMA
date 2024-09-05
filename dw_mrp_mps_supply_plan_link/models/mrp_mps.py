@@ -104,30 +104,31 @@ class DWMrpProductionSchedule(models.Model):
             existing_records = self.env['dw.mrp.product.supply.plan'].search([
                 ('date', '=', _date),
                 # ('supply_plan_id', '=', supply_plan.id),
-                ('product_supply_plan_id', '=', supply_plan_line.id),
+                ('product_supply_plan_id', '=', supply_plan_line.id)
             ])
+
+            record_vals = {'quantity_planned': forecast_id.get('indirect_demand_qty')}
+
+            if forecast_id.get('notes'):
+                record_vals['dw_mps_forecast_notes'] = forecast_id.get('notes')
+
+            if forecast_id.get('decision', -1) != -1:
+                record_vals['dw_mps_forecast_decision_id'] = forecast_id.get('decision')
 
             if existing_records:
                 # Update existing records
-                existing_records[0].write({
-                    'quantity_planned': forecast_id.get('indirect_demand_qty'),
-                    # 'quantity_approved': forecast_id['replenish_qty'],
-                    # 'quantity_done': 0,
-                    # 'quantity_to_order': forecast_id['replenish_qty_wout_ss'],
-                })
+                existing_records[0].write(record_vals)
                 id = existing_records.id
 
             else:
                 # Create a new record
-                id = self.env['dw.mrp.product.supply.plan'].create({
+                record_vals.update({
                     'date': _date,
                     'date_launch': _date,
-                    'quantity_planned': forecast_id.get('indirect_demand_qty'),
-                    # 'quantity_approved': forecast_id['replenish_qty'],
-                    # 'quantity_done': 0,
-                    # 'quantity_to_order': forecast_id['replenish_qty_wout_ss'],
-                    'product_supply_plan_id': supply_plan_line.id,
+                    'product_supply_plan_id': supply_plan_line.id
                 })
+
+                id = self.env['dw.mrp.product.supply.plan'].create(record_vals)
 
             ids.append(id)
 

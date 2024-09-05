@@ -33,22 +33,37 @@
                       <div class="row mb-3">
                         <div class="col-sm-4">
                           <label for="select-company" class="form-label"
-                            >Company</label
-                          >
+                            >Company</label>
                           <select
-                            class="form-select"
                             id="select-company"
+                            class="form-select"
                             data-placeholder="Company ..."
                             t-on-change.stop="(ev) => this._onChangeCompany(ev)"
                           ></select>
                         </div>
 
                         <div class="col-sm-4">
-                          <label
-                            for="select-period"
-                            class="col-sm-2 col-form-label"
-                            >Period</label
-                          >
+                          <label for="select-planning-cycle" class="form-label"
+                            >Planning Cycle</label>
+                          <select
+                            id="select-planning-cycle"
+                            class="form-select"
+                            data-placeholder="Planning Cycle ..."
+                            t-on-change.stop="(ev) => this._onChangePlanningCycle(ev)"
+                          ></select>
+                        </div>
+
+                        <div class="col-sm-4">
+                          <label for="calendar" class="form-label"
+                            >Planning Period (Exercice de planification):</label>
+                          <input id="calendar" class="form-select" />
+                        </div>
+                      </div>
+
+                      <div class="row mb-3">
+                        <div class="col-sm-4">
+                          <label for="select-period" class="col-form-label"
+                            >Date Range</label>
                           <input
                             class="date-own form-control"
                             id="select-period"
@@ -57,7 +72,6 @@
                             value="01/01/2024 - 06/01/2025"
                             t-on-input="(ev) => this._onChangeDateRange(ev)"
                             t-on-change="(ev) => this._onChangeDateRange(ev)"
-                            style="width: 200px"
                           />
                         </div>
 
@@ -65,18 +79,18 @@
                           <label
                             for="sales-avg-period"
                             class="col-sm-2 col-form-label"
-                            >Sales AVG</label
-                          >
+                            >Sales AVG</label>
                           <input
                             class="date-own form-control"
                             id="sales-avg-period"
                             name="daterange"
                             type="text"
                             value="01/01/2024 - 03/01/2024"
-                            style="width: 200px"
                           />
                         </div>
                       </div>
+
+                      <div class="row mb-3"></div>
 
                       <div class="row justify-content-end">
                         <div class="col-sm-4">

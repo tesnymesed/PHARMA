@@ -18,6 +18,7 @@
             'shared_assets/static/libs/js/bootstrap-datepicker.js',
             'shared_assets/static/libs/js/d3-collection.min.js',
             'shared_assets/static/libs/js/tabulator.6.2.min.js',
+            'shared_assets/static/libs/js/jsuites.js',
             # 'shared_assets/static/libs/js/tabulator.min.js',
             'shared_assets/static/libs/js/select2.min.js',
             'shared_assets/static/libs/js/moment.min.js',

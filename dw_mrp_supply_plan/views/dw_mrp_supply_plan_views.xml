@@ -158,6 +158,8 @@
                 <!-- <button name="action_cancel" string="Refuse" invisible="status in ['accepted',
                         'refused']"-->
                 <!-- type="object" icon="fa-times"/>-->
+                <field name="dw_mps_forecast_notes" optional="show" readonly="1"/>
+                <field name="dw_mps_forecast_decision_id" optional="show" readonly="1"/>
 
                 <field name="state" optional="hide" readonly="1"/>
                 <field name="partner_id" optional="hide" readonly="0"/>
@@ -169,7 +171,7 @@
         <field name="name">dw.mrp.product.supply.plan.tree2</field>
         <field name="model">dw.mrp.product.supply.plan</field>
         <field name="arch" type="xml">
-            <tree create="0">
+            <tree create="0" decoration-info="dw_mps_forecast_notes != False or dw_mps_forecast_decision_id != False">
                 <field name="supply_plan_id"/>
                 <field name="product_supply_plan_id"/>
                 <field name="company_id"/>
@@ -196,6 +198,8 @@
                 <!--                <button name="action_approve" string="Approve" invisible="state in ['approved',
                         'done']"-->
                 <!--                        type="object" icon="fa-check"/>-->
+                <field name="dw_mps_forecast_notes" optional="show" readonly="1"/>
+                <field name="dw_mps_forecast_decision_id" optional="show" readonly="1"/>
 
                 <field name="state" optional="hide" readonly="1"/>
                 <field name="partner_id" optional="hide" readonly="0"/>
@@ -310,6 +314,13 @@
                         <field name="uom_id" readonly="1"/>
                         <field name="partner_id" readonly="0"/>
                     </group>
+                    <group>
+                        <group>
+                            <field name="dw_mps_forecast_notes" readonly="1"/>
+                            <field name="dw_mps_forecast_decision_id" readonly="1"/>
+                        </group>
+                    </group>
+
                 </sheet>
             </form>
         </field>

@@ -165,6 +165,12 @@
                                 <field name="company_id" groups="base.group_multi_company"
                                        options="{'no_create': True}"/>
                             </group>
+                            <group>
+                                <field name="purchase_ok"/>
+                                <field name="sale_ok"/>
+                                <field name="tracking"/>
+                                <field name="use_expiration_date"/>
+                            </group>
                         </group>
                     </div>
                     <notebook>

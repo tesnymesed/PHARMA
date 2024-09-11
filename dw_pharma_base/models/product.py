@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class DwProductTemplate(models.Model):
@@ -29,3 +29,14 @@ class DwProductTemplate(models.Model):
     dw_price_pua = fields.Monetary(string="Unit Purchase Price", )
     dw_price_wholesaler = fields.Monetary(string="wholesale price", )
     dw_pharma_nature_product_id = fields.Many2one('product.pharmaceutical.nature', string="Nature")
+    
+    @api.onchange('dw_pharma_family_id')
+    def onchange_dw_pharma_family_id(self):
+        for rec in self:
+            if rec.dw_pharma_family_id.product_categ_id:
+                rec.categ_id = rec.dw_pharma_family_id.product_categ_id.id
+            if rec.dw_pharma_family_id:
+                rec.purchase_ok = rec.dw_pharma_family_id.purchase_ok
+                rec.sale_ok = rec.dw_pharma_family_id.sale_ok
+                rec.tracking = rec.dw_pharma_family_id.tracking
+                rec.use_expiration_date = rec.dw_pharma_family_id.use_expiration_date

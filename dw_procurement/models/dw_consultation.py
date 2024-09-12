@@ -65,9 +65,8 @@ class DwConsultationCriteria(models.Model):
                 rec.supplier_domain_ids = rec.market_id.supplier_ids
             else:
                 rec.supplier_domain_ids = ResPartner.search([('is_supplier', '=', True),
-                                                             '|',
-                                                             ('company_id', '=', self.company_id.id),
-                                                             ('company_id', '=', False)])
+                                                             ('company_id', '=', rec.company_id.id or False),
+                                                            ])
 
     @api.depends('market_id')
     def _compute_product_domain_ids(self):
@@ -78,8 +77,7 @@ class DwConsultationCriteria(models.Model):
             else:
                 rec.product_domain_ids = ProductProduct.search(
                     [('purchase_ok', '=', True), '|',
-                     ('company_id', '=', self.company_id.id),
-                     ('company_id', '=', False)])
+                     ('company_id', '=', rec.company_id.id or False)])
 
     @api.constrains('end_date', 'start_date')
     def _check_date_start_end(self):

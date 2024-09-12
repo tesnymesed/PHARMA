@@ -65,7 +65,7 @@
               >
                 Close
               </button>
-              <button type="button" id="save" class="btn btn-primary">
+              <button type="button" id="save" t-on-click="closeAlertsModal" class="btn btn-primary">
                 Validate
               </button>
             </div>

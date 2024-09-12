@@ -157,6 +157,10 @@ patch(MainComponent.prototype, {
     this.initAlertsTable();
   },
 
+  closeAlertsModal() {
+    $("#alertsModal").modal("hide");
+  },
+
   initAlertsTable() {
     let data = [];
     if (this.lines.length > 0) {

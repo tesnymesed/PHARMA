@@ -200,6 +200,12 @@ class DWMrpProductionSchedule(models.Model):
                 if existing_forecasts:
                     forecast_values['notes'] = existing_forecasts[0].notes or ''
                     forecast_values['decision'] = existing_forecasts[0].dw_alert_decision_id.id or -1
+
+                    # forecast_values['dw_pps_production_notes'] = existing_forecasts[0].dw_pps_production_notes or ''
+                    #
+                    # forecast_values['dw_pps_capacity_notes'] = existing_forecasts[0].dw_pps_capacity_notes or ''
+                    # forecast_values['dw_pps_capacity_decision_id'] = existing_forecasts[0].dw_pps_capacity_decision_id.id or -1
+
                     forecast_values['forecast_qty'] = float_round(sum(existing_forecasts.mapped('forecast_qty')),
                                                                   precision_rounding=rounding)
                     forecast_values['replenish_qty'] = float_round(sum(existing_forecasts.mapped('replenish_qty')),
@@ -347,6 +353,12 @@ class DWMrpProductionSchedule(models.Model):
 class DWMrpProductForecast(models.Model):
     _inherit = 'mrp.product.forecast'
 
-    notes = fields.Text('Observations')
+    notes = fields.Text('Stock Level Observations')
 
-    dw_alert_decision_id = fields.Many2one('dw.mrp.alert.decision', string='Decision')
+    dw_alert_decision_id = fields.Many2one('dw.mrp.alert.decision', string='Stock Level Observation Decision')
+
+    dw_pps_production_notes = fields.Text('Production Observations')
+
+    dw_pps_capacity_notes = fields.Text('Capacity Observations')
+
+    dw_pps_capacity_decision_id = fields.Many2one('dw.mrp.alert.decision', string='Capacity Observation Decision')

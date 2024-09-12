@@ -410,7 +410,7 @@ export class ProductionPlanSimulatorModel extends EventBus {
           decisionId,
         ])
         .then(() => {
-          return this.reload(productionScheduleId);
+          // return this.reload(productionScheduleId);
         });
     });
   }

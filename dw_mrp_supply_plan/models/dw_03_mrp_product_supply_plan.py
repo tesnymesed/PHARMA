@@ -53,6 +53,11 @@ class DwMrpProductSupplyPlan(models.Model):
                                  domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
                                  help="You can find a vendor by its Name, TIN, Email or Internal Reference.")
 
+    dw_mps_forecast_notes = fields.Text('MRP Observations')
+
+    dw_mps_forecast_decision_id = fields.Many2one('dw.mrp.alert.decision', string='MRP Decision')
+
+
     # roadmap_id = fields.Many2one('mrp.roadmap')
 
     # @api.depends('roadmap_id')
@@ -81,9 +86,16 @@ class DwMrpProductSupplyPlan(models.Model):
 
     @api.model
     def create(self, vals):
-
         company_id = vals.get('company_id', self.default_get(['company_id'])['company_id'])
         self_comp = self.with_company(company_id)
+
+        # Check for product_supply_plan_id in vals
+        product_supply_plan_id = vals.get('product_supply_plan_id')
+        if product_supply_plan_id:
+            product_supply_plan_id = self_comp.env['dw.mrp.supply.plan.lines'].browse(product_supply_plan_id)
+            if product_supply_plan_id.exists():
+                date_ref = vals.get('date').strftime('%m%y')
+                vals['name'] = f"{product_supply_plan_id.name}-{date_ref}"
 
         if vals.get('name', _('New')) == _('New'):
             seq_date = None

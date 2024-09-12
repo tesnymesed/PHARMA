@@ -105,7 +105,6 @@ class DwProductionPlanSimulator(models.Model):
     def apply_search_filter(self):
         pass
 
-
     @api.depends('company_id.dw_prod_sim_date_sales_range_start',
                  'company_id.dw_prod_sim_date_sales_range_end',
                  'product_plan_sim_ids.sold_qty',
@@ -527,7 +526,6 @@ class DwProductionPlanSimulator(models.Model):
 
     @api.model
     def create_mps_from_plan_simulations(self, company_id, production_simulations):
-        print("🚀 ~ create_mps_from_plan_simulations:", self, production_simulations)
         ids = []
         for prod_sim in production_simulations:
             vals = {
@@ -555,21 +553,32 @@ class DwProductionPlanSimulator(models.Model):
                 date_start = datetime.datetime.strptime(prdct_sim_i.get('date_start'), "%Y-%m-%d").date()
                 date_stop = datetime.datetime.strptime(prdct_sim_i.get('date_stop'), "%Y-%m-%d").date()
 
-                existing_forecast = mps.forecast_ids.filtered(lambda f:
-                                                              f.date >= date_start
-                                                              and f.date <= date_stop)
+                existing_forecast = mps.forecast_ids.filtered(lambda f: date_start <= f.date <= date_stop)
                 _qty = float_round(prdct_sim_i.get('suggested_production_plan_qty'),
                                    precision_rounding=mps.product_uom_id.rounding)
 
+                forecast_vals = {
+                    'forecast_qty': _qty
+                }
+
+                # Production plan Changes
+                if prdct_sim_i.get('notes'):
+                    forecast_vals['dw_pps_production_notes'] = prdct_sim_i.get('notes')
+
+                # Capacity constraints
+                if prdct_sim_i.get('alert_notes'):
+                    forecast_vals['dw_pps_capacity_notes'] = prdct_sim_i.get('alert_notes')
+
+                if prdct_sim_i.get('decision', -1) != -1:
+                    forecast_vals['dw_pps_capacity_decision_id'] = prdct_sim_i.get('decision')
+
                 if existing_forecast:
-                    existing_forecast[0].write({'forecast_qty': _qty})
+                    existing_forecast[0].write(forecast_vals)
                 else:
-                    self.env['mrp.product.forecast'].create({
-                        'forecast_qty': _qty,
-                        'date': date_stop,
-                        'replenish_qty': 0,
-                        'production_schedule_id': mps.id
-                    })
+                    forecast_vals['production_schedule_id'] =  mps.id
+                    forecast_vals['date'] =  date_stop
+
+                    self.env['mrp.product.forecast'].create(forecast_vals)
 
             ids.append(mps.id)
 
@@ -1136,8 +1145,6 @@ class DwProductionPlanSimulator(models.Model):
                 })
 
         return True
-
-
 
     def set_production_plan_batch_notes(self, date_index, date_start, date_stop, notes):
         """ Save the simulation notes:

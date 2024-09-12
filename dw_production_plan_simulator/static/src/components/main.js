@@ -53,6 +53,8 @@ class ProductionPlanSimulatorComponent extends Component {
       salesStartDate: "2024-01-01",
       salesEndDate: "2024-03-01",
       isModalVisible: false,
+      planningCycle: "",
+      planningDate: null,
     });
     this.data = {};
 
@@ -112,6 +114,8 @@ class ProductionPlanSimulatorComponent extends Component {
       await loadJS(
         "dw_production_plan_simulator/static/src/libs/js/buttons.js"
       );
+
+      await loadCSS("shared_assets/static/libs/css/jsuites.css");
 
       this.env.config.setDisplayName(_t("Production Plan Simulation Tool"));
 
@@ -277,8 +281,50 @@ class ProductionPlanSimulatorComponent extends Component {
     );
   }
 
+  initPlanningCycleSelect() {
+    var planningCycleOptions = [
+      {
+        id: "monthly",
+        name: "Monthly",
+      },
+      {
+        id: "annual",
+        name: "Annual",
+      },
+    ];
+
+    var planCycleSelect = document.getElementById("select-planning-cycle");
+    planCycleSelect.innerHTML = "";
+    planningCycleOptions.forEach(
+      function (opt, i) {
+        var option = this.addSelectOption(opt["name"], opt["id"]);
+        option.selected = i === 0 ? true : false;
+        planCycleSelect.appendChild(option);
+      }.bind(this)
+    );
+  }
+
+  initCalendarInput() {
+    var self = this;
+    jSuites.calendar(document.getElementById("calendar"), {
+      type: "year-month-picker",
+      format: "MMM-YYYY",
+      value: new Date(),
+      // validRange: ["2024-02-01", "2025-12-31"],
+      onchange: function (instance, value) {
+        self.state.planningDate = value.split(" ")[0];
+        console.log(
+          "🚀 ~ ProductionPlanSimulatorComponent ~ jSuites.calendar ~ self.state.planningDate:",
+          self.state.planningDate
+        );
+      },
+    });
+  }
+
   initFilterSettings() {
     this.initCompaniesSelect();
+    this.initPlanningCycleSelect();
+    this.initCalendarInput();
     this.initPeriodInput();
   }
 
@@ -533,7 +579,21 @@ class ProductionPlanSimulatorComponent extends Component {
     this.state.salesStartDate = salesPicker.startDate.format("YYYY-MM-DD");
     this.state.salesEndDate = salesPicker.endDate.format("YYYY-MM-DD");
 
+    this.state.planningCycle = $(
+      "#select-planning-cycle option:selected"
+    ).val();
+
+    let calendarElVal = document.getElementById("calendar").calendar.getValue();
+    if (calendarElVal) {
+      this.state.planningDate = calendarElVal.split(" ")[0];
+    }
+
     this.state.domain = [["company_id", "=", this.state.currentCompanyId]];
+
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorComponent ~ captureInputSettings ~ this.state:",
+      this.state
+    );
 
     this.model.saveDateRange(
       this.state.currentCompanyId,
@@ -558,6 +618,15 @@ class ProductionPlanSimulatorComponent extends Component {
 
   async _onChangeCompany(ev, productionSimulationId) {
     this.state.currentCompanyId = parseInt(ev.target.value);
+    this.captureInputSettings();
+  }
+
+  async _onChangePlanningCycle(ev) {
+    this.state.planningCycle = ev.target.value;
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorComponent ~ _onChangePlanningCycle ~ this.state:",
+      this.state
+    );
     this.captureInputSettings();
   }
 
@@ -681,7 +750,6 @@ class ProductionPlanSimulatorComponent extends Component {
   async alertDecisionCellEdited(cell) {
     const decision = cell.getValue();
     const cellData = cell.getData();
-
     await this.model
       ._saveDecision(
         cellData.id,

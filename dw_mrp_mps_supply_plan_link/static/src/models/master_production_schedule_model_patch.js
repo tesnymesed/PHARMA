@@ -24,26 +24,8 @@ patch(MasterProductionScheduleModel.prototype, {
             // productionScheduleId,
             this.data.production_schedule_ids,
           ])
-          .then((res) => {
-            console.log("🚀 ~ .then ~ res:", res);
-            let supply_plan_ids = res[0];
+          .then((supply_plan_ids) => {
             console.log("🚀 ~ .then ~ supply_plan_ids:", supply_plan_ids);
-            try {
-              let approved_ids = res[1];
-              console.log("🚀 ~ .then ~ approved_ids:", approved_ids);
-              if (approved_ids) {
-                var approved_notif = this.notificationService.add(
-                  _t("Approved Supply Plans were detected"),
-                  {
-                    title: _t("Approved Supply Plans"),
-                    type: "success",
-                  }
-                );
-                setTimeout(approved_notif, 2000);
-              }
-            } catch (error) {
-              console.error("Error handling approved IDs", error);
-            }
 
             this.mutex.exec(() => {
               let action = {
@@ -55,28 +37,15 @@ patch(MasterProductionScheduleModel.prototype, {
                   [false, "form"],
                 ],
                 view_mode: "tree,form",
-                domain: [["supply_plan_id.id", "in", supply_plan_ids]],
+                domain: [["id", "in", supply_plan_ids]],
                 context: {
-                  group_by: ["state", "supply_plan_id", "product_id"],
+                  group_by: ["product_id"],
                   expand: true,
                 },
-                target: "new",
+                target: "current",
                 search_view_id: false,
                 filter: false,
               };
-              // let _action = {
-              //   name: _t("MRP Supply Plans"),
-              //   type: "ir.actions.act_window",
-              //   res_model: "dw.mrp.supply.plan",
-              //   views: [
-              //     [false, "tree"],
-              //     [false, "form"],
-              //   ],
-              //   view_mode: "tree,form",
-              //   target: "current",
-              //   domain: [("id", "in", supply_plan_ids)],
-              // };
-
               this.action.doAction(action);
             });
           })

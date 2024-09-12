@@ -15,26 +15,21 @@
         'data/market_type_data.xml',
         'data/consultation_crietria_data.xml',
         # report
-
         # security
         'security/security.xml',
         'security/ir.model.access.csv',
         # views
-
         'views/market.xml',
         'views/market_type_views.xml',
-
         'views/dw_consultation_criteria.xml',
         'views/dw_consultations_views.xml',
         'views/dw_consultation_criteria_line.xml',
-
-        # menus
-        'menus.xml',
-
+        'views/procurement_reject_cancel_reason_views.xml',
         # wizard
-
         'wizard/document_market_wizard.xml',
         'wizard/dw_attribute_market_views.xml',
+        # menus
+        'menus.xml',
 
     ],
     'qweb': [
@@ -42,6 +37,6 @@
     ],
     'installable': True,
     'application': True,
-    'auto_install': True,
+    'auto_install': False,
     'license': 'LGPL-3',
 }

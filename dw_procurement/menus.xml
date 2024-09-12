@@ -68,6 +68,12 @@
                   sequence="20"
         />
 
+    <menuitem id="menu_procurement_reject_cancel_reason" name="Procurement Reasons"
+        parent="base.menu_custom" sequence="10"/>
 
+    <menuitem id="submenu_procurement_reject_cancel_reason"
+        name="Reasons for Procurement Reject/Cancel"
+        parent="menu_procurement_reject_cancel_reason"
+        action="action_procurement_reject_cancel_reason"/>
     </data>
 </odoo>

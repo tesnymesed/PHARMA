@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_procurement_reason_tree" model="ir.ui.view">
+        <field name="name">procurement.reject.cancel.reason.tree</field>
+        <field name="model">procurement.reject.cancel.reason</field>
+        <field name="arch" type="xml">
+            <tree string="Procurement Reject or Cancel Reason">
+                <field name="name"/>
+                <field name="reason_type"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_procurement_reason_form" model="ir.ui.view">
+        <field name="name">procurement.reject.cancel.reason.form</field>
+        <field name="model">procurement.reject.cancel.reason</field>
+        <field name="arch" type="xml">
+            <form string="Procurement Reject or Cancel Reason">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="reason_type"/>
+                        <field name="description"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_procurement_reject_cancel_reason" model="ir.actions.act_window">
+        <field name="name">Procurement Reject or Cancel Reason</field>
+        <field name="res_model">procurement.reject.cancel.reason</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

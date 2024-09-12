@@ -197,7 +197,7 @@ patch(MainComponent.prototype, {
           field: "notes",
           editor: "textarea",
           formatter: "textarea",
-          cellEdited: this.notesCellEdited.bind(this),
+          cellEdited: this.alertNotesCellEdited.bind(this),
         },
       ];
       let alertsTable = this.initTabulator("#alertsTable", data, columns);
@@ -236,7 +236,7 @@ patch(MainComponent.prototype, {
     return table;
   },
 
-  async notesCellEdited(cell) {
+  async alertNotesCellEdited(cell) {
     const notes = cell.getValue();
     const cellData = cell.getData();
 

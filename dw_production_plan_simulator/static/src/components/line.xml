@@ -22,17 +22,20 @@
             t-att-data-res-id="productionSimulation.product_id[0]"
             t-att-data-model="'product.product'"
             t-on-click.prevent="_onClickRecordLink"
-            ><t t-esc="productionSimulation.product_id[1]"
-          /></a>
+          >
+            <t t-esc="productionSimulation.product_id[1]" />
+          </a>
           <span
             t-if="'product_uom_id' in productionSimulation"
             class="text-muted"
           >
-            by <t t-esc="productionSimulation.product_uom_id[1]"
-          /></span>
+            by
+            <t t-esc="productionSimulation.product_uom_id[1]" />
+          </span>
           <span t-if="'warehouse_id' in productionSimulation">
-            - <t t-esc="productionSimulation.warehouse_id[1]"
-          /></span>
+            -
+            <t t-esc="productionSimulation.warehouse_id[1]" />
+          </span>
           <span> </span>
           <button
             type="button"
@@ -74,7 +77,7 @@
       <!--      <tr-->
       <!--        name="demand_forecast_year_minus_2"-->
       <!--        t-attf-class="{{! groups.mrp_mps_show_actual_demand_year_minus_2 and 'o_hidden' or
-          ''}}"-->
+            ''}}"-->
       <!--      >-->
       <!--        <th />-->
       <!--        <th scope="row">-->
@@ -182,14 +185,17 @@
             <span t-esc="formatFloat(simulation.planned_production_qty)" />
 
             ( ≈
-            <span t-esc="formatFloat(simulation.eff_planned_production_qty)" />
+            <span
+              t-att-data-date_index="simulation_index"
+              t-esc="formatFloat(simulation.eff_planned_production_qty)"
+            />
             )
             <!--            <input-->
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
             <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
-                groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
-                and 'o_mps_inline' or ''}}"-->
+                  groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+                  and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -214,6 +220,7 @@
 
             ( ≈
             <span
+              t-att-data-date_index="simulation_index"
               t-esc="formatFloat(simulation.eff_planned_production_batches)"
             />
             )
@@ -221,8 +228,8 @@
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
             <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
-                groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
-                and 'o_mps_inline' or ''}}"-->
+                  groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+                  and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.planned_production_batches)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -248,8 +255,8 @@
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
             <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
-                groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
-                and 'o_mps_inline' or ''}}"-->
+                  groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+                  and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -275,8 +282,8 @@
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
             <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
-                groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
-                and 'o_mps_inline' or ''}}"-->
+                  groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+                  and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -305,6 +312,18 @@
               t-att-value="formatFloat(simulation.batch_count)"
               t-on-change.stop="(ev) => this.onChangeBatchCount(ev, productionSimulation.id)"
               t-on-focus.prevent="_onFocusInput"
+            />
+            <span
+              t-if="simulation.batch_count != simulation.eff_planned_production_batches"
+              t-att-data-date_index="simulation_index"
+              t-att-data-date_start="simulation.date_start"
+              t-att-data-date_stop="simulation.date_stop"
+              t-att-data-notes="simulation.notes"
+              t-att-data-batch_count="simulation.batch_count"
+              t-att-data-eff_planned_production_batches="simulation.eff_planned_production_batches"
+              class="btn btn-link input-group-addon fa fa-commenting fa-fw pe-1 text-success oe_edit_only o_no_padding"
+              t-attf-title="Add/Edit notes."
+              t-on-click="_onClickProdPlanBatchesNotes"
             />
           </th>
         </t>
@@ -345,8 +364,8 @@
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
             <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
-                groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
-                and 'o_mps_inline' or ''}}"-->
+                  groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+                  and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -372,8 +391,8 @@
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
             <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
-                groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
-                and 'o_mps_inline' or ''}}"-->
+                  groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+                  and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -398,8 +417,8 @@
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
             <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
-                groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
-                and 'o_mps_inline' or ''}}"-->
+                  groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+                  and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -448,8 +467,8 @@
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
             <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
-                groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
-                and 'o_mps_inline' or ''}}"-->
+                  groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+                  and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -461,7 +480,7 @@
       <!--      <tr-->
       <!--        name="demand_forecast_year_minus_1"-->
       <!--        t-attf-class="{{! groups.mrp_mps_show_actual_demand_year_minus_1 and 'o_hidden' or
-          ''}}"-->
+            ''}}"-->
       <!--      >-->
       <!--        <th />-->
       <!--        <th scope="row">-->
@@ -653,6 +672,111 @@
           </th>
         </t>
       </tr>
+      <!-- Prod Plan Batch Notes Modal -->
+
+      <div
+        class="modal fade"
+        id="prodPlanBatchNotesModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="formVals.title"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="prodPlanBatchNotesModalHeadTitle">
+                <t t-esc="formVals.headerTitle"></t>
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="notes-wizard modal-body">
+              <div class="period">
+                <h2 id="modalPeriodText" t-att-value="formVals.modalPeriodText">
+                  <t t-esc="formVals.modalPeriodText"></t>
+                </h2>
+              </div>
+              <form>
+                <div class="batch-quantities form-group row">
+                  <div class="batch-quantity-container col">
+                    <div class="batch-quantity-label">
+                      <label for="production-plan-batches"
+                        >Production Plan Batches</label
+                      >
+                    </div>
+                    <div class="batch-quantity">
+                      <span
+                        class="batch-quantity"
+                        id="production-plan-batches"
+                        t-esc="formVals.eff_planned_production_batches"
+                      />
+                    </div>
+                    <!-- t-attf-class="{{formatFloat(formVals.eff_planned_production_batches) &gt; formatFloat(formVals.batch_count) and 'text-success' or 
+                                     'text-danger' or ''
+                                    }}" -->
+                  </div>
+                  <div class="batch-quantity-container col">
+                    <div class="batch-quantity-label">
+                      <label for="suggested-production-plan-batches"
+                        >Suggested Production Plan Batches</label
+                      >
+                    </div>
+                    <div class="batch-quantity">
+                      <span
+                        class="batch-quantity"
+                        id="suggested-production-plan-batches"
+                        t-esc="formVals.batch_count"
+                      />
+                    </div>
+                    <!-- t-attf-class="{{formatFloat(formVals.batch_count) &lt; formatFloat(formVals.eff_planned_production_batches) and 'text-success' or 
+                                     'text-danger' or ''
+                                    }}" -->
+                    <!-- <input
+                  type="text"
+                  id="suggested-production-plan-batches"
+                  name="suggested-production-plan-batches"
+                  readonly="True"
+                /> -->
+                  </div>
+                </div>
+                <div class="notes-container form-group row">
+                  <label for="notes" class="notes-label">Notes:</label>
+                  <textarea
+                    id="notes"
+                    t-attf-class="notes-textarea"
+                    type="text"
+                    t-att-value="formVals.notes"
+                    placeholder="Enter your notes here..."
+                  />
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                t-on-click="saveProdPlanBatchesNotes"
+                class="btn btn-primary"
+              >
+                Save notes
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </tbody>
   </t>
 </templates>

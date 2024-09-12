@@ -182,7 +182,10 @@
                                     <tr>
                                       <table class="table o_mps_product_table">
                                         <thead class="table-light">
-                                          <tr class="o_mps_period">
+                                          <tr
+                                            t-ref="periodsRow"
+                                            class="o_mps_period"
+                                          >
                                             <th></th>
                                             <th />
                                             <th />
@@ -191,9 +194,13 @@
                                               scope="col"
                                               t-foreach="manufacturingPeriods"
                                               t-as="period"
-                                              t-key="period"
+                                              t-key="period_index"
                                             >
-                                              <div><t t-esc="period" /></div>
+                                              <div
+                                                t-att-data-date_index="period_index"
+                                              >
+                                                <t t-esc="period" />
+                                              </div>
                                             </th>
                                           </tr>
                                         </thead>
@@ -246,6 +253,7 @@
 
     <ProductionPlanSimulationAlerts t-if="isModalVisible" />
 
+    <!-- Alerts modal -->
     <div
       class="modal fade"
       id="alertsModal"
@@ -266,7 +274,9 @@
           </div>
           <div class="modal-body" id="alertsModal">
             <!--          Body -->
-            <center><h3 id="bodyTitle"></h3></center>
+            <center>
+              <h3 id="bodyTitle"></h3>
+            </center>
 
             <div id="alertsTable" class="table table-hover"></div>
 
@@ -278,17 +288,24 @@
               <div id="newRow"></div>
             </div>
             <!--Body
-                End-->
+              End-->
           </div>
           <div class="modal-footer">
             <button
               type="button"
               class="btn btn-secondary"
+              data-dismiss="modal"
               data-bs-dismiss="modal"
+              aria-label="Close"
             >
               Close
             </button>
-            <button type="button" id="save" class="btn btn-primary">
+            <button
+              type="button"
+              t-on-click="closeAlertsModal"
+              id="save"
+              class="btn btn-primary"
+            >
               Validate
             </button>
           </div>

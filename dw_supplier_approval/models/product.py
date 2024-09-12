@@ -37,7 +37,6 @@ class DwProduct(models.Model):
     number_fournisseur2 = fields.Integer('Number of fournisseur', compute="_compute_number_fournisseur2", store=True)
 
     homologation_ids = fields.One2many("dw.homologation", 'product_id', string="Homologation")
-    homologation_ids = fields.One2many("dw.homologation", 'product_id', string="Homologation")
 
     has_backliested_supplier = fields.Boolean('Blacklisted', compute="_compute_has_blacklisted")
     has_backliested_supplier2 = fields.Boolean('Blacklisted', related="has_backliested_supplier", store=True)

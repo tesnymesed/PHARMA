@@ -6,8 +6,8 @@
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">dw.market</field>
             <field name="view_mode">kanban,tree,form</field>
-            <field name="domain">[('dw_for_homologation','=',False)]</field>
-            <field name="context">{'default_dw_for_homologation':False}</field>
+            <field name="domain">[('dw_homologate','=',False)]</field>
+            <field name="context">{'default_dw_homologate':False}</field>
 
         </record>
 

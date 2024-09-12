@@ -18,9 +18,6 @@ class DwProductPharmaceuticalFamily(models.Model):
     _description = 'Family'
     _inherit = ['mail.thread.main.attachment', 'mail.activity.mixin']
 
-    def _compute_product_count(self):
-        self.product_count = len(self.mapped('product_ids'))
-
     name = fields.Char(string="Name")
     active = fields.Boolean(default=True)
     product_categ_id = fields.Many2one(
@@ -40,6 +37,10 @@ class DwProductPharmaceuticalFamily(models.Model):
         string="Tracking", required=True, default='none', track_visibility='onchange')
     use_expiration_date = fields.Boolean(
         string='Use Expiration Date', track_visibility='onchange')
+
+    def _compute_product_count(self):
+        for record in self:
+            record.product_count = len(record.mapped('product_ids'))
 
     def action_view_product(self):
         """

@@ -76,7 +76,7 @@ class DwConsultationCriteria(models.Model):
                 rec.product_domain_ids = rec.market_id.product_ids
             else:
                 rec.product_domain_ids = ProductProduct.search(
-                    [('purchase_ok', '=', True), '|',
+                    [('purchase_ok', '=', True),
                      ('company_id', '=', rec.company_id.id or False)])
 
     @api.constrains('end_date', 'start_date')

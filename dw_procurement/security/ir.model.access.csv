@@ -1,13 +1,14 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_dw_market,Dw Market,model_dw_market,base.group_user,1,1,1,1
-access_dw_market_type,Dw Market Type,model_dw_market_type,base.group_user,1,1,1,1
+access_procurement_market_dw,Dw Market,model_procurement_market_dw,base.group_user,1,1,1,1
+access_procurement_market_dw_type,Dw Market Type,model_procurement_market_dw_type,base.group_user,1,1,1,1
 access_dw_consultation_criteria_line,Dw consultation criteria line,model_dw_consultation_criteria_line,base.group_user,1,1,1,1
 access_dw_consultation_criteria,Dw consultation criteria,model_dw_consultation_criteria,base.group_user,1,1,1,1
 access_dw_consultation,Dw consultation,model_dw_consultation,base.group_user,1,1,1,1
 access_dw_document_market_wizard,DW Document market wizard,model_dw_document_market_wizard,base.group_user,1,1,1,1
-access_dw_market_line,DW Market Line,model_dw_market_line,base.group_user,1,1,1,1
+access_procurement_market_dw_line,DW Market Line,model_procurement_market_dw_line,base.group_user,1,1,1,1
 access_dw_attribute_market_wizard,dw.attribute.market.wizard,model_dw_attribute_market_wizard,base.group_user,1,1,1,1
 access_procurement_reject_cancel_reason,procurement.reject.cancel.reason,model_procurement_reject_cancel_reason,base.group_user,1,1,1,1
+access_procurement_wizard_line,procurement.market.consultation.wizard_line,model_procurement_wizard_line,base.group_user,1,1,1,1
 
 
 

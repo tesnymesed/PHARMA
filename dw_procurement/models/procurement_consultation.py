@@ -15,7 +15,6 @@ class DwConsultationCriteria(models.Model):
     market_id = fields.Many2one('procurement.market.dw', string='Market')
     for_approval = fields.Boolean("for Approval", related="market_id.for_approval")
 
-
     product_id = fields.Many2one(
         'product.product', required=1,
         check_company=True,
@@ -34,13 +33,13 @@ class DwConsultationCriteria(models.Model):
     )
     qty = fields.Float("Quantity")
     user_id = fields.Many2one('res.users', 'Responsible', default=lambda self: self.env.user)
-    motif_id = fields.Many2one('procurement.reject.cancel.reason', 'Reason')
     active = fields.Boolean("Active", default="True")
     state = fields.Selection(selection=[
 
         ('draft', 'Draft'),
         ('consulted', 'Consulted'),
         ('allocated', 'Allocated'),
+        ('reject', 'Reject'),
         ('canceled', 'Canceled')
     ],
         string="State",
@@ -51,7 +50,12 @@ class DwConsultationCriteria(models.Model):
         [('fabricant', 'Fabricant'), ('regroupeur', 'Regroupeur')],
         string="Supplier nature", related="supplier_id.dw_supplier_nature", readonly=False, store=True,
     )
-
+    canceled_motif_id = fields.Many2one('procurement.reject.cancel.reason', string='Reason',
+                                        domain=[('reason_type', '=', 'cancel')],
+                                        )
+    reject_motif_id = fields.Many2one('procurement.reject.cancel.reason', string='Reject Reason',
+                                      domain=[('reason_type', '=', 'reject')],
+                                      )
 
     @api.constrains('end_date', 'start_date')
     def _check_date_start_end(self):
@@ -81,7 +85,7 @@ class DwConsultationCriteria(models.Model):
         return super().create(vals_list)
 
     def action_draft(self):
-        self.write({"state": 'draft'})
+        self.write({"state": 'draft', "canceled_motif_id": False})
 
     def action_consulted(self):
         for line in self.criteria_line_ids:
@@ -105,8 +109,37 @@ class DwConsultationCriteria(models.Model):
                 )
         self.write({"state": 'consulted'})
 
-    def action_canceled(self):
+    def button_canceled(self):
         self.write({"state": 'canceled'})
+        return {'type': 'ir.actions.act_window_close'}
+
+    def action_canceled(self):
+        self.ensure_one()
+        return ({
+            'res_model': 'procurement.dw.consultation',
+            'type': 'ir.actions.act_window',
+            'name': _("Cancel Motif for consultation : %(consultation_name)s", consultation_name=self.name),
+            'res_id': self.id,
+            "target": "new",
+            'views': [[self.env.ref('dw_procurement.dw_consultation_form_view_canceled').id, 'form']],
+            'context': {'create': False, 'dw_consultation_cancel_reason': True},
+        })
+
+    def button_reject(self):
+        self.write({"state": 'reject'})
+        return {'type': 'ir.actions.act_window_close'}
+
+    def action_reject(self):
+        self.ensure_one()
+        return ({
+            'res_model': 'procurement.dw.consultation',
+            'type': 'ir.actions.act_window',
+            'name': _("Reject Motif for consultation : %(consultation_name)s", consultation_name=self.name),
+            'res_id': self.id,
+            "target": "new",
+            'views': [[self.env.ref('dw_procurement.dw_consultation_form_view_canceled').id, 'form']],
+            'context': {'create': False, 'dw_consultation_reject_reason': True},
+        })
 
     def action_show_market(self):
         return ({
@@ -136,3 +169,28 @@ class DwConsultationCriteria(models.Model):
 
                 'context': {'default_market_id': self.market_id.id, "create": 0},
             })
+
+    @api.constrains('state', 'active', 'market_id', 'product_id')
+    def _check_unique_market_consultation_product(self):
+        for record in self:
+            if not record.market_id or not record.product_id or not record.supplier_id:
+                continue
+            market_id = record.market_id
+            product_id = record.product_id
+            supplier_id = record.supplier_id
+            domain = [
+                ('id', '!=', record.id),
+                ('active', '=', True),
+                ('state', 'not in', ['reject', 'canceled']),
+                ('market_id', '=', market_id.id),
+                ('product_id', '=', product_id.id),
+                ('supplier_id', '=', supplier_id.id)
+            ]
+
+            if self.search_count(domain):
+                raise ValidationError(
+                    _('A consultation already exists for this supplier : %(supplier_name)s, market : %(market_name)s, and product : %(product_name)s.',
+                      supplier_name=supplier_id.name, market_name=market_id.name,
+                      product_name=product_id.name)
+
+                    )

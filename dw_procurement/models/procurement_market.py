@@ -31,7 +31,7 @@ class DwMarketLine(models.Model):
         product_id = line_id.product_id
         market_id = line_id.market_id
         consultation_ids = market_id.mapped("consultation_ids").filtered(
-            lambda c: c.product_id == product_id and c.state not in ['canceled'])
+            lambda c: c.product_id == product_id and c.state not in ['canceled','reject'])
 
         suppliers_without_consultation = supplier_ids.filtered(
             lambda supplier: not consultation_ids.filtered(lambda cons: cons.supplier_id == supplier)
@@ -74,7 +74,8 @@ class DwMarket(models.Model):
             ('prospecting', 'prospecting'),
             ('consultation', 'consultation'),
             ('done', 'Assigned'),
-            ('cancel', 'Canceled')
+            ('reject', 'Reject'),
+            ('cancel', 'Canceled'),
         ],
         string="State",
         default="draft",
@@ -109,7 +110,12 @@ class DwMarket(models.Model):
     cahier_charge_attachment = fields.Binary(string="Specification document")
     cahier_charge_name = fields.Char(string='File name')
     len_supplier_market = fields.Integer("Length Market supplier", store=1, compute="compute_len_supplier_market")
-    motif_id = fields.Many2one('procurement.reject.cancel.reason', 'Reason')
+    canceled_motif_id = fields.Many2one('procurement.reject.cancel.reason', string='Cancel Reason',
+                                        domain=[('reason_type', '=', 'cancel')],
+                                        )
+    reject_motif_id = fields.Many2one('procurement.reject.cancel.reason', string='Reject Reason',
+                                      domain=[('reason_type', '=', 'reject')],
+                                      )
     start_date = fields.Date(string="Start Date", default=fields.Date.today)
     end_date = fields.Date(string="End Date", default=fields.Date.today)
     for_approval = fields.Boolean("for approval")
@@ -154,7 +160,7 @@ class DwMarket(models.Model):
         return [key for key, dummy in self._fields['state'].selection]
 
     def button_draft(self):
-        self.write({"state": "draft"})
+        self.write({"state": "draft", "canceled_motif_id": False, "reject_motif_id": False})
 
     @api.depends('market_line_ids')
     def compute_len_supplier_market(self):
@@ -222,8 +228,37 @@ class DwMarket(models.Model):
                         'limit_folders_to_lead': True},
         }
 
+    def button_canceled(self):
+        self.write({"state": 'cancel'})
+        return {'type': 'ir.actions.act_window_close'}
+
     def action_cancel(self):
-        self.write({"state": "cancel"})
+        self.ensure_one()
+        return ({
+            'res_model': 'procurement.market.dw',
+            'type': 'ir.actions.act_window',
+            'name': _("Cancel Motif for Market : %(market_name)s", market_name=self.name),
+            'res_id': self.id,
+            "target": "new",
+            'views': [[self.env.ref('dw_procurement.view_market_form_canceled').id, 'form']],
+            'context': {'create': False, 'dw_market_cancel_reason': True},
+        })
+
+    def button_reject(self):
+        self.write({"state": 'reject'})
+        return {'type': 'ir.actions.act_window_close'}
+
+    def action_reject(self):
+        self.ensure_one()
+        return ({
+            'res_model': 'procurement.market.dw',
+            'type': 'ir.actions.act_window',
+            'name': _("Reject Motif for Market : %(market_name)s", market_name=self.name),
+            'res_id': self.id,
+            "target": "new",
+            'views': [[self.env.ref('dw_procurement.view_market_form_canceled').id, 'form']],
+            'context': {'create': False, 'dw_market_reject_reason': True},
+        })
 
     def action_prospecting(self):
 

@@ -14,6 +14,7 @@
         'data/sequence_data.xml',
         'data/procurement_market_type_data.xml',
         'data/procurement_consultation_criteria_data.xml',
+        'data/procurement_reject_cancel_reason_data.xml',
         # report
         # security
         'security/security.xml',
@@ -21,9 +22,9 @@
         # views
         'views/procurement_market_views.xml',
         'views/procurement_market_type_views.xml',
-        'views/procurement_consultation_criteria.xml',
+        'views/procurement_consultation_criteria_views.xml',
         'views/procurement_consultations_views.xml',
-        'views/procurement_consultation_criteria_line.xml',
+        'views/procurement_consultation_criteria_line_views.xml',
         'views/procurement_reject_cancel_reason_views.xml',
         # wizard
         'wizard/document_market_wizard.xml',

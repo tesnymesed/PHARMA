@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <tree string="Procurement Reject or Cancel Reason">
                 <field name="name"/>
+                <field name="description"/>
                 <field name="reason_type"/>
                 <field name="active"/>
             </tree>

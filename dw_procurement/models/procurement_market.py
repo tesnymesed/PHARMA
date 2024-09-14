@@ -31,7 +31,7 @@ class DwMarketLine(models.Model):
         product_id = line_id.product_id
         market_id = line_id.market_id
         consultation_ids = market_id.mapped("consultation_ids").filtered(
-            lambda c: c.product_id == product_id and c.state not in ['cancelled'])
+            lambda c: c.product_id == product_id and c.state not in ['canceled'])
 
         suppliers_without_consultation = supplier_ids.filtered(
             lambda supplier: not consultation_ids.filtered(lambda cons: cons.supplier_id == supplier)

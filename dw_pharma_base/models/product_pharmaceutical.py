@@ -28,15 +28,15 @@ class DwProductPharmaceuticalFamily(models.Model):
     subfamily_ids = fields.One2many('product.pharmaceutical.subfamily', 'family_id', string='Subfamily')
     product_count = fields.Integer(compute="_compute_product_count")
     product_ids = fields.One2many('product.template', 'dw_pharma_family_id', string='Products')
-    purchase_ok = fields.Boolean('Can be Purchased', default=False, track_visibility='onchange')
-    sale_ok = fields.Boolean('Can be Sold', default=False, track_visibility='onchange')
+    purchase_ok = fields.Boolean('Can be Purchased', default=False, tracking=True)
+    sale_ok = fields.Boolean('Can be Sold', default=False, tracking=True)
     tracking = fields.Selection([
         ('serial', 'By Unique Serial Number'),
         ('lot', 'By Lots'),
         ('none', 'No Tracking')],
-        string="Tracking", required=True, default='none', track_visibility='onchange')
+        string="Tracking", required=True, default='none', tracking=True)
     use_expiration_date = fields.Boolean(
-        string='Use Expiration Date', track_visibility='onchange')
+        string='Use Expiration Date', tracking=True)
 
     def _compute_product_count(self):
         for record in self:

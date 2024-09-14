@@ -1,6 +1,6 @@
 from odoo import fields, models, api, _
-from odoo.odoo.fields import Command
 from odoo.exceptions import ValidationError
+from odoo import Command
 
 
 class ProcurementMarketConsultationLine(models.TransientModel):

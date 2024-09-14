@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_market_type_tree" model="ir.ui.view">
+            <field name="name">procurement.market.dw.type.tree</field>
+            <field name="model">procurement.market.dw.type</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="forced_nbr_supplier"/>
+                    <field name="nbr_supplier" readonly="not forced_nbr_supplier"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</odoo>

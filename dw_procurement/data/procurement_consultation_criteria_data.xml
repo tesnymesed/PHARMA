@@ -2,13 +2,11 @@
 <odoo>
     <data>
 
-        <record id="dw_criteria_consultation_price_unit_ht" model="dw.consultation.criteria">
+        <record id="dw_criteria_consultation_price_unit_ht" model="procurement.dw.consultation.criteria">
             <field name="name">Price Unit HT</field>
             <field name="criteria_type">amount</field>
-                        <field name="period_type"></field>
-
         </record>
-        <record id="dw_criteria_consultation_delivery_time" model="dw.consultation.criteria">
+        <record id="dw_criteria_consultation_delivery_time" model="procurement.dw.consultation.criteria">
             <field name="name">Delivery time</field>
             <field name="criteria_type">period</field>
             <field name="period_type">days</field>

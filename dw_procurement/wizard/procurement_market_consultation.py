@@ -7,7 +7,7 @@ class ProcurementMarketConsultationLine(models.TransientModel):
     _name = "procurement.wizard.line"
     supplier_id = fields.Many2one("res.partner", String="Supplier", domain='[("is_supplier","=", True)]',
                                   check_company=True, required=1, readonly=1)
-    consultation_id = fields.Many2one("dw.consultation",
+    consultation_id = fields.Many2one("procurement.dw.consultation",
                                       domain='[("supplier_id","=", supplier_id),("state","in", ["consulted"]),("market_id","=", False)]',
                                       string="Consultation")
     line_id = fields.Many2one("procurement.market.dw.line", string="Line Market")
@@ -43,7 +43,7 @@ class ProcurementMarketConsultationLine(models.TransientModel):
         consultation_data = self._prepare_consultation_values(market_id, self.product_id, self.supplier_id,
                                                               self.quantity, market_criteria_ids)
         if consultation_data:
-            consultation = self.env['dw.consultation'].create(consultation_data)
+            consultation = self.env['procurement.dw.consultation'].create(consultation_data)
             self.line_consulted = True
             self.consultation_id = consultation.id
             return consultation
@@ -60,3 +60,13 @@ class ProcurementMarketConsultationLine(models.TransientModel):
             )
         consultation_id.market_id = market_id.id
         self.line_consulted = True
+
+    def action_link_all_consultation_to_market(self):
+        records_to_link = self.filtered(lambda line: line.consultation_id)
+        for record in records_to_link:
+            record.action_link_consultation_to_market()
+
+    def action_confirm_all_create_consultation(self):
+        records_to_create = self.filtered(lambda line: not line.consultation_id)
+        for record in records_to_create:
+            record.action_confirm_create_consultation()

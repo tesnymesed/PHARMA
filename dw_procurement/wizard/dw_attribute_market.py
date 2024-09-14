@@ -3,11 +3,11 @@ from odoo import fields, models, _, api
 
 class DwAttributeMarket(models.TransientModel):
     _name = "dw.attribute.market.wizard"
-    market_id = fields.Many2one("dw.market", "Market")
-    consultation_id = fields.Many2one("dw.consultation", "Awarding the market to the supplier",
+    market_id = fields.Many2one("procurement.market.dw", "Market")
+    consultation_id = fields.Many2one("procurement.dw.consultation", "Awarding the market to the supplier",
                                       domain="[('market_id','=',market_id),('state','=','consulted')]")
     criteria_line_ids = fields.One2many(
-        'dw.consultation.criteria.line',
+        'procurement.dw.consultation.criteria.line',
         related="consultation_id.criteria_line_ids",
     )
     criteria_type = fields.Selection(

@@ -17,14 +17,19 @@
                     <field name="consultation_id"/>
                     <button name="action_link_consultation_to_market" type="object"
                             invisible="not consultation_id"
-                            class="btn btn-link text-info" icon="fa-history"
+                            class="btn btn-link text-info" icon="fa-link"
                             string="Link to market"/>
                     <button name="action_confirm_create_consultation" type="object"
                             invisible="consultation_id"
-                            class="btn btn-link text-success" icon="fa-history"
+                            class="btn btn-link text-success" icon="fa-plus-circle"
                             string="create consultation"/>
-
+                    <header>
+                        <button name="action_link_all_consultation_to_market" string="Link consultation" class="oe_highlight" type="object"/>
+                        <button name="action_confirm_all_create_consultation" string="Create consultation" class="oe_highlight" type="object"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </header>
                 </tree>
+
             </field>
         </record>
 

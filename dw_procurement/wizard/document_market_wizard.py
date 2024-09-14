@@ -12,12 +12,12 @@ class DocumentMarketWizard(models.TransientModel):
     pv_attribution_attachment = fields.Binary(string="attribution VR")
     pv_attribution_name = fields.Char(string='File name')
 
-    market_id = fields.Many2one("dw.market", "Market")
+    market_id = fields.Many2one("procurement.market.dw", "Market")
 
     state_market = fields.Selection(
         selection=[
             ('draft', 'Identification of the need'),
-            ('homologation_cosultation', 'Approval/consultation'),
+            ('approval_consultation', 'Approval/consultation'),
             ('done', 'Assigned'),
             ('cancel', 'Canceled')
         ],
@@ -27,9 +27,9 @@ class DocumentMarketWizard(models.TransientModel):
     )
 
     def action_confirm(self):
-        if self.cahier_charge_attachment and self.cahier_charge_name and self.state_market == 'prospection':
+        if self.cahier_charge_attachment and self.cahier_charge_name and self.state_market == 'prospecting':
             pg_recorded = self.env['documents.document'].create({
-                'res_model': 'dw.market',
+                'res_model': 'procurement.market.dw',
                 'res_id': self.market_id.id,
                 'name': self.cahier_charge_name,
                 'type': 'binary',
@@ -39,7 +39,7 @@ class DocumentMarketWizard(models.TransientModel):
             })
         if self.fiche_specification_attachment and self.fiche_specification_name and self.state_market == 'draft':
             pg_recorded = self.env['documents.document'].create({
-                'res_model': 'dw.market',
+                'res_model': 'procurement.market.dw',
                 'res_id': self.market_id.id,
                 'name': self.fiche_specification_name,
                 'type': 'binary',
@@ -47,9 +47,9 @@ class DocumentMarketWizard(models.TransientModel):
                 'datas': self.fiche_specification_attachment,
                 'folder_id': self.env.ref('dw_procurement.folder_dw_market').id,
             })
-        if self.pv_attribution_attachment and self.pv_attribution_name and self.state_market == 'homologation_cosultation':
+        if self.pv_attribution_attachment and self.pv_attribution_name and self.state_market == 'homologation_consultation':
             pg_recorded = self.env['documents.document'].create({
-                'res_model': 'dw.market',
+                'res_model': 'procurement.market.dw',
                 'res_id': self.market_id.id,
                 'name': self.pv_attribution_name,
                 'type': 'binary',

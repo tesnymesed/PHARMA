@@ -85,7 +85,7 @@ class DwConsultationCriteria(models.Model):
         return super().create(vals_list)
 
     def action_draft(self):
-        self.write({"state": 'draft', "canceled_motif_id": False})
+        self.write({"state": 'draft', "canceled_motif_id": False, "reject_motif_id": False})
 
     def action_consulted(self):
         for line in self.criteria_line_ids:

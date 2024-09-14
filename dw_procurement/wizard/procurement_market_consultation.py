@@ -7,7 +7,7 @@ class ProcurementMarketConsultationLine(models.TransientModel):
     _name = "procurement.wizard.line"
     supplier_id = fields.Many2one("res.partner", String="Supplier", domain='[("is_supplier","=", True)]',
                                   check_company=True, required=1, readonly=1)
-    consultation_id = fields.Many2one("procurement.dw.consultation",
+    consultation_id = fields.Many2one("procurement.dw.consultation",check_company=True,
                                       domain='[("supplier_id","=", supplier_id),("state","in", ["consulted"]),("market_id","=", False)]',
                                       string="Consultation")
     line_id = fields.Many2one("procurement.market.dw.line", string="Line Market")

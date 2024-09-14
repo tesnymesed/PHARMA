@@ -12,7 +12,7 @@ class DwConsultationCriteria(models.Model):
     supplier_id = fields.Many2one("res.partner", String="Supplier", domain='[("is_supplier","=", True)]',
                                   check_company=True, required=1)
 
-    market_id = fields.Many2one('procurement.market.dw', string='Market')
+    market_id = fields.Many2one('procurement.market.dw', string='Market', check_company=True, )
     for_approval = fields.Boolean("for Approval", related="market_id.for_approval")
 
     product_id = fields.Many2one(
@@ -193,4 +193,4 @@ class DwConsultationCriteria(models.Model):
                       supplier_name=supplier_id.name, market_name=market_id.name,
                       product_name=product_id.name)
 
-                    )
+                )

@@ -224,7 +224,7 @@ class DwMarket(models.Model):
             'view_mode': 'kanban,tree,form',
 
             'context': {'default_res_model': 'procurement.market.dw', 'default_res_id': self.id,
-                        'searchpanel_default_folder_id': self.env.ref("dw_procurement.folder_dw_market").id,
+                        'searchpanel_default_folder_id': self.env.ref("dw_procurement.folder_dw_procurement_market").id,
                         'limit_folders_to_lead': True},
         }
 

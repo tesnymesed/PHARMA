@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!--  Market      -->
+        <record model="ir.ui.view" id="view_market_form_inherit">
+            <field name="name">procurement.market.dw.form.inherit</field>
+            <field name="model">procurement.market.dw</field>
+            <field name="priority" eval="3"/>
+            <field name="inherit_id" ref="dw_procurement.view_market_form"/>
+
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='action_prospecting']" position="after">
+
+                    <button name="action_attribution_file" string="Load Attribution File"
+                            class="btn-primary"
+                            invisible="state not in  ['supplier_approval_consultation']"
+                            type="object"/>
+
+                </xpath>
+                <!--                <xpath expr="//button[@name='action_done']" position="attributes">-->
+                <!--                    <attribute name="invisible">state not in ['supplier_approval_consultation','consultation']-->
+                <!--                    </attribute>-->
+                <!--                </xpath>-->
+                <!--                <field name="product_id" position="attributes">-->
+                <!--                    <attribute name="invisible">state not in ['supplier_approval_consultation','consultation']-->
+                <!--                    </attribute>-->
+                <!--                </field>-->
+
+                <xpath expr="//sheet/div[@name='button_box']" position="inside">
+                    <button name="action_show_approvals" type="object"
+                            class="oe_stat_button"
+                            invisible="state not in ['supplier_approval_consultation','done']"
+                            icon="fa-list-alt">
+                        <div class="o_stat_info">
+
+                            <span class="o_stat_text">approvals</span>
+                        </div>
+                    </button>
+                </xpath>
+                <xpath expr="//field[@name='len_supplier_market']" position="before">
+                    <field name="len_supplier_approval_market" invisible="1"/>
+                    <field name="state" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='len_supplier_market']" position="after">
+                    <field name="for_approval" invisible="1"/>
+
+                </xpath>
+                <!--                <xpath expr="//page/field[@id='market_line_draft']"-->
+                <!--                       position="after">-->
+                <!--                </xpath>-->
+                <xpath expr="//page/field[@id='market_line_draft']/tree/field[@name='product_id']"
+                       position="before">
+                    <field name="line_approved" column_invisible="1"/>
+                    <field name="for_approval" column_invisible="1"/>
+                </xpath>
+                <xpath expr="//page/field[@id='market_line_draft']/tree/field[@name='product_id']"
+                       position="attributes">
+                    <attribute name="invisible">parent.for_approval</attribute>
+                    <attribute name="column_invisible">parent.for_approval</attribute>
+                    <attribute name="domain">['|','|', ('need_approval', '=', False),
+                  ('categ_id.need_approval', '=', False),
+                  ('product_tmpl_id.need_approval', '=', False),('purchase_ok', '=', True)]</attribute>
+                </xpath>
+
+                <xpath expr="//page/field[@id='market_line_draft']/tree/field[@name='product_id']"
+                       position="after">
+                    <field name="product_id" domain="['|','|', ('need_approval', '=', True),
+                  ('categ_id.need_approval', '=', True),
+                  ('product_tmpl_id.need_approval', '=', True),('purchase_ok', '=', True)]"
+                           column_invisible="not parent.for_approval"/>
+                </xpath>
+
+                <xpath expr="//page/field[@id='market_line_not_draft']/tree/field[@name='product_id']"
+                       position="attributes">
+                    <attribute name="invisible">parent.for_approval</attribute>
+                    <attribute name="column_invisible">parent.for_approval</attribute>
+                    <attribute name="domain">['|','|', ('need_approval', '=', False),
+                  ('categ_id.need_approval', '=', False),
+                  ('product_tmpl_id.need_approval', '=', False),('purchase_ok', '=', True)]</attribute>
+                </xpath>
+
+                <xpath expr="//page/field[@id='market_line_not_draft']/tree/field[@name='product_id']"
+                       position="after">
+                    <field name="product_id" domain="['|','|', ('need_approval', '=', True),
+                  ('categ_id.need_approval', '=', True),
+                  ('product_tmpl_id.need_approval', '=', True),('purchase_ok', '=', True)]"
+                           column_invisible="not parent.for_approval"/>
+                </xpath>
+
+
+                <xpath expr="//button[@name='action_show_consultations_tco']" position="attributes">
+                    <attribute name="invisible">state not in ['supplier_approval_consultation','consultation','done']
+                    </attribute>
+                </xpath>
+
+
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

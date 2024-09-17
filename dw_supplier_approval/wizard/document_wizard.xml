@@ -9,18 +9,17 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="state_homologation" invisible="1"/>
-                        <field name="homologation_id" invisible="1"/>
+                        <field name="state_approval" invisible="1"/>
+                        <field name="approval_id" invisible="1"/>
                         <field name="manufacturing_file_name" invisible="1"/>
 
                         <field name="manufacturing_document_attachment" widget="binary"
-                               filename="manufacturing_file_name" invisible="state_homologation != 'prospection'"
-                               required="state_homologation == 'prospection'"/>
+                               filename="manufacturing_file_name" invisible="state_approval != 'prospecting'"
+                               required="state_approval == 'prospecting'"/>
 
 
 
                     </group>
-                    <group></group>
                     <footer>
                         <button
                                 name="action_manufacturing"
@@ -28,7 +27,7 @@
                                 type="object"
                                 class="btn-primary"
                                 data-hotkey="q"
-                                invisible="state_homologation != 'prospection'"
+                                invisible="state_approval != 'prospecting'"
                         />
 
 
@@ -49,34 +48,34 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="state_homologation" invisible="1"/>
-                        <field name="homologation_id" invisible="1"/>
+                        <field name="state_approval" invisible="1"/>
+                        <field name="approval_id" invisible="1"/>
                         <field name="rapport_expertise_file_name" invisible="1"/>
 
                         <field name="rapport_expertise_attachment" widget="binary"
-                               filename="rapport_expertise_file_name" invisible="state_homologation != 'analyse'"
-                               required="state_homologation == 'analyse'"/>
+                               filename="rapport_expertise_file_name" invisible="state_approval != 'analyse'"
+                               required="state_approval == 'analyse'"/>
 
                         <field name="rapport_technique_name" invisible="1"/>
                         <field name="rapport_technique_attachment" widget="binary"
-                               invisible="state_homologation != 'analyse'"
-                               required="state_homologation == 'analyse'"
+                               invisible="state_approval != 'analyse'"
+                               required="state_approval == 'analyse'"
                                filename="rapport_technique_name"/>
 
                         <field name="Pre_eval_quest_name" invisible="1"/>
                         <field name="Pre_eval_quest_attachment" widget="binary"
-                               invisible="state_homologation != 'prospection'"
-                               required="state_homologation == 'prospection'"
+                               invisible="state_approval != 'prospecting'"
+                               required="state_approval == 'prospecting'"
                                filename="Pre_eval_quest_name"/>
                         <field name="rapport_audit_file_name" invisible="1"/>
-                        <field name="rapport_audit_attachment" widget="binary" invisible="state_homologation != 'audit'"
-                               required="state_homologation == 'audit'"
+                        <field name="rapport_audit_attachment" widget="binary" invisible="state_approval != 'audit'"
+                               required="state_approval == 'audit'"
                                filename="rapport_audit_file_name"/>
 
                         <field name="stabilite_file_name" invisible="1"/>
                         <field name="fichier_stabilite_attachment" widget="binary"
-                               invisible="state_homologation != 'lot_validation'"
-                               required="state_homologation == 'lot_validation'"
+                               invisible="state_approval != 'lot_validation'"
+                               required="state_approval == 'lot_validation'"
                                filename="stabilite_file_name"/>
                     </group>
                     <group></group>
@@ -87,7 +86,7 @@
                                 type="object"
                                 class="btn-primary"
                                 data-hotkey="q"
-                                invisible="state_homologation != 'analyse'"
+                                invisible="state_approval != 'analyse'"
                         />
 
                         <button
@@ -96,7 +95,7 @@
                                 type="object"
                                 class="btn-primary"
                                 data-hotkey="q"
-                                invisible="state_homologation != 'prospection'"
+                                invisible="state_approval != 'prospecting'"
                         />
                         <button
                                 name="action_audit"
@@ -104,7 +103,7 @@
                                 type="object"
                                 class="btn-primary"
                                 data-hotkey="q"
-                                invisible="state_homologation != 'audit'"
+                                invisible="state_approval != 'audit'"
                         />
                         <button
                                 name="action_stability"
@@ -112,7 +111,7 @@
                                 type="object"
                                 class="btn-primary"
                                 data-hotkey="q"
-                                invisible="state_homologation != 'lot_validation'"
+                                invisible="state_approval != 'lot_validation'"
                         />
                         <button special="cancel" string="Cancel" class="oe_link"/>
                     </footer>

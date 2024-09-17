@@ -6,20 +6,20 @@ class DocumentWizard(models.TransientModel):
     name = fields.Char('name', compute="_compute_name")
     manufacturing_document_attachment = fields.Binary(string="Document fabriquant")
     manufacturing_file_name = fields.Char(string='File name')
-    homologation_id = fields.Many2one("dw.homologation", string="Homologation")
-    state_homologation = fields.Selection(
+    approval_id = fields.Many2one("procurement.supplier.approval", string="approval")
+    state_approval = fields.Selection(
         selection=[
-            ('prospection', 'Prospection'),
+            ('prospecting', 'prospecting'),
             ('analyse', 'Analyse'),
             ('audit', 'Audit'),
             ('lot_validation', 'Lot Validation'),
             ('qualification', 'Qualification'),
-            ('homologue', 'approved'),
+            ('approval', 'approved'),
             ('cancel', 'Canceled')
         ],
         string="State",
 
-        related="homologation_id.state"
+        related="approval_id.state"
         ,
         store="1",
     )
@@ -42,39 +42,39 @@ class DocumentWizard(models.TransientModel):
     def action_Pre_eval_quest(self):
         if self.Pre_eval_quest_attachment and self.Pre_eval_quest_name:
             self.env['documents.document'].create({
-                'res_model': 'dw.homologation',
-                'res_id': self.homologation_id.id,
+                'res_model': 'procurement.supplier.approval',
+                'res_id': self.approval_id.id,
                 'name': self.Pre_eval_quest_name,
                 'type': 'binary',
-                'product_id': self.homologation_id.product_id.id if self.homologation_id and self.homologation_id.product_id else False,
-                'partner_id': self.homologation_id.supplier_id.id if self.homologation_id and self.homologation_id.supplier_id else False,
+                'product_id': self.approval_id.product_id.id if self.approval_id and self.approval_id.product_id else False,
+                'partner_id': self.approval_id.supplier_id.id if self.approval_id and self.approval_id.supplier_id else False,
                 'datas': self.Pre_eval_quest_attachment,
-                'folder_id': self.env.ref('dw_supplier_approval.folder_homologation').id,
+                'folder_id': self.env.ref('dw_supplier_approval.folder_approval').id,
             })
 
     def action_exper_techn_report(self):
         if self.rapport_expertise_attachment and self.rapport_expertise_file_name:
             self.env['documents.document'].create({
-                'res_model': 'dw.homologation',
-                'res_id': self.homologation_id.id,
+                'res_model': 'procurement.supplier.approval',
+                'res_id': self.approval_id.id,
                 'name': self.rapport_expertise_file_name,
                 'type': 'binary',
-                'product_id': self.homologation_id.product_id.id if self.homologation_id and self.homologation_id.product_id else False,
-                'partner_id': self.homologation_id.supplier_id.id if self.homologation_id and self.homologation_id.supplier_id else False,
+                'product_id': self.approval_id.product_id.id if self.approval_id and self.approval_id.product_id else False,
+                'partner_id': self.approval_id.supplier_id.id if self.approval_id and self.approval_id.supplier_id else False,
                 'datas': self.rapport_expertise_attachment,
-                'folder_id': self.env.ref('dw_supplier_approval.folder_homologation').id,
+                'folder_id': self.env.ref('dw_supplier_approval.folder_approval').id,
             })
         if self.rapport_technique_attachment and self.rapport_technique_name:
             self.env['documents.document'].create({
-                'res_model': 'dw.homologation',
-                'res_id': self.homologation_id.id,
+                'res_model': 'procurement.supplier.approval',
+                'res_id': self.approval_id.id,
                 'name': self.rapport_technique_name,
                 'display_name': self.rapport_technique_name,
                 'type': 'binary',
-                'product_id': self.homologation_id.product_id.id if self.homologation_id and self.homologation_id.product_id else False,
-                'partner_id': self.homologation_id.supplier_id.id if self.homologation_id and self.homologation_id.supplier_id else False,
+                'product_id': self.approval_id.product_id.id if self.approval_id and self.approval_id.product_id else False,
+                'partner_id': self.approval_id.supplier_id.id if self.approval_id and self.approval_id.supplier_id else False,
                 'datas': self.rapport_technique_attachment,
-                'folder_id': self.env.ref('dw_supplier_approval.folder_homologation').id,
+                'folder_id': self.env.ref('dw_supplier_approval.folder_approval').id,
             })
 
     @api.depends('manufacturing_file_name')
@@ -84,42 +84,42 @@ class DocumentWizard(models.TransientModel):
                 record.name = record.manufacturing_file_name
 
     def action_manufacturing(self):
-        if self.manufacturing_document_attachment and self.manufacturing_file_name and self.state_homologation == 'prospection':
+        if self.manufacturing_document_attachment and self.manufacturing_file_name and self.state_approval == 'prospecting':
             self.env['documents.document'].create({
-                'res_model': 'dw.homologation',
-                'res_id': self.homologation_id.id,
+                'res_model': 'procurement.supplier.approval',
+                'res_id': self.approval_id.id,
                 'name': self.manufacturing_file_name,
                 'display_name': self.manufacturing_file_name,
                 'type': 'binary',
-                'product_id': self.homologation_id.product_id.id if self.homologation_id and self.homologation_id.product_id else False,
-                'partner_id': self.homologation_id.supplier_id.id if self.homologation_id and self.homologation_id.supplier_id else False,
+                'product_id': self.approval_id.product_id.id if self.approval_id and self.approval_id.product_id else False,
+                'partner_id': self.approval_id.supplier_id.id if self.approval_id and self.approval_id.supplier_id else False,
                 'datas': self.manufacturing_document_attachment,
-                'folder_id': self.env.ref('dw_supplier_approval.folder_homologation').id,
+                'folder_id': self.env.ref('dw_supplier_approval.folder_approval').id,
             })
-            self.homologation_id.write({"state": "analyse"})
+            self.approval_id.write({"state": "analyse"})
 
     def action_audit(self):
-        if self.rapport_audit_attachment and self.rapport_audit_file_name and self.state_homologation == 'audit':
+        if self.rapport_audit_attachment and self.rapport_audit_file_name and self.state_approval == 'audit':
             self.env['documents.document'].create({
-                'res_model': 'dw.homologation',
-                'res_id': self.homologation_id.id,
+                'res_model': 'procurement.supplier.approval',
+                'res_id': self.approval_id.id,
                 'name': self.rapport_audit_file_name,
                 'type': 'binary',
-                'product_id': self.homologation_id.product_id.id if self.homologation_id and self.homologation_id.product_id else False,
-                'partner_id': self.homologation_id.supplier_id.id if self.homologation_id and self.homologation_id.supplier_id else False,
+                'product_id': self.approval_id.product_id.id if self.approval_id and self.approval_id.product_id else False,
+                'partner_id': self.approval_id.supplier_id.id if self.approval_id and self.approval_id.supplier_id else False,
                 'datas': self.rapport_audit_attachment,
-                'folder_id': self.env.ref('dw_supplier_approval.folder_homologation').id,
+                'folder_id': self.env.ref('dw_supplier_approval.folder_approval').id,
             })
 
     def action_stability(self):
-        if self.fichier_stabilite_attachment and self.stabilite_file_name and self.state_homologation == 'lot_validation':
+        if self.fichier_stabilite_attachment and self.stabilite_file_name and self.state_approval == 'lot_validation':
             self.env['documents.document'].create({
-                'res_model': 'dw.homologation',
-                'res_id': self.homologation_id.id,
+                'res_model': 'procurement.supplier.approval',
+                'res_id': self.approval_id.id,
                 'name': self.stabilite_file_name,
                 'type': 'binary',
-                'product_id': self.homologation_id.product_id.id if self.homologation_id and self.homologation_id.product_id else False,
-                'partner_id': self.homologation_id.supplier_id.id if self.homologation_id and self.homologation_id.supplier_id else False,
+                'product_id': self.approval_id.product_id.id if self.approval_id and self.approval_id.product_id else False,
+                'partner_id': self.approval_id.supplier_id.id if self.approval_id and self.approval_id.supplier_id else False,
                 'datas': self.fichier_stabilite_attachment,
-                'folder_id': self.env.ref('dw_supplier_approval.folder_homologation').id,
+                'folder_id': self.env.ref('dw_supplier_approval.folder_approval').id,
             })

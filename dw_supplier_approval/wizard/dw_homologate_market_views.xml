@@ -2,7 +2,7 @@
 <odoo>
     <data>
 
-        <record id="dw_homologate_market_form_view" model="ir.ui.view">
+        <record id="for_approval_market_form_view" model="ir.ui.view">
             <field name="name">Homologate Market Wizard</field>
             <field name="model">dw.homologate.market.wizard</field>
             <field name="type">form</field>
@@ -17,8 +17,8 @@
                         <footer>
 
                             <button
-                                    name="action_create_homologation_confirm"
-                                    string="Homologuer"
+                                    name="action_create_supplier_approval_confirm"
+                                    string="approval"
                                     type="object"
                                     class="btn-primary"/>
                             <button special="cancel" string="Cancel" class="oe_link"/>

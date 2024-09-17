@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="dw_consultation_form_view_inherit" model="ir.ui.view">
+            <field name="name">dw_supplier_approval.dw_consultation.form.inherit</field>
+            <field name="model">procurement.dw.consultation</field>
+            <field name="inherit_id" ref="dw_procurement.dw_consultation_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_show_market']" position="after">
+                    <button name="action_show_approval" type="object" class="oe_stat_button"
+                            icon="fa-list-alt" invisible="not approval_id">
+                        <div class="o_stat_info">
+
+                            <span class="o_stat_text">approval</span>
+                        </div>
+                    </button>
+                </xpath>
+
+                <field name="product_id" position="attributes">
+                    <attribute name="invisible">for_approval</attribute>
+                    <attribute name="domain">['|','|', ('need_approval', '=', False),
+                        ('categ_id.need_approval', '=', False),
+                        ('product_tmpl_id.need_approval', '=', False),('purchase_ok', '=', True)]
+                    </attribute>
+                </field>
+
+                <field name="product_id" position="after">
+                    <field name="product_id" domain="['|','|', ('need_approval', '=', True),
+                  ('categ_id.need_approval', '=', True),
+                  ('product_tmpl_id.need_approval', '=', True),('purchase_ok', '=', True)]"
+                           column_invisible="not for_approval"/>
+                </field>
+                <field name="market_id" position="after">
+                    <field name="approval_id" invisible="1"/>
+                    <field name="for_approval" invisible="1"/>
+                </field>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

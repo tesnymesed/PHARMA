@@ -4,4 +4,4 @@ from . import mrp_production
 from . import mrp_workorder
 from . import stock_move
 from . import mrp_routing_workcenter
-from . import dw_mrp_form
+from . import dw_mrp_bom_form

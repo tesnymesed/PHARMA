@@ -2,7 +2,7 @@
 {
     'name': 'MRP  BASE',
     'version': '1.0.0',
-    'category': 'Localization',
+    'category': 'Manufacturing',
     'description': """
 =        """,
     'author': 'DIGIWAVES - ALGERIA',
@@ -13,11 +13,11 @@
     ],
     'data': [
         'security/ir.model.access.csv',
-
+        'data/dw_mrp_form.xml',
+        'views/dw_mrp_form.xml',
         'views/mrp_bom_views.xml',
         'views/mrp_workorder_views.xml',
         'views/mrp_production_views.xml',
-
         'wizard/mrp_production_lot_views.xml',
         # 'wizard/mrp_workorder_tracking_wizard_views.xml',
 

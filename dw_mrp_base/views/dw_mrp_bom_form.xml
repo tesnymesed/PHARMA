@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="dw_mrp_form_view_tree" model="ir.ui.view">
+        <field name="name">dw.mrp.bom.form.tree</field>
+        <field name="model">dw.mrp.bom.form</field>
+        <field name="arch" type="xml">
+            <tree string="Nomenclature form" editable="top">
+                <field name="name"/>
+                <field name="description"/>
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_dw_mrp_form" model="ir.actions.act_window">
+        <field name="name">Nomenclature form</field>
+        <field name="res_model">dw.mrp.bom.form</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No mrp form found. Let's create one!
+            </p>
+        </field>
+    </record>
+    <menuitem id="menu_dw_mrp_bom"
+              name="Nomenclature form"
+              parent="mrp.menu_mrp_configuration"
+              action="action_dw_mrp_form"
+              sequence="50"/>
+</odoo>

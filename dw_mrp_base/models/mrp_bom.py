@@ -8,3 +8,4 @@ class MrpBom(models.Model):
     dw_location_component_id = fields.Many2one("stock.location", string="Emplacement des composants")
     dw_location_dest_id = fields.Many2one("stock.location", string="Emplacement des PF")
     dw_majoration = fields.Float("Majoration")
+    dw_mrp_forme_id = fields.Many2one("dw.mrp.form", string='Forme')

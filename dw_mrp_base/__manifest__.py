@@ -13,8 +13,8 @@
     ],
     'data': [
         'security/ir.model.access.csv',
-        'data/dw_mrp_form.xml',
-        'views/dw_mrp_form.xml',
+        'data/dw_mrp_bom_form.xml',
+        'views/dw_mrp_bom_form.xml',
         'views/mrp_bom_views.xml',
         'views/mrp_workorder_views.xml',
         'views/mrp_production_views.xml',

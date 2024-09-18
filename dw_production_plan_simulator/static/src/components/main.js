@@ -116,6 +116,7 @@ class ProductionPlanSimulatorComponent extends Component {
       );
 
       await loadCSS("shared_assets/static/libs/css/jsuites.css");
+      await loadJS("shared_assets/static/libs/js/jsuites.js");
 
       this.env.config.setDisplayName(_t("Production Plan Simulation Tool"));
 

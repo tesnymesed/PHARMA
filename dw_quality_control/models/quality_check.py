@@ -239,17 +239,14 @@ class QualityCheck(models.Model):
                     'location_id': self.picking_id.location_id.id,
                     'location_dest_id': self.picking_id.location_dest_id.id,
                     'lot_id': self.lot_id.id,
-                    'product_uom_qty': self.picking_id.move_ids_without_package.filtered(lambda o: o if o.product_id == self.product_id else None).product_uom_qty,
+                    'quantity_product_uom': self.picking_id.move_ids_without_package.filtered(lambda o: o if o.product_id == self.product_id else None).product_uom_qty,
                     'qty_done': self.picking_id.move_ids_without_package.filtered(lambda o: o if o.product_id == self.product_id else None).product_uom_qty,
                     'move_id': self.picking_id.move_ids_without_package.filtered(lambda o: o if o.product_id == self.product_id else None).id,
                     'picking_id': self.picking_id.id
                 })
             self.sudo().picking_id.with_context(skip_backorder=True, skip_expired=True).button_validate()
-            # return self.clear_caches()
         if self.env.context.get('no_redirect'):
             return True
-
-        # return self.redirect_after_pass_fail()
         return True
 
     @api.onchange('picking_id')

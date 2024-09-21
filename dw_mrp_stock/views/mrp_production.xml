@@ -14,6 +14,7 @@
             <xpath expr="//div[hasclass('oe_button_box')]" position="after">
                 <field name="dw_is_colture" invisible="1"/>
                 <field name="dw_leftover_done" invisible="1"/>
+                <field name="dw_transfer_pf_done" invisible="1"/>
                 <widget name="web_ribbon" title="Cloturé"
                         invisible="not dw_is_colture or not dw_transfer_pf_done or not dw_leftover_done or state != 'done'"/>
                 <widget name="web_ribbon" title="Non Cloturé" bg_color="bg-danger"

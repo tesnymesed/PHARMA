@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="dw_procurement_market_consultation_wizard_tree_view" model="ir.ui.view">
+            <field name="name">Document Market Wizard</field>
+            <field name="model">procurement.wizard.line</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree multi_edit="1" create="0">
+
+                    <field name="market_id" invisible="0"/>
+
+                    <field name="company_id" column_invisible="1"/>
+                    <field name="supplier_id"/>
+                    <field name="product_id"/>
+                    <field name="consultation_id"/>
+                    <button name="action_link_consultation_to_market" type="object"
+                            invisible="not consultation_id"
+                            class="btn btn-link text-info" icon="fa-link"
+                            string="Link to market"/>
+                    <button name="action_confirm_create_consultation" type="object"
+                            invisible="consultation_id"
+                            class="btn btn-link text-success" icon="fa-plus-circle"
+                            string="create consultation"/>
+                    <header>
+                        <button name="action_link_all_consultation_to_market" string="Link consultation" class="oe_highlight" type="object"/>
+                        <button name="action_confirm_all_create_consultation" string="Create consultation" class="oe_highlight" type="object"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </header>
+                </tree>
+
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

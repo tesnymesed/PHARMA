@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Motifs for cancellation or rejection of consultations -->
+        <record id="motif_cancel_01" model="procurement.reject.cancel.reason">
+            <field name="name">Budget Issues</field>
+            <field name="description">This was canceled due to budget constraints.</field>
+            <field name="reason_type">cancel</field>
+        </record>
+
+        <record id="motif_cancel_02" model="procurement.reject.cancel.reason">
+            <field name="name">Timing Conflict</field>
+            <field name="description">This could not proceed because of a scheduling conflict.</field>
+            <field name="reason_type">cancel</field>
+        </record>
+
+        <record id="motif_reject_01" model="procurement.reject.cancel.reason">
+            <field name="name">No Supplier Response</field>
+            <field name="description">Suppliers did not respond within the required time frame.</field>
+            <field name="reason_type">reject</field>
+        </record>
+
+        <record id="motif_reject_02" model="procurement.reject.cancel.reason">
+            <field name="name">Supplier Rejection</field>
+            <field name="description">The suppliers did not meet the necessary criteria or qualifications.</field>
+            <field name="reason_type">reject</field>
+        </record>
+
+        <record id="motif_cancel_03" model="procurement.reject.cancel.reason">
+            <field name="name">Change of Requirement</field>
+            <field name="description">The project scope or requirements changed, rendering this unnecessary.</field>
+            <field name="reason_type">cancel</field>
+        </record>
+
+        <record id="motif_cancel_04" model="procurement.reject.cancel.reason">
+            <field name="name">Internal Decision</field>
+            <field name="description">This was canceled following an internal management decision.</field>
+            <field name="reason_type">cancel</field>
+        </record>
+    </data>
+</odoo>

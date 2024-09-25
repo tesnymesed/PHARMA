@@ -1,14 +1,14 @@
 from odoo import fields, models, api, _
 
 
-class HomologationResPartner(models.Model):
+class approvalResPartner(models.Model):
     _inherit = 'res.partner'
 
-    def action_show_homologations(self):
+    def action_show_approvals(self):
         return ({
-            'res_model': 'dw.homologation',
+            'res_model': 'procurement.supplier.approval',
             'type': 'ir.actions.act_window',
-            'name': _("%(supplier_name)s's homologation", supplier_name=self.name),
+            'name': _("%(supplier_name)s's approval", supplier_name=self.name),
 
             'domain': [
                 ('supplier_id', '=', self.id),

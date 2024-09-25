@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
-        <!--        folders of homologation  -->
-        <record id="folder_homologation" model="documents.folder">
-            <field name="name">Homologation</field>
+        <!--        folders of approval  -->
+        <record id="folder_supplier_approval" model="documents.folder">
+            <field name="name">approval</field>
         </record>
 
         </data>

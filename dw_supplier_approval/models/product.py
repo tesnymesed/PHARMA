@@ -7,16 +7,16 @@ from dateutil.relativedelta import relativedelta
 
 class DwProductTemplate(models.Model):
     _inherit = 'product.template'
-    homologue = fields.Boolean(
+    need_approval = fields.Boolean(
         'approval required',
         default=False
     )
 
-    def action_show_homologations(self):
+    def action_show_approvals(self):
         return ({
-            'res_model': 'dw.homologation',
+            'res_model': 'procurement.supplier.approval',
             'type': 'ir.actions.act_window',
-            'name': _("%(product_name)s's homologation", product_name=self.name),
+            'name': _("%(product_name)s's approval", product_name=self.name),
 
             'domain': [
                 ('product_id.product_tmpl_id', '=', self.id),
@@ -29,35 +29,34 @@ class DwProductTemplate(models.Model):
 
 class DwProduct(models.Model):
     _inherit = 'product.product'
-    homologue = fields.Boolean(
+    need_approval = fields.Boolean(
         'approval required',
         default=False
     )
-    number_fournisseur = fields.Integer('Number of fournisseur', compute="_compute_number_fournisseur")
-    number_fournisseur2 = fields.Integer('Number of fournisseur', compute="_compute_number_fournisseur2", store=True)
+    number_supplier = fields.Integer('Number of supplier', compute="_compute_number_supplier")
+    number_supplier2 = fields.Integer('Number of supplier', compute="_compute_number_supplier2", store=True)
 
-    homologation_ids = fields.One2many("dw.homologation", 'product_id', string="Homologation")
-    homologation_ids = fields.One2many("dw.homologation", 'product_id', string="Homologation")
+    approval_ids = fields.One2many("procurement.supplier.approval", 'product_id', string="approval")
 
-    has_backliested_supplier = fields.Boolean('Blacklisted', compute="_compute_has_blacklisted")
-    has_backliested_supplier2 = fields.Boolean('Blacklisted', related="has_backliested_supplier", store=True)
+    has_blacklisted_supplier = fields.Boolean('Blacklisted', compute="_compute_has_blacklisted")
+    has_blacklisted_supplier2 = fields.Boolean('Blacklisted', related="has_blacklisted_supplier", store=True)
 
-    expired_homologation = fields.Boolean('Expired homologation', compute="_compute_expired_homologation")
-    expired_homologation2 = fields.Boolean('Expired homologation', related="expired_homologation", store=True)
+    expired_approval = fields.Boolean('Expired approval', compute="_compute_expired_approval")
+    expired_approval2 = fields.Boolean('Expired approval', related="expired_approval", store=True)
 
     expired_contract = fields.Boolean('Expired contract', compute="_compute_expired_contract")
     expired_contract2 = fields.Boolean('Expired contract', related="expired_contract", store=True)
 
-    @api.depends('number_fournisseur')
-    def _compute_number_fournisseur2(self):
+    @api.depends('number_supplier')
+    def _compute_number_supplier2(self):
         for record in self:
-            record.number_fournisseur2 = record.number_fournisseur
+            record.number_supplier2 = record.number_supplier
 
-    def action_show_homologations(self):
+    def action_show_approvals(self):
         return ({
-            'res_model': 'dw.homologation',
+            'res_model': 'procurement.supplier.approval',
             'type': 'ir.actions.act_window',
-            'name': _("%(product_name)s's homologation", product_name=self.name),
+            'name': _("%(product_name)s's approval", product_name=self.name),
 
             'domain': [
                 ('product_id', '=', self.id),
@@ -67,11 +66,11 @@ class DwProduct(models.Model):
             'context': {"create": 0},
         })
 
-    # @api.depends('homologation_ids')
-    def _compute_number_fournisseur(self):
+    # @api.depends('approval_ids')
+    def _compute_number_supplier(self):
         for record in self:
-            record.number_fournisseur = len(record.homologation_ids.filtered(
-                lambda homologation: homologation.state == 'homologue'))
+            record.number_supplier = len(record.approval_ids.filtered(
+                lambda approval: approval.state == 'approval'))
 
     def _prepare_market_line(self):
 
@@ -82,13 +81,13 @@ class DwProduct(models.Model):
     def _prepare_market(self):
         return {
             'company_id': self.company_id.id if self.company_id else False,
-            'dw_homologate': True,
+            'for_approval': True,
             "market_line_ids": self._prepare_market_line()
         }
 
     def action_launch_market(self):
         market_list = []
-        DwMarket = self.env['dw.market']
+        DwMarket = self.env['procurement.market.dw']
         for rec in self:
             market_list.append(rec._prepare_market())
         DwMarket.create(market_list)
@@ -105,22 +104,22 @@ class DwProduct(models.Model):
                 self.diff_month(seller.purchase_requisition_id.date_end, today) <= 18 for seller in
                 record.seller_ids) else False
 
-    def _compute_expired_homologation(self):
+    def _compute_expired_approval(self):
         today = date.today()
         for record in self:
-            record.expired_homologation = True if any(homologation.end_date and homologation.state == 'homologue' and
-                                                      self.diff_month(homologation.end_date, today) <= 18 for
-                                                      homologation in record.homologation_ids) else False
+            record.expired_approval = True if any(approval.end_date and approval.state == 'approval' and
+                                                      self.diff_month(approval.end_date, today) <= 18 for
+                                                      approval in record.approval_ids) else False
 
     def _compute_has_blacklisted(self):
         for record in self:
             blacklist1 = True if any(
-                homologation.supplier_id.is_blacklisted == True and homologation.state == 'homologue' for homologation
-                in record.homologation_ids) else False
+                approval.supplier_id.is_blacklisted == True and approval.state == 'approval' for approval
+                in record.approval_ids) else False
             blacklist2 = True if any(
                 seller.partner_id.is_blacklisted == True for seller in
                 record.seller_ids) else False
             if blacklist1 or blacklist2:
-                record.has_backliested_supplier = True
+                record.has_blacklisted_supplier = True
             else:
-                record.has_backliested_supplier = False
+                record.has_blacklisted_supplier = False

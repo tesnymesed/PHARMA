@@ -4,8 +4,8 @@
         <!--  Market      -->
 
         <record id="kanban_dw_market" model="ir.ui.view">
-            <field name="name">dw.market.kanban</field>
-            <field name="model">dw.market</field>
+            <field name="name">procurement.market.dw.kanban</field>
+            <field name="model">procurement.market.dw</field>
             <field name="priority" eval="1"/>
             <field name="arch" type="xml">
                 <kanban default_group_by="state" class="o_kanban_small_column o_opportunity_kanban"
@@ -47,8 +47,8 @@
             </field>
         </record>
         <record id="view_market_tree" model="ir.ui.view">
-            <field name="name">dw.market.tree</field>
-            <field name="model">dw.market</field>
+            <field name="name">procurement.market.dw.tree</field>
+            <field name="model">procurement.market.dw</field>
             <field name="priority" eval="2"/>
             <field name="arch" type="xml">
                 <tree decoration-danger="state != 'done' and end_date >= context_today().strftime('%Y-%m-%d')">
@@ -68,14 +68,14 @@
         </record>
 
         <record model="ir.ui.view" id="view_market_form">
-            <field name="name">dw.market.form</field>
-            <field name="model">dw.market</field>
+            <field name="name">procurement.market.dw.form</field>
+            <field name="model">procurement.market.dw</field>
             <field name="priority" eval="3"/>
             <field name="arch" type="xml">
                 <form string="Market" create="0">
                     <header>
                         <field name="state" widget="statusbar"
-                               statusbar_visible="draft,prospection,done"/>
+                               statusbar_visible="draft,prospecting,done"/>
 
                         <button name="button_draft" string="return to draft"
                                 class="btn-primary"
@@ -83,26 +83,27 @@
                                 type="object"/>
                         <button name="action_load_cahier_charge" string="Load cahier des charges "
                                 class="btn-primary"
-                                invisible="state not in  ['prospection']"
+                                invisible="state not in  ['prospecting']"
                                 type="object"/>
                         <button name="action_load_spec_file" string="Load Specification File"
                                 class="btn-primary"
                                 invisible="state not in  ['draft']"
                                 type="object"/>
-                        <button name="action_prospection" string="Prospection"
+                        <button name="action_prospecting" string="prospecting"
                                 class="btn-primary"
                                 invisible="state not in  ['draft']"
                                 confirm="Do you want to prospect this market"
                                 type="object"/>
-                        <button name="action_homologation" string="Confirm"
+                        <button name="action_confirm" string="Confirm"
                                 class="btn-primary"
-                                invisible="state not in  ['prospection']"
+                                invisible="state not in  ['prospecting']"
                                 type="object"/>
                         <button name="action_done" string="Assign"
                                 class="btn-primary"
                                 invisible="state not in  ['consultation']"
                                 type="object"/>
-
+                        <button name="action_reject" string="Reject" type="object" class="btn-primary"
+                                invisible="state not in ['draft']"/>
 
                         <button
                                 name="action_cancel" string="Cancel"
@@ -118,15 +119,15 @@
 
                             <button name="action_show_consultations" type="object"
                                     class="oe_stat_button"
-                                    invisible="state not in ['done','consultation'] and dw_for_homologation"
+                                    invisible="state not in ['done','consultation'] or for_approval"
                                     icon="fa-list-alt">
                                 <div class="o_stat_info">
                                     <span class="o_stat_text">Consultations</span>
                                 </div>
                             </button>
-                            <button name="action_show_consultations_homologation" type="object"
+                            <button name="action_show_consultation" type="object"
                                     class="oe_stat_button"
-                                    invisible="state not in ['done','consultation'] and not dw_for_homologation"
+                                    invisible="state not in ['done','consultation'] or not for_approval"
                                     icon="fa-list-alt">
                                 <div class="o_stat_info">
                                     <span class="o_stat_text">Consultations</span>
@@ -169,7 +170,7 @@
                                 <field name="start_date" required="1" readonly="state != 'draft'"/>
                                 <field name="end_date" required="1" readonly="0"/>
                                 <field name="market_type_id" options='{"no_create":True}' invisible="state == 'draft'"
-                                       readonly="state != 'prospection'" required="state == 'prospection'"/>
+                                       readonly="state != 'prospecting'" required="state == 'prospecting'"/>
 
 
                             </group>
@@ -177,7 +178,7 @@
                                 <field name="description" readonly="state != 'draft'"/>
                                 <field name="company_id" readonly="state != 'draft'"/>
                                 <field name="user_id" readonly="state != 'draft'"/>
-                                <field name="dw_for_homologation" invisible="1"/>
+                                <field name="for_approval" invisible="1"/>
 
 
                             </group>
@@ -195,8 +196,9 @@
                                             <field name="supplier_ids" options='{"no_create":True}'
                                                    widget="many2many_tags"
                                                    column_invisible="parent.state == 'draft'"
-                                                   readonly="parent.state != 'prospection'"
+                                                   readonly="parent.state != 'prospecting'"
                                                    required="parent.state != 'draft'"/>
+
                                         </tree>
                                     </field>
                                     <field name="market_line_ids" mode="tree" nolabel="1" invisible="state == 'draft'">
@@ -206,23 +208,26 @@
                                             <field name="product_id" options='{"no_create":True}' required="1"
                                                    readonly="parent.state != 'draft'"/>
                                             <field name="company_id" column_invisible="1"/>
-                                            <field name="line_homlogated" column_invisible="1"/>
+                                            <field name="line_approved" column_invisible="1"/>
                                             <field name="quantity" required="1" readonly="parent.state != 'draft'"/>
                                             <field name="supplier_ids" options='{"no_create":True}'
                                                    widget="many2many_tags"
                                                    column_invisible="parent.state == 'draft'"
-                                                   readonly="parent.state != 'prospection'"
+                                                   readonly="parent.state != 'prospecting'"
                                                    required="parent.state != 'draft'"/>
-
+                                            <button name="action_to_consult" type="object"
+                                                    invisible="parent.state not in ['consultation'] or parent.for_approval or not supplier_ids"
+                                                    class="btn btn-link text-success" icon="fa-check-circle"
+                                                    string="Consult"/>
 
                                         </tree>
                                     </field>
                                 </page>
                                 <page name="Criteria" string="Criteria"
-                                      invisible="state != 'homologation_cosultation' and state != 'cosultation' and state != 'prospection'">
+                                      invisible="state != 'supplier_approval_consultation' and state != 'consultation' and state != 'prospecting'">
                                     <group>
                                         <field name="market_criteria_ids" widget="many2many_tags"
-                                               readonly="state != 'prospection'" required="state == 'prospection'"/>
+                                               readonly="state != 'prospecting'" required="state == 'prospecting'"/>
                                     </group>
                                 </page>
                             </notebook>
@@ -240,6 +245,35 @@
             </field>
         </record>
 
+        <record id="view_market_form_canceled" model="ir.ui.view">
+            <field name="name">procurement.market.dw.motif</field>
+            <field name="model">procurement.market.dw</field>
+            <field name="arch" type="xml">
+                <form string="Market Motif">
+                    <sheet>
 
+                        <group>
+                            <group>
+                                <field name="name" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="canceled_motif_id" required="context.get('dw_market_cancel_reason')"
+                                       invisible="not context.get('dw_market_cancel_reason')"/>
+                                <field name="reject_motif_id" required="context.get('dw_market_reject_reason')"
+                                       invisible="not context.get('dw_market_reject_reason')"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="button_canceled" string="Cancel" type="object" class="btn-primary"
+                                invisible="not context.get('dw_market_cancel_reason')"/>
+                        <button name="button_reject" string="Reject" type="object" class="btn-primary"
+                                invisible="not context.get('dw_market_reject_reason')"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+
+                    </footer>
+                </form>
+            </field>
+        </record>
     </data>
 </odoo>

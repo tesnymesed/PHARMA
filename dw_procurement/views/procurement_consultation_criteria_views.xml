@@ -4,7 +4,7 @@
 
         <record id="dw_consultation_criteria_form_view" model="ir.ui.view">
             <field name="name">dw_supplier_approval.dw_consultation_criteria.form</field>
-            <field name="model">dw.consultation.criteria</field>
+            <field name="model">procurement.dw.consultation.criteria</field>
             <field name="arch" type="xml">
                 <form string="Consultation Criteria">
                     <sheet>
@@ -36,7 +36,7 @@
 
         <record id="dw_consultation_criteria_tree_view" model="ir.ui.view">
             <field name="name">dw_supplier_approval.dw_consultation_criteria.tree</field>
-            <field name="model">dw.consultation.criteria</field>
+            <field name="model">procurement.dw.consultation.criteria</field>
             <field name="arch" type="xml">
                 <tree string="Consultation Criteria">
                     <field name="name"/>
@@ -48,7 +48,7 @@
 
         <record id="dw_consultation_criteria_search_view" model="ir.ui.view">
             <field name="name">dw_supplier_approval.dw_consultation_criteria.search</field>
-            <field name="model">dw.consultation.criteria</field>
+            <field name="model">procurement.dw.consultation.criteria</field>
             <field name="arch" type="xml">
                 <search string="Consultation Criteria">
                     <field name="name" string="Criteria"/>
@@ -65,7 +65,7 @@
 
         <record id="dw_consultation_criteria_act_window" model="ir.actions.act_window">
             <field name="name">Consultation Criteria</field>
-            <field name="res_model">dw.consultation.criteria</field>
+            <field name="res_model">procurement.dw.consultation.criteria</field>
             <field name="view_mode">tree,form</field>
             <field name="context">{'active_test': False}</field>
             <field name="help" type="html">

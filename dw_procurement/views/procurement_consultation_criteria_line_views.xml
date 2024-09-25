@@ -5,9 +5,12 @@
 
         <record id="dw_consultation_criteria_tree_view" model="ir.ui.view">
             <field name="name">dw_supplier_approval.dw_consultation_criteria.tree</field>
-            <field name="model">dw.consultation.criteria.line</field>
+            <field name="model">procurement.dw.consultation.criteria.line</field>
             <field name="arch" type="xml">
-                <tree string="Consultation Criteria"  expand="1">
+                <tree string="Consultation Criteria" expand="1" >
+                    <header>
+                        <button name="generate_xlsx_report" string="TCO" type="object" class="oe_highlight"/>
+                    </header>
                     <field name="criteria_id"/>
                     <field name="supplier_id"/>
                     <field name="dw_supplier_nature"/>
@@ -16,13 +19,14 @@
                     <field name="percentage"/>
                     <field name="number_days"/>
                     <field name="completed"/>
+                    <field name="observation"/>
                 </tree>
             </field>
         </record>
 
         <record id="dw_consultation_criteria_search_view" model="ir.ui.view">
             <field name="name">dw_supplier_approval.dw_consultation_criteria.search</field>
-            <field name="model">dw.consultation.criteria.line</field>
+            <field name="model">procurement.dw.consultation.criteria.line</field>
             <field name="arch" type="xml">
                 <search string="Consultation Criteria">
                     <field name="name" string="Criteria"/>

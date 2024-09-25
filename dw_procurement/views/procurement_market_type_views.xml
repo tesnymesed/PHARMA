@@ -3,8 +3,8 @@
     <data>
 
         <record id="view_market_type_tree" model="ir.ui.view">
-            <field name="name">dw.market.type.tree</field>
-            <field name="model">dw.market.type</field>
+            <field name="name">procurement.market.dw.type.tree</field>
+            <field name="model">procurement.market.dw.type</field>
             <field name="arch" type="xml">
                 <tree editable="bottom">
                     <field name="name"/>

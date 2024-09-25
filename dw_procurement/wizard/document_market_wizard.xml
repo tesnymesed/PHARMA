@@ -19,11 +19,11 @@
 
                         <field name="cahier_charge_name" invisible="1"/>
                         <field name="cahier_charge_attachment" widget="binary" filename="cahier_charge_name"
-                               invisible="state_market != 'prospection'"/>
+                               invisible="state_market != 'prospecting'"/>
 
                         <field name="pv_attribution_name" invisible="1"/>
                         <field name="pv_attribution_attachment" widget="binary" filename="pv_attribution_name"
-                               invisible="state_market != 'homologation_cosultation'"/>
+                               invisible="state_market != 'supplier_approval_consultation'"/>
                     </group>
                     <group></group>
                     <footer>

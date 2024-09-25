@@ -4,10 +4,10 @@
         <record id="action_supplier_approval" model="ir.actions.act_window">
             <field name="name">Market</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">dw.market</field>
+            <field name="res_model">procurement.market.dw</field>
             <field name="view_mode">kanban,tree,form</field>
-            <field name="domain">[('dw_for_homologation','=',False)]</field>
-            <field name="context">{'default_dw_for_homologation':False}</field>
+            <field name="domain">[('for_approval','=',False)]</field>
+            <field name="context">{'default_for_approval':False}</field>
 
         </record>
 
@@ -19,12 +19,19 @@
         <record id="action_market_type" model="ir.actions.act_window">
             <field name="name">Market</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">dw.market.type</field>
+            <field name="res_model">procurement.market.dw.type</field>
             <field name="view_mode">tree,form</field>
             <field name="context">{}</field>
 
         </record>
-
+        <record id="action_view_article_market" model="ir.actions.act_window">
+            <field name="name">Article</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('purchase_ok', '=', True)]
+            </field>
+        </record>
         <menuitem id="menu_supplier_approval_root"
                   name="Procurement"
                   web_icon="dw_procurement,static/description/icon.png"
@@ -42,6 +49,13 @@
                   name="Market Type"
                   parent="dw_procurement.menu_supplier_approval_configuration"
                   action="action_market_type"
+                  sequence="20"
+
+        />
+        <menuitem id="menu_market_products"
+                  name="Products"
+                  parent="dw_procurement.menu_supplier_approval_configuration"
+                  action="dw_procurement.action_view_article_market"
                   sequence="20"
 
         />
@@ -68,6 +82,13 @@
                   sequence="20"
         />
 
+        <menuitem id="menu_procurement_reject_cancel_reason" name="Procurement Reasons"
+                  parent="dw_procurement.menu_supplier_approval_configuration"
+                  sequence="10"/>
 
+        <menuitem id="submenu_procurement_reject_cancel_reason"
+                  name="Reasons for Procurement Reject/Cancel"
+                  parent="dw_procurement.menu_procurement_reject_cancel_reason"
+                  action="action_procurement_reject_cancel_reason"/>
     </data>
 </odoo>

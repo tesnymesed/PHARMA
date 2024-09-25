@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="dw_mrp_bom_form_liquid" model="dw.mrp.bom.form">
+            <field name="name">Liquide</field>
+        </record>
+        <record id="dw_mrp_bom_form_dried" model="dw.mrp.bom.form">
+            <field name="name">Sèche</field>
+        </record>
+        <record id="dw_mrp_bom_form_sterile" model="dw.mrp.bom.form">
+            <field name="name">Stérile</field>
+        </record>
+    </data>
+</odoo>

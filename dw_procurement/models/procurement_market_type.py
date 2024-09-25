@@ -5,7 +5,7 @@ from odoo.exceptions import ValidationError
 
 
 class DwMarketType(models.Model):
-    _name = 'dw.market.type'
+    _name = 'procurement.market.dw.type'
     name = fields.Char(string="Name", required=True)
     code = fields.Char(string="Code")
     forced_nbr_supplier = fields.Boolean("Forcing Number of supplier ?", default=False)

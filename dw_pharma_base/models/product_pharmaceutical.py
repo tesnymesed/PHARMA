@@ -18,9 +18,6 @@ class DwProductPharmaceuticalFamily(models.Model):
     _description = 'Family'
     _inherit = ['mail.thread.main.attachment', 'mail.activity.mixin']
 
-    def _compute_product_count(self):
-        self.product_count = len(self.mapped('product_ids'))
-
     name = fields.Char(string="Name")
     active = fields.Boolean(default=True)
     product_categ_id = fields.Many2one(
@@ -31,10 +28,23 @@ class DwProductPharmaceuticalFamily(models.Model):
     subfamily_ids = fields.One2many('product.pharmaceutical.subfamily', 'family_id', string='Subfamily')
     product_count = fields.Integer(compute="_compute_product_count")
     product_ids = fields.One2many('product.template', 'dw_pharma_family_id', string='Products')
+    purchase_ok = fields.Boolean('Can be Purchased', default=False, tracking=True)
+    sale_ok = fields.Boolean('Can be Sold', default=False, tracking=True)
+    tracking = fields.Selection([
+        ('serial', 'By Unique Serial Number'),
+        ('lot', 'By Lots'),
+        ('none', 'No Tracking')],
+        string="Tracking", required=True, default='none', tracking=True)
+    use_expiration_date = fields.Boolean(
+        string='Use Expiration Date', tracking=True)
+
+    def _compute_product_count(self):
+        for record in self:
+            record.product_count = len(record.mapped('product_ids'))
 
     def action_view_product(self):
         """
-             This method is used by the Purchase Orders smart button. It opens a form view or a tree view
+             This method is used by the Product Family smart button. It opens a form view or a tree view
              :return: Action Dict
              """
 

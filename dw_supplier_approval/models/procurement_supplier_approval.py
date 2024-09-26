@@ -69,7 +69,7 @@ class ProcurementSupplierApproval(models.Model):
     country_code = fields.Char(related='country_id.code', string="Country Code", readonly=False)
 
     purchase_id = fields.Many2one("purchase.order", string="Purchase Order", )
-    consultation_ids = fields.One2many("procurement.dw.consultation", "approval_id", string="Consultation")
+    #consultation_ids = fields.One2many("procurement.dw.consultation", "approval_id", string="Consultation")
 
     fichier_stabilite_attachment = fields.Binary(string="Fichier de stabilité")
     fichier_stabilite_file_name = fields.Char(string='File name')
@@ -121,7 +121,7 @@ class ProcurementSupplierApproval(models.Model):
     def action_reject(self):
         self.write({"state": "rejected"})
 
-    def market_assign(self):
+    """ def market_assign(self):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Market assign',
@@ -132,9 +132,9 @@ class ProcurementSupplierApproval(models.Model):
             'context': {
                 'default_approval_id': self.id
             }
-        }
+        } """
 
-    def show_purchase_order(self):
+    """ def show_purchase_order(self):
         self.ensure_one()
 
         return {
@@ -149,9 +149,9 @@ class ProcurementSupplierApproval(models.Model):
             ,
             'views': [(False, 'tree'), (False, 'form')],
             'target': 'current',
-        }
+        } """
 
-    def create_purchase_order(self):
+    """ def create_purchase_order(self):
 
         return {
             'type': 'ir.actions.act_window',
@@ -169,9 +169,9 @@ class ProcurementSupplierApproval(models.Model):
 
                                                        })]
                         }
-        }
+        } """
 
-    def action_lunch_consultation(self):
+    """ def action_lunch_consultation(self):
         self.consultation_id = self.env['procurement.dw.consultation'].create(self._prepare_consultation())
         if self.consultation_id:
             return {
@@ -181,8 +181,7 @@ class ProcurementSupplierApproval(models.Model):
                 'views': [[self.env.ref('dw_procurement.dw_consultation_form_view').id, 'form']],
                 'res_id': self.consultation_id.id,
                 'context': {"create": 0},
-            }
-
+            } """
     def button_prospecting(self):
         self.write({"state": "prospecting"})
 
@@ -194,7 +193,7 @@ class ProcurementSupplierApproval(models.Model):
                 vals['name'] = IrSequence.next_by_code('procurement.supplier.approval') or _('New')
         return super().create(vals_list)
 
-    def action_create_consultation(self):
+    """ def action_create_consultation(self):
         DwConsultatio = self.env['procurement.dw.consultation']
 
         for record in self:
@@ -204,7 +203,7 @@ class ProcurementSupplierApproval(models.Model):
                       supplier_name=record.supplier_id.name, product_name=record.product_id.name)
                 )
             record.consultation_id = DwConsultatio.create(record._prepare_consultation())
-
+ """
     def action_load_Pre_eval_quest_file(self):
         return {
             'type': 'ir.actions.act_window',
@@ -219,14 +218,14 @@ class ProcurementSupplierApproval(models.Model):
             }
         }
 
-    def _prepare_criteria_line_consultation(self, market_id):
+    """ def _prepare_criteria_line_consultation(self, market_id):
         if not market_id:
             return []
         vals_dict = [
             (0, 0, {'criteria_id': criteria.id}) for criteria in market_id.market_criteria_ids]
-        return vals_dict
+        return vals_dict """
 
-    def _prepare_consultation(self):
+    """ def _prepare_consultation(self):
         return {
             'supplier_id': self.supplier_id.id if self.supplier_id else False,
             'dw_supplier_nature': self.dw_supplier_nature if self.supplier_id else False,
@@ -236,7 +235,7 @@ class ProcurementSupplierApproval(models.Model):
             'qty': self.qty,
             'company_id': self.company_id.id if self.company_id else False,
             "criteria_line_ids": self._prepare_criteria_line_consultation(self.market_id)
-        }
+        } """
 
     def action_load_stabilite_file(self):
         return {
@@ -317,7 +316,7 @@ class ProcurementSupplierApproval(models.Model):
                         'limit_folders_to_lead': True},
         }
 
-    def action_show_consultations(self):
+    """ def action_show_consultations(self):
         return ({
             'res_model': 'procurement.dw.consultation',
             'type': 'ir.actions.act_window',
@@ -329,9 +328,9 @@ class ProcurementSupplierApproval(models.Model):
             'view_mode': 'tree,form',
 
             'context': {'create': False},
-        })
+        }) """
 
-    def action_show_market(self):
+    """ def action_show_market(self):
         return ({
             'res_model': 'procurement.market.dw',
             'type': 'ir.actions.act_window',
@@ -344,3 +343,4 @@ class ProcurementSupplierApproval(models.Model):
 
             'context': {"create": 0},
         })
+ """

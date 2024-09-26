@@ -5,12 +5,12 @@
             <field name="name">procurement.supplier.approval.tree</field>
             <field name="model">procurement.supplier.approval</field>
             <field name="arch" type="xml">
-                <tree decoration-info="state == 'approval' and not consultation_ids"
-                      decoration-success="state == 'approval' and consultation_ids" decoration-danger="state == 'approval' and end_date &lt; context_today().strftime('%Y-%m-%d')">
+                <tree decoration-info="state == 'approval'"
+                      decoration-success="state == 'approval'" decoration-danger="state == 'approval' and end_date &lt; context_today().strftime('%Y-%m-%d')">
 
                     <header>
-                        <button name="action_create_consultation" string="Lancer consultation" type="object"
-                                class="btn-primary"/>
+                        <!-- <button name="action_create_consultation" string="Lancer consultation" type="object"
+                                class="btn-primary"/> -->
                     </header>
                     <field name="name" optional="show"/>
                     <field name="product_id" optional="hide"/>
@@ -18,13 +18,13 @@
                     <field name="dw_supplier_nature" optional="show"/>
                     <field name="start_date" optional="show"/>
                     <field name="end_date" optional="show"/>
-                    <field name="consultation_ids" column_invisible="1"/>
-                    <field name="market_ids" optional="hide"/>
+<!--                     <field name="consultation_ids" column_invisible="1"/>
+ -->                    <field name="market_ids" optional="hide"/>
                     <field name="state" optional="show"/>
                     <field name="lot_validation" optional="show"/>
                     <field name="company_id" optional="hide"/>
-                    <button string="Consulter" name="action_create_consultation" type="object" icon="fa-check"
-                            invisible="state != 'approval' or  consultation_ids"/>
+                    <!-- <button string="Consulter" name="action_create_consultation" type="object" icon="fa-check"
+                            invisible="state != 'approval' or  consultation_ids"/> -->
 
 
                 </tree>
@@ -81,25 +81,25 @@
                                 invisible="state in ['cancel','rejected','prospecting','audit','lot_validation','approval']"
                                 type="object"/>
 
-                        <button name="create_purchase_order" string="Create Purchase order"
+                        <!-- <button name="create_purchase_order" string="Create Purchase order"
                                 class="btn-primary"
                                 invisible="state != 'analyse' or purchase_id != False"
-                                type="object"/>
-                        <button name="action_lunch_consultation" string="Lunch Consultation"
+                                type="object"/> -->
+                        <!-- <button name="action_lunch_consultation" string="Lunch Consultation"
                                 class="btn-primary"
                                 invisible="state != 'approval' or consultation_ids "
                                 type="object"/>
-
+ -->
                         <button
                                 name="action_cancel" string="Cancel"
                                 type="object" class="btn-primary" data-hotkey="q"
                                 invisible="state in ['prospecting','cancel','approval'] "
                         />
-                        <button
+                      <!--   <button
                                 name="market_assign" string="Assign market"
                                 type="object" class="btn-primary" data-hotkey="q"
                                 invisible="state in ['prospecting','cancel','qualification','rejected'] "
-                        />
+                        /> -->
                         <button
                                 name="action_reject" string="Reject"
                                 type="object" class="btn-primary" data-hotkey="q"
@@ -112,32 +112,32 @@
                     </header>
                     <sheet>
                         <widget name="web_ribbon" title="Consulted" bg_color="text-bg-success"
-                                invisible="not consultation_ids"/>
+                                />
 
                         <div class="oe_button_box" name="button_box">
-                            <button name="show_purchase_order" type="object" class="oe_stat_button"
+                            <!-- <button name="show_purchase_order" type="object" class="oe_stat_button"
                                     icon="fa-list-alt" invisible="purchase_id == False">
                                 <div class="o_stat_info">
 
                                     <span class="o_stat_text">PO Sample</span>
                                 </div>
-                            </button>
-                            <button name="action_show_market" type="object"
+                            </button> -->
+                            <!-- <button name="action_show_market" type="object"
                                     class="oe_stat_button"
                                     invisible="not market_ids "
                                     icon="fa-list-alt">
                                 <div class="o_stat_info">
                                     <span class="o_stat_text">Market</span>
                                 </div>
-                            </button>
-                            <button name="action_show_consultations" type="object"
+                            </button> -->
+                            <!-- <button name="action_show_consultations" type="object"
                                     class="oe_stat_button"
                                     invisible="state not in ['approval'] or not consultation_ids "
                                     icon="fa-list-alt">
                                 <div class="o_stat_info">
                                     <span class="o_stat_text">Consultations</span>
                                 </div>
-                            </button>
+                            </button> -->
                             <button name="show_documents" type="object" class="oe_stat_button"
                                     icon="fa-list-alt">
                                 <div class="o_stat_info">
@@ -152,8 +152,8 @@
                             <group>
 
                                 <field name="market_supplier_ids" invisible="1"/>
-                                <field name="consultation_ids" invisible="1"/>
-                                <field name="product_id" readonly="state != 'prospecting'" invisible="market_ids"/>
+<!--                                 <field name="consultation_ids" invisible="1"/>
+ -->                                <field name="product_id" readonly="state != 'prospecting'" invisible="market_ids"/>
                                 <field name="supplier_id" readonly="state != 'prospecting'" invisible="market_ids"/>
                                 <field name="dw_supplier_nature" readonly="state == 'approval'" required="1"/>
                                 <field name="dw_product_pharma_family_name" required="1" />

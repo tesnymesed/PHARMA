@@ -19,19 +19,14 @@
         'security/security.xml',
         'security/ir.model.access.csv',
         # views
-        'views/procurement_market_views.xml',
-
         'views/product_views_inherit.xml',
         'views/procurement_supplier_approval_views.xml',
-        'views/purchase_order_views.xml',
         'views/res_partner_views.xml',
-        'views/procurement_consultations_views.xml',
         # menus
         'menus.xml',
 
         # wizard
         'wizard/document_wizard.xml',
-        'wizard/dw_market_assign_view.xml',
 
 
 

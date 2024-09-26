@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_supplier_approval_with" model="ir.actions.act_window">
+            <field name="name">Market with approval</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">procurement.market.dw</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{'default_for_approval':True,'for_approval':True,'dw_this_action_is_used_for_approval':True}</field>
+            <field name="domain">[('for_approval','=',True)]</field>
+        </record>
+
+        <menuitem id="menu_market_with_supplier_approval"
+                  name="Market with approval"
+                  parent="dw_procurement.menu_market_root"
+                  action="action_supplier_approval_with"
+                  groups="dw_supplier_approval.group_user_procurement_supplier_approval"
+                  sequence="11"
+        />
+
+    </data>
+</odoo>

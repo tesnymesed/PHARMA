@@ -115,8 +115,8 @@ class ProductionPlanSimulatorComponent extends Component {
         "dw_production_plan_simulator/static/src/libs/js/buttons.js"
       );
 
-//      await loadCSS("shared_assets/static/libs/css/jsuites.css");
-//      await loadJS("shared_assets/static/libs/js/jsuites.js");
+      await loadJS("shared_assets/static/libs/js/jsuites.js");
+      await loadCSS("shared_assets/static/libs/css/jsuites.css");
 
       this.env.config.setDisplayName(_t("Production Plan Simulation Tool"));
 

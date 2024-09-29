@@ -71,5 +71,16 @@
                   groups="dw_supplier_approval.group_user_procurement_supplier_approval"
                   sequence="11"
         />
+        <menuitem id="menu_approval_parent_purchase"
+                  name="Approval"
+                  parent="purchase.menu_purchase_root"
+                  groups="dw_supplier_approval.group_user_procurement_supplier_approval"
+        />
+        <menuitem id="menu_approval_purchase"
+                  name="Approval"
+                  parent="menu_approval_parent_purchase"
+                  action="action_procurement_supplier_approval"
+                  groups="dw_supplier_approval.group_user_procurement_supplier_approval"
+        />
     </data>
 </odoo>

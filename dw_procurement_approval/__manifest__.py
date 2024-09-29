@@ -10,14 +10,13 @@
     'depends': ['dw_supplier_approval'],
     'data': [
         # data
-        'data/documents_data.xml',
-        'data/sequence.xml',
 
         # report
 
         # security
         'security/ir.model.access.csv',
         # views
+        'views/procurement_supplier_approval_views.xml',
         'views/procurement_market_views.xml',
         'views/purchase_order_views.xml',
         'views/procurement_consultations_views.xml',

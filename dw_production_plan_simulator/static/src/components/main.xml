@@ -54,28 +54,38 @@
                         </div>
 
                         <div class="col-sm-4">
-                          <label for="calendar" class="form-label"
+                          <label for="planning-period" class="form-label"
                             >Planning Period (Exercice de planification):</label>
-                          <input id="calendar" class="form-select" />
+                          <input id="planning-period" class="form-select" />
                         </div>
                       </div>
 
                       <div class="row mb-3">
+
                         <div class="col-sm-4">
-                          <label for="select-period" class="col-form-label"
-                            >Date Range</label>
-                          <input
-                            class="date-own form-control"
-                            id="select-period"
-                            name="daterange"
-                            type="text"
-                            value="01/01/2024 - 06/01/2025"
-                            t-on-input="(ev) => this._onChangeDateRange(ev)"
-                            t-on-change="(ev) => this._onChangeDateRange(ev)"
-                          />
+                          <label for="plan-date-range-start" class="form-label"
+                            >Planning Period Start</label>
+                          <input id="plan-date-range-start" class="form-select" />
+
+                          <label for="plan-date-range-end" class="form-label"
+                            >Planning Period End</label>
+                          <input id="plan-date-range-end" class="form-select" />
+
                         </div>
 
                         <div class="col-sm-4">
+                          <label for="sales-avg-range-start" class="form-label"
+                            >Sales AVG Period Start</label>
+                          <input id="sales-avg-range-start" class="form-select" />
+
+                          <label for="sales-avg-range-end" class="form-label"
+                            >Sales AVG Period End</label>
+                          <input id="sales-avg-range-end" class="form-select" />
+
+                        </div>
+
+
+                        <!-- <div class="col-sm-4">
                           <label
                             for="sales-avg-period"
                             class="col-sm-2 col-form-label"
@@ -87,7 +97,7 @@
                             type="text"
                             value="01/01/2024 - 03/01/2024"
                           />
-                        </div>
+                        </div> -->
                       </div>
 
                       <div class="row mb-3"></div>

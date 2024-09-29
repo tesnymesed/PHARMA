@@ -171,38 +171,14 @@ class ProductionPlanSimulatorComponent extends Component {
         }.bind(this)
       );
 
-      $('input[id="select-period"]').on(
+      $('input[id="plan-date-range"]').on(
         "apply.daterangepicker",
-        function (ev, picker) {
-          console.log(
-            "apply.daterangepicker",
-            picker.startDate.format("YYYY-MM-DD")
-          );
-          console.log(
-            "apply.daterangepicker",
-            picker.endDate.format("YYYY-MM-DD")
-          );
-        }
+        function (ev, picker) {}
       );
 
       $('input[id="sales-avg-period"]').on(
         "apply.daterangepicker",
-        function (ev, picker) {
-          console.log(
-            "apply.daterangepicker",
-            picker.startDate.format("YYYY-MM-DD")
-          );
-          console.log(
-            "apply.daterangepicker",
-            picker.endDate.format("YYYY-MM-DD")
-          );
-
-          self.model.calculateSalesAverage(
-            self.state.currentCompanyId,
-            picker.startDate.format("YYYY-MM-DD"),
-            picker.endDate.format("YYYY-MM-DD")
-          );
-        }
+        function (ev, picker) {}
       );
     });
 
@@ -305,28 +281,78 @@ class ProductionPlanSimulatorComponent extends Component {
     );
   }
 
-  initCalendarInput() {
+  initCalendarInput(id, key, _type) {
     var self = this;
-    jSuites.calendar(document.getElementById("calendar"), {
+    jSuites.calendar(document.getElementById(id), {
       type: "year-month-picker",
       format: "MMM-YYYY",
       value: new Date(),
       // validRange: ["2024-02-01", "2025-12-31"],
       onchange: function (instance, value) {
-        self.state.planningDate = value.split(" ")[0];
         console.log(
-          "🚀 ~ ProductionPlanSimulatorComponent ~ jSuites.calendar ~ self.state.planningDate:",
-          self.state.planningDate
+          "🚀 ~ ProductionPlanSimulatorComponent ~ jSuites.calendar ~ value:",
+          value
         );
+        try {
+          self.state[key] = self.formatDate(value, _type);
+          console.log(
+            "🚀 ~ ProductionPlanSimulatorComponent ~ jSuites.calendar ~ self.state[key]:",
+            key,
+            _type,
+            self.state[key]
+          );
+        } catch (error) {
+          console.error(
+            "��� ~ ProductionPlanSimulatorComponent ~ jSuites.calendar ~ error:",
+            error
+          );
+        }
       },
     });
+  }
+
+  formatDate(dateString, _type) {
+    const date = new Date(dateString);
+
+    // Check if the date is valid
+    if (isNaN(date.getTime())) {
+      throw new Error("Invalid date format");
+    }
+
+    // Get the year, month, and day in local time
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+    const day = String(date.getDate()).padStart(2, "0");
+
+    const formattedDate = `${year}-${month}-${day}`;
+
+    if (_type === "start") {
+      return formattedDate; // Return the formatted date for "start"
+    } else if (_type === "end") {
+      // Get the last day of the month in local time
+      const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+      const endYear = endOfMonth.getFullYear();
+      const endMonth = String(endOfMonth.getMonth() + 1).padStart(2, "0");
+      const endDay = String(endOfMonth.getDate()).padStart(2, "0");
+      return `${endYear}-${endMonth}-${endDay}`; // Return the last day of the month
+    } else {
+      throw new Error("Type must be 'start' or 'end'");
+    }
   }
 
   initFilterSettings() {
     this.initCompaniesSelect();
     this.initPlanningCycleSelect();
-    this.initCalendarInput();
-    this.initPeriodInput();
+
+    this.initCalendarInput("planning-period", "planningDate", "start");
+
+    this.initCalendarInput("plan-date-range-start", "startDate", "start");
+    this.initCalendarInput("plan-date-range-end", "endDate", "end");
+
+    this.initCalendarInput("sales-avg-range-start", "salesStartDate", "start");
+    this.initCalendarInput("sales-avg-range-end", "salesEndDate", "end");
+
+    // this.initPeriodInput();
   }
 
   async getCompanies() {
@@ -572,22 +598,26 @@ class ProductionPlanSimulatorComponent extends Component {
     );
     this.state.currentCompanyName = $("#select-company option:selected").text();
 
-    let picker = $('input[id="select-period"]').data("daterangepicker");
-    this.state.startDate = picker.startDate.format("YYYY-MM-DD");
-    this.state.endDate = picker.endDate.format("YYYY-MM-DD");
+    // TODO: Alter to calendar
+    // let picker = $('input[id="plan-date-range"]').data("daterangepicker");
+    // this.state.startDate = picker.startDate.format("YYYY-MM-DD");
+    // this.state.endDate = picker.endDate.format("YYYY-MM-DD");
 
-    let salesPicker = $('input[id="sales-avg-period"]').data("daterangepicker");
-    this.state.salesStartDate = salesPicker.startDate.format("YYYY-MM-DD");
-    this.state.salesEndDate = salesPicker.endDate.format("YYYY-MM-DD");
+    // let salesPicker = $('input[id="sales-avg-period"]').data("daterangepicker");
+    // this.state.salesStartDate = salesPicker.startDate.format("YYYY-MM-DD");
+    // this.state.salesEndDate = salesPicker.endDate.format("YYYY-MM-DD");
 
     this.state.planningCycle = $(
       "#select-planning-cycle option:selected"
     ).val();
 
-    let calendarElVal = document.getElementById("calendar").calendar.getValue();
-    if (calendarElVal) {
-      this.state.planningDate = calendarElVal.split(" ")[0];
-    }
+    this.getCalendarValue("planning-period", "planningDate", "start");
+
+    this.getCalendarValue("plan-date-range-start", "startDate", "start");
+    this.getCalendarValue("plan-date-range-end", "endDate", "end");
+
+    this.getCalendarValue("sales-avg-range-start", "salesStartDate", "start");
+    this.getCalendarValue("sales-avg-range-end", "salesEndDate", "end");
 
     this.state.domain = [["company_id", "=", this.state.currentCompanyId]];
 
@@ -608,6 +638,21 @@ class ProductionPlanSimulatorComponent extends Component {
       this.state.salesEndDate
     );
   }
+
+  getCalendarValue(id, key, _type) {
+    let calendarElVal = document.getElementById(id).calendar.getValue();
+    if (calendarElVal) {
+      try {
+        this.state[key] = this.formatDate(calendarElVal, _type);
+      } catch (error) {
+        console.error(
+          "��� ~ ProductionPlanSimulatorComponent ~ getCalendarValue ~ error:",
+          error
+        );
+      }
+    }
+  }
+
   /**
    * Handles the daterange input change.
    * @private

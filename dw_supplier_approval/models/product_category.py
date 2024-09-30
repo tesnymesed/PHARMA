@@ -5,6 +5,6 @@ class ProductCategory(models.Model):
     _inherit = "product.category"
 
     need_approval = fields.Boolean(
-        'homologué',
+        'approval required',
         default=False
     )

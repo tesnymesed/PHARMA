@@ -18,10 +18,7 @@
                 True),'|','|','|',('number_supplier2', '&lt;',2),('has_blacklisted_supplier2','=',True),('expired_approval2','=',True),('expired_contract2','=',True)]
             </field>
         </record>
-        <!--         <field name="domain">['|', '|',('need_approval', '=', True), ('categ_id.need_approval', '=', True),
-                        ('product_tmpl_id.need_approval', '=', True),('purchase_ok', '=',
-                        True),('number_supplier', '&lt;',2)]
-                    </field>-->
+
         <record id="action_view_article_need_approval" model="ir.actions.act_window">
             <field name="name">Article</field>
             <field name="type">ir.actions.act_window</field>
@@ -32,7 +29,7 @@
             </field>
         </record>
 
-        <record id="action_procurement_supplier_approval" model="ir.actions.act_window">
+        <record id="action_supplier_approval" model="ir.actions.act_window">
             <field name="name">supplier approval</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">procurement.supplier.approval</field>
@@ -45,49 +42,16 @@
         </record>
 
 
-        <menuitem id="menu_identification_besoin_root"
-                  name="Identification of the need"
-                  parent="dw_procurement.menu_supplier_approval_root"
-                  action="action_identification_besoin"
-                  sequence="11"
-        />
-        <menuitem id="menu_article_supplier_approval"
-                  name="Article"
-                  parent="dw_procurement.menu_supplier_approval_configuration"
-                  action="action_view_article_need_approval"
-                  sequence="21"
-        />
-
-        <menuitem id="menu_supplier_approval_root"
-                  name="approval"
-                  parent="dw_procurement.menu_supplier_approval_root"
-                  sequence="11"
-        />
-
-        <menuitem id="menu_supplier_approval"
-                  name="approval"
-                  parent="menu_supplier_approval_root"
-                  action="action_procurement_supplier_approval"
+        <menuitem id="menu_approval_parent_purchase"
+                  name="Approval"
+                  parent="purchase.menu_purchase_root"
                   groups="dw_supplier_approval.group_user_procurement_supplier_approval"
-                  sequence="11"
         />
-
-        <record id="action_supplier_approval_with" model="ir.actions.act_window">
-            <field name="name">Market with approval</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">procurement.market.dw</field>
-            <field name="view_mode">kanban,tree,form</field>
-            <field name="context">{'default_for_approval':True,'for_approval':True,'dw_this_action_is_used_for_approval':True}</field>
-            <field name="domain">[('for_approval','=',True)]</field>
-        </record>
-
-        <menuitem id="menu_market_with_supplier_approval"
-                  name="Market with approval"
-                  parent="dw_procurement.menu_market_root"
-                  action="action_supplier_approval_with"
+        <menuitem id="menu_approval_purchase"
+                  name="Approval"
+                  parent="menu_approval_parent_purchase"
+                  action="action_supplier_approval"
                   groups="dw_supplier_approval.group_user_procurement_supplier_approval"
-                  sequence="11"
         />
-
     </data>
 </odoo>

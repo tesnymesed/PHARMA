@@ -1,0 +1,14 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_procurement_market_dw_assign_wizard,procurement.market.dw.assign.wizard,model_procurement_market_dw_assign_wizard,base.group_user,1,1,1,1
+access_procurement_approval_market_wizard,procurement.approval.market.wizard,model_procurement_approval_market_wizard,base.group_user,1,1,1,1
+access_procurement_consult_approval,procurement.consult.approval,model_procurement_consult_approval,base.group_user,1,1,1,1
+
+
+
+
+
+
+
+
+

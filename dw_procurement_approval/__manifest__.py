@@ -7,7 +7,7 @@
 =        """,
     'author': 'DIGIWAVES - ALGERIA',
     'website': 'www.digiwaves.io',
-    'depends': ['dw_supplier_approval'],
+    'depends': ['dw_procurement','dw_supplier_approval'],
     'data': [
         # data
 
@@ -20,11 +20,14 @@
         'views/procurement_market_views.xml',
         'views/purchase_order_views.xml',
         'views/procurement_consultations_views.xml',
+        'views/product_product_inherit_views.xml',
         # menus
         'menus.xml',
 
         # wizard
         'wizard/dw_market_assign_view.xml',
+        'wizard/dw_homologate_market_views.xml',
+        'wizard/procurement_consult_approval_views.xml',
     ],
     'qweb': [
 

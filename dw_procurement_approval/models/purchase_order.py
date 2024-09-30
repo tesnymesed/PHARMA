@@ -8,10 +8,6 @@ class PurchaseOrder(models.Model):
 
     market_id = fields.Many2one('procurement.market.dw', string='Market')
     approval_id = fields.Many2one('procurement.supplier.approval', string='approval')
-    supplier_approval_ids = fields.Many2many(
-        'res.partner',
-        related="market_id.supplier_approval_ids"
-    )
 
     @api.model
     def create(self, values):

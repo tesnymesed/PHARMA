@@ -18,5 +18,31 @@
                   sequence="11"
         />
 
+        <menuitem id="menu_identification_besoin_root"
+                  name="Identification of the need"
+                  parent="dw_procurement.menu_supplier_approval_root"
+                  action="dw_supplier_approval.action_identification_besoin"
+                  sequence="11"
+        />
+        <menuitem id="menu_article_supplier_approval"
+                  name="Article"
+                  parent="dw_procurement.menu_supplier_approval_configuration"
+                  action="dw_supplier_approval.action_view_article_need_approval"
+                  sequence="21"
+        />
+
+        <menuitem id="menu_supplier_approval_root"
+                  name="approval"
+                  parent="dw_procurement.menu_supplier_approval_root"
+                  sequence="11"
+        />
+
+        <menuitem id="menu_supplier_approval"
+                  name="approval"
+                  parent="menu_supplier_approval_root"
+                  action="dw_supplier_approval.action_supplier_approval"
+                  groups="dw_supplier_approval.group_user_procurement_supplier_approval"
+                  sequence="11"
+        />
     </data>
 </odoo>

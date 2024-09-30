@@ -7,7 +7,7 @@
 =        """,
     'author': 'DIGIWAVES - ALGERIA',
     'website': 'www.digiwaves.io',
-    'depends': ['dw_procurement'],
+    'depends': ['purchase'],
     'data': [
         # data
         'data/documents_data.xml',
@@ -27,6 +27,7 @@
 
         # wizard
         'wizard/document_wizard.xml',
+
 
 
 

@@ -119,20 +119,13 @@
 
                             <button name="action_show_consultations" type="object"
                                     class="oe_stat_button"
-                                    invisible="state not in ['done','consultation'] or for_approval"
+                                    invisible="state not in ['done','consultation'] "
                                     icon="fa-list-alt">
                                 <div class="o_stat_info">
                                     <span class="o_stat_text">Consultations</span>
                                 </div>
                             </button>
-                            <button name="action_show_consultation" type="object"
-                                    class="oe_stat_button"
-                                    invisible="state not in ['done','consultation'] or not for_approval"
-                                    icon="fa-list-alt">
-                                <div class="o_stat_info">
-                                    <span class="o_stat_text">Consultations</span>
-                                </div>
-                            </button>
+
                             <button name="action_show_Attribution" type="object"
                                     class="oe_stat_button"
                                     invisible="state not in ['done'] "
@@ -185,7 +178,8 @@
 
                             <notebook>
                                 <page string="Products and Suppliers">
-                                    <field name="market_line_ids" mode="tree" nolabel="1" invisible="state != 'draft'" id='market_line_not_draft'>
+
+                                    <field name="market_line_ids" mode="tree" nolabel="1" invisible="state != 'draft'" id="market_line_draft">
                                         <tree string="Products and Supplier" multi_edit="1" duplicate="false"
                                               editable="bottom" readonly="parent.state != 'draft'">
                                             <field name="market_id" column_invisible="1"/>
@@ -201,7 +195,8 @@
 
                                         </tree>
                                     </field>
-                                    <field name="market_line_ids" mode="tree" nolabel="1" invisible="state == 'draft'" id="market_line_draft">
+
+                                    <field name="market_line_ids" mode="tree" nolabel="1" invisible="state == 'draft'" id="market_line_not_draft">
                                         <tree string="Products and Supplier" multi_edit="1" duplicate="false" create="0"
                                               editable="bottom" readonly="parent.state != 'draft'">
                                             <field name="market_id" column_invisible="1"/>

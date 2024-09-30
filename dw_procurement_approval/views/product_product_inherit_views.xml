@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_product_product_tree_inherit" model="ir.ui.view">
+            <field name="name">product.product.procurement.tree.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="dw_supplier_approval.view_identification_besoin_product_tree"/>
+            <field name="mode">primary</field>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_open_label_layout']" position="after">
+                    <button name="action_launch_market" string="launch market"
+                            type="object"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

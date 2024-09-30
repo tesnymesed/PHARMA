@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
- <record id="dw_market_assign_form_view" model="ir.ui.view">
+        <record id="dw_market_assign_form_view" model="ir.ui.view">
             <field name="name">Market Assign Wizard</field>
             <field name="model">procurement.market.dw.assign.wizard</field>
             <field name="type">form</field>
@@ -10,13 +10,11 @@
                     <sheet>
                         <group>
 
-
-
-                            <field name="approval_id" invisible="1"/>
-                            <field name="supplier_id" invisible="1"/>
-                            <field name="product_id" invisible="1"/>
-                            <field name="market_ids" invisible="1"/>
-                            <field name="market_id" domain=" [('id', 'in', market_ids)]"/>
+                            <field name="market_id" readonly="0"/>
+                            <field name="approval_id" readonly="1"/>
+                            <field name="supplier_id" readonly="1"/>
+                            <field name="product_id" readonly="1"/>
+                            <field name="company_id" readonly="1"/>
                         </group>
                         <footer>
 
@@ -33,5 +31,5 @@
         </record>
 
 
-            </data>
+    </data>
 </odoo>

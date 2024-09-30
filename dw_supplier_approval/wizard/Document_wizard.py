@@ -33,7 +33,7 @@ class DocumentWizard(models.TransientModel):
     rapport_audit_attachment = fields.Binary(string="Supplier audit report")
     rapport_audit_file_name = fields.Char(string='File name')
 
-    fichier_stabilite_attachment = fields.Binary(string="Fichier de stabilité")
+    stability_file_attachment = fields.Binary(string="Fichier de stabilité")
     stabilite_file_name = fields.Char(string='File name')
 
     Pre_eval_quest_attachment = fields.Binary(string="Pre-evaluation questionnaire")
@@ -112,7 +112,7 @@ class DocumentWizard(models.TransientModel):
             })
 
     def action_stability(self):
-        if self.fichier_stabilite_attachment and self.stabilite_file_name and self.state_approval == 'lot_validation':
+        if self.stability_file_attachment and self.stabilite_file_name and self.state_approval == 'lot_validation':
             self.env['documents.document'].create({
                 'res_model': 'procurement.supplier.approval',
                 'res_id': self.approval_id.id,
@@ -120,6 +120,6 @@ class DocumentWizard(models.TransientModel):
                 'type': 'binary',
                 'product_id': self.approval_id.product_id.id if self.approval_id and self.approval_id.product_id else False,
                 'partner_id': self.approval_id.supplier_id.id if self.approval_id and self.approval_id.supplier_id else False,
-                'datas': self.fichier_stabilite_attachment,
+                'datas': self.stability_file_attachment,
                 'folder_id': self.env.ref('dw_supplier_approval.folder_approval').id,
             })

@@ -2,7 +2,7 @@
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 const { Component, onWillStart, onMounted, useRef, useState } = owl;
-export class OwlMainDashboard extends Component {
+export default class OwlMainDashboard extends Component {
   setup() {
     this.orm = useService("orm");
     this.notificationService = useService("notification");

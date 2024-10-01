@@ -16,6 +16,7 @@
             'dw_mrp_mps_supply_plan_link/static/src/components/main.xml',
             'dw_mrp_mps_supply_plan_link/static/src/components/main_patch.js',
             'dw_mrp_mps_supply_plan_link/static/src/models/master_production_schedule_model_patch.js',
+
             # 'dw_mrp_mps/static/src/**/*',
             # 'dw_mrp_mps/static/src/**/*',
         ],

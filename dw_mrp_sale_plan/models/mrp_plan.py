@@ -1,7 +1,7 @@
-from odoo import fields, api, models, _
+import math
 
 from dateutil.relativedelta import relativedelta
-import math
+from odoo import fields, api, models
 
 
 class DwMrpPlanLines(models.Model):
@@ -103,6 +103,7 @@ class DwMrpPlan(models.Model):
     sale_plan_id = fields.Many2one(
         'sale.plan',
         domain="['|',('company_id', '=', company_id),('company_id', '=', False)]",
+        string='Sale Plan'
 
     )
 

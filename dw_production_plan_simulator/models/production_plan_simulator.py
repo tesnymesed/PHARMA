@@ -114,16 +114,21 @@ class DwProductionPlanSimulator(models.Model):
             found_in_range = False
 
             print(record)
-            existing_prdct_sim_ids = record.product_plan_sim_ids.filtered(
-                lambda p: p.date >= record.company_id.dw_prod_sim_date_sales_range_start and
-                          p.date <= record.company_id.dw_prod_sim_date_sales_range_end)
+            start = record.company_id.dw_prod_sim_date_sales_range_start
+            end = record.company_id.dw_prod_sim_date_sales_range_end
+            d = relativedelta(end, start)
+            m_count = d.months
+            if d.days > 0:
+                m_count += 1
+
+            existing_prdct_sim_ids = record.product_plan_sim_ids.filtered(lambda p: start <= p.date <= end)
             if existing_prdct_sim_ids:
                 sales = existing_prdct_sim_ids.mapped('sold_qty')
                 found_in_range = True
             else:
                 sales = record.product_plan_sim_ids.mapped('sold_qty')
 
-            sales_avg = safe_divide(sum(sales), len(sales))
+            sales_avg = safe_divide(sum(sales), m_count)
             record.sales_average = sales_avg
 
         return True
@@ -493,7 +498,9 @@ class DwProductionPlanSimulator(models.Model):
             ('product_tmpl_id.type', '=', 'product'),
             # ('product_tmpl_id.categ_id.is_final_product', '=', True),
             # ('product_tmpl_id.bom_ids', '!=', False),
-            ('product_tmpl_id.company_id', '=', company_id)
+            '|',
+            ('product_tmpl_id.company_id', '=', company_id),
+            ('product_tmpl_id.company_id', '=', False)
         ])
 
         # Create the simulation records
@@ -512,13 +519,19 @@ class DwProductionPlanSimulator(models.Model):
             # for i_remove, __ in reversed(existing_pps):
             #     del products_list[i_remove]
             else:
-                pps = self.env['dw.production.plan.simulation'].create({
+                vals = {
                     'company_id': company_id,
                     'product_id': product.id,
                     'warehouse_id': self._get_warehouse_id(company_id).id,
-                    'bom_id': product.product_tmpl_id.bom_ids[0].id,
-                    'lot_size': product.product_tmpl_id.bom_ids[0].product_qty
-                })
+                    # 'bom_id': product.product_tmpl_id.bom_ids[0].id if product.product_tmpl_id.bom_ids else None,
+                    # 'lot_size': product.product_tmpl_id.bom_ids[0].product_qty
+                }
+
+                if product.product_tmpl_id.bom_ids:
+                    vals['bom_id'] = product.product_tmpl_id.bom_ids[0].id
+                    vals['lot_size'] = product.product_tmpl_id.bom_ids[0].product_qty
+
+                pps = self.env['dw.production.plan.simulation'].create(vals)
 
             ids.append(pps)
 
@@ -538,7 +551,7 @@ class DwProductionPlanSimulator(models.Model):
             pps = self.search([('id', '=', _id)], limit=1)
 
             if pps:
-                vals['bom_id'] = pps.bom_id.id
+                vals['bom_id'] = pps.bom_id.id if pps.bom_id else False
                 vals['warehouse_id'] = pps.warehouse_id.id
 
             mps = self.env['mrp.production.schedule'].create([vals])
@@ -575,8 +588,8 @@ class DwProductionPlanSimulator(models.Model):
                 if existing_forecast:
                     existing_forecast[0].write(forecast_vals)
                 else:
-                    forecast_vals['production_schedule_id'] =  mps.id
-                    forecast_vals['date'] =  date_stop
+                    forecast_vals['production_schedule_id'] = mps.id
+                    forecast_vals['date'] = date_stop
 
                     self.env['mrp.product.forecast'].create(forecast_vals)
 
@@ -613,8 +626,8 @@ class DwProductionPlanSimulator(models.Model):
             # Allow to add components of a BoM for MPS already created
             # if vals.get('bom_id'):
             mps = self.search([
-                ('product_id', '=', vals['product_id']),
-                ('bom_id', '=', vals['bom_id']),
+                ('product_id', '=', vals.get('product_id')),
+                ('bom_id', '=', vals.get('bom_id')),
                 ('warehouse_id', '=', vals.get('warehouse_id', self._default_warehouse_id().id)),
                 ('company_id', '=', vals.get('company_id', self.env.company.id)),
             ], limit=1)

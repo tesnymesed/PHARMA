@@ -6,7 +6,7 @@
     'sequence': 120,
     'author': 'DIGIWAVES - ALGERIA',
     'website': 'www.digiwaves.io',
-    'depends': ['product'],
+    'depends': ['purchase', 'product'],
     'images': [
         'static/description/icon.png'
     ],

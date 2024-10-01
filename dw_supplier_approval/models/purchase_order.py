@@ -1,21 +1,20 @@
 # -*- coding:utf-8 -*-
-
-from odoo import fields, models, api
+from odoo import models
+from odoo.exceptions import UserError
 
 
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
 
-    market_id = fields.Many2one('procurement.market.dw', string='Market')
-    approval_id = fields.Many2one('procurement.supplier.approval', string='approval')
-    supplier_approval_ids = fields.Many2many(
-        'res.partner',
-        related="market_id.supplier_approval_ids"
-    )
+    def button_confirm(self):
+        for order in self:
+            for line in order.order_line:
+                product = line.product_id
+                partner_id = line.partner_id
+                approvals = product.mapped('approval_ids').filtered(lambda approval: approval.state == 'approval' and approval.supplier_id.id == partner_id.id)
 
-    @api.model
-    def create(self, values):
-        res = super(PurchaseOrder, self).create(values)
-        if res.approval_id:
-            res.approval_id.write({"purchase_id": res.id})
-        return res
+                if not approvals:
+                    raise UserError(
+                        f"The supplier {partner_id.name} is not approved for the product {product.name}.")
+
+            return super().button_confirm()

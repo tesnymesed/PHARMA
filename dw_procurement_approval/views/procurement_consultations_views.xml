@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <record id="dw_consultation_form_view_inherit" model="ir.ui.view">
-            <field name="name">dw_supplier_approval.dw_consultation.form.inherit</field>
+            <field name="name">dw.consultation.form.inherit</field>
             <field name="model">procurement.dw.consultation</field>
             <field name="inherit_id" ref="dw_procurement.dw_consultation_form_view"/>
             <field name="arch" type="xml">

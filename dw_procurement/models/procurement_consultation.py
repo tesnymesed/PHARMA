@@ -13,7 +13,7 @@ class DwConsultationCriteria(models.Model):
                                   check_company=True, required=1)
 
     market_id = fields.Many2one('procurement.market.dw', string='Market', check_company=True, )
-    for_approval = fields.Boolean("for Approval", related="market_id.for_approval")
+    for_approval = fields.Boolean("for Approval ?", compute="_compute_for_approval")
 
     product_id = fields.Many2one(
         'product.product', required=1,
@@ -75,6 +75,13 @@ class DwConsultationCriteria(models.Model):
             if record.supplier_id:
                 final_name = final_name + " " + record.supplier_id.name
                 record.display_name = final_name
+
+    @api.depends('market_id', 'product_id')
+    def _compute_for_approval(self):
+        for record in self:
+            market_id = record.market_id
+            product_id = record.product_id
+            record.for_approval = market_id.for_approval if market_id else product_id.need_approval if product_id else False
 
     @api.model_create_multi
     def create(self, vals_list):

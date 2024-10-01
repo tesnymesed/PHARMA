@@ -24,6 +24,7 @@ class DwMarketLine(models.Model):
     )
     line_approved = fields.Boolean(default=False)
     line_consulted = fields.Boolean(default=False)
+    for_approval = fields.Boolean("for approval", store=1, related="market_id.for_approval")
 
     def action_to_consult(self):
         line_id = self
@@ -31,7 +32,7 @@ class DwMarketLine(models.Model):
         product_id = line_id.product_id
         market_id = line_id.market_id
         consultation_ids = market_id.mapped("consultation_ids").filtered(
-            lambda c: c.product_id == product_id and c.state not in ['canceled','reject'])
+            lambda c: c.product_id == product_id and c.state not in ['canceled', 'reject'])
 
         suppliers_without_consultation = supplier_ids.filtered(
             lambda supplier: not consultation_ids.filtered(lambda cons: cons.supplier_id == supplier)

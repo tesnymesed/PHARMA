@@ -73,7 +73,7 @@
                                filename="rapport_audit_file_name"/>
 
                         <field name="stabilite_file_name" invisible="1"/>
-                        <field name="fichier_stabilite_attachment" widget="binary"
+                        <field name="stability_file_attachment" widget="binary"
                                invisible="state_approval != 'lot_validation'"
                                required="state_approval == 'lot_validation'"
                                filename="stabilite_file_name"/>

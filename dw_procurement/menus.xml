@@ -11,11 +11,6 @@
 
         </record>
 
-        <!--         <field name="domain">['|', '|',('homologue', '=', True), ('categ_id.homologue', '=', True),
-                        ('product_tmpl_id.homologue', '=', True),('purchase_ok', '=',
-                        True),('number_fournisseur', '&lt;',2)]
-                    </field>-->
-
         <record id="action_market_type" model="ir.actions.act_window">
             <field name="name">Market</field>
             <field name="type">ir.actions.act_window</field>
@@ -35,13 +30,15 @@
         <menuitem id="menu_supplier_approval_root"
                   name="Procurement"
                   web_icon="dw_procurement,static/description/icon.png"
+                  groups="dw_procurement.group_user_procurement"
+
                   sequence="10"
 
         />
         <menuitem id="menu_supplier_approval_configuration"
                   name="Configuration"
                   sequence="20"
-
+                  groups="dw_procurement.group_manager_procurement"
                   parent="dw_procurement.menu_supplier_approval_root"
 
         />

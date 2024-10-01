@@ -33,7 +33,8 @@
                       <div class="row mb-3">
                         <div class="col-sm-4">
                           <label for="select-company" class="form-label"
-                            >Company</label>
+                            >Company</label
+                          >
                           <select
                             id="select-company"
                             class="form-select"
@@ -44,7 +45,8 @@
 
                         <div class="col-sm-4">
                           <label for="select-planning-cycle" class="form-label"
-                            >Planning Cycle</label>
+                            >Planning Cycle</label
+                          >
                           <select
                             id="select-planning-cycle"
                             class="form-select"
@@ -55,49 +57,72 @@
 
                         <div class="col-sm-4">
                           <label for="planning-period" class="form-label"
-                            >Planning Period (Exercice de planification):</label>
+                            >Planning Period (Exercice de planification):</label
+                          >
                           <input id="planning-period" class="form-select" />
                         </div>
                       </div>
 
-                      <div class="row mb-3">
-
-                        <div class="col-sm-4">
-                          <label for="plan-date-range-start" class="form-label"
-                            >Planning Period Start</label>
-                          <input id="plan-date-range-start" class="form-select" />
-
-                          <label for="plan-date-range-end" class="form-label"
-                            >Planning Period End</label>
-                          <input id="plan-date-range-end" class="form-select" />
-
+                      <div class="row mb-12">
+                        <div class="col-6">
+                          <div class="col-6">
+                            <label
+                              for="plan-date-range-start"
+                              class="form-label"
+                              >Planning Period Start</label
+                            >
+                            <input
+                              id="plan-date-range-start"
+                              class="form-select"
+                            />
+                          </div>
+                          <div class="col-6">
+                            <label for="plan-date-range-end" class="form-label"
+                              >Planning Period End</label
+                            >
+                            <input
+                              id="plan-date-range-end"
+                              class="form-select"
+                            />
+                          </div>
                         </div>
+                        <div class="col-6">
+                          <div class="col-6">
+                            <label
+                              for="sales-avg-range-start"
+                              class="form-label"
+                              >Sales AVG Period Start</label
+                            >
+                            <input
+                              id="sales-avg-range-start"
+                              class="form-select"
+                            />
+                          </div>
 
-                        <div class="col-sm-4">
-                          <label for="sales-avg-range-start" class="form-label"
-                            >Sales AVG Period Start</label>
-                          <input id="sales-avg-range-start" class="form-select" />
-
-                          <label for="sales-avg-range-end" class="form-label"
-                            >Sales AVG Period End</label>
-                          <input id="sales-avg-range-end" class="form-select" />
-
+                          <div class="col-6">
+                            <label for="sales-avg-range-end" class="form-label"
+                              >Sales AVG Period End</label
+                            >
+                            <input
+                              id="sales-avg-range-end"
+                              class="form-select"
+                            />
+                          </div>
                         </div>
-
 
                         <!-- <div class="col-sm-4">
-                          <label
-                            for="sales-avg-period"
-                            class="col-sm-2 col-form-label"
-                            >Sales AVG</label>
-                          <input
-                            class="date-own form-control"
-                            id="sales-avg-period"
-                            name="daterange"
-                            type="text"
-                            value="01/01/2024 - 03/01/2024"
-                          />
-                        </div> -->
+                                <label
+                                  for="sales-avg-period"
+                                  class="col-sm-2 col-form-label"
+                                  >Sales AVG</label>
+                                <input
+                                  class="date-own form-control"
+                                  id="sales-avg-period"
+                                  name="daterange"
+                                  type="text"
+                                  value="01/01/2024 - 03/01/2024"
+                                />
+                              </div> -->
                       </div>
 
                       <div class="row mb-3"></div>
@@ -186,18 +211,18 @@
                                         </a>
 
                                         <!-- <span> </span>
-                                          <button
-                                            type="button"
-                                            t-attf-class="{{
-                                              'btn btn-link text-muted o_no_padding o_prod_sim_edit'
-                                            }}"
-                                            t-on-click.stop="(ev) => this._onClickWorkCenterEdit(ev, workCenter.key[0])"
-                                          >
-                                            <img
-                                              src="dw_production_plan_simulator/static/description/info.png"
-                                              alt="Icon"
-                                            />
-                                          </button> -->
+                                            <button
+                                              type="button"
+                                              t-attf-class="{{
+                                                'btn btn-link text-muted o_no_padding o_prod_sim_edit'
+                                              }}"
+                                              t-on-click.stop="(ev) => this._onClickWorkCenterEdit(ev, workCenter.key[0])"
+                                            >
+                                              <img
+                                                src="dw_production_plan_simulator/static/description/info.png"
+                                                alt="Icon"
+                                              />
+                                            </button> -->
                                       </th>
                                     </tr>
                                   </thead>
@@ -206,10 +231,7 @@
                                     <tr>
                                       <table class="table o_mps_product_table">
                                         <thead class="table-light">
-                                          <tr
-                                            t-ref="periodsRow"
-                                            class="o_mps_period"
-                                          >
+                                          <tr class="o_mps_period">
                                             <th></th>
                                             <th />
                                             <th />
@@ -312,7 +334,7 @@
               <div id="newRow"></div>
             </div>
             <!--Body
-              End-->
+                  End-->
           </div>
           <div class="modal-footer">
             <button

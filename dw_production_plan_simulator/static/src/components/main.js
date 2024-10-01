@@ -289,18 +289,8 @@ class ProductionPlanSimulatorComponent extends Component {
       value: new Date(),
       // validRange: ["2024-02-01", "2025-12-31"],
       onchange: function (instance, value) {
-        console.log(
-          "🚀 ~ ProductionPlanSimulatorComponent ~ jSuites.calendar ~ value:",
-          value
-        );
         try {
-          self.state[key] = self.formatDate(value, _type);
-          console.log(
-            "🚀 ~ ProductionPlanSimulatorComponent ~ jSuites.calendar ~ self.state[key]:",
-            key,
-            _type,
-            self.state[key]
-          );
+          self.state[key] = self.formatStringDate(value, _type);
         } catch (error) {
           console.error(
             "��� ~ ProductionPlanSimulatorComponent ~ jSuites.calendar ~ error:",
@@ -311,7 +301,7 @@ class ProductionPlanSimulatorComponent extends Component {
     });
   }
 
-  formatDate(dateString, _type) {
+  formatStringDate(dateString, _type) {
     const date = new Date(dateString);
 
     // Check if the date is valid
@@ -621,11 +611,6 @@ class ProductionPlanSimulatorComponent extends Component {
 
     this.state.domain = [["company_id", "=", this.state.currentCompanyId]];
 
-    console.log(
-      "🚀 ~ ProductionPlanSimulatorComponent ~ captureInputSettings ~ this.state:",
-      this.state
-    );
-
     this.model.saveDateRange(
       this.state.currentCompanyId,
       this.state.startDate,
@@ -643,7 +628,7 @@ class ProductionPlanSimulatorComponent extends Component {
     let calendarElVal = document.getElementById(id).calendar.getValue();
     if (calendarElVal) {
       try {
-        this.state[key] = this.formatDate(calendarElVal, _type);
+        this.state[key] = this.formatStringDate(calendarElVal, _type);
       } catch (error) {
         console.error(
           "��� ~ ProductionPlanSimulatorComponent ~ getCalendarValue ~ error:",
@@ -658,9 +643,7 @@ class ProductionPlanSimulatorComponent extends Component {
    * @private
    * @param {Event} ev
    */
-  _onChangeDateRange(ev) {
-    console.log("_onChangeDateRange", ev);
-  }
+  _onChangeDateRange(ev) {}
 
   async _onChangeCompany(ev, productionSimulationId) {
     this.state.currentCompanyId = parseInt(ev.target.value);
@@ -669,10 +652,6 @@ class ProductionPlanSimulatorComponent extends Component {
 
   async _onChangePlanningCycle(ev) {
     this.state.planningCycle = ev.target.value;
-    console.log(
-      "🚀 ~ ProductionPlanSimulatorComponent ~ _onChangePlanningCycle ~ this.state:",
-      this.state
-    );
     this.captureInputSettings();
   }
 
@@ -777,10 +756,6 @@ class ProductionPlanSimulatorComponent extends Component {
   async alertNotesCellEdited(cell) {
     const notes = cell.getValue();
     const cellData = cell.getData();
-    console.log(
-      "🚀 ~ ProductionPlanSimulatorComponent ~ alertNotesCellEdited ~ cellData:",
-      cellData
-    );
 
     await this.model
       ._saveAlertNotes(
@@ -853,11 +828,6 @@ class ProductionPlanSimulatorComponent extends Component {
   }
 
   _onClickWorkCenterLink(ev) {
-    console.log(
-      "🚀 ~ ProductionPlanSimulatorComponent ~ _onClickWorkCenterLink ~ ev:",
-      ev
-    );
-
     this.action.doAction({
       type: "ir.actions.act_window",
       res_model: ev.currentTarget.dataset.model,
@@ -869,12 +839,6 @@ class ProductionPlanSimulatorComponent extends Component {
   }
 
   _onClickWorkCenterEdit(ev, id) {
-    console.log(
-      "🚀 ~ ProductionPlanSimulatorComponent ~ _onClickWorkCenterEdit ~ ev, id:",
-      ev,
-      id
-    );
-
     this.model._editWorkCenter(id);
   }
 

@@ -97,13 +97,11 @@ class MrpPlan(models.Model):
             'name': _('Excel'),
             'type': 'ir.actions.act_window',
             'res_model': self._name,
+            'views': [(form_view.id, 'form')],
+            'view_mode': 'form',
+            'res_id': self.id,
+            'target': 'new'
         }
-
-        action['views'] = [(form_view.id, 'form')]
-        action['view_mode'] = 'form'
-        action['res_id'] = self.id
-
-        action['target'] = 'new'
 
         return action
 
@@ -361,12 +359,11 @@ class ProductMrpPlan(models.Model):
             'name': _('Roadmap'),
             'type': 'ir.actions.act_window',
             'res_model': 'mrp.roadmap',
+            'views': [(form_view.id, 'form')],
+            'view_mode': 'form',
+            'res_id': res.id,
+            'target': 'current'
         }
-
-        action['views'] = [(form_view.id, 'form')]
-        action['view_mode'] = 'form'
-        action['target'] = 'current'
-        action['res_id'] = res.id
 
         self.write({
             'roadmap_id': res.id

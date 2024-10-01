@@ -6,4 +6,4 @@ class StockLocationTransferLimit(models.Model):
     _description = 'Stock Location Transfer Limit'
 
     name = fields.Char(string='Name', required=True)
-    perform_transfer = fields.Boolean(string='Perform Transfer')
+    perform_transfer = fields.Boolean(string='Perform Transfer', default=True)

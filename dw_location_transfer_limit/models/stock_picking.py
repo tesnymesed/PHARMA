@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import _, models
 from odoo.exceptions import UserError
 
 
@@ -7,12 +7,17 @@ class StockPicking(models.Model):
 
 
     def button_validate(self):
-        if self.picking_type_id.code == 'incoming':
-            for move_id in self.move_ids:
-                if not any(move_line.location_dest_id.location_transfer_limit_id.perform_transfer 
-                        for move_line in move_id.move_line_ids):
-                    raise UserError(f"The {move_id.product_id.name} could not be found in any transfer location.")
-                    
+        for picking in self:
+            for move_id in picking.move_ids:
+                # Check if the transfer can be performed at the move_id level
+                if move_id.location_id and move_id.location_id.location_transfer_limit_id and not move_id.location_id.location_transfer_limit_id.perform_transfer:
+                    raise UserError(_(f"The {move_id.product_id.name} could not be performed in the transfer location."))
+
+                # Check if the transfer can be performed at the move_line_id level
+                if move_id.move_line_ids:
+                    if not any(move_line.location_id.location_transfer_limit_id.perform_transfer for move_line in move_id.move_line_ids):
+                        raise UserError(_(f"The {move_id.product_id.name} could not be performed in any transfer location for its move lines."))
+
         return super().button_validate()
 
 

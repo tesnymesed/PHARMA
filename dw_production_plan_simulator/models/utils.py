@@ -46,4 +46,7 @@ def round_up_to_nearest(value, multiplier):
     Returns:
         float: The rounded up value.
     """
-    return (value + multiplier - 1) // multiplier * multiplier
+    try:
+        return (value + multiplier - 1) // multiplier * multiplier
+    except ZeroDivisionError:
+        return 0.0

@@ -34,7 +34,7 @@
                                     <button type="button" data-toggle="button" id="add-products" class="btn btn-primary">Add Products</button>
                               </div>
                           </div>
-                            <!-- Modal for Creating MRP Plan-->
+              <!-- Modal for Creating MRP Plan-->
                         <div class="modal fade" id="createMrpPlanModel" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                           <div class="modal-dialog modal-dialog-scrollable modal-xl">
                             <div class="modal-content">
@@ -71,8 +71,8 @@
                             </div>
                           </div>
                         </div>
-    <!--                      End Modal for Creating MRP Plan-->
-                          <!--                      Modal For Weekly Plan-->
+              <!--                      End Modal for Creating MRP Plan-->
+              <!--                      Modal For Weekly Plan-->
                         <div class="modal fade" id="WeeklyPlaModel" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                           <div class="modal-dialog modal-dialog-scrollable modal-xl">
                             <div class="modal-content">
@@ -86,8 +86,8 @@
                             </div>
                           </div>
                         </div>
-    <!--                      End modal weekly plan-->
-                                <!-- Modal For PDP Validation-->
+              <!--                      End modal weekly plan-->
+              <!-- Modal For PDP Validation-->
                         <div class="modal fade" id="PDPValidationModel" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                           <div class="modal-dialog modal-dialog-scrollable modal-xl">
                             <div class="modal-content">
@@ -96,7 +96,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
                               <div class="modal-body" id="PDPValidationmodalBody">
-                        <!--          Body -->
+                      <!--          Body -->
                                 <center><h3 id="bodyTitle"></h3></center>
                                 <table class="table table-striped">
                                   <thead id="tableHead">
@@ -108,7 +108,7 @@
                                     <button id="addRow" class="btn btn-primary mt-3 add-row">Add New Product</button>
                                     <div id="newRow"></div>
                                 </div>
-                    <!--          Body End-->
+                      <!--          Body End-->
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

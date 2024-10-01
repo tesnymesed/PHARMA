@@ -16,7 +16,7 @@ class DWCompany(models.Model):
         ('year_start', "Current year's start")
     ], string="Manufacturing Period Start",
         default='year_start', required=True,
-        help="Default value for the time ranges start (Present Month, or current years's start) in DW Master Production Schedule report.")
+        help="Default value for the time ranges start (Present Month, or current year's start) in DW Master Production Schedule report.")
 
     dw_mrp_mps_show_stock_wout_safety_stock = fields.Boolean(
         'Display Stock (Excluding Safety Stock)', default=True)

@@ -24,8 +24,6 @@ export default class ProductionPlanSimulatorLine extends Component {
     this.suggProdPlanRow = useRef("suggProdPlanRow");
     this.suggProdPlanBatchesRow = useRef("suggProdPlanBatchesRow");
 
-    this.periodsRow = useRef("periodsRow");
-
     this.formVals = {
       title: "",
       headerTitle: "",

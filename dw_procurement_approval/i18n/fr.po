@@ -1,0 +1,388 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* dw_procurement_approval
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-01 14:40+0000\n"
+"PO-Revision-Date: 2024-10-01 14:40+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: dw_procurement_approval
+#. odoo-python
+#: code:addons/dw_procurement_approval/models/procurement_supplier_approval.py:0
+#, python-format
+msgid "%(approval_name)s's Consultations"
+msgstr "Consultations de %(approval_name)"
+
+#. module: dw_procurement_approval
+#. odoo-python
+#: code:addons/dw_procurement_approval/models/procurement_market_consultation.py:0
+#, python-format
+msgid "%(consultation_name)s's Consultations"
+msgstr "Consultations %(consultation_name)"
+
+#. module: dw_procurement_approval
+#. odoo-python
+#: code:addons/dw_procurement_approval/models/procurement_supplier_approval.py:0
+#, python-format
+msgid "%(market_name)s's Market"
+msgstr "Marché de %(market_name)"
+
+#. module: dw_procurement_approval
+#. odoo-python
+#: code:addons/dw_procurement_approval/models/procurement_market.py:0
+#, python-format
+msgid "%(market_name)s's approval"
+msgstr "Approbation de %(market_name)"
+
+#. module: dw_procurement_approval
+#: model_terms:ir.ui.view,arch_db:dw_procurement_approval.procurement_supplier_approval_form
+msgid "<span class=\"o_stat_text\">Consultations</span>"
+msgstr "<span class=\"o_stat_text\">Consultations</span>"
+
+#. module: dw_procurement_approval
+#: model_terms:ir.ui.view,arch_db:dw_procurement_approval.procurement_supplier_approval_form
+msgid "<span class=\"o_stat_text\">Market</span>"
+msgstr "<span class=\"o_stat_text\">Marché</span>"
+
+#. module: dw_procurement_approval
+#: model_terms:ir.ui.view,arch_db:dw_procurement_approval.procurement_supplier_approval_form
+msgid "<span class=\"o_stat_text\">PO Sample</span>"
+msgstr "<span class=\"o_stat_text\">Échantillon de PO</span>"
+
+#. module: dw_procurement_approval
+#: model_terms:ir.ui.view,arch_db:dw_procurement_approval.dw_consultation_form_view_inherit
+msgid "<span class=\"o_stat_text\">approval</span>"
+msgstr "<span class=\"o_stat_text\">approbation</span>"
+
+#. module: dw_procurement_approval
+#: model_terms:ir.ui.view,arch_db:dw_procurement_approval.view_market_form_inherit
+msgid "<span class=\"o_stat_text\">approvals</span>"
+msgstr "<span class=\"o_stat_text\">approbations</span>"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_approval_market_wizard__approval_id
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_consult_approval__approval_id
+msgid "Approval"
+msgstr "Approbation"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields.selection,name:dw_procurement_approval.selection__procurement_market_dw__state__approval_consultation
+msgid "Approval/consultation"
+msgstr "Approbation/consultation"
+
+#. module: dw_procurement_approval
+#: model:ir.ui.menu,name:dw_procurement_approval.menu_article_supplier_approval
+msgid "Article"
+msgstr "Article"
+
+#. module: dw_procurement_approval
+#: model_terms:ir.ui.view,arch_db:dw_procurement_approval.dw_market_assign_form_view
+msgid "Assign"
+msgstr "Attribuer"
+
+#. module: dw_procurement_approval
+#: model_terms:ir.ui.view,arch_db:dw_procurement_approval.procurement_supplier_approval_form
+msgid "Assign market"
+msgstr "Attribuer un marché"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields.selection,name:dw_procurement_approval.selection__procurement_market_dw__state__done
+msgid "Assigned"
+msgstr "Attribué"
+
+#. module: dw_procurement_approval
+#: model_terms:ir.ui.view,arch_db:dw_procurement_approval.approval_consult_form_view
+#: model_terms:ir.ui.view,arch_db:dw_procurement_approval.dw_market_assign_form_view
+#: model_terms:ir.ui.view,arch_db:dw_procurement_approval.dw_procurement_market_supplier_wizard_tree_view
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields.selection,name:dw_procurement_approval.selection__procurement_market_dw__state__cancel
+msgid "Canceled"
+msgstr "Annulé"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_approval_market_wizard__company_id
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_consult_approval__company_id
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_market_dw_assign_wizard__company_id
+msgid "Company"
+msgstr "Société"
+
+#. module: dw_procurement_approval
+#: model:ir.model,name:dw_procurement_approval.model_procurement_consult_approval
+msgid "Consult Approval"
+msgstr "Consulter l'approbation"
+
+#. module: dw_procurement_approval
+#: model:ir.model,name:dw_procurement_approval.model_procurement_dw_consultation
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_supplier_approval__consultation_ids
+msgid "Consultation"
+msgstr "Consultation"
+
+#. module: dw_procurement_approval
+#: model_terms:ir.ui.view,arch_db:dw_procurement_approval.procurement_supplier_approval_form
+msgid "Create Purchase order"
+msgstr "Créer un bon de commande"
+
+#. module: dw_procurement_approval
+#: model_terms:ir.ui.view,arch_db:dw_procurement_approval.dw_procurement_market_supplier_wizard_tree_view
+msgid "Create approval"
+msgstr "Créer une approbation"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_approval_market_wizard__create_uid
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_consult_approval__create_uid
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_market_dw_assign_wizard__create_uid
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_approval_market_wizard__create_date
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_consult_approval__create_date
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_market_dw_assign_wizard__create_date
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_approval_market_wizard__display_name
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_consult_approval__display_name
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_market_dw_assign_wizard__display_name
+msgid "Display Name"
+msgstr "Nom d'affichage"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_approval_market_wizard__id
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_consult_approval__id
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_market_dw_assign_wizard__id
+msgid "ID"
+msgstr "ID"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields.selection,name:dw_procurement_approval.selection__procurement_market_dw__state__draft
+#: model:ir.ui.menu,name:dw_procurement_approval.menu_identification_besoin_root
+msgid "Identification of the need"
+msgstr "Identification du besoin"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_approval_market_wizard__write_uid
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_consult_approval__write_uid
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_market_dw_assign_wizard__write_uid
+msgid "Last Updated by"
+msgstr "Dernière mise à jour par"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_approval_market_wizard__write_date
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_consult_approval__write_date
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_market_dw_assign_wizard__write_date
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le "
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_market_dw__len_supplier_approval_market
+msgid "Length Market supplier Approved"
+msgstr "Longueur Fournisseur du marché Approuvé"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_approval_market_wizard__line_approved
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_market_dw_line__line_approved
+msgid "Line Approved"
+msgstr "Ligne approuvée"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_approval_market_wizard__line_id
+msgid "Line Market"
+msgstr "Ligne de marché"
+
+#. module: dw_procurement_approval
+#: model_terms:ir.ui.view,arch_db:dw_procurement_approval.dw_procurement_market_supplier_wizard_tree_view
+msgid "Link approval"
+msgstr "Lien d'approbation"
+
+#. module: dw_procurement_approval
+#: model_terms:ir.ui.view,arch_db:dw_procurement_approval.dw_procurement_market_supplier_wizard_tree_view
+msgid "Link to market"
+msgstr "Lien vers le marché"
+
+#. module: dw_procurement_approval
+#: model_terms:ir.ui.view,arch_db:dw_procurement_approval.view_market_form_inherit
+msgid "Load Attribution File"
+msgstr "Charger le fichier d'attribution"
+
+#. module: dw_procurement_approval
+#: model_terms:ir.ui.view,arch_db:dw_procurement_approval.procurement_supplier_approval_form
+msgid "Lunch Consultation"
+msgstr "Charger Consulation"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_approval_market_wizard__market_id
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_consult_approval__market_id
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_market_dw_assign_wizard__market_id
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_supplier_approval__market_ids
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_purchase_order__market_id
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_purchase_requisition__market_id
+msgid "Market"
+msgstr "Marché"
+
+#. module: dw_procurement_approval
+#: model:ir.actions.act_window,name:dw_procurement_approval.action_supplier_approval_with
+#: model:ir.ui.menu,name:dw_procurement_approval.menu_market_with_supplier_approval
+msgid "Market with approval"
+msgstr "Marché avec approbation"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_approval_market_wizard__quantity
+msgid "Needed Quantity"
+msgstr "Quantité nécessaire"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_approval_market_wizard__product_id
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_market_dw_assign_wizard__product_id
+msgid "Product"
+msgstr "Produit"
+
+#. module: dw_procurement_approval
+#: model:ir.model,name:dw_procurement_approval.model_product_product
+msgid "Product Variant"
+msgstr "Variante de produit"
+
+#. module: dw_procurement_approval
+#: model:ir.model,name:dw_procurement_approval.model_purchase_order
+msgid "Purchase Order"
+msgstr "Bon de commande fournisseur"
+
+#. module: dw_procurement_approval
+#: model:ir.model,name:dw_procurement_approval.model_purchase_requisition
+msgid "Purchase Requisition"
+msgstr "Demande d'achat"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields.selection,name:dw_procurement_approval.selection__procurement_market_dw__state__reject
+msgid "Reject"
+msgstr "Rejeter"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_market_dw__state
+msgid "State"
+msgstr "État"
+
+#. module: dw_procurement_approval
+#: model_terms:ir.ui.view,arch_db:dw_procurement_approval.approval_consult_form_view
+msgid "Submit consult"
+msgstr "Soumettre une consultation"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_approval_market_wizard__supplier_id
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_market_dw_assign_wizard__supplier_id
+msgid "Supplier"
+msgstr "Fournisseur"
+
+#. module: dw_procurement_approval
+#: model:ir.model,name:dw_procurement_approval.model_procurement_market_dw
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_market_dw__supplier_approval_ids
+msgid "Supplier Approval"
+msgstr "Approbation du fournisseur"
+
+#. module: dw_procurement_approval
+#. odoo-python
+#: code:addons/dw_procurement_approval/models/procurement_market.py:0
+#, python-format
+msgid ""
+"The number of approval suppliers must be greater than %(nbr_supplier)s."
+msgstr "Le nombre de fournisseurs agréés doit être supérieur à %(nbr_supplier)"
+
+#. module: dw_procurement_approval
+#. odoo-python
+#: code:addons/dw_procurement_approval/models/procurement_market.py:0
+#, python-format
+msgid ""
+"The number of the approval  supplier must be greater than %(nbr_supplier)s.!"
+msgstr "Le numéro du fournisseur d'agrément doit être supérieur à %(nbr_supplier)"
+
+#. module: dw_procurement_approval
+#. odoo-python
+#: code:addons/dw_procurement_approval/models/procurement_market.py:0
+#, python-format
+msgid "There is no more supplier to approve for this market %(market_name)s."
+msgstr "Il n'y a plus de fournisseur à approuver pour ce marché %(market_name)"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_market_dw__for_approval
+msgid "This market is used for approval"
+msgstr "Ce marché est utilisé pour l'approbation"
+
+#. module: dw_procurement_approval
+#. odoo-python
+#: code:addons/dw_procurement_approval/wizard/procurement_consult_approval.py:0
+#, python-format
+msgid ""
+"This supplier %(supplier_name)s is not approved for this product "
+"%(product_name)s .!"
+msgstr "Ce fournisseur %%(supplier_name) n'est pas agréé pour ce produit %(product_name) . !"
+
+#. module: dw_procurement_approval
+#. odoo-python
+#: code:addons/dw_procurement_approval/wizard/dw_homologate_market.py:0
+#, python-format
+msgid "You must choose an approval to go further"
+msgstr "Vous devez choisir une approbation pour aller plus loin"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_dw_consultation__approval_id
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_market_dw__approval_ids
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_market_dw_assign_wizard__approval_id
+#: model:ir.model.fields,field_description:dw_procurement_approval.field_purchase_order__approval_id
+#: model:ir.ui.menu,name:dw_procurement_approval.menu_supplier_approval
+#: model:ir.ui.menu,name:dw_procurement_approval.menu_supplier_approval_root
+#: model_terms:ir.ui.view,arch_db:dw_procurement_approval.view_market_form_inherit
+msgid "approval"
+msgstr "approbation"
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields.selection,name:dw_procurement_approval.selection__procurement_market_dw__state__consultation
+msgid "consultation"
+msgstr "consultation"
+
+#. module: dw_procurement_approval
+#: model_terms:ir.ui.view,arch_db:dw_procurement_approval.dw_procurement_market_supplier_wizard_tree_view
+msgid "create approval"
+msgstr "créer une approbation"
+
+#. module: dw_procurement_approval
+#: model_terms:ir.ui.view,arch_db:dw_procurement_approval.view_product_product_tree_inherit
+msgid "launch market"
+msgstr "Charger marché"
+
+#. module: dw_procurement_approval
+#: model:ir.model,name:dw_procurement_approval.model_procurement_approval_market_wizard
+msgid "procurement.approval.market.wizard"
+msgstr "marché.d'approvisionnement.d'approbation"
+
+#. module: dw_procurement_approval
+#: model:ir.model,name:dw_procurement_approval.model_procurement_market_dw_assign_wizard
+msgid "procurement.market.dw.assign.wizard"
+msgstr ""
+
+#. module: dw_procurement_approval
+#: model:ir.model,name:dw_procurement_approval.model_procurement_market_dw_line
+msgid "procurement.market.dw.line"
+msgstr ""
+
+#. module: dw_procurement_approval
+#: model:ir.model.fields.selection,name:dw_procurement_approval.selection__procurement_market_dw__state__prospecting
+msgid "prospecting"
+msgstr "prospection"
+
+#. module: dw_procurement_approval
+#: model:ir.model,name:dw_procurement_approval.model_procurement_supplier_approval
+msgid "supplier approval"
+msgstr "approbation du fournisseur"

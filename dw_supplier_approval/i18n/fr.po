@@ -1,0 +1,666 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* dw_supplier_approval
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-01 13:29+0000\n"
+"PO-Revision-Date: 2024-10-01 13:29+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/procurement_supplier_approval.py:0
+#, python-format
+msgid "%(market_name)s approvals's Documents"
+msgstr "%Documents d'approbation de (market_name)"
+
+#. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/product.py:0
+#: code:addons/dw_supplier_approval/models/product.py:0
+#, python-format
+msgid "%(product_name)s's approval"
+msgstr "Approbation de %(product_name)"
+
+#. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/res_partner.py:0
+#, python-format
+msgid "%(supplier_name)s's approval"
+msgstr "Approbation de %(supplier_name)"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
+msgid "<span class=\"o_stat_text\">Documents</span>"
+msgstr "<span class=\"o_stat_text\">Documents</span>"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_view_partner_form_inherit_test
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.product_normal_form_view_inherited
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_product_template_inherited
+msgid "<span class=\"o_stat_text\">approval</span>"
+msgstr "<span class=\"o_stat_text\">approbation</span>"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__message_needaction
+msgid "Action Needed"
+msgstr "Mesures à prendre"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__activity_ids
+msgid "Activities"
+msgstr "Activités"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "Activité Exception Décoration"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__activity_state
+msgid "Activity State"
+msgstr "État de l'activité"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "Type d'activité Icône"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__street
+msgid "Address"
+msgstr "Adresse"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__procurement_supplier_approval__state__analyse
+msgid "Analyse"
+msgstr "Analyse"
+
+#. module: dw_supplier_approval
+#: model:ir.ui.menu,name:dw_supplier_approval.menu_approval_parent_purchase
+#: model:ir.ui.menu,name:dw_supplier_approval.menu_approval_purchase
+msgid "Approval"
+msgstr "Approbation"
+
+#. module: dw_supplier_approval
+#: model:ir.actions.act_window,name:dw_supplier_approval.action_view_article_need_approval
+#: model:ir.ui.menu,name:dw_supplier_approval.menu_article_supplier_approval
+msgid "Article"
+msgstr "Article"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__message_attachment_count
+msgid "Attachment Count"
+msgstr "Nombre de pièces jointes"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__procurement_supplier_approval__state__audit
+msgid "Audit"
+msgstr "Audit"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__has_blacklisted_supplier
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__has_blacklisted_supplier2
+msgid "Blacklisted"
+msgstr "Liste noire"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_manufacturing_document_wizard
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_report_exper_techn_reports_wizard
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__procurement_supplier_approval__state__cancel
+msgid "Canceled"
+msgstr "Annulé"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__city
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
+msgid "City"
+msgstr "Ville"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__company_id
+msgid "Company"
+msgstr "Société"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_manufacturing_document_wizard
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_report_exper_techn_reports_wizard
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
+msgid "Confirm"
+msgstr "Confirmer"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
+msgid "Consulted"
+msgstr "Consulté"
+
+#. module: dw_supplier_approval
+#: model:ir.model,name:dw_supplier_approval.model_res_partner
+msgid "Contact"
+msgstr "Contact"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__country_id
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
+msgid "Country"
+msgstr "Pays"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__country_code
+msgid "Country Code"
+msgstr "Code pays"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__create_uid
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__create_uid
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__create_date
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__create_date
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__display_name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__display_name
+msgid "Display Name"
+msgstr "Nom d'affichage"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__manufacturing_document_attachment
+msgid "Document fabriquant"
+msgstr "Document fabriquant"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__email
+msgid "Email"
+msgstr "Courriel"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__end_date
+msgid "End Date"
+msgstr "Date de fin"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__rapport_expertise_attachment
+msgid "Expert report"
+msgstr "Rapport d'expert"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__expired_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__expired_approval2
+msgid "Expired approval"
+msgstr "Agrément expiré"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__expired_contract
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__expired_contract2
+msgid "Expired contract"
+msgstr "Contrat expiré"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__fichier_stabilite_attachment
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__fichier_stabilite_attachment
+msgid "Fichier de stabilité"
+msgstr "Fichier de stabilité"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__Pre_eval_quest_name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__manufacturing_file_name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__rapport_audit_file_name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__rapport_expertise_file_name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__rapport_technique_name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__stabilite_file_name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__fichier_stabilite_file_name
+msgid "File name"
+msgstr "Nom du fichier"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__message_follower_ids
+msgid "Followers"
+msgstr "Suiveurs"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "Suiveurs (partenaires)"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,help:dw_supplier_approval.field_procurement_supplier_approval__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr "Icône de police impressionnante, par exemple fa-tasks"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__has_message
+msgid "Has Message"
+msgstr "A un message"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.product_template_search_view_inherit
+msgid "Has blacklisted supplier"
+msgstr "A mis un fournisseur sur liste noire"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__id
+msgid "ID"
+msgstr "ID"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__activity_exception_icon
+msgid "Icon"
+msgstr "Icône"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,help:dw_supplier_approval.field_procurement_supplier_approval__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr "Icône indiquant une activité d'exception."
+
+#. module: dw_supplier_approval
+#: model:ir.actions.act_window,name:dw_supplier_approval.action_identification_besoin
+#: model:ir.ui.menu,name:dw_supplier_approval.menu_identification_besoin_root
+msgid "Identification of the need"
+msgstr "Identification du besoin"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,help:dw_supplier_approval.field_procurement_supplier_approval__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "Si cette case est cochée, de nouveaux messages requièrent votre attention."
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,help:dw_supplier_approval.field_procurement_supplier_approval__message_has_error
+#: model:ir.model.fields,help:dw_supplier_approval.field_procurement_supplier_approval__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr "Si cette case est cochée, certains messages sont accompagnés d'une erreur de livraison."
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__message_is_follower
+msgid "Is Follower"
+msgstr "Est un suiveur"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__write_uid
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__write_uid
+msgid "Last Updated by"
+msgstr "Dernière mise à jour par"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__write_date
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__write_date
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
+msgid "Load reports"
+msgstr "Charger Rapports"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__lot_validation
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__procurement_supplier_approval__state__lot_validation
+msgid "Lot Validation"
+msgstr "Validation des lots"
+
+#. module: dw_supplier_approval
+#: model:res.groups,name:dw_supplier_approval.group_manager_procurement_supplier_approval
+msgid "Manager"
+msgstr "Responsable"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__dw_manufacturer
+msgid "Manufacturer"
+msgstr "Fabricant"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__market_ids
+msgid "Market"
+msgstr "Marché"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__market_supplier_ids
+msgid "Market Supplier"
+msgstr "Approvisionnement du marché"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__message_has_error
+msgid "Message Delivery error"
+msgstr "Erreur d'acheminement du message"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__message_ids
+msgid "Messages"
+msgstr "Messages"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr "Mon délai d'activité"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__dw_product_pharma_family_name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__name
+msgid "Name"
+msgstr "Nom"
+
+#. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/procurement_supplier_approval.py:0
+#: code:addons/dw_supplier_approval/models/procurement_supplier_approval.py:0
+#: code:addons/dw_supplier_approval/models/procurement_supplier_approval.py:0
+#, python-format
+msgid "New"
+msgstr "Nouveau"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "Date limite de la prochaine activité"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__activity_summary
+msgid "Next Activity Summary"
+msgstr "Résumé de l'activité suivante"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__activity_type_id
+msgid "Next Activity Type"
+msgstr "Type d'activité suivante"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__message_needaction_counter
+msgid "Number of Actions"
+msgstr "Nombre d'actions"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__message_has_error_counter
+msgid "Number of errors"
+msgstr "Nombre d'erreurs"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,help:dw_supplier_approval.field_procurement_supplier_approval__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr "Nombre de messages nécessitant une action"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,help:dw_supplier_approval.field_procurement_supplier_approval__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "Nombre de messages avec erreur de livraison"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__number_supplier
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__number_supplier2
+msgid "Number of supplier"
+msgstr "Nombre de fournisseurs"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__phone
+msgid "Phone"
+msgstr "Téléphone"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__Pre_eval_quest_attachment
+msgid "Pre-evaluation questionnaire"
+msgstr "Questionnaire de pré-évaluation"
+
+#. module: dw_supplier_approval
+#: model:ir.model,name:dw_supplier_approval.model_product_template
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__product_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__product_ids
+msgid "Product"
+msgstr "Produit"
+
+#. module: dw_supplier_approval
+#: model:ir.model,name:dw_supplier_approval.model_product_category
+msgid "Product Category"
+msgstr "Catégorie de produits"
+
+#. module: dw_supplier_approval
+#: model:ir.model,name:dw_supplier_approval.model_product_product
+msgid "Product Variant"
+msgstr "Variante de produit"
+
+#. module: dw_supplier_approval
+#: model:ir.model,name:dw_supplier_approval.model_purchase_order
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__purchase_id
+msgid "Purchase Order"
+msgstr "Bon de commande fournisseur"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__procurement_supplier_approval__state__qualification
+msgid "Qualification"
+msgstr "Qualification"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__qty
+msgid "Quantity"
+msgstr "Quantity"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__motif_id
+msgid "Reason"
+msgstr "Motif"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
+msgid "Reject"
+msgstr "Rejet"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__procurement_supplier_approval__state__rejected
+msgid "Rejected"
+msgstr "Rejeté"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__activity_user_id
+msgid "Responsible User"
+msgstr "Utilisateur responsable"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "Erreur d'envoi de SMS"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__start_date
+msgid "Start Date"
+msgstr "Date de début"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__state_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__state
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__state_id
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
+msgid "State"
+msgstr "État"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,help:dw_supplier_approval.field_procurement_supplier_approval__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__street2
+msgid "Street"
+msgstr "Rue"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
+msgid "Street 2..."
+msgstr "Rue 2..."
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
+msgid "Street..."
+msgstr "Rue..."
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__supplier_id
+msgid "Supplier"
+msgstr "Fournisseur"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__rapport_audit_attachment
+msgid "Supplier audit report"
+msgstr "Rapport d'audit des fournisseurs"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__dw_supplier_nature
+msgid "Supplier nature"
+msgstr "Nature du fournisseur"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__rapport_technique_attachment
+msgid "Technical control report"
+msgstr "Rapport de contrôle technique"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,help:dw_supplier_approval.field_procurement_supplier_approval__country_code
+msgid ""
+"The ISO country code in two chars. \n"
+"You can use this field for quick search."
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,help:dw_supplier_approval.field_procurement_supplier_approval__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr "Type de l'activité d'exception enregistrée."
+
+#. module: dw_supplier_approval
+#: model:res.groups,name:dw_supplier_approval.group_user_procurement_supplier_approval
+msgid "User"
+msgstr "Utilisateur"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__website_message_ids
+msgid "Website Messages"
+msgstr "Messages du site web"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,help:dw_supplier_approval.field_procurement_supplier_approval__website_message_ids
+msgid "Website communication history"
+msgstr "Historique de la communication sur le site web"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
+msgid "ZIP"
+msgstr "ZIP"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__zip
+msgid "Zip"
+msgstr "Zip"
+
+#. module: dw_supplier_approval
+#: model:documents.folder,name:dw_supplier_approval.folder_supplier_approval
+#: model:ir.actions.act_window,name:dw_supplier_approval.action_supplier_approval_list
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__approval_id
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__approval_ids
+#: model:ir.module.category,name:dw_supplier_approval.module_procurement_supplier_approval_category
+#: model:ir.ui.menu,name:dw_supplier_approval.menu_supplier_approval
+#: model:ir.ui.menu,name:dw_supplier_approval.menu_supplier_approval_root
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
+msgid "approval"
+msgstr "approbation"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.product_template_search_view_inherit
+msgid "approval expires less than 18 month"
+msgstr "l'approbation expire moins de 18 mois"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__need_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_template__need_approval
+msgid "approval required"
+msgstr "approbation requise"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__procurement_supplier_approval__state__approval
+msgid "approved"
+msgstr "approuvé"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.product_template_search_view_inherit
+msgid "contract expires less than 18 month"
+msgstr "le contrat expire moins de 18 mois"
+
+#. module: dw_supplier_approval
+#: model:ir.model,name:dw_supplier_approval.model_dw_document_wizard
+msgid "dw.document.wizard"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_category__need_approval
+msgid "homologué"
+msgstr ""
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_identification_besoin_product_tree
+msgid "launch market"
+msgstr "marché de lancement"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
+msgid "load Pre-evaluation questionnaire"
+msgstr "charger Questionnaire de pré-évaluation"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
+msgid "load Stability Report"
+msgstr "charger rapport de stabilité"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
+msgid "load audit report"
+msgstr "Charger rapport d'audit"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__name
+msgid "name"
+msgstr "nom"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields.selection,name:dw_supplier_approval.selection__procurement_supplier_approval__state__prospecting
+msgid "prospecting"
+msgstr "prospection"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
+msgid "return to draft"
+msgstr "retour au projet"
+
+#. module: dw_supplier_approval
+#. odoo-python
+#: code:addons/dw_supplier_approval/models/procurement_supplier_approval.py:0
+#, python-format
+msgid "start date can't be greater that end date"
+msgstr "la date de début ne peut être supérieure à la date de fin"
+
+#. module: dw_supplier_approval
+#: model:ir.actions.act_window,name:dw_supplier_approval.action_procurement_supplier_approval
+#: model:ir.model,name:dw_supplier_approval.model_procurement_supplier_approval
+msgid "supplier approval"
+msgstr "approbation du fournisseur"
+
+#. module: dw_supplier_approval
+#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
+msgid "supplier_approval"
+msgstr "approbation du fournisseur"

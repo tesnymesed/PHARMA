@@ -210,6 +210,6 @@ class ProcurementSupplierApproval(models.Model):
             'context': {'default_res_model': 'procurement.supplier.approval', 'default_res_id': self.id,
                         'default_partner_id': self.supplier_id.id if self.supplier_id else False,
                         'default_product_id': self.product_id.id if self.product_id else False,
-                        'searchpanel_default_folder_id': self.env.ref("dw_supplier_approval.folder_approval").id,
+                        'searchpanel_default_folder_id': self.env.ref("dw_supplier_approval.folder_supplier_approval").id,
                         'limit_folders_to_lead': True},
         }

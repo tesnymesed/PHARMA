@@ -18,6 +18,7 @@
         'security/ir.model.access.csv',
         #report
         #view
+        'views/product_product_views.xml',
         'views/stock_location_transfer_limit_views.xml',
         'views/stock_location_inherit.xml',
         #menu

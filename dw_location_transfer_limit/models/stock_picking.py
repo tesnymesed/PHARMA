@@ -11,7 +11,7 @@ class StockPicking(models.Model):
             location_dest = move_id.location_dest_id
 
             # Validate transfer at the move_id level
-            if (product and not product.restrict_transfer) or \
+            if (product and product.restrict_transfer) or \
             (location and not location.perform_transfer) or \
             (location_dest and not location_dest.perform_transfer):
                 raise UserError(_(f"The transfer for {product.name} cannot be performed in the specified locations."))

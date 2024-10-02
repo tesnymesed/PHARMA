@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <menuitem id="menu_stock_location_transfer_limit" 
-                name="Transfer Limits" 
+        <menuitem id="menu_stock_location_transfer_limit_parent" 
+                name="Transfer Location" 
                 parent="stock.menu_stock_config_settings" 
-                action="action_stock_location_transfer_limit"
-                groups="stock.group_stock_manager"
-                
         />
-    </data>
+        <menuitem id="menu_stock_location_transfer_limit" 
+                name="Transfer Location Limits" 
+                parent="menu_stock_location_transfer_limit_parent" 
+                action="action_stock_location_transfer_limit"
+        />
+    </data> 
 </odoo>

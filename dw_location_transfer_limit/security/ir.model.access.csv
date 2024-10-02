@@ -1,5 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_stcok_location_transfer_limit,stcok.location.transfer.limit,model_stock_location_transfer_limit,stock.group_stock_manager,1,1,1,1
+access_stcok_location_transfer_limit,stcok.location.transfer.limit,model_stock_location_transfer_limit,group_transfer_limit_configuration,1,1,1,0
 
 
 

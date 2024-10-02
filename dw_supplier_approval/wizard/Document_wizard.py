@@ -49,7 +49,7 @@ class DocumentWizard(models.TransientModel):
                 'product_id': self.approval_id.product_id.id if self.approval_id and self.approval_id.product_id else False,
                 'partner_id': self.approval_id.supplier_id.id if self.approval_id and self.approval_id.supplier_id else False,
                 'datas': self.Pre_eval_quest_attachment,
-                'folder_id': self.env.ref('dw_supplier_approval.folder_approval').id,
+                'folder_id': self.env.ref('dw_supplier_approval.folder_supplier_approval').id,
             })
 
     def action_exper_techn_report(self):
@@ -62,7 +62,7 @@ class DocumentWizard(models.TransientModel):
                 'product_id': self.approval_id.product_id.id if self.approval_id and self.approval_id.product_id else False,
                 'partner_id': self.approval_id.supplier_id.id if self.approval_id and self.approval_id.supplier_id else False,
                 'datas': self.rapport_expertise_attachment,
-                'folder_id': self.env.ref('dw_supplier_approval.folder_approval').id,
+                'folder_id': self.env.ref('dw_supplier_approval.folder_supplier_approval').id,
             })
         if self.rapport_technique_attachment and self.rapport_technique_name:
             self.env['documents.document'].create({
@@ -74,7 +74,7 @@ class DocumentWizard(models.TransientModel):
                 'product_id': self.approval_id.product_id.id if self.approval_id and self.approval_id.product_id else False,
                 'partner_id': self.approval_id.supplier_id.id if self.approval_id and self.approval_id.supplier_id else False,
                 'datas': self.rapport_technique_attachment,
-                'folder_id': self.env.ref('dw_supplier_approval.folder_approval').id,
+                'folder_id': self.env.ref('dw_supplier_approval.folder_supplier_approval').id,
             })
 
     @api.depends('manufacturing_file_name')
@@ -94,7 +94,7 @@ class DocumentWizard(models.TransientModel):
                 'product_id': self.approval_id.product_id.id if self.approval_id and self.approval_id.product_id else False,
                 'partner_id': self.approval_id.supplier_id.id if self.approval_id and self.approval_id.supplier_id else False,
                 'datas': self.manufacturing_document_attachment,
-                'folder_id': self.env.ref('dw_supplier_approval.folder_approval').id,
+                'folder_id': self.env.ref('dw_supplier_approval.folder_supplier_approval').id,
             })
             self.approval_id.write({"state": "analyse"})
 
@@ -108,7 +108,7 @@ class DocumentWizard(models.TransientModel):
                 'product_id': self.approval_id.product_id.id if self.approval_id and self.approval_id.product_id else False,
                 'partner_id': self.approval_id.supplier_id.id if self.approval_id and self.approval_id.supplier_id else False,
                 'datas': self.rapport_audit_attachment,
-                'folder_id': self.env.ref('dw_supplier_approval.folder_approval').id,
+                'folder_id': self.env.ref('dw_supplier_approval.folder_supplier_approval').id,
             })
 
     def action_stability(self):
@@ -121,5 +121,5 @@ class DocumentWizard(models.TransientModel):
                 'product_id': self.approval_id.product_id.id if self.approval_id and self.approval_id.product_id else False,
                 'partner_id': self.approval_id.supplier_id.id if self.approval_id and self.approval_id.supplier_id else False,
                 'datas': self.stability_file_attachment,
-                'folder_id': self.env.ref('dw_supplier_approval.folder_approval').id,
+                'folder_id': self.env.ref('dw_supplier_approval.folder_supplier_approval').id,
             })

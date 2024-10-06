@@ -307,4 +307,25 @@
             </p>
         </field>
     </record>
+    <record id="product_pharma_speciality_view_tree" model="ir.ui.view">
+        <field name="name">product.pharmaceutical.speciality.tree</field>
+        <field name="model">product.pharmaceutical.speciality</field>
+        <field name="arch" type="xml">
+            <tree string="Speciality" editable="top">
+                <field name="name"/>
+                <field name="description"/>
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+            </tree>
+        </field>
+    </record>
+    <record id="action_product_pharmaceutical_speciality" model="ir.actions.act_window">
+        <field name="name">Products speciality</field>
+        <field name="res_model">product.pharmaceutical.speciality</field>
+        <field name="view_mode">tree</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No speciality found. Let's create one!
+            </p>
+        </field>
+    </record>
 </odoo>

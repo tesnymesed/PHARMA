@@ -29,15 +29,21 @@ class DwProductTemplate(models.Model):
     dw_price_pua = fields.Monetary(string="Unit Purchase Price", )
     dw_price_wholesaler = fields.Monetary(string="wholesale price", )
     dw_pharma_nature_product_id = fields.Many2one('product.pharmaceutical.nature', string="Nature")
+    dw_pharma_speciality_product_id = fields.Many2one('product.pharmaceutical.speciality', string="Speciality")
 
     @api.onchange('dw_pharma_family_id')
     def onchange_dw_pharma_family_id(self):
-        dw_pharma_family_id = self.dw_pharma_family_id
-        if dw_pharma_family_id:
-            self.purchase_ok = dw_pharma_family_id.purchase_ok
-            self.sale_ok = dw_pharma_family_id.sale_ok
-            self.tracking = dw_pharma_family_id.tracking
-            self.use_expiration_date = dw_pharma_family_id.use_expiration_date
-
-            if dw_pharma_family_id.product_categ_id:
-                self.categ_id = dw_pharma_family_id.product_categ_id.id
+        """Update product attributes based on pharmacy family settings.
+        """
+        if not self.dw_pharma_family_id:
+            return
+        family = self.dw_pharma_family_id
+        values = {
+            'purchase_ok': family.purchase_ok,
+            'sale_ok': family.sale_ok,
+            'tracking': family.tracking,
+            'use_expiration_date': family.use_expiration_date,
+        }
+        if family.product_categ_id:
+            values['categ_id'] = family.product_categ_id.id
+        self.update(values)

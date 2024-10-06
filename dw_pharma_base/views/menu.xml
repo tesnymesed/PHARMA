@@ -43,4 +43,8 @@
     <menuitem id="menu_product_pharmaceutical_pf_dest" parent="menu_product_config_product_pharma"
               action="dw_pharma_base.action_product_pharmaceutical_pf_dest"
               sequence="50"/>
+
+    <menuitem id="menu_product_pharmaceutical_speciality" parent="menu_product_config_product_pharma"
+              action="dw_pharma_base.action_product_pharmaceutical_speciality"
+              sequence="55"/>
 </odoo>

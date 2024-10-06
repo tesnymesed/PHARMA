@@ -10,6 +10,7 @@
     'images': ['static/description/icon.png'],
     'data': [
         'security/ir.model.access.csv',
+        'security/security.xml',
         'views/product.xml',
         'views/partner.xml',
         'views/product_pharmaceutical.xml',

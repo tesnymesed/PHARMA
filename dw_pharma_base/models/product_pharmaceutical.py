@@ -8,7 +8,7 @@ class DwProductPharmaceuticalDosage(models.Model):
     _name = 'product.pharmaceutical.dosage'
     _description = 'Dosage'
 
-    name = fields.Char(string="Name")
+    name = fields.Char(string="Name", required=True)
     active = fields.Boolean(default=True)
     company_id = fields.Many2one('res.company', string='Company', )
 
@@ -18,7 +18,7 @@ class DwProductPharmaceuticalFamily(models.Model):
     _description = 'Family'
     _inherit = ['mail.thread.main.attachment', 'mail.activity.mixin']
 
-    name = fields.Char(string="Name")
+    name = fields.Char(string="Name", required=True)
     active = fields.Boolean(default=True)
     product_categ_id = fields.Many2one(
         'product.category',
@@ -75,7 +75,7 @@ class DwProductPharmaceuticalSubfamily(models.Model):
     _name = 'product.pharmaceutical.subfamily'
     _description = 'Subfamily'
 
-    name = fields.Char(string="Name")
+    name = fields.Char(string="Name", required=True)
     code = fields.Char(string="Code")
     active = fields.Boolean(default=True)
     company_id = fields.Many2one('res.company', string='Company', )
@@ -87,7 +87,7 @@ class DwProductPharmaceuticalClass(models.Model):
     _description = 'Class'
     _inherit = ['mail.thread.main.attachment', 'mail.activity.mixin']
 
-    name = fields.Char(string="Name")
+    name = fields.Char(string="Name", required=True)
     code = fields.Char(string="Code")
     active = fields.Boolean(default=True)
     company_id = fields.Many2one('res.company', string='Company', )
@@ -98,7 +98,7 @@ class DwProductPharmaceuticalSubclass(models.Model):
     _name = 'product.pharmaceutical.subclass'
     _description = 'Subclass'
 
-    name = fields.Char(string="Name")
+    name = fields.Char(string="Name", required=True)
     active = fields.Boolean(default=True)
     company_id = fields.Many2one('res.company', string='Company', )
     class_id = fields.Many2one('product.pharmaceutical.class', string='Class')
@@ -109,7 +109,7 @@ class DwProductPharmaceuticalForm(models.Model):
     _description = 'Form'
     _inherit = ['mail.thread.main.attachment', 'mail.activity.mixin']
 
-    name = fields.Char(string="Name")
+    name = fields.Char(string="Name", required=True)
     code = fields.Char(string="Code")
     active = fields.Boolean(default=True)
     company_id = fields.Many2one('res.company', string='Company', )
@@ -120,7 +120,7 @@ class DwProductPharmaceuticalSubform(models.Model):
     _name = 'product.pharmaceutical.subform'
     _description = 'Subform'
 
-    name = fields.Char(string="Name")
+    name = fields.Char(string="Name", required=True)
     code = fields.Char(string="Code")
     active = fields.Boolean(default=True)
     company_id = fields.Many2one('res.company', string='Company', )
@@ -131,7 +131,7 @@ class DwProductPharmaceuticalNetwork(models.Model):
     _name = 'product.pharmaceutical.network'
     _description = 'Network'
 
-    name = fields.Char(string="Name")
+    name = fields.Char(string="Name", required=True)
     active = fields.Boolean(default=True)
     company_id = fields.Many2one('res.company', string='Company', )
     description = fields.Text(string="Description")
@@ -141,7 +141,7 @@ class DwProductPharmaceuticalPfDest(models.Model):
     _name = 'product.pharmaceutical.pf.dest'
     _description = 'PF destination'
 
-    name = fields.Char(string="Name")
+    name = fields.Char(string="Name", required=True)
     active = fields.Boolean(default=True)
     company_id = fields.Many2one('res.company', string='Company', )
     description = fields.Text(string="Description")
@@ -151,7 +151,7 @@ class DwProductPharmaceuticalNature(models.Model):
     _name = 'product.pharmaceutical.nature'
     _description = 'Nature article'
 
-    name = fields.Char(string="Name")
+    name = fields.Char(string="Name", required=True)
     active = fields.Boolean(default=True)
     company_id = fields.Many2one('res.company', string='Company', )
     description = fields.Text(string="Description")
@@ -161,7 +161,7 @@ class DwProductPharmaceuticalSpeciality(models.Model):
     _name = 'product.pharmaceutical.speciality'
     _description = 'Speciality article'
 
-    name = fields.Char(string="Name")
+    name = fields.Char(string="Name", required=True)
     active = fields.Boolean(default=True)
     company_id = fields.Many2one('res.company', string='Company', )
     description = fields.Text(string="Description")

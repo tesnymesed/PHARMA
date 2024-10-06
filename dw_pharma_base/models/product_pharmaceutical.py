@@ -26,21 +26,21 @@ class DwProductPharmaceuticalFamily(models.Model):
     )
     company_id = fields.Many2one('res.company', string='Company', )
     subfamily_ids = fields.One2many('product.pharmaceutical.subfamily', 'family_id', string='Subfamily')
-    product_count = fields.Integer(compute="_compute_product_count")
+    product_count = fields.Integer(compute="_compute_products_count")
     product_ids = fields.One2many('product.template', 'dw_pharma_family_id', string='Products')
-    purchase_ok = fields.Boolean('Can be Purchased', default=False, tracking=True)
-    sale_ok = fields.Boolean('Can be Sold', default=False, tracking=True)
+    purchase_ok = fields.Boolean(string='Can be Purchased', default=False, tracking=True)
+    sale_ok = fields.Boolean(string='Can be Sold', default=False, tracking=True)
     tracking = fields.Selection([
         ('serial', 'By Unique Serial Number'),
         ('lot', 'By Lots'),
         ('none', 'No Tracking')],
-        string="Tracking", required=True, default='none', tracking=True)
-    use_expiration_date = fields.Boolean(
-        string='Use Expiration Date', tracking=True)
+        string="Tracking", required=True, default='none', tracking=True,
+        help="Ensure the traceability of a storable product in your warehouse.")
+    use_expiration_date = fields.Boolean(string='Use Expiration Date', tracking=True, copy=False)
 
-    def _compute_product_count(self):
-        for record in self:
-            record.product_count = len(record.mapped('product_ids'))
+    def _compute_products_count(self):
+        for product in self:
+            product.product_count = len(product.mapped('product_ids'))
 
     def action_view_product(self):
         """
@@ -150,6 +150,16 @@ class DwProductPharmaceuticalPfDest(models.Model):
 class DwProductPharmaceuticalNature(models.Model):
     _name = 'product.pharmaceutical.nature'
     _description = 'Nature article'
+
+    name = fields.Char(string="Name")
+    active = fields.Boolean(default=True)
+    company_id = fields.Many2one('res.company', string='Company', )
+    description = fields.Text(string="Description")
+
+
+class DwProductPharmaceuticalSpeciality(models.Model):
+    _name = 'product.pharmaceutical.speciality'
+    _description = 'Speciality article'
 
     name = fields.Char(string="Name")
     active = fields.Boolean(default=True)

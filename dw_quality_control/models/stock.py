@@ -5,6 +5,28 @@ class DwStockProductionLot(models.Model):
     _inherit = 'stock.lot'
 
     dw_num_supplier = fields.Char(string="Ref Fournisseur")
+    lot_status = fields.Selection([
+        ('quarantaine', 'Quarantaine'),
+        ('conforme', 'Conforme'),
+        ('non_conforme', 'Non Conforme'),
+        ('bloque', 'Bloqué'),
+        ('refuse', 'Refusé')
+    ], string="Statut du Lot", default='quarantaine')
+    
+    def action_set_quarantaine(self):
+        self.lot_status = 'quarantaine'
+
+    def action_set_conforme(self):
+        self.lot_status = 'conforme'
+
+    def action_set_non_conforme(self):
+        self.lot_status = 'non_conforme'
+
+    def action_set_bloque(self):
+        self.lot_status = 'bloque'
+
+    def action_set_refuse(self):
+        self.lot_status = 'refuse'
 
 
 class DwStockLocation(models.Model):

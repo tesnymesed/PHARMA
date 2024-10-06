@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="0">
+    
+        <record id="stock_lot_form_view_inherited" model="ir.ui.view">
+            <field name="name">stcok.lot.form.inherited</field>
+            <field name="model">stock.lot</field>
+            <field name="inherit_id" ref="dw_quality_control.dw_view_production_lot_form_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    
+                    <button name="action_set_conform" type="object" 
+                       invisible=""/>
+                    <button name="action_set_not_conform" type="object" 
+                        />
+                    <button name="action_set_blocked" type="object"
+                       />
+                    <button name="action_set_cancelled" type="object"
+                        />
+                    <button name="action_set_in_progress" type="object"
+                       invisible ="lot_quarantine_status not in ['draft','reanalyzed']"/>
+                    <button name="action_set_analyzed" type="object" 
+                       invisible="lot_quarantine_status not in ['reanalyzed','in_progress]"/>
+                    <button name="action_set_reanalyzed" type="object"
+                       invisible="lot_quarantine_status!='analyzed'"/>
+                    <field name="lot_status" widget="statusbar" invisible="product_id.requires_lot_compliance_check == False"/>
+                </xpath>
+                
+            </field>
+        </record>
+    </data>
+</odoo>

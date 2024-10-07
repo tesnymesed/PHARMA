@@ -24,6 +24,7 @@
                             <field name="dw_pharma_date_de"/>
                             <field name="dw_pharma_pf_dest_id" options="{'no_create':True}"/>
                             <field name="dw_pharma_dosage_id" options="{'no_create':True}"/>
+                            <field name="dw_pharma_speciality_product_id" options="{'no_create':True}"/>
                         </group>
                         <group string="Family">
                             <field name="dw_pharma_family_id" options="{'no_create':True}"/>

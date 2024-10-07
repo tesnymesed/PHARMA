@@ -162,8 +162,7 @@
 
                                 <field name="start_date" required="1" readonly="state != 'draft'"/>
                                 <field name="end_date" required="1" readonly="0"/>
-                                <field name="market_type_id" options='{"no_create":True}' invisible="state == 'draft'"
-                                       readonly="state != 'prospecting'" required="state == 'prospecting'"/>
+                                <field name="market_type_id" options='{"no_create":True}' invisible="state == 'draft'"/>
 
 
                             </group>
@@ -221,8 +220,7 @@
                                 <page name="Criteria" string="Criteria"
                                       invisible="state != 'supplier_approval_consultation' and state != 'consultation' and state != 'prospecting'">
                                     <group>
-                                        <field name="market_criteria_ids" widget="many2many_tags"
-                                               readonly="state != 'prospecting'" required="state == 'prospecting'"/>
+                                        <field name="market_criteria_ids" widget="many2many_tags"/>
                                     </group>
                                 </page>
                             </notebook>

@@ -6,7 +6,7 @@ class StockLot(models.Model):
 
     lot_status = fields.Selection([
         ('quarantine', 'Quarantine'),
-        ('coform', 'Conform'),
+        ('conform', 'Conform'),
         ('not_conform', 'Not Conform'),
         ('blocked', 'Blocked'),
         ('cancelled', 'Cancelled')
@@ -19,10 +19,12 @@ class StockLot(models.Model):
         ('reanalyzed','reanalyzed')
         ],string="Lot status", default='draft')
     
-    
+    compiliance_check = fields.Boolean(related='product_id.requires_lot_compliance_check',readonly=True)
+    def action_set_quarantine(self):
+        self.lot_status = 'quarantine'
 
     def action_set_conform(self):
-        self.lot_status = 'coform'
+        self.lot_status = 'conform'
 
     def action_set_not_conform(self):
         self.lot_status = 'not_conform'
@@ -34,12 +36,12 @@ class StockLot(models.Model):
 
         self.lot_status = 'cancelled'
 
-
+    # quarantine status
     def action_set_in_progress(self):
-        self.lot_status = 'in_progress'
+        self.lot_quarantine_status = 'in_progress'
 
     def action_set_analyzed(self):
-        self.lot_status = 'analyzed'
+        self.lot_quarantine_status = 'analyzed'
 
     def action_set_reanalyzed(self):
-        self.lot_status = 'reanalyzed'
+        self.lot_quarantine_status = 'reanalyzed'

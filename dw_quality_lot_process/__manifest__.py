@@ -17,7 +17,7 @@
         'security/security.xml',
         #report
         #view
-        'views/stock_lo_views.xml',
+        'views/stock_lot_views.xml',
         'views/product_product_views.xml',
         #menu
     ],

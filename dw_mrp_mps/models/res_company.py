@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import datetime
+from datetime import datetime, date
 
+from dateutil.relativedelta import relativedelta
 from odoo import fields, models, _
 from odoo.tools.date_utils import start_of, end_of, add, subtract
 from odoo.tools.misc import format_date
@@ -42,8 +43,8 @@ class DWCompany(models.Model):
             first_day = start_of(subtract(fields.Date.today(), years=years),
                                  self.manufacturing_period)
         if start_date_range != '':
-            first_day = datetime.datetime.strptime(start_date_range, "%Y-%m-%d").date()
-            end_date_range = datetime.datetime.strptime(end_date_range, "%Y-%m-%d").date()
+            first_day = datetime.strptime(start_date_range, "%Y-%m-%d").date()
+            end_date_range = datetime.strptime(end_date_range, "%Y-%m-%d").date()
             manufacturing_period_count = self.count_manufacturing_period_to_display(first_day, end_date_range,
                                                                                     self.manufacturing_period)
         for columns in range(manufacturing_period_count):
@@ -53,20 +54,40 @@ class DWCompany(models.Model):
         return date_range
 
     def count_manufacturing_period_to_display(self, start_date_range, end_date_range, manufacturing_period):
+        # Validate input types
+        if not isinstance(start_date_range, date) or not isinstance(end_date_range, date):
+            raise ValueError("Both start_date_range and end_date_range must be date objects.")
+
+        # Ensure start_date_range is the earlier date
         if start_date_range > end_date_range:
             start_date_range, end_date_range = end_date_range, start_date_range
+
         delta = end_date_range - start_date_range
         days = delta.days
+
+        # Calculate periods based on the manufacturing_period type
         if manufacturing_period == 'day':
             col_count = days
         elif manufacturing_period == 'week':
-            col_count = days // 7
-        else:
-            months = (end_date_range.year - start_date_range.year) * 12 + end_date_range.month - start_date_range.month
+            col_count = days / 7
+        elif manufacturing_period == 'month':
+            # Calculate the number of complete months
+            full_months = (end_date_range.year - start_date_range.year) * 12 + end_date_range.month - start_date_range.month
+
+            # Adjust for incomplete month
             if end_date_range.day < start_date_range.day:
-                months -= 1
-            col_count = months
-        return col_count if col_count > 0 else 1
+                full_months -= 1
+
+            # Calculate remaining days
+            remaining_days = (end_date_range - (start_date_range + relativedelta(months=full_months))).days
+            if remaining_days:
+                full_months += 1
+
+            col_count = full_months
+        else:
+            raise ValueError("Invalid manufacturing_period. Must be 'day', 'week', or 'month'.")
+
+        return max(col_count, 1)  # Ensure at least 1
 
     def _date_range_to_str(self, start_date_range='', end_date_range=''):
         date_range = self._get_date_range(start_date_range=start_date_range, end_date_range=end_date_range)

@@ -81,8 +81,8 @@ class DWCompany(models.Model):
         else:
             last_day = end_of(first_day, 'year')
 
-        if not manufacturing_period_count:
-            manufacturing_period_count = self.count_manufacturing_period_to_display(first_day, last_day, 'month')
+        # if not manufacturing_period_count:
+        manufacturing_period_count = self.count_manufacturing_period_to_display(first_day, last_day, 'month')
 
         for columns in range(manufacturing_period_count):
             last_day = end_of(first_day, 'month')

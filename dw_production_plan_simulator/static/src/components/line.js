@@ -512,15 +512,7 @@ export default class ProductionPlanSimulatorLine extends Component {
     const productionSimulationId = Number(
       ev.target.closest(".o_mps_content").dataset.id
     );
-    console.log(
-      "🚀 ~ ProductionPlanSimulatorLine ~ _onClickProdPlanBatchesNotes ~ productionSimulationId:",
-      productionSimulationId
-    );
 
-    console.log(
-      "🚀 ~ ProductionPlanSimulatorLine ~ _onClickProdPlanBatchesNotes ~ ev.target.dataset:",
-      ev.target.dataset
-    );
     const dateStart = ev.target.dataset.date_start;
     const dateStop = ev.target.dataset.date_stop;
     const dateIndex = parseInt(ev.target.dataset.date_index);
@@ -575,34 +567,12 @@ export default class ProductionPlanSimulatorLine extends Component {
       prodPlanBatchesEl.classList.remove("text-success");
     }
 
-    console.log(
-      "🚀 ~ ProductionPlanSimulatorLine ~ _onClickProdPlanBatchesNotes ~ formVals:",
-      this.formVals
-    );
-
     $("#prodPlanBatchNotesModal").modal("show");
   }
 
   async saveProdPlanBatchesNotes(ev) {
-    console.log(
-      "��� ~ ProductionPlanSimulatorLine ~ saveProdPlanBatchesNotes ~ called this.formVals",
-      this.formVals
-    );
-    console.log(
-      "🚀 ~ ProductionPlanSimulatorLine ~ saveProdPlanBatchesNotes ~ ev:",
-      ev
-    );
-
     const notesEl = document.getElementById("notes");
-    console.log(
-      "🚀 ~ ProductionPlanSimulatorLine ~ saveProdPlanBatchesNotes ~ notesEl:",
-      notesEl
-    );
     const notes = notesEl.value;
-    console.log(
-      "🚀 ~ ProductionPlanSimulatorLine ~ saveProdPlanBatchesNotes ~ notes:",
-      notes
-    );
 
     await this.model
       ._saveProductionPlanBatchesNotes(
@@ -614,10 +584,6 @@ export default class ProductionPlanSimulatorLine extends Component {
       )
       .then((result) => {
         this.formVals.notes = notes;
-        console.log(
-          "🚀 ~ ProductionPlanSimulatorLine ~ saveProdPlanBatchesNotes ~ result:",
-          result
-        );
 
         var notesNotif = this.notificationService.add(
           _t(this.formVals.title + " successful"),
@@ -629,10 +595,6 @@ export default class ProductionPlanSimulatorLine extends Component {
         setTimeout(notesNotif, 3000);
       })
       .catch((err) => {
-        console.error(
-          "🚀 ~ ProductionPlanSimulatorLine ~ saveProdPlanBatchesNotes ~ err:",
-          err
-        );
         var notesNotif = this.notificationService.add(
           _t(this.formVals.title + " failed"),
           {
@@ -701,11 +663,6 @@ export default class ProductionPlanSimulatorLine extends Component {
       }
       divEl.classList.add("flash-pop");
     }
-
-    console.log(
-      "🚀 ~ ProductionPlanSimulatorLine ~ _onMouseOverCapacityAlert ~ ev:",
-      ev
-    );
   }
 
   _onMouseOutCapacityAlert(ev) {
@@ -718,10 +675,6 @@ export default class ProductionPlanSimulatorLine extends Component {
 
     const el = this.suggProdPlanRow.el.querySelector(
       'span[data-date_index="' + dateIndex + '"]'
-    );
-    console.log(
-      "🚀 ~ ProductionPlanSimulatorLine ~ _onMouseOutCapacityAlert ~ el:",
-      el
     );
 
     if (el) {

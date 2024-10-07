@@ -453,14 +453,14 @@ export class ProductionPlanSimulatorModel extends EventBus {
    * @private
    * @return {Promise}
    */
-  _createProducts(state) {
+  _createProducts() {
     this.mutex.exec(() => {
       return this.orm
         .call("dw.production.plan.simulation", "create_product_simulations", [
-          state.currentCompanyId,
+          companyId,
         ])
         .then((res) => {
-          this.load([["company_id", "=", state.currentCompanyId]]);
+          this.load([["company_id", "=", companyId]]);
           return this.data;
           //                if (productionSimulationIds.length === 1) {
           //                    this.reload(productionSimulationIds[0]);

@@ -17,6 +17,7 @@ class DwMrpProductSupplyPlan(models.Model):
 
     state = fields.Selection([('draft', 'Draft'),
                               ('approved', 'Approved'),
+                              ('rejected', 'Rejected'),
                               ('done', 'Done'),
                               ('cancelled', 'Cancelled')],
                              string="Status", default='draft', readonly=True)
@@ -74,6 +75,14 @@ class DwMrpProductSupplyPlan(models.Model):
                 'state': 'approved',
                 'quantity_approved': record.quantity_planned,
                 'quantity_to_order': record.quantity_planned,
+            })
+
+    def action_reject(self):
+        for record in self:
+            record.write({
+                'state': 'rejected',
+                'quantity_approved': 0.0,
+                'quantity_to_order':  0.0
             })
 
     def action_done(self):

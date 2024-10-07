@@ -22,6 +22,13 @@
                     />
                     <button
                             type="object"
+                            name="action_reject"
+                            string="Reject"
+                            class="oe_highlight"
+                            invisible="state in ('rejected', 'done', 'cancelled')"
+                    />
+                    <button
+                            type="object"
                             name="action_done"
                             string="Mark as Done"
                             class="oe_highlight"
@@ -155,6 +162,13 @@
                         type="object"
                         icon="fa-check"
                 />
+                <button
+                        name="action_reject"
+                        string="Reject"
+                        invisible="state in ['rejected', 'done']"
+                        type="object"
+                        icon="fa-times"
+                />
                 <!-- <button name="action_cancel" string="Refuse" invisible="status in ['accepted',
                         'refused']"-->
                 <!-- type="object" icon="fa-times"/>-->
@@ -271,7 +285,14 @@
                             type="object"
                             name="action_approve"
                             class="oe_highlight"
-                            invisible="state != 'draft'"
+                            invisible="state in ('approved', 'done', 'cancelled')"
+                    />
+                    <button
+                            string="Reject"
+                            type="object"
+                            name="action_reject"
+                            class="oe_highlight"
+                            invisible="state in ('rejected', 'done', 'cancelled')"
                     />
                     <button
                             string="Mark as Done"
@@ -290,7 +311,7 @@
                     <field
                             name="state"
                             widget="statusbar"
-                            statusbar_visible="draft,approved,done"
+                            statusbar_visible="draft,done"
                     />
                 </header>
                 <sheet>

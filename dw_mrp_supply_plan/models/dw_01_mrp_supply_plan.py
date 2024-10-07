@@ -26,6 +26,7 @@ class DwMrpSupplyPlan(models.Model):
         ('draft', 'Draft'),
         # ('confirmed', 'Confirmed'),
         ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
         ('done', 'Done'),
         ('cancelled', 'Cancelled')
     ], string='Status', default='draft', readonly=True)
@@ -73,6 +74,10 @@ class DwMrpSupplyPlan(models.Model):
     def action_approve(self):
         self.state = 'approved'
         self.product_supply_plan_ids.monthly_supply_plan_ids.action_approve()
+
+    def action_reject(self):
+        self.state = 'rejected'
+        self.product_supply_plan_ids.monthly_supply_plan_ids.action_reject()
 
     def action_done(self):
         self.state = 'done'

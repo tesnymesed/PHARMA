@@ -127,6 +127,7 @@ export default class ProductionPlanSimulatorLine extends Component {
     const productionSimulationId = Number(
       ev.target.closest(".o_mps_content").dataset.id
     );
+
     this.model._actionOpenDetails(
       productionSimulationId,
       action,
@@ -572,6 +573,7 @@ export default class ProductionPlanSimulatorLine extends Component {
 
   async saveProdPlanBatchesNotes(ev) {
     const notesEl = document.getElementById("notes");
+
     const notes = notesEl.value;
 
     await this.model

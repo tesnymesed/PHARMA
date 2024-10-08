@@ -315,6 +315,7 @@
             />
             <span
               t-if="simulation.batch_count != simulation.eff_planned_production_batches"
+              t-att-data-id="productionSimulation.id"
               t-att-data-date_index="simulation_index"
               t-att-data-date_start="simulation.date_start"
               t-att-data-date_stop="simulation.date_stop"

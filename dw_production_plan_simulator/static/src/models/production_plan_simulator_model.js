@@ -453,7 +453,7 @@ export class ProductionPlanSimulatorModel extends EventBus {
    * @private
    * @return {Promise}
    */
-  _createProducts() {
+  _createProducts(companyId) {
     this.mutex.exec(() => {
       return this.orm
         .call("dw.production.plan.simulation", "create_product_simulations", [

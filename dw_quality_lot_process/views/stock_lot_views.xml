@@ -10,7 +10,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//form//sheet" position="before">
                     <field name="compiliance_check"  invisible="1"/>
-                    <header>
+                    <header groups="dw_quality_lot_process.check_compiliance_lot_configuration_group">
                         <button name="action_set_quarantine" type="object" class="btn-primary"
                         invisible="lot_status != 'cancelled' or product_id==False or compiliance_check == False" string="Set quarantine"/>
 
@@ -28,9 +28,9 @@
                         
                         
                         <field name="lot_status" widget="statusbar" invisible=" product_id==False or compiliance_check == False"/>
-       
+                    
                     </header>
-                    <header invisible="lot_status!='quarantine' or product_id==False or compiliance_check == False">
+                    <header invisible="lot_status!='quarantine' or product_id==False or compiliance_check == False" groups="dw_quality_lot_process.check_compiliance_lot_configuration_group">
                         <button name="action_set_in_progress" type="object" string="In progress"
                         invisible ="lot_quarantine_status not in ['draft','reanalyzed']"/>
                         <button name="action_set_analyzed" type="object" string="Analyze"
@@ -39,6 +39,18 @@
                         invisible="lot_quarantine_status!='analyzed'"/>
                         <field name="lot_quarantine_status" widget="statusbar"/>
                     </header>
+                </xpath>
+                <xpath expr="//form/sheet/notebook" position="inside">
+                    <page string="Status History" groups="dw_quality_lot_process.check_compiliance_lot_configuration_group">
+                        <field name="lot_status_history_ids">
+                            <tree>
+                                <field name="change_date"/>
+                                <field name="previous_status"/>
+                                <field name="new_status"/>
+                                <field name="user_id"/>
+                            </tree>
+                        </field>
+                    </page>
                 </xpath>
                     
             </field>

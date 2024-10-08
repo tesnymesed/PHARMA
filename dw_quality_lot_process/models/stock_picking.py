@@ -26,8 +26,8 @@ class StockPicking(models.Model):
                     if move_id.location_dest_id and move_id.location_dest_id.perform_transfer== False or\
                         move_id.location_id and move_id.location_id.perform_transfer== False : #if we can not perform a transfer in location or location destination 
                         for lot in move_id.lot_ids : #loop over lots of move_id 
-                            if lot.lot_status=='conform':  #if the lot status is conform
-                                if move_id.product_id.requires_lot_compliance_check==False: #the product should be lot compliance checked true otherwise raise error
+                            if lot.lot_status!='conform':  #if the lot status is conform
+                                if move_id.product_id.requires_lot_compliance_check==True: #the product should be lot compliance checked true otherwise raise error
                                     raise UserError(_(f"The transfer for the product {move_id.product_id.name} cannot be performed in the lot : {lot.name}"))
                     # in case move_line_ids exists over loop it
                     if move_id.move_line_ids :
@@ -35,8 +35,8 @@ class StockPicking(models.Model):
 
                             if line.location_dest_id.perform_transfer ==False or \
                                 line.location_id.perform_transfer ==False : #if source or destination locations of line can not perform a transfer 
-                                if line.lot_id.lot_status=='conform': #and the lot status of line is conform
-                                    if line.product_id.requires_lot_compliance_check==False: #and line product lot compliance is false raise error
-                                        raise UserError(_(f"The transfer for the product {move_id.product_id.name} cannot be performed in the lot : {', '.join(line.lot_id.name)}"))
+                                if line.lot_id.lot_status!='conform': #and the lot status of line is conform
+                                    if line.product_id.requires_lot_compliance_check==True: #and line product lot compliance is false raise error
+                                        raise UserError(_(f"The transfer for the product {move_id.product_id.name} cannot be performed in the lot : {line.lot_id.name}"))
             
-        return super().button_validate()  
+        return super().button_validate()

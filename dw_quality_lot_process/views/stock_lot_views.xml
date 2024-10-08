@@ -15,10 +15,10 @@
                         invisible="lot_status != 'cancelled' or product_id==False or compiliance_check == False" string="Set quarantine"/>
 
                         <button name="action_set_conform" type="object" class="btn-primary"
-                        invisible="lot_status != 'quarantine' or product_id==False or compiliance_check == False" string="Set conform"/>
+                        invisible="lot_status != 'quarantine' or lot_quarantine_status!='analyzed'or product_id==False or compiliance_check == False" string="Set conform"/>
 
                         <button name="action_set_not_conform" type="object" string="Set Not Conform" class="btn-primary"
-                            invisible="lot_status !='quarantine' or product_id==False or compiliance_check == False"/>
+                            invisible="lot_status !='quarantine' or lot_quarantine_status!='analyzed'or product_id==False or compiliance_check == False"/>
 
                         <button name="action_set_blocked" type="object" string="Block" class="btn-primary"
                         invisible="lot_status not in ['conform','not_conform'] or product_id==False or compiliance_check == False"/>

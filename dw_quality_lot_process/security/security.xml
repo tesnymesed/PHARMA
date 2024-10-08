@@ -4,9 +4,9 @@
         <record id="check_compiliance_lot_configuration_group" model="res.groups">
             <field name="name">Check Compiliance Lot configuration</field>
         </record>
-        <record id="lot_co" model="res.groups">
-            <field name="name">Transfer Limit Configuration</field>
-        </record>
+        <!-- <record id="lot_compiliance_group" model="res.groups">
+            <field name="name">Lot compiliance group </field>
+        </record> -->
        
     </data>
 </odoo>

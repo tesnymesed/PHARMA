@@ -315,6 +315,7 @@
             />
             <span
               t-if="simulation.batch_count != simulation.eff_planned_production_batches"
+              t-att-data-id="productionSimulation.id"
               t-att-data-date_index="simulation_index"
               t-att-data-date_start="simulation.date_start"
               t-att-data-date_stop="simulation.date_stop"
@@ -507,16 +508,14 @@
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="The confirmed demand, based on the confirmed sales orders."
-            >Actual</span
-          >
+            >Actual</span>
           <span t-attf-class="{{ '' }}"> / </span>
           <span
             t-attf-class="{{ '' }}"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="The forecasted demand. This value has to be entered manually."
-            >Forecasted Demand</span
-          >
+            >Forecasted Demand</span>
         </th>
         <th></th>
         <t
@@ -561,8 +560,7 @@
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="The quantity being replenished, based on the Requests for Quotation and the Manufacturing Orders."
-            >Actual</span
-          >
+            >Actual</span>
           <span t-attf-class="{{ '' }}"> / </span>
           <span
             t-attf-class="{{ '' }}"
@@ -642,16 +640,14 @@
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="Quantity predicted to be available for sale at the end of the period (= to replenish - actual demand)."
-            >ATP</span
-          >
+            >ATP</span>
           <span t-attf-class="{{ '' }}"> / </span>
           <span
             t-attf-class="{{ '' }}"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="The forecasted quantity in stock at the end of the period."
-            >Forecasted Stock</span
-          >
+            >Forecasted Stock</span>
         </th>
         <th class="text-end"></th>
         <t
@@ -706,8 +702,7 @@
                   <div class="batch-quantity-container col">
                     <div class="batch-quantity-label">
                       <label for="production-plan-batches"
-                        >Production Plan Batches</label
-                      >
+                        >Production Plan Batches</label>
                     </div>
                     <div class="batch-quantity">
                       <span
@@ -716,15 +711,15 @@
                         t-esc="formVals.eff_planned_production_batches"
                       />
                     </div>
-                    <!-- t-attf-class="{{formatFloat(formVals.eff_planned_production_batches) &gt; formatFloat(formVals.batch_count) and 'text-success' or 
+                    <!-- t-attf-class="{{formatFloat(formVals.eff_planned_production_batches) &gt;
+                    formatFloat(formVals.batch_count) and 'text-success' or 
                                      'text-danger' or ''
                                     }}" -->
                   </div>
                   <div class="batch-quantity-container col">
                     <div class="batch-quantity-label">
                       <label for="suggested-production-plan-batches"
-                        >Suggested Production Plan Batches</label
-                      >
+                        >Suggested Production Plan Batches</label>
                     </div>
                     <div class="batch-quantity">
                       <span
@@ -733,7 +728,8 @@
                         t-esc="formVals.batch_count"
                       />
                     </div>
-                    <!-- t-attf-class="{{formatFloat(formVals.batch_count) &lt; formatFloat(formVals.eff_planned_production_batches) and 'text-success' or 
+                    <!-- t-attf-class="{{formatFloat(formVals.batch_count) &lt;
+                    formatFloat(formVals.eff_planned_production_batches) and 'text-success' or 
                                      'text-danger' or ''
                                     }}" -->
                     <!-- <input

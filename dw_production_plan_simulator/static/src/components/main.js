@@ -196,12 +196,12 @@ class ProductionPlanSimulatorComponent extends Component {
     });
   }
 
-  initCompaniesSelect() {
+  initCompaniesSelect(id) {
     var companiesData = this.getCompanies();
     companiesData
       .then((result) => {
         this.state.companies = companiesData;
-        var companiesSelect = document.getElementById("select-company");
+        var companiesSelect = document.getElementById(id);
         companiesSelect.innerHTML = "";
         result.forEach(
           function (opt, i) {
@@ -258,7 +258,7 @@ class ProductionPlanSimulatorComponent extends Component {
     );
   }
 
-  initPlanningCycleSelect() {
+  initPlanningCycleSelect(id) {
     var planningCycleOptions = [
       {
         id: "monthly",
@@ -270,7 +270,7 @@ class ProductionPlanSimulatorComponent extends Component {
       },
     ];
 
-    var planCycleSelect = document.getElementById("select-planning-cycle");
+    var planCycleSelect = document.getElementById(id);
     planCycleSelect.innerHTML = "";
     planningCycleOptions.forEach(
       function (opt, i) {
@@ -281,12 +281,18 @@ class ProductionPlanSimulatorComponent extends Component {
     );
   }
 
-  initCalendarInput(id, key, _type) {
+  initCalendarInput(id, key, _type, date = new Date()) {
+    var dateValue;
+    if (typeof date === "string" || date instanceof Date) {
+      dateValue = new Date(date); // This will work for both string and Date object
+    } else {
+      dateValue = new Date(); // Default to the current date
+    }
     var self = this;
     jSuites.calendar(document.getElementById(id), {
       type: "year-month-picker",
       format: "MMM-YYYY",
-      value: new Date(),
+      value: dateValue,
       // validRange: ["2024-02-01", "2025-12-31"],
       onchange: function (instance, value) {
         try {
@@ -331,13 +337,23 @@ class ProductionPlanSimulatorComponent extends Component {
   }
 
   initFilterSettings() {
-    this.initCompaniesSelect();
-    this.initPlanningCycleSelect();
+    this.initCompaniesSelect("select-company");
+    this.initPlanningCycleSelect("select-planning-cycle");
 
     this.initCalendarInput("planning-period", "planningDate", "start");
 
-    this.initCalendarInput("plan-date-range-start", "startDate", "start");
-    this.initCalendarInput("plan-date-range-end", "endDate", "end");
+    this.initCalendarInput(
+      "plan-date-range-start",
+      "startDate",
+      "start",
+      new Date(new Date().getFullYear(), 0, 1)
+    );
+    this.initCalendarInput(
+      "plan-date-range-end",
+      "endDate",
+      "end",
+      new Date(new Date().getFullYear(), 11, 31)
+    );
 
     this.initCalendarInput("sales-avg-range-start", "salesStartDate", "start");
     this.initCalendarInput("sales-avg-range-end", "salesEndDate", "end");
@@ -689,7 +705,7 @@ class ProductionPlanSimulatorComponent extends Component {
   //
   async _onClickCreate(ev) {
     this.captureInputSettings();
-    this.model._createProducts(this.state);
+    this.model._createProducts(this.state.currentCompanyId);
 
     await this.model.load(
       this.state.domain,

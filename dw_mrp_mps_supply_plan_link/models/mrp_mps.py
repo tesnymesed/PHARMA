@@ -5,6 +5,8 @@ from datetime import datetime, date
 
 from odoo import api, models
 
+__SEPARATOR__ = '- V'
+
 
 class DWMrpProductionSchedule(models.Model):
     _inherit = 'mrp.production.schedule'
@@ -36,7 +38,7 @@ class DWMrpProductionSchedule(models.Model):
 
             # Create records in Model 1
             # Base name format
-            base_name = f'PAPPRO/M-{_dseq}-{company_name}-V'
+            base_name = f'PAPPRO/M-{_dseq}-{company_name}{__SEPARATOR__}'
             # Check existing names to determine the next version number
             existing_supply_plans = self.env['dw.mrp.supply.plan'].search([
                 ('name', 'ilike', f'{base_name}%'),
@@ -47,8 +49,8 @@ class DWMrpProductionSchedule(models.Model):
 
             # Determine the next version number
             if existing_supply_plans:
-                versions = [int(plan.name.split('-V')[-1]) for plan in existing_supply_plans if
-                            plan.name.split('-V')[-1].isdigit()]
+                versions = [int(plan.name.split(__SEPARATOR__)[-1]) for plan in existing_supply_plans if
+                            plan.name.split(__SEPARATOR__)[-1].isdigit()]
                 next_version = max(versions) + 1
             else:
                 next_version = 1

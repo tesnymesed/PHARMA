@@ -128,17 +128,17 @@
                       <div class="row mb-3"></div>
 
                       <div class="row justify-content-end">
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                           <button
                             type="submit"
                             id="submit"
                             class="btn btn-primary"
                           >
-                            Submit
+                            Simulate
                           </button>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                           <t t-if="workCenterCapacities.length > 0">
                             <button
                               type="show-alerts"
@@ -153,7 +153,7 @@
                           </t>
                         </div>
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                           <t t-if="simulationLines.length">
                             <button
                               type="show-alerts"

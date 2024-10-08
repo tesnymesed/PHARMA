@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+  <t
+          t-name="dw_production_plan_simulator.ProductionNotesEditorTemplate"
+  >
+    <!-- Prod Plan Batch Notes Modal -->
+
+    <div
+    class="modal fade"
+    t-attf-id="prodPlanBatchNotesModal-{{productionSimulation.id}}"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="formVals.title"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="prodPlanBatchNotesModalHeadTitle">
+            <t t-esc="formVals.headerTitle"></t>
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="notes-wizard modal-body">
+          <div class="period">
+            <h2 id="modalPeriodText" t-att-value="formVals.modalPeriodText">
+              <t t-esc="formVals.modalPeriodText"></t>
+            </h2>
+          </div>
+          <form>
+            <div class="batch-quantities form-group row">
+              <div class="batch-quantity-container col">
+                <div class="batch-quantity-label">
+                  <label for="production-plan-batches"
+                    >Production Plan Batches</label>
+                </div>
+                <div class="batch-quantity">
+                  <span
+                    class="batch-quantity"
+                    id="production-plan-batches"
+                    t-esc="formVals.eff_planned_production_batches"
+                  />
+                </div>
+                  <!-- t-attf-class="{{formatFloat(formVals.eff_planned_production_batches) &gt;
+                formatFloat(formVals.batch_count) and 'text-success' or 
+                                 'text-danger' or ''
+                                }}" -->
+              </div>
+              <div class="batch-quantity-container col">
+                <div class="batch-quantity-label">
+                  <label for="suggested-production-plan-batches"
+                    >Suggested Production Plan Batches</label>
+                </div>
+                <div class="batch-quantity">
+                  <span
+                    class="batch-quantity"
+                    id="suggested-production-plan-batches"
+                    t-esc="formVals.batch_count"
+                  />
+                </div>
+                  <!-- t-attf-class="{{formatFloat(formVals.batch_count) &lt;
+                formatFloat(formVals.eff_planned_production_batches) and 'text-success' or 
+                                 'text-danger' or ''
+                                }}" -->
+                  <!-- <input
+              type="text"
+              id="suggested-production-plan-batches"
+              name="suggested-production-plan-batches"
+              readonly="True"
+            /> -->
+              </div>
+            </div>
+            <div class="notes-container form-group row">
+          <p class="dummy" t-attf-id="productionSimulation.id" t-att-value="productionSimulation.id"><t t-esc="productionSimulation.id" /></p>
+          <p class="dummy" t-attf-id="this.formVals.id" t-att-value="this.formVals.id">THIS is:<t t-esc="this.formVals.id" /></p>
+
+              <label for="notes" class="notes-label">Notes:</label>
+              <textarea
+                id="notes"
+                t-attf-class="notes-textarea"
+                type="text"
+                t-att-value="formVals.notes"
+                placeholder="Enter your notes here..."
+              />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            t-on-click.prevent="(ev) => this.saveProdPlanBatchesNotes(ev, productionSimulation.id)"
+            class="btn btn-primary"
+          >
+            Save notes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </t>
+</templates>

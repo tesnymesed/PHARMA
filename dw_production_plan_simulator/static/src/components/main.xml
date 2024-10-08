@@ -297,7 +297,7 @@
       </div>
     </div>
 
-    <ProductionPlanSimulationAlerts t-if="isModalVisible" />
+    <!-- <ProductionPlanSimulationAlerts t-if="isModalVisible" /> -->
 
     <!-- Alerts modal -->
     <div

@@ -320,11 +320,12 @@
               t-att-data-date_start="simulation.date_start"
               t-att-data-date_stop="simulation.date_stop"
               t-att-data-notes="simulation.notes"
+              t-att-data-product="productionSimulation.product_id[1]"
               t-att-data-batch_count="simulation.batch_count"
               t-att-data-eff_planned_production_batches="simulation.eff_planned_production_batches"
               class="btn btn-link input-group-addon fa fa-commenting fa-fw pe-1 text-success oe_edit_only o_no_padding"
               t-attf-title="Add/Edit notes."
-              t-on-click="_onClickProdPlanBatchesNotes"
+              t-on-click="(ev) => this._onClickProdPlanBatchesNotes(ev, productionSimulation.id)"
             />
           </th>
         </t>
@@ -668,11 +669,14 @@
           </th>
         </t>
       </tr>
+      <!-- <ProductionPlanBatchesNotesEditor
+        data="this.formVals"
+      /> -->
       <!-- Prod Plan Batch Notes Modal -->
 
       <div
         class="modal fade"
-        id="prodPlanBatchNotesModal"
+        t-attf-id="prodPlanBatchNotesModal-{{ productionSimulation.id }}"
         tabindex="-1"
         role="dialog"
         aria-labelledby="formVals.title"
@@ -681,7 +685,12 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="prodPlanBatchNotesModalHeadTitle">
+              <h5
+                class="modal-title"
+                t-attf-id="prodPlanBatchNotesModalHeadTitle-{{
+                  productionSimulation.id
+                }}"
+              >
                 <t t-esc="formVals.headerTitle"></t>
               </h5>
               <button
@@ -693,21 +702,35 @@
             </div>
             <div class="notes-wizard modal-body">
               <div class="period">
-                <h2 id="modalPeriodText" t-att-value="formVals.modalPeriodText">
-                  <t t-esc="formVals.modalPeriodText"></t>
+                <h2
+                  t-attf-id="modalProductHeader-{{ productionSimulation.id }}"
+                  t-att-value="formVals.modalProductHeader"
+                >
+                  <t t-esc="formVals.modalProductHeader"></t>
                 </h2>
+                <h3
+                  t-attf-id="modalPeriodSubHeader-{{ productionSimulation.id }}"
+                  t-att-value="formVals.modalPeriodSubHeader"
+                >
+                  <t t-esc="formVals.modalPeriodSubHeader"></t>
+                </h3>
               </div>
               <form>
                 <div class="batch-quantities form-group row">
                   <div class="batch-quantity-container col">
                     <div class="batch-quantity-label">
-                      <label for="production-plan-batches"
+                      <label
+                        t-attf-for="production-plan-batches-{{
+                          productionSimulation.id
+                        }}"
                         >Production Plan Batches</label>
                     </div>
                     <div class="batch-quantity">
                       <span
                         class="batch-quantity"
-                        id="production-plan-batches"
+                        t-attf-id="production-plan-batches-{{
+                          productionSimulation.id
+                        }}"
                         t-esc="formVals.eff_planned_production_batches"
                       />
                     </div>
@@ -718,13 +741,18 @@
                   </div>
                   <div class="batch-quantity-container col">
                     <div class="batch-quantity-label">
-                      <label for="suggested-production-plan-batches"
+                      <label
+                        t-attf-for="suggested-production-plan-batches-{{
+                          productionSimulation.id
+                        }}"
                         >Suggested Production Plan Batches</label>
                     </div>
                     <div class="batch-quantity">
                       <span
                         class="batch-quantity"
-                        id="suggested-production-plan-batches"
+                        t-attf-id="suggested-production-plan-batches-{{
+                          productionSimulation.id
+                        }}"
                         t-esc="formVals.batch_count"
                       />
                     </div>
@@ -741,9 +769,12 @@
                   </div>
                 </div>
                 <div class="notes-container form-group row">
-                  <label for="notes" class="notes-label">Notes:</label>
+                  <label
+                    t-attf-for="notes-{{ productionSimulation.id }}"
+                    class="notes-label"
+                    >Notes:</label>
                   <textarea
-                    id="notes"
+                    t-attf-id="notes-{{ productionSimulation.id }}"
                     t-attf-class="notes-textarea"
                     type="text"
                     t-att-value="formVals.notes"
@@ -764,7 +795,7 @@
               </button>
               <button
                 type="button"
-                t-on-click="saveProdPlanBatchesNotes"
+                t-on-click.prevent="(ev) => this.saveProdPlanBatchesNotes(ev, productionSimulation.id)"
                 class="btn btn-primary"
               >
                 Save notes

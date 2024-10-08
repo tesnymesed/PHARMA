@@ -4,6 +4,8 @@ import { CheckBox } from "@web/core/checkbox/checkbox";
 import { useService, useBus } from "@web/core/utils/hooks";
 import { formatFloat } from "@web/core/utils/numbers";
 import { Component, useRef, onPatched } from "@odoo/owl";
+import ProductionPlanBatchesNotesEditor from "@dw_production_plan_simulator/components/notes_editor";
+
 import { _t } from "@web/core/l10n/translation";
 
 export default class ProductionPlanSimulatorLine extends Component {
@@ -25,9 +27,11 @@ export default class ProductionPlanSimulatorLine extends Component {
     this.suggProdPlanBatchesRow = useRef("suggProdPlanBatchesRow");
 
     this.formVals = {
+      id: this.props.data.id,
       title: "",
       headerTitle: "",
-      modalPeriodText: "",
+      modalProductHeader: "",
+      modalPeriodSubHeader: "",
       notes: "",
       batch_count: 0.0,
       eff_planned_production_batches: 0.0,
@@ -507,9 +511,8 @@ export default class ProductionPlanSimulatorLine extends Component {
     }
   }
 
-  _onClickProdPlanBatchesNotes(ev) {
+  _onClickProdPlanBatchesNotes(ev, targetId) {
     this.formVals = {};
-
     const productionSimulationId = Number(
       ev.target.closest(".o_mps_content").dataset.id
     );
@@ -519,6 +522,8 @@ export default class ProductionPlanSimulatorLine extends Component {
     const dateIndex = parseInt(ev.target.dataset.date_index);
     const dateStr = this.model.data.dates[dateIndex];
 
+    const product = ev.target.dataset.product;
+
     const notes = ev.target.dataset.notes;
     const op = notes ? "Edit " : "Add ";
 
@@ -527,9 +532,10 @@ export default class ProductionPlanSimulatorLine extends Component {
       dateIndex: dateIndex,
       dateStart: dateStart,
       dateStop: dateStop,
-      title: op + dateStr + " notes",
-      headerTitle: "Period: " + dateStr,
-      modalPeriodText: "Period: " + dateStr,
+      title: `${op} ${product} ${dateStr} notes`,
+      headerTitle: `Product: ${product}`,
+      modalProductHeader: `Product: ${product}`,
+      modalPeriodSubHeader: `Period: ${dateStr}`,
       batch_count: parseFloat(ev.target.dataset.batch_count),
       eff_planned_production_batches: parseFloat(
         ev.target.dataset.eff_planned_production_batches
@@ -537,20 +543,25 @@ export default class ProductionPlanSimulatorLine extends Component {
       notes: notes,
     };
 
-    let prodPlanBatchesEl = document.getElementById("production-plan-batches");
+    let prodPlanBatchesEl = document.getElementById(
+      `production-plan-batches-${targetId}`
+    );
     let suggProdPlanBatchesEl = document.getElementById(
-      "suggested-production-plan-batches"
+      `suggested-production-plan-batches-${targetId}`
     );
 
-    document.getElementById("prodPlanBatchNotesModalHeadTitle").textContent =
-      this.formVals.title;
-    document.getElementById("modalPeriodText").textContent =
-      this.formVals.modalPeriodText;
+    document.getElementById(
+      `prodPlanBatchNotesModalHeadTitle-${targetId}`
+    ).textContent = this.formVals.title;
+    document.getElementById(`modalProductHeader-${targetId}`).textContent =
+      this.formVals.modalProductHeader;
+    document.getElementById(`modalPeriodSubHeader-${targetId}`).textContent =
+      this.formVals.modalPeriodSubHeader;
     prodPlanBatchesEl.textContent =
       this.formVals.eff_planned_production_batches;
     suggProdPlanBatchesEl.textContent = this.formVals.batch_count;
-    document.getElementById("notes").value = notes;
-    document.getElementById("notes").textContent = notes;
+    document.getElementById(`notes-${targetId}`).value = notes;
+    document.getElementById(`notes-${targetId}`).textContent = notes;
 
     // Color the greatest value in green and the other in red
     if (
@@ -568,11 +579,11 @@ export default class ProductionPlanSimulatorLine extends Component {
       prodPlanBatchesEl.classList.remove("text-success");
     }
 
-    $("#prodPlanBatchNotesModal").modal("show");
+    $(`#prodPlanBatchNotesModal-${targetId}`).modal("show");
   }
 
-  async saveProdPlanBatchesNotes(ev) {
-    const notesEl = document.getElementById("notes");
+  async saveProdPlanBatchesNotes(ev, id) {
+    const notesEl = document.getElementById(`notes-${id}`);
 
     const notes = notesEl.value;
 
@@ -606,8 +617,7 @@ export default class ProductionPlanSimulatorLine extends Component {
         );
         setTimeout(notesNotif, 3000);
       });
-
-    $("#prodPlanBatchNotesModal").modal("hide");
+    $(`#prodPlanBatchNotesModal-${id}`).modal("hide");
   }
 
   _onMouseOverProdPlanBatchesNotes(ev) {
@@ -698,4 +708,5 @@ ProductionPlanSimulatorLine.template =
   "dw_production_plan_simulator.ProductionPlanSimulatorLine";
 ProductionPlanSimulatorLine.components = {
   CheckBox,
+  ProductionPlanBatchesNotesEditor,
 };

@@ -7,7 +7,6 @@ import { _t } from "@web/core/l10n/translation";
 // } from "../search/mrp_mps_control_panel";
 // import { MrpMpsSearchModel } from "../search/mrp_mps_search_model";
 import ProductionPlanSimulatorLine from "@dw_production_plan_simulator/components/line";
-import ProductionPlanSimulationAlerts from "@dw_production_plan_simulator/components/alert_container";
 import { ProductionPlanSimulatorModel } from "@dw_production_plan_simulator/models/production_plan_simulator_model";
 import { registry } from "@web/core/registry";
 import { useService, useBus } from "@web/core/utils/hooks";
@@ -934,7 +933,6 @@ ProductionPlanSimulatorComponent.components = {
   // MrpMpsControlPanel,
   // WithSearch,
   ProductionPlanSimulatorLine,
-  ProductionPlanSimulationAlerts,
   CheckBox,
   // MrpMpsSearchBar,
   ActionMenus,

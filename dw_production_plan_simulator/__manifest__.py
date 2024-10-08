@@ -45,9 +45,9 @@
             'dw_production_plan_simulator/static/src/components/main.xml',
             'dw_production_plan_simulator/static/src/components/main.css',
 
-            'dw_production_plan_simulator/static/src/components/alert_container.js',
-            'dw_production_plan_simulator/static/src/components/alert_container.xml',
-            'dw_production_plan_simulator/static/src/components/alert_container.scss',
+            'dw_production_plan_simulator/static/src/components/notes_editor.js',
+            'dw_production_plan_simulator/static/src/components/notes_editor.xml',
+            'dw_production_plan_simulator/static/src/components/notes_editor.scss',
 
         ],
     },

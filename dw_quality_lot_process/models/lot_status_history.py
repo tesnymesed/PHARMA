@@ -13,15 +13,28 @@ class LotStatusHistory(models.Model):
         ('not_conform', 'Not Conform'),
         ('blocked', 'Blocked'),
         ('cancelled', 'Cancelled')
-    ], string="Previous Status", required=True)
-    
+    ], string="Previous Status")
+
     new_status = fields.Selection([
         ('quarantine', 'Quarantine'),
         ('conform', 'Conform'),
         ('not_conform', 'Not Conform'),
         ('blocked', 'Blocked'),
         ('cancelled', 'Cancelled')
-    ], string="New Status", required=True)
+    ], string="New Status")
+
+    previous_lot_quarantine_status = fields.Selection([
+        ('draft','Draft'),
+        ('in_progress', 'In progress'),
+        ('analyzed','Analyzed'),
+        ('reanalyzed','reanalyzed')
+        ],string="Previous Analyse State",)
+    new_lot_quarantine_status = fields.Selection([
+        ('draft','Draft'),
+        ('in_progress', 'In progress'),
+        ('analyzed','Analyzed'),
+        ('reanalyzed','reanalyzed')
+        ],string="New Analyse State",)
 
     change_date = fields.Datetime(string="Change Date", default=lambda self: fields.Datetime.now())
 

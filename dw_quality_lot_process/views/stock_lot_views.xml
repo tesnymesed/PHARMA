@@ -47,6 +47,8 @@
                                 <field name="change_date"/>
                                 <field name="previous_status"/>
                                 <field name="new_status"/>
+                                <field name="previous_lot_quarantine_status"/>
+                                <field name="new_lot_quarantine_status"/>
                                 <field name="user_id"/>
                             </tree>
                         </field>

@@ -48,14 +48,22 @@ class StockLot(models.Model):
     def action_set_reanalyzed(self):
         self.lot_quarantine_status = 'reanalyzed'
     
-    # in case modification in lot_status create records in stock.lot.history for the current lot
+    # in case modification in lot_status or lot_quarantine_status create records in stock.lot.history for the current lot
     def write(self, vals):
-        if 'lot_status' in vals:
-            for record in self:
-                self.env['stock.lot.history'].create({
-                    'lot_id': record.id,
+        for record in self:
+            history_vals = {'lot_id': record.id, 'user_id': self.env.user.id}
+            if 'lot_status' in vals:
+                history_vals.update({
                     'previous_status': record.lot_status,
                     'new_status': vals.get('lot_status'),
-                    'user_id': self.env.user.id,
                 })
+
+            if 'lot_quarantine_status' in vals:
+                history_vals.update({
+                    'previous_lot_quarantine_status': record.lot_quarantine_status,
+                    'new_lot_quarantine_status': vals.get('lot_quarantine_status'),
+                })
+
+            if 'lot_status' in vals or 'lot_quarantine_status' in vals:
+                self.env['stock.lot.history'].create(history_vals)
         return super(StockLot, self).write(vals)

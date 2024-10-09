@@ -23,6 +23,7 @@ class StockLot(models.Model):
     lot_status_history_ids = fields.One2many('stock.lot.history', 'lot_id', string="Status History")
     
     def _create_history_record(self, previous_status, new_status, is_quarantine=False):
+        '''This function creates stock.lot.history record'''
         history_vals = {
             'lot_id': self.id,
             'user_id': self.env.user.id,
@@ -32,6 +33,7 @@ class StockLot(models.Model):
         }
         self.env['stock.lot.history'].sudo().create(history_vals)
     
+    #lot status buttons
     def action_set_quarantine(self):
         self._create_history_record(self.lot_status, 'quarantine')
         self.lot_status = 'quarantine'
@@ -47,7 +49,7 @@ class StockLot(models.Model):
     def action_set_blocked(self):
         self._create_history_record(self.lot_status, 'blocked')
         self.lot_status = 'blocked'
-        
+
     def action_set_cancelled(self):
         return {
             'type': 'ir.actions.act_window',
@@ -59,7 +61,7 @@ class StockLot(models.Model):
         }
         
 
-    # quarantine status
+    # Analyse status buttons
     def action_set_in_progress(self):
         self._create_history_record(self.lot_quarantine_status, 'in_progress', is_quarantine=True)
         self.lot_quarantine_status = 'in_progress'

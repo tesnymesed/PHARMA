@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, models
+from odoo import models
 
 
 class DwMrpSimulationWorkCenter(models.Model):
@@ -12,7 +12,7 @@ class DwMrpSimulationWorkCenter(models.Model):
         for record in records:
             if not record.dw_simulation_ok:
                 # vals['dw_simulation_ok'] = True
-                cloned_records = super(DwMrpSimulationWorkCenter, self).with_context(dw_pharma_simulation=True).create(vals)
+                cloned_records = super(DwMrpSimulationWorkCenter, self).with_context(dw_pharma_simulation=True).create(
+                    vals)
 
         return records
-

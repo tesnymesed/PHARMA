@@ -40,7 +40,7 @@ class DwPharmaAccessMixin(models.AbstractModel):
 
         # Call super
         return super(DwPharmaAccessMixin, self)._search(domain, offset=offset, limit=limit, order=order,
-                                                       access_rights_uid=access_rights_uid)
+                                                        access_rights_uid=access_rights_uid)
 
     @api.model
     def default_get(self, fields_list):

@@ -2,8 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
-from collections import OrderedDict
-from collections import defaultdict, namedtuple
+from collections import OrderedDict, defaultdict, namedtuple
 from itertools import groupby
 from math import log10
 

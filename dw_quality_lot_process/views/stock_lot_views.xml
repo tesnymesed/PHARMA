@@ -50,6 +50,9 @@
                                 <field name="previous_lot_quarantine_status"/>
                                 <field name="new_lot_quarantine_status"/>
                                 <field name="user_id"/>
+                                <field name="reason_id"/>
+                                <field name="note"/>
+
                             </tree>
                         </field>
                     </page>

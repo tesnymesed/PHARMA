@@ -21,6 +21,12 @@ class StockLot(models.Model):
     
     compiliance_check = fields.Boolean(related='product_id.requires_lot_compliance_check',readonly=True)
     lot_status_history_ids = fields.One2many('stock.lot.history', 'lot_id', string="Status History")
+    cancel_reason_id = fields.Many2one(
+        'stock.lot.cancel.reason', 
+        string='Cancel Reason'
+    )
+    cancel_note = fields.Text(string="Cancellation Note")
+
 
     def action_set_quarantine(self):
         self.lot_status = 'quarantine'
@@ -35,8 +41,15 @@ class StockLot(models.Model):
         self.lot_status = 'blocked'
 
     def action_set_cancelled(self):
-
         self.lot_status = 'cancelled'
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Cancel Lot',
+            'res_model': 'stock.lot.cancel.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_lot_id': self.id}
+        }
 
     # quarantine status
     def action_set_in_progress(self):
@@ -51,19 +64,38 @@ class StockLot(models.Model):
     # in case modification in lot_status or lot_quarantine_status create records in stock.lot.history for the current lot
     def write(self, vals):
         for record in self:
-            history_vals = {'lot_id': record.id, 'user_id': self.env.user.id}
+            # Skip history creation if the change is coming from the cancellation wizard
+            if self.env.context.get('is_from_cancellation_wizard', False):
+                return super(StockLot, self).write(vals)
+
+            history_vals = {
+                'lot_id': record.id,
+                'user_id': self.env.user.id,
+                'change_date': fields.Datetime.now(),
+            }
+
+            # Track status change
             if 'lot_status' in vals:
                 history_vals.update({
                     'previous_status': record.lot_status,
                     'new_status': vals.get('lot_status'),
                 })
 
+            # Track quarantine status change
             if 'lot_quarantine_status' in vals:
                 history_vals.update({
                     'previous_lot_quarantine_status': record.lot_quarantine_status,
                     'new_lot_quarantine_status': vals.get('lot_quarantine_status'),
                 })
 
-            if 'lot_status' in vals or 'lot_quarantine_status' in vals:
-                self.env['stock.lot.history'].sudo().create(history_vals)
+            # If it's a cancellation, include the reason and note if available
+            if 'lot_status' in vals and vals.get('lot_status') == 'cancelled':
+                history_vals.update({
+                    'reason_id': vals.get('cancel_reason_id'),  # Reason from the wizard (if any)
+                    'note': vals.get('cancel_note'),  # Note from the wizard (if any)
+                })
+
+            # Create the history record
+            self.env['stock.lot.history'].sudo().create(history_vals)
+
         return super(StockLot, self).write(vals)

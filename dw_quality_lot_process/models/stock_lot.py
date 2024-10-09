@@ -65,5 +65,5 @@ class StockLot(models.Model):
                 })
 
             if 'lot_status' in vals or 'lot_quarantine_status' in vals:
-                self.env['stock.lot.history'].create(history_vals)
+                self.env['stock.lot.history'].sudo().create(history_vals)
         return super(StockLot, self).write(vals)

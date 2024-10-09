@@ -65,9 +65,6 @@ class StockLot(models.Model):
     def write(self, vals):
         for record in self:
             # Skip history creation if the change is coming from the cancellation wizard
-            if self.env.context.get('is_from_cancellation_wizard', False):
-                return super(StockLot, self).write(vals)
-
             history_vals = {
                 'lot_id': record.id,
                 'user_id': self.env.user.id,
@@ -89,7 +86,7 @@ class StockLot(models.Model):
                 })
 
             # If it's a cancellation, include the reason and note if available
-            if 'lot_status' in vals and vals.get('lot_status') == 'cancelled':
+            if 'cancel_reason_id' in vals:
                 history_vals.update({
                     'reason_id': vals.get('cancel_reason_id'),  # Reason from the wizard (if any)
                     'note': vals.get('cancel_note'),  # Note from the wizard (if any)

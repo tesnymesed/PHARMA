@@ -10,7 +10,8 @@ class StockLotCancelWizard(models.TransientModel):
     lot_id = fields.Many2one('stock.lot', string='Stock Lot', required=True)
 
     def action_cancel_lot(self):
-        self.lot_id.with_context(is_from_cancellation_wizard=True).write({
+        # Pass the cancellation details to the StockLot model and set context to avoid history creation
+        self.lot_id.write({
             'cancel_reason_id': self.reason_id.id,
             'cancel_note': self.note,
         })
@@ -18,8 +19,5 @@ class StockLotCancelWizard(models.TransientModel):
         # Post the cancellation in the chatter
         message = f"Lot cancelled. Reason: {self.reason_id.name if self.reason_id else 'No reason provided'}"
         self.lot_id.message_post(body=message)
-
-        # Set context to prevent history creation in write
-        
 
         return True

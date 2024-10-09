@@ -1,11 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
-          <record id="sequence_payment_request" model="ir.sequence">
+        <record id="sequence_payment_request" model="ir.sequence">
             <field name="name">Payment.request</field>
             <field name="code">dw.payment.request</field>
             <field name="padding">5</field>
             <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="type_supplier" model="payment.request.type">
+            <field name="name">Paiement des fournisseurs</field>
+            <field name="active" eval="True"/>
+            <field name="description">Frais des fournisseurs</field>
+        </record>
+
+        <record id="type_transport" model="payment.request.type">
+            <field name="name">Frais de transport</field>
+            <field name="active" eval="True"/>
+            <field name="description">Frais de transport</field>
+        </record>
+
+        <record id="type_douane" model="payment.request.type">
+            <field name="name">Frais de douanement </field>
+            <field name="active" eval="True"/>
+            <field name="description">Frais de douane</field>
+        </record>
+
+        <record id="type_insurance" model="payment.request.type">
+            <field name="name">Frais d’assurance</field>
+            <field name="active" eval="True"/>
+            <field name="description">Frais d’assurance</field>
+        </record>
+
+        <record id="type_forwarder" model="payment.request.type">
+            <field name="name">Honoraires des transitaires</field>
+            <field name="active" eval="True"/>
+            <field name="description">Frais des transitaires</field>
+        </record>
+
+        <record id="type_storage" model="payment.request.type">
+            <field name="name">Frais de stockage</field>
+            <field name="active" eval="True"/>
+            <field name="description">Frais de stockage</field>
         </record>
 
     </data>

@@ -19,6 +19,7 @@
         # views
 'views/dw_payment_request_view.xml',
 'views/dw_reject_reason.xml',
+'views/payment_request_type_view.xml',
 
         # menus
 

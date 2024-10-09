@@ -52,7 +52,7 @@ class DwPaymentRequest(models.Model):
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', store=True)
     montant = fields.Monetary(string="Amount", currency_field="currency_id")
 
-    request_type_id = fields.Many2one('payment.request.type_id',string='Request Type',required=True)
+    request_type_id = fields.Many2one('payment.request.type',string='Request Type',required=True)
 
     @api.depends('dw_account_move_id.amount_total')  # Replace 'your_field_dependency' with the actual field dependency
     def _compute_amount_in_text(self):

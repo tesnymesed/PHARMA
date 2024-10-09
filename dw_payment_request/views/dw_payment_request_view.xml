@@ -80,7 +80,7 @@
                                 <field name="check_num"/>
                                 <field name="Payment_order"/>
                                 <field name="montant" widget="monetary"/>
-                                <field name="request_type" string="Payment Request Type"/>
+                                <field name="request_type_id" string="Payment Request Type"/>
                             </group>
 
                         </group>

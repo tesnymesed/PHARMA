@@ -10,6 +10,7 @@
     'depends': ['account'],
     'data': [
         # data
+'data/payment_request_data.xml',
 'data/souche.xml',
         # report
 'report/payment_request_report.xml',
@@ -19,6 +20,7 @@
         # views
 'views/dw_payment_request_view.xml',
 'views/dw_reject_reason.xml',
+'views/payment_request_type_view.xml',
 
         # menus
 

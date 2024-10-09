@@ -9,19 +9,19 @@
             <field name="context">{}</field>
         </record>
 
-<!--        <menuitem id="menu_payment_request_base_root"-->
-<!--                  name="Payment Request"-->
-<!--                  web_icon="dw_payment_request,static/description/icon.png"-->
-<!--                  sequence="10"-->
-<!--        />-->
+        <!--        <menuitem id="menu_payment_request_base_root"-->
+        <!--                  name="Payment Request"-->
+        <!--                  web_icon="dw_payment_request,static/description/icon.png"-->
+        <!--                  sequence="10"-->
+        <!--        />-->
         <!--        web_icon="dw_supplier_approval,static/description/icon.png"-->
 
 
-<!--        <menuitem id="menu_payment_request_root"-->
-<!--                  name="Payment request"-->
-<!--                  parent="dw_payment_request.menu_payment_request_base_root"-->
-<!--                  sequence="10"-->
-<!--        />-->
+        <!--        <menuitem id="menu_payment_request_root"-->
+        <!--                  name="Payment request"-->
+        <!--                  parent="dw_payment_request.menu_payment_request_base_root"-->
+        <!--                  sequence="10"-->
+        <!--        />-->
 
         <menuitem id="menu_payment_request"
                   name="Payment request"
@@ -29,21 +29,21 @@
                   action="action_payment_request"
                   sequence="10"
         />
-          <record id="action_payment_reason" model="ir.actions.act_window">
+        <record id="action_payment_reason" model="ir.actions.act_window">
             <field name="name">Payment reason</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">dw.payment.reason</field>
             <field name="view_mode">tree,form</field>
             <field name="context">{}</field>
         </record>
-         <menuitem id="menu_payment_reason"
+        <menuitem id="menu_payment_reason"
                   name="Payment reason"
                   parent="account.menu_finance_configuration"
                   action="action_payment_reason"
                   sequence="10"
         />
 
-           <record id="action_reject_reason" model="ir.actions.act_window">
+        <record id="action_reject_reason" model="ir.actions.act_window">
             <field name="name">Reject reason</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">dw.reject.reason</field>
@@ -57,5 +57,13 @@
                   sequence="20"
                   action="action_reject_reason"
                   parent="account.menu_finance_configuration"/>
+
+        <menuitem id="menu_payment_request_type"
+                  name="Payment Request Types"
+                  parent="account.menu_finance_configuration"
+                  action="action_payment_request_type"
+                  sequence="10"/>
+
     </data>
+
 </odoo>

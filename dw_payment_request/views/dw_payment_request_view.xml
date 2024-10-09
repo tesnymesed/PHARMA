@@ -74,13 +74,13 @@
                                 <field name="reject_motif_id" invisible="state != 'rejected'"/>
                                 <field name="dw_account_move_id" invisible="1"/>
                             </group>
-
                         </group>
                         <group>
                             <group>
                                 <field name="check_num"/>
                                 <field name="Payment_order"/>
                                 <field name="montant" widget="monetary"/>
+                                <field name="request_type_id" string="Payment Request Type"/>
                             </group>
 
                         </group>

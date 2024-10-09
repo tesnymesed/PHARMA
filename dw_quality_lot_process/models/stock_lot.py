@@ -22,55 +22,32 @@ class StockLot(models.Model):
     compiliance_check = fields.Boolean(related='product_id.requires_lot_compliance_check',readonly=True)
     lot_status_history_ids = fields.One2many('stock.lot.history', 'lot_id', string="Status History")
     
-
-    def action_set_quarantine(self):
-        history_vals = {}
-        history_vals.update({
+    def _create_history_record(self, previous_status, new_status, is_quarantine=False):
+        history_vals = {
             'lot_id': self.id,
             'user_id': self.env.user.id,
             'change_date': fields.Datetime.now(),
-            'previous_status': self.lot_status,
-            'new_status': 'quarantine',
-        })
+            'previous_status' if not is_quarantine else 'previous_lot_quarantine_status': previous_status,
+            'new_status' if not is_quarantine else 'new_lot_quarantine_status': new_status,
+        }
         self.env['stock.lot.history'].sudo().create(history_vals)
+    
+    def action_set_quarantine(self):
+        self._create_history_record(self.lot_status, 'quarantine')
         self.lot_status = 'quarantine'
 
     def action_set_conform(self):
-        history_vals = {}
-        history_vals.update({
-            'lot_id': self.id,
-            'user_id': self.env.user.id,
-            'change_date': fields.Datetime.now(),
-            'previous_status': self.lot_status,
-            'new_status': 'conform',
-        })
-        self.env['stock.lot.history'].sudo().create(history_vals)
+        self._create_history_record(self.lot_status, 'conform')
         self.lot_status = 'conform'
-
+    
     def action_set_not_conform(self):
-        history_vals = {}
-        history_vals.update({
-            'lot_id': self.id,
-            'user_id': self.env.user.id,
-            'change_date': fields.Datetime.now(),
-            'previous_status': self.lot_status,
-            'new_status': 'not_conform',
-        })
-        self.env['stock.lot.history'].sudo().create(history_vals)
+        self._create_history_record(self.lot_status, 'not_conform')
         self.lot_status = 'not_conform'
 
     def action_set_blocked(self):
-        history_vals = {}
-        history_vals.update({
-            'lot_id': self.id,
-            'user_id': self.env.user.id,
-            'change_date': fields.Datetime.now(),
-            'previous_status': self.lot_status,
-            'new_status': 'blocked',
-        })
-        self.env['stock.lot.history'].sudo().create(history_vals)
+        self._create_history_record(self.lot_status, 'blocked')
         self.lot_status = 'blocked'
-
+        
     def action_set_cancelled(self):
         return {
             'type': 'ir.actions.act_window',
@@ -84,39 +61,14 @@ class StockLot(models.Model):
 
     # quarantine status
     def action_set_in_progress(self):
-        history_vals = {}
-        history_vals.update({
-            'lot_id': self.id,
-            'user_id': self.env.user.id,
-            'change_date': fields.Datetime.now(),
-            'previous_lot_quarantine_status': self.lot_quarantine_status,
-            'new_lot_quarantine_status': 'in_progress',
-        })
-        self.env['stock.lot.history'].sudo().create(history_vals)
-
+        self._create_history_record(self.lot_quarantine_status, 'in_progress', is_quarantine=True)
         self.lot_quarantine_status = 'in_progress'
 
-    def action_set_analyzed(self):
-        history_vals = {}
-        history_vals.update({
-            'lot_id': self.id,
-            'user_id': self.env.user.id,
-            'change_date': fields.Datetime.now(),
-            'previous_lot_quarantine_status': self.lot_quarantine_status,
-            'new_lot_quarantine_status': 'analyzed',
-        })
-        self.env['stock.lot.history'].sudo().create(history_vals)
 
+    def action_set_analyzed(self):
+        self._create_history_record(self.lot_quarantine_status, 'analyzed', is_quarantine=True)
         self.lot_quarantine_status = 'analyzed'
 
     def action_set_reanalyzed(self):
-        history_vals = {}
-        history_vals.update({
-            'lot_id': self.id,
-            'user_id': self.env.user.id,
-            'change_date': fields.Datetime.now(),
-            'previous_lot_quarantine_status': self.lot_quarantine_status,
-            'new_lot_quarantine_status': 'reanalyzed',
-        })
-        self.env['stock.lot.history'].sudo().create(history_vals)
+        self._create_history_record(self.lot_quarantine_status, 'reanalyzed', is_quarantine=True)
         self.lot_quarantine_status = 'reanalyzed'

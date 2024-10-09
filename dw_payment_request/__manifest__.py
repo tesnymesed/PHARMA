@@ -10,6 +10,7 @@
     'depends': ['account'],
     'data': [
         # data
+'data/payment_request_data.xml',
 'data/souche.xml',
         # report
 'report/payment_request_report.xml',

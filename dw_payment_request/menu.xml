@@ -60,7 +60,7 @@
 
         <menuitem id="menu_payment_request_type"
                   name="Payment Request Types"
-                  parent="account.menu_finance_entries"
+                  parent="account.menu_finance_configuration"
                   action="action_payment_request_type"
                   sequence="10"/>
 

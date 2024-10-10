@@ -1,0 +1,591 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* dw_mrp_supply_plan
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-09 14:39+0000\n"
+"PO-Revision-Date: 2024-10-09 14:39+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: dw_mrp_supply_plan
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.view_dw_mrp_product_monthly_supply_plan_tree
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.view_dw_mrp_product_supply_plan_form
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.view_mrp_supply_plan_form
+msgid "Approve"
+msgstr "Approuver"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields.selection,name:dw_mrp_supply_plan.selection__dw_mrp_product_supply_plan__state__approved
+#: model:ir.model.fields.selection,name:dw_mrp_supply_plan.selection__dw_mrp_supply_plan__state__approved
+msgid "Approved"
+msgstr "Approuvé"
+
+#. module: dw_mrp_supply_plan
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_mrp_supply_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.view_dw_mrp_product_supply_plan_form
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.view_mrp_supply_plan_form
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields.selection,name:dw_mrp_supply_plan.selection__dw_mrp_product_supply_plan__state__cancelled
+#: model:ir.model.fields.selection,name:dw_mrp_supply_plan.selection__dw_mrp_supply_plan__state__cancelled
+msgid "Cancelled"
+msgstr "Annulé"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model,name:dw_mrp_supply_plan.model_res_company
+msgid "Companies"
+msgstr "Sociétés"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__company_id
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan__company_id
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan_lines__company_id
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_wizard__company_id
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview__company_id
+#: model:ir.model.fields.selection,name:dw_mrp_supply_plan.selection__dw_mrp_supply_wizard_grouping_option__name__company
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_mrp_product_supply_plan_view_search
+msgid "Company"
+msgstr "Entreprise"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.ui.menu,name:dw_mrp_supply_plan.dw_mrp_supply_plan_config_menu
+msgid "Configuration"
+msgstr "Configuration"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__quantity_approved
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan_lines__quantity_approved
+msgid "Confirmed Quantity"
+msgstr "Quantité confirmée"
+
+#. module: dw_mrp_supply_plan
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_purchase_order_preview_form_view
+msgid "Create Purchase Order"
+msgstr "Créer un bon de commande"
+
+#. module: dw_mrp_supply_plan
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_mrp_supply_wizard_view_form
+msgid "Create Purchase Orders Preview"
+msgstr "Créer des bons de commande Aperçu"
+
+#. module: dw_mrp_supply_plan
+#: model_terms:ir.actions.act_window,help:dw_mrp_supply_plan.dw_mrp_product_supply_plan_action
+msgid "Create new MRP Product Supply Plan."
+msgstr "Créer un nouveau plan d'approvisionnement de produits MRP"
+
+#. module: dw_mrp_supply_plan
+#: model_terms:ir.actions.act_window,help:dw_mrp_supply_plan.dw_mrp_supply_plan_action
+msgid "Create new MRP Supply Plan."
+msgstr "Créer un nouveau plan d'approvisionnement MRP"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__create_uid
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan__create_uid
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan_lines__create_uid
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_wizard__create_uid
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_wizard_grouping_option__create_uid
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview__create_uid
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview_line__create_uid
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__create_date
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan__create_date
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan_lines__create_date
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_wizard__create_date
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_wizard_grouping_option__create_date
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview__create_date
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview_line__create_date
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__date
+msgid "Date"
+msgstr "Date"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_wizard__date_from
+msgid "Date From"
+msgstr "Dater de"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__date_launch
+msgid "Date Launch"
+msgstr "Date de lancement"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_wizard__date_to
+msgid "Date To"
+msgstr "Date à"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,help:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__uom_id
+#: model:ir.model.fields,help:dw_mrp_supply_plan.field_dw_mrp_supply_plan_lines__uom_id
+#: model:ir.model.fields,help:dw_mrp_supply_plan.field_dw_purchase_order_preview_line__product_uom
+msgid "Default unit of measure used for all stock operations."
+msgstr "Unité de mesure par défaut utilisée pour toutes les opérations de stock"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__display_name
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan__display_name
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan_lines__display_name
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_wizard__display_name
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_wizard_grouping_option__display_name
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview__display_name
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview_line__display_name
+msgid "Display Name"
+msgstr "Nom d'affichage"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields.selection,name:dw_mrp_supply_plan.selection__dw_mrp_product_supply_plan__state__done
+#: model:ir.model.fields.selection,name:dw_mrp_supply_plan.selection__dw_mrp_supply_plan__state__done
+msgid "Done"
+msgstr "Fait"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields.selection,name:dw_mrp_supply_plan.selection__dw_mrp_product_supply_plan__state__draft
+#: model:ir.model.fields.selection,name:dw_mrp_supply_plan.selection__dw_mrp_supply_plan__state__draft
+msgid "Draft"
+msgstr "Brouillon"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan__end_date
+msgid "End Date"
+msgstr "Date de fin"
+
+#. module: dw_mrp_supply_plan
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_mrp_supply_wizard_view_form
+msgid "Fetch Supply Plan"
+msgstr "Plan d'approvisionnement pour récupérer"
+
+#. module: dw_mrp_supply_plan
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_mrp_product_supply_plan_view_search
+msgid "Group By"
+msgstr "Grouper par"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_wizard_grouping_option__name
+msgid "Grouping Criteria"
+msgstr "Critères de regroupement"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.actions.act_window,name:dw_mrp_supply_plan.dw_mrp_supply_wizard_grouping_option_action
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_wizard__grouping_options
+#: model:ir.ui.menu,name:dw_mrp_supply_plan.dw_mrp_supply_wizard_grouping_option_menu
+msgid "Grouping Options"
+msgstr "Options de regroupement"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__id
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan__id
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan_lines__id
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_wizard__id
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_wizard_grouping_option__id
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview__id
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview_line__id
+msgid "ID"
+msgstr "ID"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields.selection,name:dw_mrp_supply_plan.selection__dw_mrp_supply_wizard_grouping_option__name__incoterm
+msgid "Incoterm"
+msgstr "Incoterm"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__write_uid
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan__write_uid
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan_lines__write_uid
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_wizard__write_uid
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_wizard_grouping_option__write_uid
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview__write_uid
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview_line__write_uid
+msgid "Last Updated by"
+msgstr "Dernière mise à jour par"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__write_date
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan__write_date
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan_lines__write_date
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_wizard__write_date
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_wizard_grouping_option__write_date
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview__write_date
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview_line__write_date
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: dw_mrp_supply_plan
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_mrp_product_supply_plan_view_search
+msgid "Launch Date"
+msgstr "Date de lancement"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__dw_mps_forecast_decision_id
+msgid "MRP Decision"
+msgstr "Décision MRP"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__dw_mps_forecast_notes
+msgid "MRP Observations"
+msgstr "Observations MRP"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.actions.act_window,name:dw_mrp_supply_plan.dw_mrp_product_supply_plan_action
+msgid "MRP Product Supply Plan"
+msgstr "Plan d'approvisionnement des produits MRP"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.actions.act_window,name:dw_mrp_supply_plan.dw_mrp_supply_plan_action
+#: model:ir.module.category,name:dw_mrp_supply_plan.module_dw_mrp_supply_plan
+msgid "MRP Supply Plan"
+msgstr "Plan d'approvisionnement MRP"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model,name:dw_mrp_supply_plan.model_dw_mrp_supply_wizard
+msgid ""
+"MRP Supply Tool: Create Purchase Orders From Product Supply Plan entries "
+msgstr ""
+
+#. module: dw_mrp_supply_plan
+#: model:ir.actions.act_window,name:dw_mrp_supply_plan.dw_mrp_supply_wizard_action
+#: model:ir.ui.menu,name:dw_mrp_supply_plan.dw_mrp_supply_wizard_menu
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_mrp_supply_wizard_view_form
+msgid "MRP Supply Wizard"
+msgstr "Assistant d'approvisionnement MRP"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model,name:dw_mrp_supply_plan.model_dw_mrp_supply_wizard_grouping_option
+msgid "MRP Supply Wizard Grouping Criterias"
+msgstr "Critères de regroupement de l'assistant d'approvisionnement MRP"
+
+#. module: dw_mrp_supply_plan
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_mrp_supply_wizard_grouping_option_view_form
+msgid "MRP Wizard Grouping Option"
+msgstr "Option de regroupement de l'assistant MRP"
+
+#. module: dw_mrp_supply_plan
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_mrp_supply_wizard_grouping_option_view_tree
+msgid "MRP Wizard Grouping Options"
+msgstr "Options de regroupement de l'assistant MRP"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model,name:dw_mrp_supply_plan.model_dw_mrp_supply_plan_lines
+msgid ""
+"MRP Yearly Product Supply plan lines (For each Product, each month's "
+"quantities are referenced, fetched: displayed from "
+"dw.mrp.product.supply.plan) "
+msgstr ""
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model,name:dw_mrp_supply_plan.model_dw_mrp_supply_plan
+msgid "MRP Yearly Supply plan"
+msgstr "Plan d'approvisionnement annuel MRP"
+
+#. module: dw_mrp_supply_plan
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.view_dw_mrp_product_supply_plan_form
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.view_mrp_supply_plan_form
+msgid "Mark as Done"
+msgstr "Marquer comme terminé"
+
+#. module: dw_mrp_supply_plan
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.view_mrp_supply_plan_form
+msgid "Monthly"
+msgstr "Mensuel"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan_lines__monthly_supply_plan_ids
+msgid "Monthly Supply Plan"
+msgstr "Plan d'approvisionnement mensuel"
+
+#. module: dw_mrp_supply_plan
+#. odoo-python
+#: code:addons/custom_addons/DW_PHARMA/dw_mrp_supply_plan/models/dw_01_mrp_supply_plan.py:0
+#: code:addons/custom_addons/DW_PHARMA/dw_mrp_supply_plan/models/dw_02_mrp_supply_plan_lines.py:0
+#: code:addons/custom_addons/DW_PHARMA/dw_mrp_supply_plan/models/dw_02_mrp_supply_plan_lines.py:0
+#: code:addons/custom_addons/DW_PHARMA/dw_mrp_supply_plan/models/dw_02_mrp_supply_plan_lines.py:0
+#: code:addons/custom_addons/DW_PHARMA/dw_mrp_supply_plan/models/dw_03_mrp_product_supply_plan.py:0
+#: code:addons/custom_addons/DW_PHARMA/dw_mrp_supply_plan/models/dw_03_mrp_product_supply_plan.py:0
+#: code:addons/custom_addons/DW_PHARMA/dw_mrp_supply_plan/models/dw_03_mrp_product_supply_plan.py:0
+#: code:addons/custom_addons/DW_PHARMA/dw_mrp_supply_plan/models/dw_mrp_supply_plan_tool.py:0
+#: code:addons/custom_addons/DW_PHARMA/dw_mrp_supply_plan/models/dw_mrp_supply_plan_tool.py:0
+#: code:addons/custom_addons/DW_PHARMA/dw_mrp_supply_plan/models/dw_mrp_supply_plan_tool.py:0
+#: code:addons/custom_addons/DW_PHARMA/dw_mrp_supply_plan/models/dw_mrp_supply_plan_tool.py:0
+#: code:addons/custom_addons/DW_PHARMA/dw_mrp_supply_plan/models/dw_mrp_supply_plan_tool.py:0
+#: code:addons/custom_addons/DW_PHARMA/dw_mrp_supply_plan/models/dw_mrp_supply_plan_tool.py:0
+#: code:addons/custom_addons/DW_PHARMA/dw_mrp_supply_plan/models/dw_mrp_supply_plan_tool.py:0
+#: code:addons/dw_mrp_supply_plan/models/dw_01_mrp_supply_plan.py:0
+#: code:addons/dw_mrp_supply_plan/models/dw_02_mrp_supply_plan_lines.py:0
+#: code:addons/dw_mrp_supply_plan/models/dw_02_mrp_supply_plan_lines.py:0
+#: code:addons/dw_mrp_supply_plan/models/dw_02_mrp_supply_plan_lines.py:0
+#: code:addons/dw_mrp_supply_plan/models/dw_03_mrp_product_supply_plan.py:0
+#: code:addons/dw_mrp_supply_plan/models/dw_03_mrp_product_supply_plan.py:0
+#: code:addons/dw_mrp_supply_plan/models/dw_03_mrp_product_supply_plan.py:0
+#: code:addons/dw_mrp_supply_plan/models/dw_mrp_supply_plan_tool.py:0
+#: code:addons/dw_mrp_supply_plan/models/dw_mrp_supply_plan_tool.py:0
+#: code:addons/dw_mrp_supply_plan/models/dw_mrp_supply_plan_tool.py:0
+#: code:addons/dw_mrp_supply_plan/models/dw_mrp_supply_plan_tool.py:0
+#: code:addons/dw_mrp_supply_plan/models/dw_mrp_supply_plan_tool.py:0
+#: code:addons/dw_mrp_supply_plan/models/dw_mrp_supply_plan_tool.py:0
+#: code:addons/dw_mrp_supply_plan/models/dw_mrp_supply_plan_tool.py:0
+#, python-format
+msgid "New"
+msgstr "Nouveau"
+
+#. module: dw_mrp_supply_plan
+#: model:res.groups,name:dw_mrp_supply_plan.dw_mrp_supply_plan_group_user
+msgid "Officer: Manage Supply Plans"
+msgstr "Officier : Gérer les plans d'approvisionnement"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview__order_line_ids
+msgid "Order Lines"
+msgstr "Lignes de commande"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__quantity_done
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan_lines__quantity_done
+msgid "Ordered Quantity"
+msgstr "Quantité commandée"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview__po_id
+msgid "PO"
+msgstr "PO"
+
+#. module: dw_mrp_supply_plan
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_purchase_order_preview_form_view
+msgid "PO Lines"
+msgstr "Lignes de commande"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview__name
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview_line__preview_id
+msgid "PO Version"
+msgstr "Version du bon de commande"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview__date_planned
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview_line__date_planned
+msgid "Planned Date"
+msgstr "Date prévue"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__quantity_planned
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan_lines__quantity_planned
+msgid "Planned Quantity"
+msgstr "Quantité prévue"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview__wizard_id
+msgid "Preview Ref"
+msgstr "Aperçu Réf"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__product_id
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan_lines__product_id
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview_line__product_id
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_mrp_product_supply_plan_view_search
+msgid "Product"
+msgstr "Produit"
+
+#. module: dw_mrp_supply_plan
+#. odoo-python
+#: code:addons/custom_addons/DW_PHARMA/dw_mrp_supply_plan/models/dw_01_mrp_supply_plan.py:0
+#: code:addons/dw_mrp_supply_plan/models/dw_01_mrp_supply_plan.py:0
+#: model:ir.actions.client,name:dw_mrp_supply_plan.action_mrp_product_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__product_supply_plan_id
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan__product_supply_plan_ids
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_mrp_product_supply_plan_view_search
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_mrp_supply_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.view_dw_mrp_product_supply_plan_form
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.view_mrp_supply_plan_form
+#, python-format
+msgid "Product Supply Plan"
+msgstr "Plan d'approvisionnement des produits"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.constraint,message:dw_mrp_supply_plan.constraint_dw_mrp_supply_plan_lines_unique_product_id_supply_plan_id
+msgid "Product must be unique within the same Supply Plan !"
+msgstr "Le produit doit être unique au sein du même plan d'approvisionnement !"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model,name:dw_mrp_supply_plan.model_dw_mrp_product_supply_plan
+msgid ""
+"Product's MONTHLY supply plan. For one Product, for EACH month, quantities "
+"are set stored"
+msgstr ""
+
+#. module: dw_mrp_supply_plan
+#. odoo-python
+#: code:addons/custom_addons/DW_PHARMA/dw_mrp_supply_plan/models/dw_02_mrp_supply_plan_lines.py:0
+#: code:addons/dw_mrp_supply_plan/models/dw_02_mrp_supply_plan_lines.py:0
+#, python-format
+msgid "Product's Monthly Supply Plan"
+msgstr "Plan d'approvisionnement mensuel du produit"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_wizard__product_supply_plan_ids
+msgid "Products to Supply"
+msgstr "Produits à fournir"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model,name:dw_mrp_supply_plan.model_dw_purchase_order_preview
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_wizard__purchase_order_preview_ids
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_mrp_supply_wizard_view_form
+msgid "Purchase Order Preview"
+msgstr "Aperçu du bon de commande"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model,name:dw_mrp_supply_plan.model_dw_purchase_order_preview_line
+msgid "Purchase Order Preview Line"
+msgstr "Ligne d'aperçu de la commande d'achat"
+
+#. module: dw_mrp_supply_plan
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_purchase_order_preview_form_view
+msgid "Purchase Order Version"
+msgstr "Purchase Order Version"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.actions.act_window,name:dw_mrp_supply_plan.action_dw_purchase_order_preview
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_purchase_order_preview_tree_view
+msgid "Purchase Order Versions"
+msgstr "Versions de bon de commande"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.ui.menu,name:dw_mrp_supply_plan.dw_purchase_order_preview_menu
+msgid "Purchase Orders Plan"
+msgstr "Plan de bons de commande"
+
+#. module: dw_mrp_supply_plan
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_mrp_supply_wizard_view_form
+msgid "Purchase Orders Preview"
+msgstr "Aperçu des bons de commande"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__quantity_to_order
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan_lines__quantity_to_order
+msgid "Quantities to Order"
+msgstr "Quantités à commander"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview_line__product_qty
+msgid "Quantity"
+msgstr "Quantité"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__name
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan__name
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan_lines__name
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview_line__name
+msgid "Ref"
+msgstr "Réf"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_wizard__name
+msgid "Reference"
+msgstr "Référence"
+
+#. module: dw_mrp_supply_plan
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.view_dw_mrp_product_monthly_supply_plan_tree
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.view_dw_mrp_product_supply_plan_form
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.view_mrp_supply_plan_form
+msgid "Reject"
+msgstr "Rejeter"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields.selection,name:dw_mrp_supply_plan.selection__dw_mrp_product_supply_plan__state__rejected
+#: model:ir.model.fields.selection,name:dw_mrp_supply_plan.selection__dw_mrp_supply_plan__state__rejected
+msgid "Rejected"
+msgstr "Rejeté"
+
+#. module: dw_mrp_supply_plan
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_mrp_product_supply_plan_view_search
+msgid "Requirement Date"
+msgstr "Date requise"
+
+#. module: dw_mrp_supply_plan
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_mrp_product_supply_plan_view_search
+msgid "Search Purchase Order"
+msgstr "Recherche de bon de commande"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan__season_date
+msgid "Season Date"
+msgstr "Date de la saison"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan_lines__sequence
+msgid "Sequence"
+msgstr "Séquence"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan__start_date
+msgid "Start Date"
+msgstr "Date de début"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__state
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan__state
+msgid "Status"
+msgstr "Statut"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__partner_id
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan_lines__partner_id
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview__partner_id
+#: model:ir.model.fields.selection,name:dw_mrp_supply_plan.selection__dw_mrp_supply_wizard_grouping_option__name__partner
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_mrp_product_supply_plan_view_search
+msgid "Supplier"
+msgstr "Fournisseur"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__supply_plan_id
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan_lines__supply_plan_id
+#: model:ir.ui.menu,name:dw_mrp_supply_plan.menu_dw_mrp_supply_plan_root
+#: model_terms:ir.ui.view,arch_db:dw_mrp_supply_plan.dw_mrp_product_supply_plan_view_search
+msgid "Supply Plan"
+msgstr "Plan d'approvisionnement"
+
+#. module: dw_mrp_supply_plan
+#: model:res.groups,name:dw_mrp_supply_plan.dw_mrp_supply_plan_group_manager
+msgid "Supply Plan Administrator"
+msgstr "Administrateur du plan d'approvisionnement"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.ui.menu,name:dw_mrp_supply_plan.menu_dw_mrp_product_supply_plan
+msgid "Supply Plan Lines"
+msgstr "Lignes du plan d'approvisionnement"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.ui.menu,name:dw_mrp_supply_plan.menu_dw_mrp_supply_plan
+msgid "Supply Plans"
+msgstr "Plans d'approvisionnement"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview_line__price_unit
+msgid "Unit Price"
+msgstr "Prix unitaire"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__uom_id
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_mrp_supply_plan_lines__uom_id
+#: model:ir.model.fields,field_description:dw_mrp_supply_plan.field_dw_purchase_order_preview_line__product_uom
+msgid "Unit of Measure"
+msgstr "Unité de mesure"
+
+#. module: dw_mrp_supply_plan
+#: model:ir.model.fields,help:dw_mrp_supply_plan.field_dw_mrp_product_supply_plan__partner_id
+#: model:ir.model.fields,help:dw_mrp_supply_plan.field_dw_mrp_supply_plan_lines__partner_id
+msgid "You can find a vendor by its Name, TIN, Email or Internal Reference."
+msgstr "Vous pouvez trouver un fournisseur par son nom, son numéro d'identification fiscale, son e-mail ou sa référence interne."

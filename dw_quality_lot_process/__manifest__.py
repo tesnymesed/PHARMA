@@ -20,6 +20,7 @@
         #view
         'views/stock_lot_views.xml',
         'views/product_product_views.xml',
+        'views/quality_check_views.xml',
         #wizards
         'wizards/stock_lot_cancel_reason_views.xml',
         #menu

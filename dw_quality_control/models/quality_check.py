@@ -206,8 +206,8 @@ class QualityCheck(models.Model):
                 quality.do_fail()
         return super().do_fail()
 
-    def do_pass(self):
-        return self.action_lot_approval()
+    """ def do_pass(self):
+        return self.action_lot_approval() """
 
     def do_pass_per_quality(self):
         if self.verdict != 'proper':

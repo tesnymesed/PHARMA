@@ -7,7 +7,14 @@ class StockLotCancelWizard(models.TransientModel):
     reason_id = fields.Many2one('stock.lot.cancel.reason', string='Reason')  # Reason is optional
     note = fields.Text(string='Note')  # Note is optional
     lot_id = fields.Many2one('stock.lot', string='Stock Lot', required=True)
-    
+    status = fields.Selection([
+        ('not_conform', 'Not Conform'),
+        ('blocked', 'Blocked'),
+        ('cancelled', 'Cancelled')],string="Lot Failed Status")
+    check_quality_id = fields.Many2one(
+        'quality.check',
+        string='check_quality',
+        )
     def _create_history_record(self,with_reason=False):
         '''This function creates record in stock.lot.history
         the parameter with_reason is set to false in case the user does not provide a reason
@@ -18,26 +25,23 @@ class StockLotCancelWizard(models.TransientModel):
             'user_id': self.env.user.id,
             'change_date': fields.Datetime.now(),
             'previous_status': self.lot_id.lot_status,
-            'new_status': 'cancelled',
+            'new_status': self.status if self.status else False,
             'reason_id': self.reason_id.id if with_reason else False,
             'note' : self.note if with_reason else '',
         }
         self.env['stock.lot.history'].sudo().create(history_vals)
     
-    def action_cancel_reason_lot(self):        
+    def action_cancel_reason_lot(self):
+        if self.check_quality_id :
+            self.check_quality_id.do_fail()
+        if self.lot_id.lot_quarantine_status !='analyzed' :
+            self.lot_id.action_set_analyzed()      
         self._create_history_record(with_reason=True)
-        self.lot_id.lot_status = 'cancelled' # Update the lot status to cancelled 
+        self.lot_id.lot_status = self.status # Update the lot status to cancelled 
         # Post a message in the chatter for tracking
         message = f"Lot cancelled. Reason: {self.reason_id.name if self.reason_id else 'No reason provided'}"
         self.lot_id.message_post(body=message)
 
         return True
     def action_cancel(self):
-        
-        self._create_history_record()
-        self.lot_id.lot_status = 'cancelled' # Update the lot status to cancelled 
-        # Post a message in the chatter for tracking
-        message = f"Lot cancelled. Reason: {self.reason_id.name if self.reason_id else 'No reason provided'}"
-        self.lot_id.message_post(body=message)
-
         return True

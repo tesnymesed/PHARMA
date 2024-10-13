@@ -6,7 +6,8 @@
         <field name="arch" type="xml">
             <form string="Cancel Stock Lot">
                 <group>
-                    <field name="reason_id"/>
+                    <field name="status" required="1"/>
+                    <field name="reason_id" required="1"/>
                     <field name="note"/>
                 </group>
                 <footer>

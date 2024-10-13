@@ -43,12 +43,24 @@ class StockLot(models.Model):
         self.lot_status = 'conform'
     
     def action_set_not_conform(self):
-        self._create_history_record(self.lot_status, 'not_conform')
-        self.lot_status = 'not_conform'
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Cancel Lot',
+            'res_model': 'stock.lot.cancel.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_lot_id': self.id,'default_status':'not_conform'}
+        }
 
     def action_set_blocked(self):
-        self._create_history_record(self.lot_status, 'blocked')
-        self.lot_status = 'blocked'
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Cancel Lot',
+            'res_model': 'stock.lot.cancel.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_lot_id': self.id,'default_status':'blocked'}
+        }
 
     def action_set_cancelled(self):
         return {
@@ -57,7 +69,7 @@ class StockLot(models.Model):
             'res_model': 'stock.lot.cancel.wizard',
             'view_mode': 'form',
             'target': 'new',
-            'context': {'default_lot_id': self.id}
+            'context': {'default_lot_id': self.id,'default_status':'cancelled'}
         }
         
 

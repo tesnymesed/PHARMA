@@ -37,7 +37,7 @@ class StockLotCancelWizard(models.TransientModel):
         if self.lot_id.lot_quarantine_status !='analyzed' :
             self.lot_id.action_set_analyzed()      
         self._create_history_record(with_reason=True)
-        self.lot_id.lot_status = self.status # Update the lot status to cancelled 
+        self.lot_id.lot_status = self.status
         # Post a message in the chatter for tracking
         message = f"Lot cancelled. Reason: {self.reason_id.name if self.reason_id else 'No reason provided'}"
         self.lot_id.message_post(body=message)

@@ -4,8 +4,8 @@ class StockLotCancelWizard(models.TransientModel):
     _name = 'stock.lot.cancel.wizard'
     _description = 'Stock Lot Cancel Wizard'
 
-    reason_id = fields.Many2one('stock.lot.cancel.reason', string='Reason')  # Reason is optional
-    note = fields.Text(string='Note')  # Note is optional
+    reason_id = fields.Many2one('stock.lot.cancel.reason', string='Reason')
+    note = fields.Text(string='Note')
     lot_id = fields.Many2one('stock.lot', string='Stock Lot', required=True)
     status = fields.Selection([
         ('not_conform', 'Not Conform'),
@@ -34,11 +34,10 @@ class StockLotCancelWizard(models.TransientModel):
     def action_cancel_reason_lot(self):
         if self.check_quality_id :
             self.check_quality_id.do_fail()
-        if self.lot_id.lot_quarantine_status !='analyzed' :
+        if self.lot_id and self.lot_id.lot_quarantine_status !='analyzed' :
             self.lot_id.action_set_analyzed()      
         self._create_history_record(with_reason=True)
-        self.lot_id.lot_status = self.status
-        # Post a message in the chatter for tracking
+        self.lot_id.lot_status = self.status if self.status else False
         message = f"Lot cancelled. Reason: {self.reason_id.name if self.reason_id else 'No reason provided'}"
         self.lot_id.message_post(body=message)
 

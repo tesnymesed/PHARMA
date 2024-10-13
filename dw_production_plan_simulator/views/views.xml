@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+<!--    <record id="mrp_mps.action_mrp_mps" model="ir.actions.client">-->
+<!--        <field name="context">{'dw_pharma_simulation': False, 'dw_bypass_pharma_simulation': False}</field>-->
+<!--    </record>-->
+
+    <record id="action_dw_mrp_mps" model="ir.actions.client">
+        <field name="name">Simulated X Master Production Schedule</field>
+        <field name="res_model">mrp.production.schedule</field>
+        <field name="tag">dw_mrp_mps_client_action</field>
+        <field name="context" eval="{'dw_bypass_pharma_simulation': False}"/>
+    </record>
+
     <record id="dw_production_plan_simulator_production_plan_simulation_form_view"
         model="ir.ui.view">
         <field name="name">dw.production.plan.simulation.form.view</field>

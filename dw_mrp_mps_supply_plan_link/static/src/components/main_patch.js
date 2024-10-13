@@ -5,6 +5,7 @@ import MainComponent from "@mrp_mps/components/main";
 import { loadJS, loadCSS } from "@web/core/assets";
 const { onMounted, onWillStart } = owl;
 import { useBus } from "@web/core/utils/hooks";
+import { registry } from "@web/core/registry";
 
 patch(MainComponent.prototype, {
   createSupplyPlans() {
@@ -15,3 +16,4 @@ patch(MainComponent.prototype, {
     this.model._createSupplyPlans(startDate, endDate);
   },
 });
+

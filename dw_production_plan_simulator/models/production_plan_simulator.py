@@ -104,6 +104,42 @@ class DwProductionPlanSimulator(models.Model):
     def apply_search_filter(self):
         pass
 
+    def dw_action_open_mps_view(self, state):
+        # self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id("dw_production_plan_simulator.action_dw_mrp_mps")
+        # action['context'] = {'dw_pharma_simulation': True, 'dw_bypass_pharma_simulation': False}
+
+        # action['domain'] = [('dw_simulation_ok', '=', 'true')]
+        if action.get('domain'):
+            print(action, action.get('domain'))
+
+        return action
+
+        # {
+        #   name: "DW Materials Availability",
+        #   type: "ir.actions.client",
+        #   tag: "dw_mrp_mps_client_action",
+        #   target: "current",
+        #   domain: [["company_id", "=", state.currentCompanyId]],
+        #   params: {
+        #     company: state.currentCompanyId,
+        #     startDate: state.startDate,
+        #     endDate: state.endDate,
+        #     dw_bypass_pharma_simulation: false,
+        #     dw_pharma_simulation: true,
+        #   },
+        #   context: {
+        #     company: state.currentCompanyId,
+        #     startDate: state.startDate,
+        #     endDate: state.endDate,
+        #     dw_bypass_pharma_simulation: false,
+        #     dw_pharma_simulation: true,
+        #   },
+        #
+        #   //          views: [[false, "form"]],
+        #   //          res_model: "dw.production.plan.simulation",
+        #   //          res_id: productionSimulationId,
+        # }
     @api.depends('company_id.dw_prod_sim_date_sales_range_start',
                  'company_id.dw_prod_sim_date_sales_range_end',
                  'product_plan_sim_ids.sold_qty',
@@ -553,6 +589,7 @@ class DwProductionPlanSimulator(models.Model):
                 vals['bom_id'] = pps.bom_id.id if pps.bom_id else False
                 vals['warehouse_id'] = pps.warehouse_id.id
 
+            # mps = self.env['mrp.production.schedule'].with_context(dw_pharma_simulation=True).create([vals])
             mps = self.env['mrp.production.schedule'].create([vals])
             mps.write({
                 'forecast_target_qty': prod_sim.get('safety_stock_target_qty'),

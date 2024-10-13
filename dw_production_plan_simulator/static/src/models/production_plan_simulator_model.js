@@ -508,36 +508,80 @@ export class ProductionPlanSimulatorModel extends EventBus {
     });
   }
 
-  _openMPS(state) {
-    this.mutex.exec(() => {
-      this.action.doAction(
-        {
-          name: "Materials Availability",
-          type: "ir.actions.client",
-          tag: "mrp_mps_client_action",
-          target: "current",
-          domain: [["company_id", "=", state.currentCompanyId]],
-          params: {
-            company: state.currentCompanyId,
-            startDate: state.startDate,
-            endDate: state.endDate,
-          },
-          context: {
-            company: state.currentCompanyId,
-            startDate: state.startDate,
-            endDate: state.endDate,
-          },
+  async _openMPS(state) {
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorModel ~ async #### UPDATED #### _openMPS ~ state:",
+      state
+    );
+    const action = await this.orm.call(
+      "dw.production.plan.simulation",
+      "dw_action_open_mps_view",
+      [state.currentCompanyId, state]
+    );
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorModel ~ _openMPS ~ action:",
+      action
+    );
+    action.params = {
+      company: state.currentCompanyId,
+      startDate: state.startDate,
+      endDate: state.endDate,
+      dw_pharma_simulation: true,
+      dw_bypass_pharma_simulation: false,
+    };
 
-          //          views: [[false, "form"]],
-          //          res_model: "dw.production.plan.simulation",
-          //          res_id: productionSimulationId,
-        }
-        //        {
-        //          onClose: () => this.reload(productionSimulationId),
-        //        }
-      );
-    });
+    action.context = {
+      company: state.currentCompanyId,
+      startDate: state.startDate,
+      endDate: state.endDate,
+       dw_pharma_simulation: true,
+      dw_bypass_pharma_simulation: false,
+    };
+    // action.context = {
+    //   active_model: "product.product",
+    //   active_id: this.productionSimulation.product_id[0],
+    //   warehouse_id:
+    //     this.productionSimulation.warehouse_id &&
+    //     this.productionSimulation.warehouse_id[0],
+    // };
+    return this.action.doAction(action);
   }
+
+  // _openMPS(state) {
+  //   this.mutex.exec(() => {
+  //     this.action
+  //       .doAction
+  //       //  {
+  //       //    name: "DW Materials Availability",
+  //       //    type: "ir.actions.client",
+  //       //    tag: "dw_mrp_mps_client_action",
+  //       //    target: "current",
+  //       //    domain: [["company_id", "=", state.currentCompanyId]],
+  //       //    params: {
+  //       //      company: state.currentCompanyId,
+  //       //      startDate: state.startDate,
+  //       //      endDate: state.endDate,
+  //       //      dw_bypass_pharma_simulation: false,
+  //       //      dw_pharma_simulation: true,
+  //       //    },
+  //       //    context: {
+  //       //      company: state.currentCompanyId,
+  //       //      startDate: state.startDate,
+  //       //      endDate: state.endDate,
+  //       //      dw_bypass_pharma_simulation: false,
+  //       //      dw_pharma_simulation: true,
+  //       //    },
+
+  //       //    //          views: [[false, "form"]],
+  //       //    //          res_model: "dw.production.plan.simulation",
+  //       //    //          res_id: productionSimulationId,
+  //       //  }
+  //       //        {
+  //       //          onClose: () => this.reload(productionSimulationId),
+  //       //        }
+  //       ();
+  //   });
+  // }
 
   /**
    * Open the dw.production.plan.simulation form view in order to edit the record.

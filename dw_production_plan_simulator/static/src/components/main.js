@@ -17,6 +17,8 @@ import { WithSearch } from "@web/search/with_search/with_search";
 import { ActionMenus } from "@web/search/action_menus/action_menus";
 import { download } from "@web/core/network/download";
 import { ExportDataDialog } from "@web/views/view_dialogs/export_data_dialog";
+import MainComponent from "@mrp_mps/components/main";
+
 import {
   Component,
   onWillStart,
@@ -133,6 +135,16 @@ class ProductionPlanSimulatorComponent extends Component {
         this.state.startDate,
         this.state.endDate
       );
+
+      //      this._MPSAction = await this.orm.call(
+      //        "dw.production.plan.simulation",
+      //        "dw_action_open_mps_view",
+      //        [this.state.currentCompanyId, this.state]
+      //      );
+      //      console.log(
+      //        "🚀 ~ ProductionPlanSimulatorComponent ~ setup ~ this._MPSAction:",
+      //        this._MPSAction
+      //      );
     });
 
     onMounted(async () => {
@@ -930,7 +942,7 @@ class ProductionPlanSimulatorComponent extends Component {
 ProductionPlanSimulatorComponent.template =
   "production_plan_simulator.prod_plan_sim_template";
 ProductionPlanSimulatorComponent.components = {
-  // MrpMpsControlPanel,
+  //  MainComponent,
   // WithSearch,
   ProductionPlanSimulatorLine,
   CheckBox,
@@ -946,3 +958,5 @@ registry
   );
 
 export default ProductionPlanSimulatorComponent;
+
+registry.category("actions").add("dw_mrp_mps_client_action", MainComponent);

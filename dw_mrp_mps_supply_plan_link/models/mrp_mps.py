@@ -51,7 +51,10 @@ class DWMrpProductionSchedule(models.Model):
             if existing_supply_plans:
                 versions = [int(plan.name.split(__SEPARATOR__)[-1]) for plan in existing_supply_plans if
                             plan.name.split(__SEPARATOR__)[-1].isdigit()]
-                next_version = max(versions) + 1
+                try:
+                    next_version = max(versions) + 1
+                except ValueError:
+                    next_version = 1
             else:
                 next_version = 1
 
@@ -73,7 +76,9 @@ class DWMrpProductionSchedule(models.Model):
                 if ids:
                     result.extend(ids)
 
-        return result
+            return result
+        else:
+            print('No records found')
 
     def process_data(self, input_data, supply_plan):
         ids = []

@@ -349,9 +349,9 @@ class ProductionPlanSimulatorComponent extends Component {
 
   initFilterSettings() {
     this.initCompaniesSelect("select-company");
-    this.initPlanningCycleSelect("select-planning-cycle");
+//    this.initPlanningCycleSelect("select-planning-cycle");
 
-    this.initCalendarInput("planning-period", "planningDate", "start");
+//    this.initCalendarInput("planning-period", "planningDate", "start");
 
     this.initCalendarInput(
       "plan-date-range-start",
@@ -624,11 +624,11 @@ class ProductionPlanSimulatorComponent extends Component {
     // this.state.salesStartDate = salesPicker.startDate.format("YYYY-MM-DD");
     // this.state.salesEndDate = salesPicker.endDate.format("YYYY-MM-DD");
 
-    this.state.planningCycle = $(
-      "#select-planning-cycle option:selected"
-    ).val();
+//    this.state.planningCycle = $(
+//      "#select-planning-cycle option:selected"
+//    ).val();
 
-    this.getCalendarValue("planning-period", "planningDate", "start");
+//    this.getCalendarValue("planning-period", "planningDate", "start");
 
     this.getCalendarValue("plan-date-range-start", "startDate", "start");
     this.getCalendarValue("plan-date-range-end", "endDate", "end");

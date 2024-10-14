@@ -77,7 +77,7 @@
       <!--      <tr-->
       <!--        name="demand_forecast_year_minus_2"-->
       <!--        t-attf-class="{{! groups.mrp_mps_show_actual_demand_year_minus_2 and 'o_hidden' or
-            ''}}"-->
+              ''}}"-->
       <!--      >-->
       <!--        <th />-->
       <!--        <th scope="row">-->
@@ -194,8 +194,8 @@
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
             <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
-                  groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
-                  and 'o_mps_inline' or ''}}"-->
+                    groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+                    and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -228,8 +228,8 @@
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
             <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
-                  groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
-                  and 'o_mps_inline' or ''}}"-->
+                    groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+                    and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.planned_production_batches)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -255,8 +255,8 @@
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
             <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
-                  groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
-                  and 'o_mps_inline' or ''}}"-->
+                    groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+                    and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -282,8 +282,8 @@
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
             <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
-                  groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
-                  and 'o_mps_inline' or ''}}"-->
+                    groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+                    and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -366,8 +366,8 @@
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
             <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
-                  groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
-                  and 'o_mps_inline' or ''}}"-->
+                    groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+                    and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -393,8 +393,8 @@
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
             <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
-                  groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
-                  and 'o_mps_inline' or ''}}"-->
+                    groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+                    and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -419,8 +419,8 @@
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
             <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
-                  groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
-                  and 'o_mps_inline' or ''}}"-->
+                    groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+                    and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -469,8 +469,8 @@
             <!--              type="text"-->
             <!--              t-att-data-date_index="simulation_index"-->
             <!--              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{!
-                  groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
-                  and 'o_mps_inline' or ''}}"-->
+                    groups.mrp_mps_show_demand_forecast and 'o_hidden' or groups.mrp_mps_show_actual_demand
+                    and 'o_mps_inline' or ''}}"-->
             <!--              t-att-value="formatFloat(simulation.sold_qty)"-->
             <!--              t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"-->
             <!--              t-on-focus.prevent="_onFocusInput"-->
@@ -482,7 +482,7 @@
       <!--      <tr-->
       <!--        name="demand_forecast_year_minus_1"-->
       <!--        t-attf-class="{{! groups.mrp_mps_show_actual_demand_year_minus_1 and 'o_hidden' or
-            ''}}"-->
+              ''}}"-->
       <!--      >-->
       <!--        <th />-->
       <!--        <th scope="row">-->
@@ -509,14 +509,16 @@
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="The confirmed demand, based on the confirmed sales orders."
-            >Actual</span>
+            >Actual</span
+          >
           <span t-attf-class="{{ '' }}"> / </span>
           <span
             t-attf-class="{{ '' }}"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="The forecasted demand. This value has to be entered manually."
-            >Forecasted Demand</span>
+            >Forecasted Demand</span
+          >
         </th>
         <th></th>
         <t
@@ -561,7 +563,8 @@
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="The quantity being replenished, based on the Requests for Quotation and the Manufacturing Orders."
-            >Actual</span>
+            >Actual</span
+          >
           <span t-attf-class="{{ '' }}"> / </span>
           <span
             t-attf-class="{{ '' }}"
@@ -641,14 +644,16 @@
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="Quantity predicted to be available for sale at the end of the period (= to replenish - actual demand)."
-            >ATP</span>
+            >ATP</span
+          >
           <span t-attf-class="{{ '' }}"> / </span>
           <span
             t-attf-class="{{ '' }}"
             data-bs-toggle="tooltip"
             data-bs-placement="bottom"
             title="The forecasted quantity in stock at the end of the period."
-            >Forecasted Stock</span>
+            >Forecasted Stock</span
+          >
         </th>
         <th class="text-end"></th>
         <t
@@ -670,8 +675,8 @@
         </t>
       </tr>
       <!-- <ProductionPlanBatchesNotesEditor
-        data="this.formVals"
-      /> -->
+          data="this.formVals"
+        /> -->
       <!-- Prod Plan Batch Notes Modal -->
 
       <div
@@ -723,7 +728,8 @@
                         t-attf-for="production-plan-batches-{{
                           productionSimulation.id
                         }}"
-                        >Production Plan Batches</label>
+                        >Production Plan Batches</label
+                      >
                     </div>
                     <div class="batch-quantity">
                       <span
@@ -735,9 +741,9 @@
                       />
                     </div>
                     <!-- t-attf-class="{{formatFloat(formVals.eff_planned_production_batches) &gt;
-                    formatFloat(formVals.batch_count) and 'text-success' or 
-                                     'text-danger' or ''
-                                    }}" -->
+                      formatFloat(formVals.batch_count) and 'text-success' or
+                                       'text-danger' or ''
+                                      }}" -->
                   </div>
                   <div class="batch-quantity-container col">
                     <div class="batch-quantity-label">
@@ -745,7 +751,8 @@
                         t-attf-for="suggested-production-plan-batches-{{
                           productionSimulation.id
                         }}"
-                        >Suggested Production Plan Batches</label>
+                        >Suggested Production Plan Batches</label
+                      >
                     </div>
                     <div class="batch-quantity">
                       <span
@@ -757,22 +764,23 @@
                       />
                     </div>
                     <!-- t-attf-class="{{formatFloat(formVals.batch_count) &lt;
-                    formatFloat(formVals.eff_planned_production_batches) and 'text-success' or 
-                                     'text-danger' or ''
-                                    }}" -->
+                        formatFloat(formVals.eff_planned_production_batches) and 'text-success' or
+                                         'text-danger' or ''
+                                        }}" -->
                     <!-- <input
-                  type="text"
-                  id="suggested-production-plan-batches"
-                  name="suggested-production-plan-batches"
-                  readonly="True"
-                /> -->
+                      type="text"
+                      id="suggested-production-plan-batches"
+                      name="suggested-production-plan-batches"
+                      readonly="True"
+                    /> -->
                   </div>
                 </div>
                 <div class="notes-container form-group row">
                   <label
                     t-attf-for="notes-{{ productionSimulation.id }}"
                     class="notes-label"
-                    >Notes:</label>
+                    >Notes:</label
+                  >
                   <textarea
                     t-attf-id="notes-{{ productionSimulation.id }}"
                     t-attf-class="notes-textarea"

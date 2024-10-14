@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import random
 from collections import defaultdict
 from datetime import datetime
 from math import log10
@@ -13,8 +12,6 @@ from odoo.tools.float_utils import float_round
 
 class DWMrpProductionSchedule(models.Model):
     _inherit = 'mrp.production.schedule'
-
-
 
     @api.model
     def get_mps_view_state(self, domain=False, offset=0, limit=False, start_date_range='', end_date_range=''):

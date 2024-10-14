@@ -43,24 +43,24 @@
                           ></select>
                         </div>
 
-                        <div class="col-sm-4">
-                          <label for="select-planning-cycle" class="form-label"
-                            >Planning Cycle</label
-                          >
-                          <select
-                            id="select-planning-cycle"
-                            class="form-select"
-                            data-placeholder="Planning Cycle ..."
-                            t-on-change.stop="(ev) => this._onChangePlanningCycle(ev)"
-                          ></select>
-                        </div>
+<!--                        <div class="col-sm-4">-->
+<!--                          <label for="select-planning-cycle" class="form-label"-->
+<!--                            >Planning Cycle</label-->
+<!--                          >-->
+<!--                          <select-->
+<!--                            id="select-planning-cycle"-->
+<!--                            class="form-select"-->
+<!--                            data-placeholder="Planning Cycle ..."-->
+<!--                            t-on-change.stop="(ev) => this._onChangePlanningCycle(ev)"-->
+<!--                          ></select>-->
+<!--                        </div>-->
 
-                        <div class="col-sm-4">
-                          <label for="planning-period" class="form-label"
-                            >Planning Period (Exercice de planification):</label
-                          >
-                          <input id="planning-period" class="form-select" />
-                        </div>
+<!--                        <div class="col-sm-4">-->
+<!--                          <label for="planning-period" class="form-label"-->
+<!--                            >Planning Period (Exercice de planification):</label-->
+<!--                          >-->
+<!--                          <input id="planning-period" class="form-select" />-->
+<!--                        </div>-->
                       </div>
 
                       <div class="row mb-12">
@@ -356,6 +356,7 @@
             </button>
           </div>
         </div>
+<!--        <MainComponent action="_MPSAction" />-->
       </div>
     </div>
   </div>

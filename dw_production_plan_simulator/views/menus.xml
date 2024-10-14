@@ -26,5 +26,12 @@
                 action="dw_production_plan_simulator.action_production_plan_simulator"
                 sequence="10"/>
 
+        <menuitem
+                id="dw_mrp_mps_report_menu"
+                name="Simulated Master Production Schedule"
+                action="action_dw_mrp_mps"
+                sequence="20"
+                parent="dw_production_plan_simulator.menu_dw_production_plan_simulator_root"/>
+
     </data>
 </odoo>

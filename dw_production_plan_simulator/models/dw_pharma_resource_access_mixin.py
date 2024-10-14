@@ -40,7 +40,7 @@ class DwPharmaAccessMixin(models.AbstractModel):
 
         # Call super
         return super(DwPharmaAccessMixin, self)._search(domain, offset=offset, limit=limit, order=order,
-                                                       access_rights_uid=access_rights_uid)
+                                                        access_rights_uid=access_rights_uid)
 
     @api.model
     def default_get(self, fields_list):
@@ -88,7 +88,11 @@ class DwPharmaAccessMixin(models.AbstractModel):
         context = self.env.context
         if not action_id or action_id in [453, 410, 267, 411]:
             return context
-        action = self.env['ir.actions.act_window'].sudo().browse(action_id)
+
+        b_action = self.env['ir.actions.actions'].sudo().browse(action_id)
+        action_type = b_action.type
+        action = self.env[action_type].sudo().browse(action_id)
+
         action_context_str = self._sanitize_context_attribute(action.context or "{}")
         if 'allowed_company_ids[0]' in action_context_str:
             if hasattr(self, 'allowed_company_ids') and self.allowed_company_ids:

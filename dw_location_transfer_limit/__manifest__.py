@@ -14,13 +14,13 @@
         #data
 
         #security
+        'security/security.xml',
         'security/ir.model.access.csv',
         #report
         #view
-        'views/stock_location_transfer_limit_views.xml',
+        'views/product_product_views.xml',
         'views/stock_location_inherit.xml',
         #menu
-        'menus.xml',
     ],
 
     'installable': True,

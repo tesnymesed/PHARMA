@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="0">
+    
+        <record id="product_product_form_view_inherited" model="ir.ui.view">
+            <field name="name">product.product.inherited</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="dw_location_transfer_limit.product_normal_form_view_inherited"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='restrict_transfer']" position="after">
+                    <field name="requires_lot_compliance_check" groups="dw_quality_lot_process.check_compiliance_lot_configuration_group"/>
+                </xpath>
+                
+            </field>
+        </record>
+    
+    </data>
+</odoo>

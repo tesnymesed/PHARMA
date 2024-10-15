@@ -31,7 +31,7 @@ class QualityCheck(models.Model):
             'res_model': 'stock.lot.cancel.wizard',
             'view_mode': 'form',
             'target': 'new',
-            'context': {'default_lot_id': self.lot_id.id,'default_quality_check':self.id}
+            'context': {'default_lot_id': self.lot_id.id,'default_check_quality_id':self.id}
         }
         
         

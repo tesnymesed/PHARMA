@@ -90,7 +90,7 @@ export default class ProductionPlanSimulatorLine extends Component {
    * @private
    * @param {MouseEvent} ev
    */
-  _onClickRecordLink(ev) {
+  _onClickLineRecordLink(ev) {
     this.actionService.doAction({
       type: "ir.actions.act_window",
       res_model: ev.currentTarget.dataset.model,
@@ -109,7 +109,7 @@ export default class ProductionPlanSimulatorLine extends Component {
    * @param {MouseEvent} ev
    * @param {Integer} id dw.production.plan.simulation Id.
    */
-  _onClickEdit(ev, id) {
+  _onClickProductLineEdit(ev, id) {
     this.model._editProduct(id);
   }
 
@@ -512,11 +512,14 @@ export default class ProductionPlanSimulatorLine extends Component {
   }
 
   _onClickProdPlanBatchesNotes(ev, targetId) {
-    this.formVals = {};
-    const productionSimulationId = Number(
-      ev.target.closest(".o_mps_content").dataset.id
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorLine ~ _onClickProdPlanBatchesNotes ~ ev.target:",
+      ev.target
     );
 
+    this.formVals = {};
+
+    const productionSimulationId = ev.target.dataset.id;
     const dateStart = ev.target.dataset.date_start;
     const dateStop = ev.target.dataset.date_stop;
     const dateIndex = parseInt(ev.target.dataset.date_index);
@@ -705,7 +708,7 @@ export default class ProductionPlanSimulatorLine extends Component {
 }
 
 ProductionPlanSimulatorLine.template =
-  "dw_production_plan_simulator.ProductionPlanSimulatorLine";
+  "dw_production_plan_simulator.ProductionPlanSimulatorLineTemplate";
 ProductionPlanSimulatorLine.components = {
   CheckBox,
   ProductionPlanBatchesNotesEditor,

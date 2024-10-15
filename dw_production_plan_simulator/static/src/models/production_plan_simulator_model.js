@@ -508,11 +508,8 @@ export class ProductionPlanSimulatorModel extends EventBus {
     });
   }
 
-  async _openMPS(state) {
-    console.log(
-      "🚀 ~ ProductionPlanSimulatorModel ~ async #### UPDATED #### _openMPS ~ state:",
-      state
-    );
+  async _openMPS(ids, state) {
+
     const action = await this.orm.call(
       "dw.production.plan.simulation",
       "dw_action_open_mps_view",
@@ -534,7 +531,7 @@ export class ProductionPlanSimulatorModel extends EventBus {
       company: state.currentCompanyId,
       startDate: state.startDate,
       endDate: state.endDate,
-       dw_pharma_simulation: true,
+      dw_pharma_simulation: true,
       dw_bypass_pharma_simulation: false,
     };
     // action.context = {
@@ -613,20 +610,21 @@ export class ProductionPlanSimulatorModel extends EventBus {
    * @private
    * @param {Integer} productionSimulationId dw.production.plan.simulation Id.
    */
-  _editWorkCenter(productionSimulationId) {
+  _editWorkCenter(workCenterId) {
     this.mutex.exec(() => {
       this.action.doAction(
         {
           name: "Edit Production Plan Simulation",
           type: "ir.actions.act_window",
-          res_model: "dw.production.plan.simulation",
+          res_model: "mrp.workcenter",
+          res_id: workCenterId,
           views: [[false, "form"]],
+          context: { dw_pharma_simulation: true },
           target: "new",
-          res_id: productionSimulationId,
-        },
-        {
-          onClose: () => this.reload(productionSimulationId),
         }
+        //        {
+        //          onClose: () => this.reload(productionSimulationId),
+        //        }
       );
     });
   }

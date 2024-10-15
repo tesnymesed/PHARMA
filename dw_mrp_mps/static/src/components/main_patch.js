@@ -153,12 +153,12 @@ patch(MainComponent.prototype, {
   },
 
   displayAlerts() {
-    $("#alertsModal").modal("show");
+    $("#alerts-modal").modal("show");
     this.initAlertsTable();
   },
 
   closeAlertsModal() {
-    $("#alertsModal").modal("hide");
+    $("#alerts-modal").modal("hide");
   },
 
   initAlertsTable() {

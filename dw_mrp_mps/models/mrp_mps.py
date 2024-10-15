@@ -29,7 +29,7 @@ class DWMrpProductionSchedule(models.Model):
         :rtype: dict
         """
 
-        config = super(DWMrpProductionSchedule, self).get_mps_view_state(domain=False, offset=0, limit=False)
+        config = super(DWMrpProductionSchedule, self).get_mps_view_state(domain=domain, offset=offset, limit=limit)
         productions_schedules = self.env['mrp.production.schedule'].search(domain or [], offset=offset, limit=limit)
         config['date_objs'] = self.env.company._get_date_range(start_date_range=start_date_range,
                                                                end_date_range=end_date_range)

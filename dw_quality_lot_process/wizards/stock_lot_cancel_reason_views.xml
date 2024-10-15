@@ -11,7 +11,7 @@
                     <field name="note"/>
                 </group>
                 <footer>
-                    <button string="Confirm Cancellation" type="object" name="action_cancel_reason_lot" class="btn-primary"/>
+                    <button string="Confirm" type="object" name="action_cancel_reason_lot" class="btn-primary"/>
                     <button string="Cancel" class="btn-secondary" type="object" name="action_cancel"/>
                 </footer>
             </form>

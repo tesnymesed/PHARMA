@@ -45,11 +45,13 @@
                         <field name="lot_status_history_ids">
                             <tree>
                                 <field name="change_date"/>
+                                <field name="user_id"/>
+                                <field name="previous_date_expiration"/>
+                                <field name="new_date_expiration"/>
                                 <field name="previous_status"/>
                                 <field name="new_status"/>
                                 <field name="previous_lot_quarantine_status"/>
                                 <field name="new_lot_quarantine_status"/>
-                                <field name="user_id"/>
                                 <field name="reason_id"/>
                                 <field name="note"/>
 

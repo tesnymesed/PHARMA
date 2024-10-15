@@ -17,7 +17,7 @@ class StockLot(models.Model):
         ('in_progress', 'In progress'),
         ('analyzed','Analyzed'),
         ('reanalyzed','reanalyzed')
-        ],string="Lot status", default='draft')
+        ],string="Analyse Status", default='draft')
     
     compiliance_check = fields.Boolean(related='product_id.requires_lot_compliance_check',readonly=True)
     lot_status_history_ids = fields.One2many('stock.lot.history', 'lot_id', string="Status History")

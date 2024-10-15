@@ -5,7 +5,7 @@ from odoo.exceptions import UserError
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
-    def _validate_move_transfer(self, move_id):
+    """ def _validate_move_transfer(self, move_id):
             product = move_id.product_id
             location = move_id.location_id
             location_dest = move_id.location_dest_id
@@ -28,7 +28,7 @@ class StockPicking(models.Model):
             for move_id in picking.move_ids:
                 self._validate_move_transfer(move_id)
         
-        return super().button_validate()
+        return super().button_validate() """
 
     
 

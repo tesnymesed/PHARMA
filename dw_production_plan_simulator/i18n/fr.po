@@ -1,0 +1,1000 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* dw_production_plan_simulator
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-10 08:16+0000\n"
+"PO-Revision-Date: 2024-10-10 08:16+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.js:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.js:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.js:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.js:0
+#, python-format
+msgid " failed"
+msgstr "échoué"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.js:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.js:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.js:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.js:0
+#, python-format
+msgid " successful"
+msgstr "réussi"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.js:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.js:0
+#, python-format
+msgid "'s site Master production schedule (MRP) creation error: \n"
+msgstr "'s Erreur de création du planning directeur de production (MRP) du site: \n"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.js:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.js:0
+#, python-format
+msgid "'s site Master production schedule (MRP) update successful"
+msgstr "'s Mise à jour réussie du programme directeur de production (MRP) du site"
+
+#. module: dw_production_plan_simulator
+#: model_terms:ir.ui.view,arch_db:dw_production_plan_simulator.dw_production_plan_simulator_production_plan_simulation_form_view
+msgid "<span>Months</span>"
+msgstr "<span>Mois</span>"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "ATP"
+msgstr "ATP"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "Actual"
+msgstr "Réel"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#, python-format
+msgid "Actual Demand"
+msgstr "Demande réelle"
+
+#. module: dw_production_plan_simulator
+#. odoo-python
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/models/production_plan_simulator.py:0
+#: code:addons/dw_production_plan_simulator/models/production_plan_simulator.py:0
+#, python-format
+msgid "Actual Demand %s %s (%s - %s)"
+msgstr "Demande réelle %s %s (%s - %s)"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#, python-format
+msgid "Actual Demand Y-1"
+msgstr "Demande réelle Y-1"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#, python-format
+msgid "Actual Demand Y-2"
+msgstr "Demande réelle Y-2"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#, python-format
+msgid "Actual Replenishment"
+msgstr "Réapprovisionnement réel"
+
+#. module: dw_production_plan_simulator
+#. odoo-python
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/models/production_plan_simulator.py:0
+#: code:addons/dw_production_plan_simulator/models/production_plan_simulator.py:0
+#, python-format
+msgid "Actual Replenishment %s %s (%s - %s)"
+msgstr "Réapprovisionnement réel %s %s (%s - %s)"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "Add/Edit notes."
+msgstr "Ajouter/modifier des notes."
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_product_production_plan_simulation__alert_notes
+msgid "Alert Observations"
+msgstr "Observations d'alerte"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/models/production_plan_simulator_model.js:0
+#: code:addons/dw_production_plan_simulator/static/src/models/production_plan_simulator_model.js:0
+#, python-format
+msgid "Are you sure you want to delete these records?"
+msgstr "Etes-vous sûr de vouloir supprimer ces enregistrements ?"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/models/production_plan_simulator_model.js:0
+#: code:addons/dw_production_plan_simulator/static/src/models/production_plan_simulator_model.js:0
+#, python-format
+msgid "Are you sure you want to delete this record?"
+msgstr "Etes-vous sûr de vouloir supprimer cet enregistrement ?"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#, python-format
+msgid "Available to Promise"
+msgstr "Disponible pour promettre"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_product_production_plan_simulation__batch_count
+msgid "Batches Count"
+msgstr "Nombre de lots"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__bom_id
+msgid "Bill of Materials"
+msgstr "Liste des matériaux"
+
+#. module: dw_production_plan_simulator
+#: model_terms:ir.ui.view,arch_db:dw_production_plan_simulator.dw_production_plan_simulator_production_plan_simulation_form_view
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__workcenter_default_capacity
+msgid "Capacity"
+msgstr "Capacité"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "Capacity Alert."
+msgstr "Alerte de capacité."
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.xml:0
+#, python-format
+msgid "Check Materials availability"
+msgstr "Vérifier la disponibilité des matériaux"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/alert_container.xml:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/alert_container.xml:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/notes_editor.xml:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/notes_editor.xml:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/notes_editor.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/alert_container.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/alert_container.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/notes_editor.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/notes_editor.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/notes_editor.xml:0
+#, python-format
+msgid "Close"
+msgstr "Fermer"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "Closing Stock level"
+msgstr "Niveau de stock à la clôture"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model,name:dw_production_plan_simulator.model_res_company
+msgid "Companies"
+msgstr "Sociétés"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.xml:0
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__company_id
+#, python-format
+msgid "Company"
+msgstr "Entreprise"
+
+#. module: dw_production_plan_simulator
+#: model:ir.ui.menu,name:dw_production_plan_simulator.menu_dw_production_plan_simulator_config
+msgid "Configuration"
+msgstr "Configuration"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/models/production_plan_simulator_model.js:0
+#: code:addons/dw_production_plan_simulator/static/src/models/production_plan_simulator_model.js:0
+#, python-format
+msgid "Confirmation"
+msgstr "Confirmation"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_product_production_plan_simulation__create_uid
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__create_uid
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_product_production_plan_simulation__create_date
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__create_date
+msgid "Created on"
+msgstr "crée le"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model,name:dw_production_plan_simulator.model_dw_pharma_resource_access_mixin
+msgid "DW Pharma Resource Access Mixin"
+msgstr "Accès aux ressources Mixin de DW Pharma"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_product_production_plan_simulation__date
+msgid "Date"
+msgstr "Date"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_product_production_plan_simulation__dw_alert_decision_id
+msgid "Decision"
+msgstr "Décision"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,help:dw_production_plan_simulator.field_dw_production_plan_simulation__workcenter_default_capacity
+msgid ""
+"Default number of pieces (in product UoM) that can be produced in parallel "
+"(at the same time) at this work center."
+msgstr ""
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,help:dw_production_plan_simulator.field_dw_production_plan_simulation__product_uom_id
+msgid "Default unit of measure used for all stock operations."
+msgstr "Unité de mesure par défaut utilisée pour toutes les opérations de stock"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_product_production_plan_simulation__forecasted_demand_qty
+#, python-format
+msgid "Demand Forecast"
+msgstr "Prévision de la demande"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.xml:0
+#, python-format
+msgid "Display Alerts"
+msgstr "Afficher les alertes"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_product_production_plan_simulation__display_name
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__display_name
+msgid "Display Name"
+msgstr "Afficher du nom"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/notes_editor.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/notes_editor.xml:0
+#, python-format
+msgid "Enter your notes here..."
+msgstr "Entrez vos notes ici..."
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.js:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.js:0
+#, python-format
+msgid "Error"
+msgstr "Erreur"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "Forecasted Demand"
+msgstr "Demande prévue"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#, python-format
+msgid "Forecasted Stock"
+msgstr "Stock prévu"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,help:dw_production_plan_simulator.field_dw_production_plan_simulation__sequence
+msgid "Gives the sequence order when displaying a product list"
+msgstr "Donne l'ordre de séquence lors de l'affichage d'une liste de produits"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_product_production_plan_simulation__id
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__id
+msgid "ID"
+msgstr "ID"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "Icon"
+msgstr "Icône"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#, python-format
+msgid "Indirect Demand Forecast"
+msgstr "Prévision de la demande indirecte"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_product_production_plan_simulation__write_uid
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__write_uid
+msgid "Last Updated by"
+msgstr "Last Updated by"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_product_production_plan_simulation__write_date
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__write_date
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.xml:0
+#, python-format
+msgid "Load Products"
+msgstr "Charger les produits"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.js:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.js:0
+#, python-format
+msgid "Load Products to 's site Production Simulation failed"
+msgstr "La simulation de production du chargement des produits sur le site 's a échoué"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.js:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.js:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.js:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.js:0
+#, python-format
+msgid "Load Products to 's site Production Simulation successful"
+msgstr "Chargement des produits sur le site 's Simulation de production réussie"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__max_to_replenish_qty
+msgid "Maximum to Replenish"
+msgstr "Maximum à réapprovisionner"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__min_to_replenish_qty
+msgid "Minimum to Replenish"
+msgstr "Minimum pour réapprovisionner"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/alert_container.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/alert_container.xml:0
+#, python-format
+msgid "Modal body text goes here."
+msgstr "Le corps du texte modal se trouve ici"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/alert_container.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/alert_container.xml:0
+#, python-format
+msgid "Modal title"
+msgstr "Titre modal"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.js:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.js:0
+#, python-format
+msgid "No products were found in 's site "
+msgstr "Aucun produit n'a été trouvé sur le site 's "
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/notes_editor.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/notes_editor.xml:0
+#, python-format
+msgid "Notes:"
+msgstr "Notes:"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_res_company__dw_prod_sim_periods_to_display
+msgid ""
+"Number of columns for the        given period to display in Production Plan "
+"Simulation Tool"
+msgstr ""
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_product_production_plan_simulation__notes
+msgid "Observations"
+msgstr "Observations"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_product_production_plan_simulation__planned_production_qty
+msgid "Planned Production Qty"
+msgstr "Quantité de production prévue"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.xml:0
+#, python-format
+msgid "Planner"
+msgstr "Planificateur"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.xml:0
+#, python-format
+msgid "Planning Cycle"
+msgstr "Cycle de planification"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.xml:0
+#, python-format
+msgid "Planning Period (Exercice de planification):"
+msgstr "Planning Period (Exercice de planification):"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.xml:0
+#, python-format
+msgid "Planning Period End"
+msgstr "Fin de la période de planification"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.xml:0
+#, python-format
+msgid "Planning Period Start"
+msgstr "Début de la période de planification"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_res_company__dw_prod_sim_date_range_end
+msgid "ProdSim Range End"
+msgstr "Fin de la gamme ProdSim"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_res_company__dw_prod_sim_date_range_start
+msgid "ProdSim Range Start"
+msgstr "Début de la gamme ProdSim"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_res_company__dw_prod_sim_date_sales_range_end
+msgid "ProdSim Sales Range End"
+msgstr "Fin de la gamme de vente ProdSim"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_res_company__dw_prod_sim_date_sales_range_start
+msgid "ProdSim Sales Range Start"
+msgstr "Début de la gamme de vente ProdSim"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__product_id
+msgid "Product"
+msgstr "Produit"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__product_tmpl_id
+msgid "Product Template"
+msgstr "Modèle de produit"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__product_uom_id
+msgid "Product UoM"
+msgstr "Produit UoM"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model,name:dw_production_plan_simulator.model_dw_product_production_plan_simulation
+msgid "Product's Production Plan Simulation at Date"
+msgstr "Simulation du plan de production du produit à ce jour"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "Production Objective"
+msgstr "Objectif de production"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_product_production_plan_simulation__production_objective_qty
+msgid "Production Objective Qty"
+msgstr "Quantité d'objectif de production"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "Production Plan"
+msgstr "Plan de production"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/notes_editor.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/notes_editor.xml:0
+#, python-format
+msgid "Production Plan Batches"
+msgstr "Plan de production par lots"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.js:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.js:0
+#, python-format
+msgid "Production Plan Simulation Tool"
+msgstr "Outil de simulation de plan de production"
+
+#. module: dw_production_plan_simulator
+#: model:ir.actions.client,name:dw_production_plan_simulator.action_production_plan_simulator
+#: model:ir.ui.menu,name:dw_production_plan_simulator.menu_dw_production_plan_simulator
+#: model:ir.ui.menu,name:dw_production_plan_simulator.menu_dw_production_plan_simulator_root
+msgid "Production Plan Simulator"
+msgstr "Simulateur de plan de production"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_product_production_plan_simulation__production_simulation_id
+msgid "Production Simulation"
+msgstr "Simulation de production"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__warehouse_id
+msgid "Production Warehouse"
+msgstr "Entrepôt de production"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "Production target unreached."
+msgstr "Objectif de production non atteint."
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_product_production_plan_simulation__replenish_qty
+msgid "Qty To Produce"
+msgstr "Quantité à produire"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__lot_size
+msgid "Quantity"
+msgstr "Quantité"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid ""
+"Quantity predicted to be available for sale at the end of the period (= to "
+"replenish - actual demand)."
+msgstr ""
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_product_production_plan_simulation__replenish_qty_updated
+msgid "Replenish_qty has been manually updated"
+msgstr "La quantité de réapprovisionnement a été mise à jour manuellement"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "Required Capacity"
+msgstr "Capacité requise"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#, python-format
+msgid "Rows"
+msgstr "Lignes"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__safety_stock_target
+msgid "Safety Stock Target (Months)"
+msgstr "Objectif de stock de sécurité (mois)"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__safety_stock_target_qty
+msgid "Safety Stock Target Qty (Months worth)"
+msgstr "Quantité cible du stock de sécurité (valeur en mois)"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.xml:0
+#, python-format
+msgid "Sales AVG Period End"
+msgstr "Ventes MOYENNES Fin de période"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.xml:0
+#, python-format
+msgid "Sales AVG Period Start"
+msgstr "Ventes MOYENNE Période Début"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__sales_average
+msgid "Sales Average"
+msgstr "Ventes moyennes"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "Sales Objective"
+msgstr "Objectif de vente"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_product_production_plan_simulation__sale_objective_qty
+msgid "Sales Objective Qty"
+msgstr "Objectif de vente Qté"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_product_production_plan_simulation__sold_qty
+msgid "Sales Qty"
+msgstr "Quantité vendue"
+
+#. module: dw_production_plan_simulator
+#: model_terms:ir.ui.view,arch_db:dw_production_plan_simulator.dw_production_plan_simulator_production_plan_simulation_form_view
+msgid "Save"
+msgstr "Sauvegarder"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/alert_container.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/alert_container.xml:0
+#, python-format
+msgid "Save changes"
+msgstr "Enregistrer les modifications"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/notes_editor.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/notes_editor.xml:0
+#, python-format
+msgid "Save notes"
+msgstr "Enregistrer les notes"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__sequence
+msgid "Sequence"
+msgstr "Séquence"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.xml:0
+#, python-format
+msgid "Settings"
+msgstr "Paramètres"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.xml:0
+#, python-format
+msgid "Simulate"
+msgstr "Simuler"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model,name:dw_production_plan_simulator.model_dw_production_plan_simulation
+msgid "Simulate the production of Product"
+msgstr "Simuler la production du produit"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_pharma_resource_access_mixin__dw_simulation_ok
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_mrp_workcenter__dw_simulation_ok
+msgid "Simulation OK"
+msgstr "Simulation OK"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__product_plan_sim_ids
+msgid "Simulation quantity at date"
+msgstr "Quantité de simulation à la date"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "Sold Quantity"
+msgstr "Quantité vendue"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#, python-format
+msgid "Starting Inventory"
+msgstr "Inventaire de départ"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "Stock coverage"
+msgstr "Couverture des stocks"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "Suggested Production Plan"
+msgstr "Plan de production suggéré"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/notes_editor.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/notes_editor.xml:0
+#, python-format
+msgid "Suggested Production Plan Batches"
+msgstr "Lots de plan de production suggérés"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "Suggested Replenishment"
+msgstr "Réapprovisionnement suggéré"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/notes_editor.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/notes_editor.xml:0
+#, python-format
+msgid "THIS is:"
+msgstr "C'est:"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.xml:0
+#, python-format
+msgid ""
+"The Production Plan Simulator translates your sales and demand\n"
+"          forecasts into a production and purchase planning for each finished\n"
+"          product. It ensures everything gets scheduled on time, based on\n"
+"          constraints such as: safety stock, production capacity, lead times.\n"
+"          It's the perfect tool to support your S&OP meetings."
+msgstr ""
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "The confirmed demand, based on the confirmed sales orders."
+msgstr "La demande confirmée, basée sur les commandes confirmées."
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "The forecasted demand. This value has to be entered manually."
+msgstr "La demande prévue. Cette valeur doit être saisie manuellement."
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "The forecasted quantity in stock at the beginning of the period."
+msgstr "La quantité prévue en stock au début de la période."
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "The forecasted quantity in stock at the end of the period."
+msgstr "La quantité prévue en stock à la fin de la période."
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,help:dw_production_plan_simulator.field_dw_production_plan_simulation__max_to_replenish_qty
+msgid ""
+"The maximum replenishment you would like to launch for each period in the "
+"MPS. Note that if the demand is higher than that amount, the remaining "
+"quantity will be transferred to the next period automatically."
+msgstr ""
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid ""
+"The quantity being replenished, based on the Requests for Quotation and the "
+"Manufacturing Orders."
+msgstr ""
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid ""
+"The quantity to replenish through Purchase Orders or Manufacturing Orders."
+msgstr ""
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,help:dw_production_plan_simulator.field_dw_production_plan_simulation__safety_stock_target
+msgid ""
+"This is the minimum free stock you want to keep for that product at all "
+"times (Months worth of sales)."
+msgstr ""
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,help:dw_production_plan_simulator.field_dw_production_plan_simulation__safety_stock_target_qty
+msgid ""
+"This is the minimum free stock you want to keep for that product at all "
+"times."
+msgstr ""
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,help:dw_production_plan_simulator.field_dw_production_plan_simulation__lot_size
+msgid ""
+"This should be the smallest quantity that this product can be produced in. "
+"If the BOM contains operations, make sure the work center capacity is "
+"accurate."
+msgstr ""
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/search/group_menu.xml:0
+#, python-format
+msgid "To Replenish"
+msgstr "Pour reconstituer"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,help:dw_production_plan_simulator.field_dw_production_plan_simulation__min_to_replenish_qty
+msgid ""
+"Unless the demand is 0, Odoo will always at least replenish this quantity."
+msgstr ""
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "Updated Closing Stock level"
+msgstr "Mise à jour du niveau de stock de clôture"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "Updated stock coverage"
+msgstr "Couverture des stocks mise à jour"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.xml:0
+#, python-format
+msgid "Validate"
+msgstr "Valider"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model,name:dw_production_plan_simulator.model_mrp_workcenter
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_production_plan_simulation__workcenter_id
+msgid "Work Center"
+msgstr "Poste de travail"
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/main.js:0
+#: code:addons/dw_production_plan_simulator/static/src/components/main.js:0
+#, python-format
+msgid "You will be redirected shortly..."
+msgstr "Vous serez redirigé sous peu..."
+
+#. module: dw_production_plan_simulator
+#. odoo-javascript
+#: code:addons/custom_addons/DW_PHARMA/dw_production_plan_simulator/static/src/components/line.xml:0
+#: code:addons/dw_production_plan_simulator/static/src/components/line.xml:0
+#, python-format
+msgid "by"
+msgstr "par"
+
+#. module: dw_production_plan_simulator
+#: model:ir.model.fields,field_description:dw_production_plan_simulator.field_dw_product_production_plan_simulation__stock_level
+msgid "stock_level"
+msgstr "niveau_de_stock"

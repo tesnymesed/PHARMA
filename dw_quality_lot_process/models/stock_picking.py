@@ -1,6 +1,5 @@
-from odoo import _, models
 from odoo.exceptions import UserError
-
+from odoo import _,models
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
@@ -8,35 +7,32 @@ class StockPicking(models.Model):
     def button_validate(self):
         for picking in self:
             picking_type = picking.picking_type_id.code if picking.picking_type_id else False
-            # in case picking type is outgoing transfer or a fabrication
-            if picking_type in ['outgoing', 'mrp_operation']:
+            if picking_type in ['incoming', 'mrp_operation']:
+                self._check_lot_compliance(picking.move_ids, 'location_dest_id')
+                
+            elif picking_type == 'outgoing':
+                self._check_lot_compliance(picking.move_ids, 'location_id')
+                
+            elif picking_type == 'internal':
+                self._check_internal_transfer(picking.move_ids)
 
-                for move_id in picking.move_ids:
-                    if move_id.product_id and move_id.product_id.requires_lot_compliance_check == True: # for each line of picking check if lot check is set to true
-                        for lot in move_id.lot_ids : #in case lot check is true, loop over the lots
-                            if lot.lot_status !='conform': #if any lot status is not conform raise error
-                                raise UserError(_(f"The transfer for {move_id.product_id.name} cannot be performed for non-conform lot: {lot.name}"))
-                        if move_id.move_line_ids : #in case there is move lines 
-                            for move_line in move_id.move_line_ids :  
-                                if move_line.lot_id.lot_status != 'conform' : #check if for every line of move_id it's lot status is set to conform otherwise raise error
-                                    raise UserError(_(f"The transfer for {move_id.product_id.name} cannot be performed for non-conform lot: {move_line.lot_id.name}"))
-            #in case picking type is an internal transfer
-            elif picking_type =='internal':
-                for move_id in picking.move_ids : # loop over each move_id of picking
-                    if move_id.location_dest_id and move_id.location_dest_id.perform_transfer== False or\
-                        move_id.location_id and move_id.location_id.perform_transfer== False : #if we can not perform a transfer in location or location destination 
-                        for lot in move_id.lot_ids : #loop over lots of move_id 
-                            if lot.lot_status!='conform':  #if the lot status is conform
-                                if move_id.product_id.requires_lot_compliance_check==True: #the product should be lot compliance checked true otherwise raise error
-                                    raise UserError(_(f"The transfer for the product {move_id.product_id.name} cannot be performed in the lot : {lot.name}"))
-                    # in case move_line_ids exists over loop it
-                    if move_id.move_line_ids :
-                        for line in move_id.move_line_ids :
+        return super(StockPicking, self).button_validate()
 
-                            if line.location_dest_id.perform_transfer ==False or \
-                                line.location_id.perform_transfer ==False : #if source or destination locations of line can not perform a transfer 
-                                if line.lot_id.lot_status!='conform': #and the lot status of line is conform
-                                    if line.product_id.requires_lot_compliance_check==True: #and line product lot compliance is false raise error
-                                        raise UserError(_(f"The transfer for the product {move_id.product_id.name} cannot be performed in the lot : {line.lot_id.name}"))
-            
-        return super().button_validate()
+    def _check_lot_compliance(self, move_ids, location_field):
+        for move_id in move_ids:
+            for move_line in move_id.move_line_ids:
+                location = getattr(move_line, location_field)
+                if location.perform_transfer:
+                    if move_id.product_id and move_id.product_id.requires_lot_compliance_check:
+                        self._validate_lot_conformity(move_line.lot_id, move_id.product_id)
+
+    def _check_internal_transfer(self, move_ids):
+        for move_id in move_ids:
+            for move_line in move_id.move_line_ids:
+                if not move_line.location_id.perform_transfer or not move_line.location_dest_id.perform_transfer:
+                    if move_id.product_id and move_id.product_id.requires_lot_compliance_check:
+                        self._validate_lot_conformity(move_line.lot_id, move_id.product_id)
+
+    def _validate_lot_conformity(self, lot, product):
+        if lot.lot_status != 'conform':
+            raise UserError(_(f"The transfer for {product.name} cannot be performed for non-conform lot: {lot.name}"))

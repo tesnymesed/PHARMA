@@ -21,6 +21,7 @@ class StockLot(models.Model):
     
     compiliance_check = fields.Boolean(related='product_id.requires_lot_compliance_check',readonly=True)
     lot_status_history_ids = fields.One2many('stock.lot.history', 'lot_id', string="Status History")
+    initial_qty = fields.Float(string="Initial Quanit",readonly=True)
     
     def _create_history_record(self, previous_status, new_status, is_quarantine=False):
         '''This function creates stock.lot.history record'''

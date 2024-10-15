@@ -57,6 +57,9 @@
                         </field>
                     </page>
                 </xpath>
+                <xpath expr="//form/sheet/group/group//field[@name='product_id']" position="after">
+                    <field name="initial_qty"/>
+                </xpath>
                     
             </field>
         </record>

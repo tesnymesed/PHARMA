@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-  <t t-name="dw_production_plan_simulator.ProductionPlanSimulatorLine" owl="1">
+  <t
+    t-name="dw_production_plan_simulator.ProductionPlanSimulatorLineTemplate"
+    owl="1"
+  >
     <tbody
       class="o_mps_content"
       t-att-data-id="productionSimulation.id"
@@ -21,7 +24,7 @@
             class="o_prod_sim_record_url"
             t-att-data-res-id="productionSimulation.product_id[0]"
             t-att-data-model="'product.product'"
-            t-on-click.prevent="_onClickRecordLink"
+            t-on-click.prevent="_onClickLineRecordLink"
           >
             <t t-esc="productionSimulation.product_id[1]" />
           </a>
@@ -42,7 +45,7 @@
             t-attf-class="{{
               'btn btn-link text-muted o_no_padding o_prod_sim_edit'
             }}"
-            t-on-click.stop="(ev) => this._onClickEdit(ev, productionSimulation.id)"
+            t-on-click.stop="(ev) => this._onClickProductLineEdit(ev, productionSimulation.id)"
           >
             <img
               src="dw_production_plan_simulator/static/description/info.png"
@@ -100,7 +103,7 @@
         <th scope="row">
           <span>Sales Objective</span>
         </th>
-        <th></th>
+        <th />
         <t
           t-foreach="productionSimulation.product_plan_sim_ids"
           t-as="simulation"

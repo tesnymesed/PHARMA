@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<!--    <record id="mrp_mps.action_mrp_mps" model="ir.actions.client">-->
-<!--        <field name="context">{'dw_pharma_simulation': False, 'dw_bypass_pharma_simulation': False}</field>-->
-<!--    </record>-->
+    <!--    <record id="mrp_mps.action_mrp_mps" model="ir.actions.client">-->
+    <!--        <field name="context">{'dw_pharma_simulation': False, 'dw_bypass_pharma_simulation':
+    False}</field>-->
+    <!--    </record>-->
 
     <record id="action_dw_mrp_mps" model="ir.actions.client">
         <field name="name">Simulated X Master Production Schedule</field>
         <field name="res_model">mrp.production.schedule</field>
         <field name="tag">dw_mrp_mps_client_action</field>
-        <field name="context" eval="{'dw_bypass_pharma_simulation': False}"/>
+        <field name="context" eval="{'dw_bypass_pharma_simulation': False}" />
     </record>
 
     <record id="dw_production_plan_simulator_production_plan_simulation_form_view"
@@ -25,13 +26,22 @@
                     <group>
                         <field name="product_id" />
                         <field name="bom_id" />
-                        <field name="lot_size" readonly="0" />
+                        <label for="lot_size" />
+                        <div class="o_row">
+                            <field name="lot_size" readonly="0" />
+                            <field name="product_uom_id" groups="uom.group_uom" readonly="1" />
+                        </div>
                     </group>
                     <group>
                         <field name="warehouse_id" />
                         <field name="workcenter_id"
-                            context="{'dw_bypass_pharma_simulation': False, 'dw_pharma_simulation': True}" />
-                        <field name="workcenter_default_capacity" readonly="0" />
+                            context="{'dw_bypass_pharma_simulation': False, 'dw_pharma_simulation': True}"
+                        options="{'no_open': True}"/>
+                        <label for="workcenter_default_capacity" />
+                        <div class="o_row">
+                            <field name="workcenter_default_capacity" readonly="1" />
+                            <field name="product_uom_id" groups="uom.group_uom" readonly="1" />
+                        </div>
 
                     </group>
                     <group>
@@ -44,7 +54,6 @@
                         <div class="o_row">
                             <field name="safety_stock_target" />
                             <span>Months</span>
-
                         </div>
                         <label for="safety_stock_target_qty" />
                         <div class="o_row">

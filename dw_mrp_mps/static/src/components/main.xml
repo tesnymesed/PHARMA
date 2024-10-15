@@ -26,7 +26,7 @@
     <xpath expr="//div[hasclass('o_mrp_mps')]" position="after">
       <div
         class="modal fade"
-        id="alertsModal"
+        id="alerts-modal"
         tabindex="-1"
         aria-labelledby="ModalLabel"
         aria-hidden="true"
@@ -42,7 +42,7 @@
                 aria-label="Close"
               ></button>
             </div>
-            <div class="modal-body" id="alertsModal">
+            <div class="modal-body" id="alerts-modal">
               <!--          Body -->
               <center><h3 id="bodyTitle"></h3></center>
 

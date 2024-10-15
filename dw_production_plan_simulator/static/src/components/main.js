@@ -349,9 +349,9 @@ class ProductionPlanSimulatorComponent extends Component {
 
   initFilterSettings() {
     this.initCompaniesSelect("select-company");
-//    this.initPlanningCycleSelect("select-planning-cycle");
+    //    this.initPlanningCycleSelect("select-planning-cycle");
 
-//    this.initCalendarInput("planning-period", "planningDate", "start");
+    //    this.initCalendarInput("planning-period", "planningDate", "start");
 
     this.initCalendarInput(
       "plan-date-range-start",
@@ -624,11 +624,11 @@ class ProductionPlanSimulatorComponent extends Component {
     // this.state.salesStartDate = salesPicker.startDate.format("YYYY-MM-DD");
     // this.state.salesEndDate = salesPicker.endDate.format("YYYY-MM-DD");
 
-//    this.state.planningCycle = $(
-//      "#select-planning-cycle option:selected"
-//    ).val();
+    //    this.state.planningCycle = $(
+    //      "#select-planning-cycle option:selected"
+    //    ).val();
 
-//    this.getCalendarValue("planning-period", "planningDate", "start");
+    //    this.getCalendarValue("planning-period", "planningDate", "start");
 
     this.getCalendarValue("plan-date-range-start", "startDate", "start");
     this.getCalendarValue("plan-date-range-end", "endDate", "end");
@@ -767,7 +767,7 @@ class ProductionPlanSimulatorComponent extends Component {
   }
 
   displayAlerts() {
-    $("#alertsModal").modal("show");
+    $("#alerts-modal").modal("show");
     this.initAlertsTable();
   }
 
@@ -777,7 +777,7 @@ class ProductionPlanSimulatorComponent extends Component {
   }
 
   closeAlertsModal() {
-    $("#alertsModal").modal("hide");
+    $("#alerts-modal").modal("hide");
   }
 
   async alertNotesCellEdited(cell) {
@@ -809,7 +809,7 @@ class ProductionPlanSimulatorComponent extends Component {
       .catch((err) => {});
   }
 
-  checkMaterialsAvailability() {
+  _createMasterProductionSchedule() {
     this.model
       ._createMPSEntries(this.state.currentCompanyId, this.simulationLines)
       .then((res) => {
@@ -827,7 +827,7 @@ class ProductionPlanSimulatorComponent extends Component {
         // setTimeout(function () {
         //   location.reload(true);
         // }, 3000);
-        this.model._openMPS(this.state);
+        this.model._openMPS(res, this.state);
         // this.load([["company_id", "=", state.currentCompanyId]]);
         // return this.data;
         //                if (productionSimulationIds.length === 1) {
@@ -861,7 +861,7 @@ class ProductionPlanSimulatorComponent extends Component {
       res_id: Number(ev.currentTarget.dataset.resId),
       views: [[false, "form"]],
       context: { dw_pharma_simulation: true },
-      target: "current",
+      target: "new",
     });
   }
 

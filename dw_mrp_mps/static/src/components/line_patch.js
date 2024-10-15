@@ -2,15 +2,7 @@
 
 import { patch } from "@web/core/utils/patch";
 import MpsLineComponent from "@mrp_mps/components/line";
-import {
-  Component,
-  useExternalListener,
-  useState,
-  onMounted,
-  onWillStart,
-  useRef,
-  useEffect,
-} from "@odoo/owl";
+import { onMounted } from "@odoo/owl";
 
 patch(MpsLineComponent.prototype, {
   setup() {

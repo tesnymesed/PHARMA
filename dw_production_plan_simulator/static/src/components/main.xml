@@ -33,8 +33,7 @@
                       <div class="row mb-3">
                         <div class="col-sm-4">
                           <label for="select-company" class="form-label"
-                            >Company</label
-                          >
+                            >Company</label>
                           <select
                             id="select-company"
                             class="form-select"
@@ -43,24 +42,24 @@
                           ></select>
                         </div>
 
-<!--                        <div class="col-sm-4">-->
-<!--                          <label for="select-planning-cycle" class="form-label"-->
-<!--                            >Planning Cycle</label-->
-<!--                          >-->
-<!--                          <select-->
-<!--                            id="select-planning-cycle"-->
-<!--                            class="form-select"-->
-<!--                            data-placeholder="Planning Cycle ..."-->
-<!--                            t-on-change.stop="(ev) => this._onChangePlanningCycle(ev)"-->
-<!--                          ></select>-->
-<!--                        </div>-->
+                        <!--                        <div class="col-sm-4">-->
+                        <!--                          <label for="select-planning-cycle" class="form-label"-->
+                        <!--                            >Planning Cycle</label-->
+                        <!--                          >-->
+                        <!--                          <select-->
+                        <!--                            id="select-planning-cycle"-->
+                        <!--                            class="form-select"-->
+                        <!--                            data-placeholder="Planning Cycle ..."-->
+                        <!--                            t-on-change.stop="(ev) => this._onChangePlanningCycle(ev)"-->
+                        <!--                          ></select>-->
+                        <!--                        </div>-->
 
-<!--                        <div class="col-sm-4">-->
-<!--                          <label for="planning-period" class="form-label"-->
-<!--                            >Planning Period (Exercice de planification):</label-->
-<!--                          >-->
-<!--                          <input id="planning-period" class="form-select" />-->
-<!--                        </div>-->
+                        <!--                        <div class="col-sm-4">-->
+                        <!--                          <label for="planning-period" class="form-label"-->
+                        <!--                            >Planning Period (Exercice de planification):</label-->
+                        <!--                          >-->
+                        <!--                          <input id="planning-period" class="form-select" />-->
+                        <!--                        </div>-->
                       </div>
 
                       <div class="row mb-12">
@@ -69,8 +68,7 @@
                             <label
                               for="plan-date-range-start"
                               class="form-label"
-                              >Planning Period Start</label
-                            >
+                              >Planning Period Start</label>
                             <input
                               id="plan-date-range-start"
                               class="form-select"
@@ -78,8 +76,7 @@
                           </div>
                           <div class="col-6">
                             <label for="plan-date-range-end" class="form-label"
-                              >Planning Period End</label
-                            >
+                              >Planning Period End</label>
                             <input
                               id="plan-date-range-end"
                               class="form-select"
@@ -91,8 +88,7 @@
                             <label
                               for="sales-avg-range-start"
                               class="form-label"
-                              >Sales AVG Period Start</label
-                            >
+                              >Sales AVG Period Start</label>
                             <input
                               id="sales-avg-range-start"
                               class="form-select"
@@ -101,8 +97,7 @@
 
                           <div class="col-6">
                             <label for="sales-avg-range-end" class="form-label"
-                              >Sales AVG Period End</label
-                            >
+                              >Sales AVG Period End</label>
                             <input
                               id="sales-avg-range-end"
                               class="form-select"
@@ -128,7 +123,7 @@
                       <div class="row mb-3"></div>
 
                       <div class="row justify-content-end">
-                        <div class="col-sm-3">
+                        <div class="col-sm">
                           <button
                             type="submit"
                             id="submit"
@@ -138,7 +133,7 @@
                           </button>
                         </div>
 
-                        <div class="col-sm-3">
+                        <div class="col-sm">
                           <t t-if="workCenterCapacities.length > 0">
                             <button
                               type="show-alerts"
@@ -153,15 +148,15 @@
                           </t>
                         </div>
 
-                        <div class="col-sm-3">
+                        <div class="col-sm">
                           <t t-if="simulationLines.length">
                             <button
-                              type="show-alerts"
-                              id="check-mrp"
+                              type="create-mps"
+                              id="create-mps"
                               class="btn btn-primary"
-                              t-on-click="checkMaterialsAvailability"
+                              t-on-click="_createMasterProductionSchedule"
                             >
-                              Check Materials availability
+                              Create MRP Plan
                             </button>
                           </t>
                         </div>
@@ -194,9 +189,8 @@
                                     <tr>
                                       <th
                                         scope="row"
-                                        t-attf-colspan="{{
-                                          manufacturingPeriods.length + 3
-                                        }}"
+                                        t-attf-colspan="{{manufacturingPeriods.length + 3}}"
+                                        style="float: none;"
                                       >
                                         <a
                                           href="#"
@@ -204,25 +198,12 @@
                                           t-att-data-res-id="workCenter.key[0]"
                                           t-att-data-model="'mrp.workcenter'"
                                           t-on-click.prevent="_onClickWorkCenterLink"
+                                          style="font-size: 1.5em; display: inline-block; text-decoration: none;"
                                         >
                                           <t
                                             t-esc="workCenter.key.split(',')[1]"
                                           />
                                         </a>
-
-                                        <!-- <span> </span>
-                                            <button
-                                              type="button"
-                                              t-attf-class="{{
-                                                'btn btn-link text-muted o_no_padding o_prod_sim_edit'
-                                              }}"
-                                              t-on-click.stop="(ev) => this._onClickWorkCenterEdit(ev, workCenter.key[0])"
-                                            >
-                                              <img
-                                                src="dw_production_plan_simulator/static/description/info.png"
-                                                alt="Icon"
-                                              />
-                                            </button> -->
                                       </th>
                                     </tr>
                                   </thead>
@@ -302,7 +283,7 @@
     <!-- Alerts modal -->
     <div
       class="modal fade"
-      id="alertsModal"
+      id="alerts-modal"
       tabindex="-1"
       aria-labelledby="ModalLabel"
       aria-hidden="true"
@@ -318,7 +299,7 @@
               aria-label="Close"
             ></button>
           </div>
-          <div class="modal-body" id="alertsModal">
+          <div class="modal-body" id="alerts-modal">
             <!--          Body -->
             <center>
               <h3 id="bodyTitle"></h3>
@@ -356,7 +337,7 @@
             </button>
           </div>
         </div>
-<!--        <MainComponent action="_MPSAction" />-->
+        <!--        <MainComponent action="_MPSAction" />-->
       </div>
     </div>
   </div>

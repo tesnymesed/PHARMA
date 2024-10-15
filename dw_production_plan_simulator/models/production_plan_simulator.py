@@ -110,7 +110,17 @@ class DwProductionPlanSimulator(models.Model):
         # action['context'] = {'dw_pharma_simulation': True, 'dw_bypass_pharma_simulation': False}
 
         # action['domain'] = [('dw_simulation_ok', '=', 'true')]
-        if action.get('domain'):
+        # product_ids = [l[0].product_id.id for l in bom_lines]
+        # product_ids_with_forecast = self.env['mrp.production.schedule'].search([
+        #     ('company_id', '=', production_schedule.company_id.id),
+        #     ('warehouse_id', '=', production_schedule.warehouse_id.id),
+        #     ('product_id', 'in', product_ids)
+        # ]).product_id.ids
+        _domain = state.get('domain')
+
+        if _domain and not action.get('domain'):
+            print('_domain', _domain)
+            action['domain'] = _domain
             print(action, action.get('domain'))
 
         return action
@@ -280,38 +290,41 @@ class DwProductionPlanSimulator(models.Model):
                                                                                      '%Y-%m-%d').date() == date_start)
                                   or (isinstance(i['date_start'], datetime.date) and i['date_start'] == date_start)]
 
-                    total_required_capacity = sum(item["required_capacity"] for item in group_data)
-                    total_production_objective_qty = sum(item["production_objective_qty"] for item in group_data)
-                    # Sample list of strings
-                    # notes_str = "\n".join([item.get("notes") for item in group_data if item.get("notes")])
-                    notes_str = group_data[0].get("alert_notes")
-                    decision = group_data[0].get("decision")
+                    if group_data:
+                        total_required_capacity = sum(item["required_capacity"] for item in group_data)
+                        total_production_objective_qty = sum(item["production_objective_qty"] for item in group_data)
+                        # Sample list of strings
+                        # notes_str = "\n".join([item.get("notes") for item in group_data if item.get("notes")])
+                        notes_str = group_data[0].get("alert_notes")
+                        decision = group_data[0].get("decision")
 
-                    if total_required_capacity < total_production_objective_qty:
-                        pass
+                        if total_required_capacity < total_production_objective_qty:
+                            pass
 
-                    total_capacity_utilisation = sum(item["capacity_utilisation"] for item in group_data)
+                        total_capacity_utilisation = sum(item["capacity_utilisation"] for item in group_data)
 
-                    if total_capacity_utilisation >= 90:
-                        _year = date_start.year
-                        _quarter = (date_start.month - 1) // 3 + 1
-                        _q_y_f = f"Q{_quarter} {_year}"
+                        if total_capacity_utilisation >= 90:
+                            _year = date_start.year
+                            _quarter = (date_start.month - 1) // 3 + 1
+                            _q_y_f = f"Q{_quarter} {_year}"
 
-                        res.append({
-                            "id": [i.get('id') for i in group_data],
-                            "workcenter": workcenter,
-                            "workcenter_name": workcenter[1],
-                            "date_start": date_start,
-                            "date_stop": date_stop,
-                            "year": _year,
-                            "quarter": _q_y_f,
-                            "capacity_utilisation": total_capacity_utilisation,
-                            "required_capacity": total_required_capacity,
-                            "production_objective_qty": total_production_objective_qty,
-                            "alert_notes": notes_str,
-                            "decision": decision
-                        })
+                            res.append({
+                                "id": [i.get('id') for i in group_data],
+                                "workcenter": workcenter,
+                                "workcenter_name": workcenter[1],
+                                "date_start": date_start,
+                                "date_stop": date_stop,
+                                "year": _year,
+                                "quarter": _q_y_f,
+                                "capacity_utilisation": total_capacity_utilisation,
+                                "required_capacity": total_required_capacity,
+                                "production_objective_qty": total_production_objective_qty,
+                                "alert_notes": notes_str,
+                                "decision": decision
+                            })
 
+                    else:
+                        continue
                 results.extend(res)
             else:
                 continue

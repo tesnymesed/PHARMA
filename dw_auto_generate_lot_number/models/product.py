@@ -5,10 +5,10 @@ from odoo import fields, models, api, _
 class DwProduct(models.Model):
     _inherit = 'product.template'
 
-    auto_generate_lot_number = fields.Boolean(string='Auto Generate Lot Number', default=False)
-    lot_code = fields.Char(string='Lot Short Code')
+    auto_generate_lot_number = fields.Boolean(string='Auto Generate Lot Number', default=False, related="dw_pharma_family_id.auto_generate_lot_number", readonly=False)
+    lot_code = fields.Char(string='Lot Short Code', related="dw_pharma_family_id.lot_code", readonly=False)
     counter = fields.Integer()
-    sequence_size = fields.Integer(default="5", string='Sequence Length')
+    sequence_size = fields.Integer(default="5", string='Sequence Length', related="dw_pharma_family_id.sequence_size", readonly=False)
 
 class StockLot(models.Model):
     _inherit = 'stock.move.line'
@@ -21,9 +21,15 @@ class StockLot(models.Model):
             res.product_id.counter += 1
         return res
 
+
+class ProductPharmaceuticalFamily(models.Model):
+    _inherit = 'product.pharmaceutical.family'
+
+    lot_code = fields.Char(string='Lot Short Code')
+    auto_generate_lot_number = fields.Boolean(string='Auto Generate Lot Number', default=False)
+    sequence_size = fields.Integer(default="5", string='Sequence Length')
+
 def generate_sequence(prefix, sequence_size, seq):
-    # Format the sequence number with leading zeros based on the sequence_size
     formatted_seq = f"{seq:0{sequence_size}d}"
-    # Return the final formatted string
     return f"{prefix}{formatted_seq}"
 

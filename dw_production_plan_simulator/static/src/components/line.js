@@ -519,7 +519,7 @@ export default class ProductionPlanSimulatorLine extends Component {
 
     this.formVals = {};
 
-    const productionSimulationId = ev.target.dataset.id;
+    const productionSimulationId = Number(ev.target.dataset.id);
     const dateStart = ev.target.dataset.date_start;
     const dateStop = ev.target.dataset.date_stop;
     const dateIndex = parseInt(ev.target.dataset.date_index);

@@ -544,11 +544,11 @@ class DwProductionPlanSimulator(models.Model):
         # Get the final products with BOMs for the given company
         products_list = self.env['product.product'].search([
             ('product_tmpl_id.type', '=', 'product'),
-            # ('product_tmpl_id.categ_id.is_final_product', '=', True),
+            ('product_tmpl_id.categ_id.is_final_product', '=', True),
             # ('product_tmpl_id.bom_ids', '!=', False),
-            '|',
+            # '|',
             ('product_tmpl_id.company_id', '=', company_id),
-            ('product_tmpl_id.company_id', '=', False)
+            # ('product_tmpl_id.company_id', '=', False)
         ])
 
         # Create the simulation records

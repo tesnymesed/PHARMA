@@ -39,9 +39,12 @@ class LotStatusHistory(models.Model):
     change_date = fields.Datetime(string="Change Date", default=lambda self: fields.Datetime.now())
 
     user_id = fields.Many2one('res.users', string="Changed By", default=lambda self: self.env.user)
+    previous_date_expiration = fields.Datetime(string="Previous Expiration Date")
+    new_date_expiration = fields.Datetime(string="New Date expiration")
+
     #fields for cancel reason
-    reason_id = fields.Many2one('stock.lot.cancel.reason', string="Cancellation Reason")
-    note = fields.Text(string="Cancellation Note")
+    reason_id = fields.Many2one('stock.lot.cancel.reason', string="Reason")
+    note = fields.Text(string="Note")
 
 class StockLotCancelReason(models.Model):
     _name = 'stock.lot.cancel.reason'

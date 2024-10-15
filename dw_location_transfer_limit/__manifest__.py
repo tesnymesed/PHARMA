@@ -3,8 +3,7 @@
     'name': 'Location Transfer Limit',
     'version': '1.0.0',
     'category': 'Inventory',
-    'description': """
-=        """,
+    'description': """ Location Transfer Limit """,
     'author': 'DIGIWAVES - ALGERIA',
     'website': 'www.digiwaves.io',
     'depends': [
@@ -18,6 +17,7 @@
         'security/ir.model.access.csv',
         #report
         #view
+        'views/stock_storage_category.xml',
         'views/product_product_views.xml',
         'views/stock_location_inherit.xml',
         #menu

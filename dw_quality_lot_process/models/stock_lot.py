@@ -17,10 +17,11 @@ class StockLot(models.Model):
         ('in_progress', 'In progress'),
         ('analyzed','Analyzed'),
         ('reanalyzed','reanalyzed')
-        ],string="Lot status", default='draft')
+        ],string="Analyse Status", default='draft')
     
     compiliance_check = fields.Boolean(related='product_id.requires_lot_compliance_check',readonly=True)
     lot_status_history_ids = fields.One2many('stock.lot.history', 'lot_id', string="Status History")
+    initial_qty = fields.Float(string="Initial Quanit",readonly=True)
     
     def _create_history_record(self, previous_status, new_status, is_quarantine=False):
         '''This function creates stock.lot.history record'''
@@ -86,3 +87,19 @@ class StockLot(models.Model):
     def action_set_reanalyzed(self):
         self._create_history_record(self.lot_quarantine_status, 'reanalyzed', is_quarantine=True)
         self.lot_quarantine_status = 'reanalyzed'
+    
+    
+    def write(self, vals):
+        if 'expiration_date' in vals:
+            for record in self:
+                self.env['stock.lot.history'].sudo().create({
+                    'lot_id': record.id,
+                    'previous_date_expiration': record.expiration_date,
+                    'new_date_expiration': vals.get('expiration_date'),
+                    'user_id': self.env.user.id,
+                    'change_date': fields.Datetime.now(),
+                })
+        return super(StockLot, self).write(vals)
+    
+
+    

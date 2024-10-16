@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="stock_location_form">
+            <field name="name">stock.location.form</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="dw_location_transfer_limit.stock_location_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//group[@name='additional_info']//field[@name='perform_transfer']" position="after">
+                    <field name="must_check_lot_compiliance" groups="dw_quality_lot_process.check_compiliance_lot_configuration_group"/>
+                    <field name="lot_status_for_tranfer_ids" widget="many2many_tags" 
+                        invisible="must_check_lot_compiliance==False" 
+                        groups="dw_quality_lot_process.check_compiliance_lot_configuration_group"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

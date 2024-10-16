@@ -12,7 +12,7 @@
     ],
     'data': [
         # data
-
+        "data/lot_status_data.xml",
         # security
         'security/security.xml',
         'security/ir.model.access.csv',
@@ -22,6 +22,7 @@
         'views/stock_lot_views.xml',
         'views/product_product_views.xml',
         'views/quality_check_views.xml',
+        'views/stock_location_inherit.xml',
         # wizards
         'wizards/stock_lot_cancel_reason_views.xml',
         # menu

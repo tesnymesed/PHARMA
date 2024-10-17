@@ -36,6 +36,7 @@
                         <field name="warehouse_id"/>
                         <field name="workcenter_id"
                                context="{'dw_bypass_pharma_simulation': False, 'dw_pharma_simulation': True}"
+                               options="{'no_open': True}"
                         />
                         <label for="workcenter_default_capacity"/>
                         <div class="o_row">

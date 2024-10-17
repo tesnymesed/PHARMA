@@ -91,14 +91,16 @@ class StockLot(models.Model):
     
     def write(self, vals):
         if 'expiration_date' in vals:
+            change_date = fields.Datetime.now()
+            user_id = self.env.user.id
             history_vals_list = []
             for record in self:
                 history_vals_list.append({
                     'lot_id': record.id,
                     'previous_date_expiration': record.expiration_date,
                     'new_date_expiration': vals.get('expiration_date'),
-                    'user_id': self.env.user.id,
-                    'change_date': fields.Datetime.now(),
+                    'user_id': user_id,
+                    'change_date': change_date,
                 })
             
             if history_vals_list:

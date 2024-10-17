@@ -15,6 +15,9 @@ class StockLotCancelWizard(models.TransientModel):
         'quality.check',
         string='check_quality',
         )
+    fail_picking_id = fields.Many2one(
+        'stock.location',string = 'Location'
+        )
     def _create_history_record(self,with_reason=False):
         '''This function creates record in stock.lot.history
         the parameter with_reason is set to false in case the user does not provide a reason
@@ -33,9 +36,11 @@ class StockLotCancelWizard(models.TransientModel):
     
     def action_cancel_reason_lot(self):
         if self.check_quality_id :
+            if self.fail_picking_id :
+                self.check_quality_id.picking_id.location_dest_id = self.fail_picking_id.id 
             self.check_quality_id.do_fail()
         if self.lot_id and self.lot_id.lot_quarantine_status !='analyzed' :
-            self.lot_id.action_set_analyzed()      
+            self.lot_id.action_set_analyzed()    
         self._create_history_record(with_reason=True)
         self.lot_id.lot_status = self.status if self.status else False
         message = f"Lot cancelled. Reason: {self.reason_id.name if self.reason_id else 'No reason provided'}"

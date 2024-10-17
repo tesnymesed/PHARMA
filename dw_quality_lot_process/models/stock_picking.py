@@ -7,7 +7,7 @@ class StockPicking(models.Model):
     def button_validate(self):
         for picking in self:
             picking_type = picking.picking_type_id.code if picking.picking_type_id else False
-            if picking_type in ['incoming', 'mrp_operation']:
+            if picking_type in 'mrp_operation':
                 self._check_lot_compliance(picking.move_ids, 'location_dest_id')
                 
             elif picking_type == 'outgoing':

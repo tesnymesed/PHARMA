@@ -195,9 +195,9 @@
                                         <a
                                           href="#"
                                           class="o_prod_sim_record_url"
-                                          t-att-data-res-id="workCenter.key[0]"
+                                          t-attf-data-id="{{workCenter.key}}"
                                           t-att-data-model="'mrp.workcenter'"
-                                          t-on-click.prevent="_onClickWorkCenterLink"
+                                          t-on-click.prevent="(ev) => this._onClickWorkCenterLink(ev, workCenter.key)"
                                           style="font-size: 1.5em; display: inline-block; text-decoration: none;"
                                         >
                                           <t

@@ -13,7 +13,7 @@ class StockLotCancelWizard(models.TransientModel):
         ('cancelled', 'Cancelled')],string="Lot Failed Status")
     check_quality_id = fields.Many2one(
         'quality.check',
-        string='check_quality',
+        string='Check Quality',
         )
     fail_picking_id = fields.Many2one(
         'stock.location',string = 'Location'

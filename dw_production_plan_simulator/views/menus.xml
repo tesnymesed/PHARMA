@@ -33,5 +33,12 @@
                 sequence="20"
                 parent="dw_production_plan_simulator.menu_dw_production_plan_simulator_root"/>
 
+        <menuitem
+                id="dw_mrp_sim_workcenters_menu"
+                name="Simulation Work centers"
+                parent="dw_production_plan_simulator.menu_dw_production_plan_simulator_root"
+                action="dw_production_plan_simulator.dw_mrp_sim_workcenter_action"
+                sequence="30"/>
+
     </data>
 </odoo>

@@ -19,7 +19,7 @@
     - Determine the feasibility of the production plan
     - Display alert messages for capacity and material constraints
     """,
-    'depends': ['web', 'shared_assets', 'sale', 'stock', 'mrp_mps', 'dw_mrp_mps', 'dw_mrp_alert_decision'],
+    'depends': ['web', 'shared_assets', 'sale', 'stock', 'mrp', 'mrp_mps', 'dw_mrp_mps', 'dw_mrp_alert_decision'],
     'data': [
         # data
 

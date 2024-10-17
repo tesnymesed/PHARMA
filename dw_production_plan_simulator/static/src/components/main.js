@@ -854,11 +854,12 @@ class ProductionPlanSimulatorComponent extends Component {
       });
   }
 
-  _onClickWorkCenterLink(ev) {
+  _onClickWorkCenterLink(ev, id) {
+    const ID = parseInt(id.split(",")[0].trim(), 10);
     this.action.doAction({
       type: "ir.actions.act_window",
       res_model: ev.currentTarget.dataset.model,
-      res_id: Number(ev.currentTarget.dataset.resId),
+      res_id: ID,
       views: [[false, "form"]],
       context: { dw_pharma_simulation: true },
       target: "new",

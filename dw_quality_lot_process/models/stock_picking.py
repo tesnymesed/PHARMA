@@ -44,4 +44,4 @@ class StockPicking(models.Model):
 
     def _validate_lot_conformity(self, autorized_lot_status,lot, product):
         if lot.lot_status not in autorized_lot_status:
-            raise UserError(_(f"The transfer for {product.name} cannot be performed for non-conform lot: {lot.name}"))
+            raise UserError(_(f"The transfer for {product.name} cannot be performed for lot : {lot.lot_status} {lot.name}"))

@@ -14,7 +14,8 @@
         # security
         'security/ir.model.access.csv',
         # views
-        'views/product.xml',
+        'views/product_template.xml',
+        'views/product_pharmaceutical_family.xml',
     ],
     'qweb': [
 

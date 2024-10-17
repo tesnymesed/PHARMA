@@ -20,26 +20,27 @@ class StockPicking(models.Model):
 
     def _check_lot_compliance(self, move_ids, location_field):
         for move_id in move_ids:
-            for move_line in move_id.move_line_ids:
-                location = getattr(move_line, location_field)
-                if not location.perform_transfer:
-                    if move_id.product_id and move_id.product_id.requires_lot_compliance_check:
+            if move_id.product_id and move_id.product_id.requires_lot_compliance_check:
+                for move_line in move_id.move_line_ids:
+                    location = getattr(move_line, location_field)
+                    if not location.perform_transfer:
                         if location.must_check_lot_compiliance :
                             autorized_lot_status = location.lot_status_for_tranfer_ids.mapped('name')
                             self._validate_lot_conformity(autorized_lot_status,move_line.lot_id, move_id.product_id)
 
     def _check_internal_transfer(self, move_ids):
         for move_id in move_ids:
-            for move_line in move_id.move_line_ids:
-                if not move_line.location_id.perform_transfer or not move_line.location_dest_id.perform_transfer:
-                    if move_id.product_id and move_id.product_id.requires_lot_compliance_check:
-                            if  move_line.location_id.must_check_lot_compiliance :
-                                autorized_lot_status=move_line.location_id.lot_status_for_tranfer_ids.mapped('name')
-                                self._validate_lot_conformity(autorized_lot_status,move_line.lot_id, move_id.product_id)
-                            if move_line.location_dest_id.must_check_lot_compiliance:
-                                autorized_lot_status = move_line.location_dest_id.lot_status_for_tranfer_ids.mapped('name')
-                                self._validate_lot_conformity(autorized_lot_status,move_line.lot_id, move_id.product_id)
-                            
+            if move_id.product_id and move_id.product_id.requires_lot_compliance_check:
+                for move_line in move_id.move_line_ids:
+                    if move_line.location_id and not move_line.location_id.perform_transfer :
+                        if  move_line.location_id.must_check_lot_compiliance :
+                            autorized_lot_status=move_line.location_id.lot_status_for_tranfer_ids.mapped('name')
+                            self._validate_lot_conformity(autorized_lot_status,move_line.lot_id, move_id.product_id)
+                    if move_line.location_dest_id and not move_line.location_dest_id.perform_transfer:
+                        if move_line.location_dest_id.must_check_lot_compiliance:
+                            autorized_lot_status = move_line.location_dest_id.lot_status_for_tranfer_ids.mapped('name')
+                            self._validate_lot_conformity(autorized_lot_status,move_line.lot_id, move_id.product_id)
+                        
 
     def _validate_lot_conformity(self, autorized_lot_status,lot, product):
         if lot.lot_status not in autorized_lot_status:

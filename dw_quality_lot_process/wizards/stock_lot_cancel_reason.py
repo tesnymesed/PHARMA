@@ -15,7 +15,7 @@ class StockLotCancelWizard(models.TransientModel):
         'quality.check',
         string='Check Quality',
         )
-    fail_picking_id = fields.Many2one(
+    fail_location_id = fields.Many2one(
         'stock.location',string = 'Location'
         )
     def _create_history_record(self,with_reason=False):
@@ -36,8 +36,8 @@ class StockLotCancelWizard(models.TransientModel):
     
     def action_cancel_reason_lot(self):
         if self.check_quality_id :
-            if self.fail_picking_id :
-                self.check_quality_id.picking_id.location_dest_id = self.fail_picking_id.id 
+            if self.fail_location_id :
+                self.check_quality_id.picking_id.location_dest_id = self.fail_location_id.id 
             self.check_quality_id.do_fail()
         if self.lot_id and self.lot_id.lot_quarantine_status !='analyzed' :
             self.lot_id.action_set_analyzed()    

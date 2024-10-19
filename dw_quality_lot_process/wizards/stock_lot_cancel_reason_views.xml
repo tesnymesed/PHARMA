@@ -9,11 +9,11 @@
                     <field name="status" required="1"/>
                     <field name="reason_id" required="1"/>
                     <field name="note"/>
-                    <field name="fail_picking_id"/>
+                    <field name="fail_location_id"/>
                 </group>
                 <footer>
                     <button string="Confirm" type="object" name="action_cancel_reason_lot" class="btn-primary"/>
-                    <button string="Cancel" class="btn-secondary" type="object" name="action_cancel"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>
         </field>

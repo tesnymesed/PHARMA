@@ -204,7 +204,7 @@ msgid "Last Updated on"
 msgstr "Dernière mise à jour le"
 
 #. module: dw_quality_lot_process
-#: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_cancel_wizard__fail_picking_id
+#: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_cancel_wizard__fail_location_id
 msgid "Location"
 msgstr "Emplacement"
 

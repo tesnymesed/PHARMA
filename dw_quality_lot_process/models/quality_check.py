@@ -7,6 +7,7 @@ class QualityCheck(models.Model):
     check_lot_compiliance = fields.Boolean(related='product_id.requires_lot_compliance_check')
     initial_qty = fields.Float(string="Initial Quanity", readonly=True)
 
+    @api.model
     def create(self, vals):
         """override create method and make its status to quarantine and its analyse status to in progress"""
         res = super(QualityCheck, self).create(vals)

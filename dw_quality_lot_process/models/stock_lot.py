@@ -19,7 +19,7 @@ class StockLot(models.Model):
         ('reanalyzed','reanalyzed')
         ],string="Analyse Status", default='draft')
     
-    compiliance_check = fields.Boolean(related='product_id.requires_lot_compliance_check',readonly=True)
+    compliance_check = fields.Boolean(related='product_id.requires_lot_compliance_check',readonly=True)
     lot_status_history_ids = fields.One2many('stock.lot.history', 'lot_id', string="Status History")
     initial_qty = fields.Float(string="Initial Quantity",readonly=True)
     

@@ -7,10 +7,15 @@
             <field name="inherit_id" ref="dw_location_transfer_limit.stock_location_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='additional_info']//field[@name='perform_transfer']" position="after">
-                    <field name="must_check_lot_compiliance" groups="dw_quality_lot_process.check_compiliance_lot_configuration_group"/>
-                    <field name="lot_status_for_tranfer_ids" widget="many2many_tags" 
-                        invisible="must_check_lot_compiliance==False" 
-                        groups="dw_quality_lot_process.check_compiliance_lot_configuration_group"/>
+                    <field name="perform_transfer" invisible="1"/>
+                    <field name="must_check_lot_compliance" invisible="perform_transfer"
+                           groups="dw_quality_lot_process.check_compliance_lot_configuration_group"/>
+                    <field name="allowed_lot_status_in" widget="many2many_tags"
+                           invisible="must_check_lot_compliance==False"
+                           groups="dw_quality_lot_process.check_compliance_lot_configuration_group"/>
+                  <field name="allowed_lot_status_out" widget="many2many_tags"
+                           invisible="not must_check_lot_compliance"
+                           groups="dw_quality_lot_process.check_compliance_lot_configuration_group"/>
                 </xpath>
             </field>
         </record>

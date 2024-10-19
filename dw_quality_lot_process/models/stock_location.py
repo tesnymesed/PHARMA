@@ -9,12 +9,22 @@ class StockLocation(models.Model):
         lot_status_conform = self.env.ref('dw_quality_lot_process.stock_lot_status_conform')
         return [(6, 0, [lot_status_conform.id])]
 
-    lot_status_for_transfer_ids = fields.Many2many('stock.lot.status', string='Lot status',
-                                                   default=lambda self: self._default_lot_status(),
-                                                   help="This field indicates the authorized lot status to transfer out/in the current location")
+    allowed_lot_status_in = fields.Many2many('stock.lot.status', string='Lot status IN',
+                                             default=lambda self: self._default_lot_status(),
+                                             relation='location_status_lot_in',
+                                             column1='location_id',
+                                             column2='status_id',
+                                             help="This field indicates the authorized lot status to transfer in the current location")
+
+    allowed_lot_status_out = fields.Many2many('stock.lot.status', string='Lot status OUT',
+                                              default=lambda self: self._default_lot_status(),
+                                              relation='location_status_lot_out',
+                                              column1='location_id',
+                                              column2='status_id',
+                                              help="This field indicates the authorized lot status to transfer out of the current location")
 
     must_check_lot_compliance = fields.Boolean(string="Check Lot Conformity", default=False,
-                                                help='This field indicates if we should check lot conformity in the location')
+                                               help='This field indicates if we should check lot conformity in the location')
 
 
 class StockLotStatus(models.Model):
@@ -28,3 +38,7 @@ class StockLotStatus(models.Model):
         ('blocked', 'Blocked'),
         ('cancelled', 'Cancelled')
     ], string="Lot Status", required=True)
+
+
+class LotStatus(models.Model):
+    _name = 'lot.status'

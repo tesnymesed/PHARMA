@@ -60,6 +60,9 @@ class DwProductPharmaceuticalFamily(models.Model):
             'res_model': 'product.template',
             'view_mode': 'kanban,tree,form',
             'domain': [('dw_pharma_family_id', '=', self.id)],
+            'context': {
+                'default_dw_pharma_family_id': self.id,
+            },
         }
 
 

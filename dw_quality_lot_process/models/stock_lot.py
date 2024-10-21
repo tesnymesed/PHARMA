@@ -87,6 +87,14 @@ class StockLot(models.Model):
     def action_set_reanalyzed(self):
         self._create_history_record(self.lot_quarantine_status, 'reanalyzed', is_quarantine=True)
         self.lot_quarantine_status = 'reanalyzed'
+        return {
+                'type': 'ir.actions.act_window',
+                'name': 'Reanalyze Lot',
+                'res_model': 'stock.lot.reanalyse.wizard',
+                'view_mode': 'form',
+                'target': 'new',
+                'context': {'default_lot_id': self.id, 'default_company_id': self.company_id.id}
+            }
     
     
     def write(self, vals):
@@ -108,4 +116,4 @@ class StockLot(models.Model):
         
         return super(StockLot, self).write(vals)  
 
-    
+

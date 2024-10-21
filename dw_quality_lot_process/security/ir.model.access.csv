@@ -3,3 +3,5 @@ access_stock_lot_history_user,access.stock.lot.history,model_stock_lot_history,b
 access_stock_lot_cancel_reason_user,access.stock.lot.cancel.reason,model_stock_lot_cancel_reason,base.group_user,1,1,1,1
 access_stock_lot_cancel_wizard_user,access.stock.lot.cancel.wizard,model_stock_lot_cancel_wizard,base.group_user,1,1,1,1
 access_stock_lot_status_user, access.stock.lot.status,model_stock_lot_status,base.group_user,1,1,1,1
+access_stock_lot_reanalyse_wizard_user, access.stock.lot.reanalyse.wizard,model_stock_lot_reanalyse_wizard,base.group_user,1,1,1,1
+access_stock_lot_reanalyse_line_wizard_user, access.stock.lot.reanalyse.line.wizard,model_stock_lot_reanalyse_line_wizard,base.group_user,1,1,1,1

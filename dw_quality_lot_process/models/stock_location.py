@@ -26,6 +26,8 @@ class StockLocation(models.Model):
     must_check_lot_compliance = fields.Boolean(string="Check Lot Conformity", default=False,
                                                help='This field indicates if we should check lot conformity in the location')
 
+    perform_quality_lot_reanalyze = fields.Boolean(string="Perform Quality lot reanalyze", default=False,
+                                       help="Check this box to perform a quality reanalysis for lots.")
 
 class StockLotStatus(models.Model):
     _name = 'stock.lot.status'

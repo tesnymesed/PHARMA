@@ -23,8 +23,10 @@
         'views/product_product_views.xml',
         'views/quality_check_views.xml',
         'views/stock_location_inherit.xml',
+        'views/stock_warehouse_views.xml',
         # wizards
         'wizards/stock_lot_cancel_reason_views.xml',
+        'wizards/stock_lot_reanalyse_status_views.xml',
         # menu
         'menus.xml',
     ],

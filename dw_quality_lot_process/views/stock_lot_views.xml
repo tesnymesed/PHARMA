@@ -37,6 +37,7 @@
                         invisible="lot_quarantine_status not in ['in_progress']"/>
                         <button name="action_set_reanalyzed" type="object" string="Reanalyze"
                         invisible="lot_quarantine_status!='analyzed'"/>
+                        <button name="do_reanalyse_process" type="object" string="Reanalyze" />
                         <field name="lot_quarantine_status" widget="statusbar"/>
                     </header>
                 </xpath>

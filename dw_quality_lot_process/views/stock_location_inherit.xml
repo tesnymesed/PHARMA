@@ -10,6 +10,8 @@
                     <field name="perform_transfer" invisible="1"/>
                     <field name="must_check_lot_compliance" invisible="perform_transfer"
                            groups="dw_quality_lot_process.check_compliance_lot_configuration_group"/>
+                   <field name="perform_quality_lot_reanalyze" invisible="perform_transfer"
+                           groups="dw_quality_lot_process.check_compliance_lot_configuration_group"/>
                     <field name="allowed_lot_status_in" widget="many2many_tags"
                            invisible="must_check_lot_compliance==False"
                            groups="dw_quality_lot_process.check_compliance_lot_configuration_group"/>

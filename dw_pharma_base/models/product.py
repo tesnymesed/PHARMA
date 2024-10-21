@@ -38,12 +38,37 @@ class DwProductTemplate(models.Model):
         if not self.dw_pharma_family_id:
             return
         family = self.dw_pharma_family_id
+        product_categ_id = family.product_categ_id
         values = {
             'purchase_ok': family.purchase_ok,
             'sale_ok': family.sale_ok,
             'tracking': family.tracking,
             'use_expiration_date': family.use_expiration_date,
+            'detailed_type': family.product_detailed_type,
         }
-        if family.product_categ_id:
-            values['categ_id'] = family.product_categ_id.id
+        if product_categ_id:
+            values['categ_id'] = product_categ_id.id
+        self.update(values)
+
+
+class DwProductProduct(models.Model):
+    _inherit = 'product.product'
+
+    @api.onchange('dw_pharma_family_id')
+    def onchange_dw_pharma_family_id(self):
+        """Update product attributes based on pharmacy family settings.
+        """
+        if not self.dw_pharma_family_id:
+            return
+        family = self.dw_pharma_family_id
+        product_categ_id = family.product_categ_id
+        values = {
+            'purchase_ok': family.purchase_ok,
+            'sale_ok': family.sale_ok,
+            'tracking': family.tracking,
+            'use_expiration_date': family.use_expiration_date,
+            'detailed_type': family.product_detailed_type,
+        }
+        if product_categ_id:
+            values['categ_id'] = product_categ_id.id
         self.update(values)

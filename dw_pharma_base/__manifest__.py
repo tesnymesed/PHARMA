@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Solution Pharma BASE',
     'version': '17.0',
     'sequence': 10,
     'author': 'DIDIWAVES - ALGERIA',
     'website': 'www.digiwaves.io',
-    'depends': ['dw_base', 'stock', ],
+    'depends': ['dw_base', 'stock','product_expiry' ],
     'images': ['static/description/icon.png'],
     'data': [
         'security/ir.model.access.csv',
@@ -14,6 +13,7 @@
         'views/product.xml',
         'views/partner.xml',
         'views/product_pharmaceutical.xml',
+        'views/res_config_settings_inherit_views.xml',
         'views/menu.xml',
     ],
     'installable': True,

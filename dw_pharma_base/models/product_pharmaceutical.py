@@ -37,6 +37,13 @@ class DwProductPharmaceuticalFamily(models.Model):
         string="Tracking", required=True, default='none', tracking=True,
         help="Ensure the traceability of a storable product in your warehouse.")
     use_expiration_date = fields.Boolean(string='Use Expiration Date', tracking=True, copy=False)
+    product_detailed_type = fields.Selection([
+        ('product', 'Storable Product'),
+        ('consu', 'Consumable'),
+        ('service', 'Service')], string='Product Type',
+        help='A storable product is a product for which you manage stock. The Inventory app has to be installed.\n'
+             'A consumable product is a product for which stock is not managed.\n'
+             'A service is a non-material product you provide.')
 
     def _compute_products_count(self):
         for product in self:
@@ -44,31 +51,19 @@ class DwProductPharmaceuticalFamily(models.Model):
 
     def action_view_product(self):
         """
-             This method is used by the Product Family smart button. It opens a form view or a tree view
-             :return: Action Dict
+             This method is used by the Product Family smart button.
              """
 
-        product = self.mapped('product_ids')
-        if not product:
-            raise UserError(
-                _('There is no Product to view.')
-            )
-        tree_view = self.env.ref('dw_pharma_base.product_pharma_family_view_tree')
-        form_view = self.env.ref('dw_pharma_base.product_pharma_family_view_form')
-        action = {
-            'name': _('Purchase Order(s)'),
+        return {
             'type': 'ir.actions.act_window',
-            'res_model': 'purchase.order',
-            'context': {'default_purchase_order_ids': [(4, self.id)]}
+            'name': _("Products"),
+            'res_model': 'product.template',
+            'view_mode': 'kanban,tree,form',
+            'domain': [('dw_pharma_family_id', '=', self.id)],
+            'context': {
+                'default_dw_pharma_family_id': self.id,
+            },
         }
-        if len(product) == 1:
-            action['views'] = [(form_view.id, 'form')]
-            action['res_id'] = product.id
-            action['view_mode'] = 'form'
-        else:
-            action['views'] = [(tree_view.id, 'tree'), (form_view.id, 'form')]
-            action['domain'] = [('id', 'in', product.ids)]
-        return action
 
 
 class DwProductPharmaceuticalSubfamily(models.Model):

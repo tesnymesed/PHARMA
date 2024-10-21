@@ -7,7 +7,7 @@
 =        """,
     'author': 'DIGIWAVES - ALGERIA',
     'website': 'www.digiwaves.io',
-    'depends': ['stock', 'dw_saidal_pharma'],
+    'depends': ['stock', 'dw_pharma_base'],
     'data': [
         # data
         # report

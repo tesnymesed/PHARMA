@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Product',
+    'name': 'Auto generate Lot number',
     'version': '1.0.0',
     'category': 'Localization',
     'description': """

@@ -1,5 +1,4 @@
 # -*- coding:utf-8 -*-
-from pkg_resources import require
 
 from odoo import fields, models, api, _
 import datetime
@@ -21,7 +20,7 @@ class DwPaymentRequest(models.Model):
         store=True,
         group_expand='_expand_states'
     )
-    user_id = fields.Many2one('res.users', 'Agent', default=lambda self: self.env.user , require="true")
+    user_id = fields.Many2one('res.users', 'Agent', default=lambda self: self.env.user , required="true")
     confirmed_by_id = fields.Many2one('res.users', 'Confirmed by')
     request_date = fields.Date(
         string="Request date",
@@ -56,12 +55,12 @@ class DwPaymentRequest(models.Model):
 
     request_type_id = fields.Many2one('payment.request.type',string='Request Type',required=True)
 
-    @api.depends('dw_account_move_id.amount_total')  # Replace 'your_field_dependency' with the actual field dependency
+    @api.depends('dw_account_move_id.amount_total')  
+    #must be improved
     def _compute_amount_in_text(self):
         for rec in self:
             currency = self.env['res.currency'].search([('name', '=', rec.dw_account_move_id.currency_id.name)],
                                                        limit=1)
-            # set the context to text
             ctx = self._context.copy()
             ctx['lang'] = 'fr_FR'
 
@@ -70,11 +69,12 @@ class DwPaymentRequest(models.Model):
             rec.amount_in_text = currency.with_context(ctx).amount_to_text(amount_net)
 
     def action_confirm(self):
-        for record in self:
-            record.write({
+            today=fields.Date.today()
+            user_id=fields.Date.today()
+            self.write({
                 'state': 'confirm',
-                'confirmed_by_id': self.env.user.id,
-                'validation_date': fields.Date.today(),
+                'confirmed_by_id': user_id,
+                'validation_date': today,
             })
 
     def action_reject(self):

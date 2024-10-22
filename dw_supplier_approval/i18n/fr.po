@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-01 13:29+0000\n"
-"PO-Revision-Date: 2024-10-01 13:29+0000\n"
+"POT-Creation-Date: 2024-10-22 13:42+0000\n"
+"PO-Revision-Date: 2024-10-22 13:42+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: code:addons/dw_supplier_approval/models/procurement_supplier_approval.py:0
 #, python-format
 msgid "%(market_name)s approvals's Documents"
-msgstr "%Documents d'approbation de (market_name)"
+msgstr ""
 
 #. module: dw_supplier_approval
 #. odoo-python
@@ -28,19 +28,19 @@ msgstr "%Documents d'approbation de (market_name)"
 #: code:addons/dw_supplier_approval/models/product.py:0
 #, python-format
 msgid "%(product_name)s's approval"
-msgstr "Approbation de %(product_name)"
+msgstr ""
 
 #. module: dw_supplier_approval
 #. odoo-python
 #: code:addons/dw_supplier_approval/models/res_partner.py:0
 #, python-format
 msgid "%(supplier_name)s's approval"
-msgstr "Approbation de %(supplier_name)"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
 msgid "<span class=\"o_stat_text\">Documents</span>"
-msgstr "<span class=\"o_stat_text\">Documents</span>"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.dw_view_partner_form_inherit_test
@@ -82,7 +82,7 @@ msgstr "Adresse"
 #. module: dw_supplier_approval
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__procurement_supplier_approval__state__analyse
 msgid "Analyse"
-msgstr "Analyse"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.ui.menu,name:dw_supplier_approval.menu_approval_parent_purchase
@@ -92,9 +92,8 @@ msgstr "Approbation"
 
 #. module: dw_supplier_approval
 #: model:ir.actions.act_window,name:dw_supplier_approval.action_view_article_need_approval
-#: model:ir.ui.menu,name:dw_supplier_approval.menu_article_supplier_approval
 msgid "Article"
-msgstr "Article"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__message_attachment_count
@@ -104,7 +103,7 @@ msgstr "Nombre de pièces jointes"
 #. module: dw_supplier_approval
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__procurement_supplier_approval__state__audit
 msgid "Audit"
-msgstr "Audit"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__has_blacklisted_supplier
@@ -143,14 +142,9 @@ msgid "Confirm"
 msgstr "Confirmer"
 
 #. module: dw_supplier_approval
-#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
-msgid "Consulted"
-msgstr "Consulté"
-
-#. module: dw_supplier_approval
 #: model:ir.model,name:dw_supplier_approval.model_res_partner
 msgid "Contact"
-msgstr "Contact"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__country_id
@@ -184,7 +178,7 @@ msgstr "Nom d'affichage"
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__manufacturing_document_attachment
 msgid "Document fabriquant"
-msgstr "Document fabriquant"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__email
@@ -214,10 +208,15 @@ msgid "Expired contract"
 msgstr "Contrat expiré"
 
 #. module: dw_supplier_approval
-#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__fichier_stabilite_attachment
-#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__fichier_stabilite_attachment
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__dw_product_pharma_family_name
+msgid "Family Name"
+msgstr "Nom"
+
+#. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__stability_file_attachment
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__stability_file_attachment
 msgid "Fichier de stabilité"
-msgstr "Fichier de stabilité"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__Pre_eval_quest_name
@@ -226,7 +225,7 @@ msgstr "Fichier de stabilité"
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__rapport_expertise_file_name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__rapport_technique_name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__stabilite_file_name
-#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__fichier_stabilite_file_name
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__stability_file_file_name
 msgid "File name"
 msgstr "Nom du fichier"
 
@@ -253,13 +252,13 @@ msgstr "A un message"
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.product_template_search_view_inherit
 msgid "Has blacklisted supplier"
-msgstr "A mis un fournisseur sur liste noire"
+msgstr "Fournisseur sur liste noire"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__activity_exception_icon
@@ -273,20 +272,22 @@ msgstr "Icône indiquant une activité d'exception."
 
 #. module: dw_supplier_approval
 #: model:ir.actions.act_window,name:dw_supplier_approval.action_identification_besoin
-#: model:ir.ui.menu,name:dw_supplier_approval.menu_identification_besoin_root
 msgid "Identification of the need"
 msgstr "Identification du besoin"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,help:dw_supplier_approval.field_procurement_supplier_approval__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Si cette case est cochée, de nouveaux messages requièrent votre attention."
+msgstr ""
+"Si cette case est cochée, de nouveaux messages requièrent votre attention."
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,help:dw_supplier_approval.field_procurement_supplier_approval__message_has_error
 #: model:ir.model.fields,help:dw_supplier_approval.field_procurement_supplier_approval__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr "Si cette case est cochée, certains messages sont accompagnés d'une erreur de livraison."
+msgstr ""
+"Si cette case est cochée, certains messages sont accompagnés d'une erreur de"
+" livraison."
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__message_is_follower
@@ -327,11 +328,6 @@ msgid "Manufacturer"
 msgstr "Fabricant"
 
 #. module: dw_supplier_approval
-#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__market_ids
-msgid "Market"
-msgstr "Marché"
-
-#. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__market_supplier_ids
 msgid "Market Supplier"
 msgstr "Approvisionnement du marché"
@@ -344,7 +340,7 @@ msgstr "Erreur d'acheminement du message"
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__message_ids
 msgid "Messages"
-msgstr "Messages"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__my_activity_date_deadline
@@ -352,7 +348,6 @@ msgid "My Activity Deadline"
 msgstr "Mon délai d'activité"
 
 #. module: dw_supplier_approval
-#: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__dw_product_pharma_family_name
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__name
 msgid "Name"
 msgstr "Nom"
@@ -364,7 +359,7 @@ msgstr "Nom"
 #: code:addons/dw_supplier_approval/models/procurement_supplier_approval.py:0
 #, python-format
 msgid "New"
-msgstr "Nouveau"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__activity_date_deadline
@@ -443,12 +438,12 @@ msgstr "Bon de commande fournisseur"
 #. module: dw_supplier_approval
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__procurement_supplier_approval__state__qualification
 msgid "Qualification"
-msgstr "Qualification"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__qty
 msgid "Quantity"
-msgstr "Quantity"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__motif_id
@@ -562,12 +557,12 @@ msgstr "Historique de la communication sur le site web"
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
 msgid "ZIP"
-msgstr "ZIP"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__zip
 msgid "Zip"
-msgstr "Zip"
+msgstr ""
 
 #. module: dw_supplier_approval
 #: model:documents.folder,name:dw_supplier_approval.folder_supplier_approval
@@ -575,18 +570,17 @@ msgstr "Zip"
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_dw_document_wizard__approval_id
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__approval_ids
 #: model:ir.module.category,name:dw_supplier_approval.module_procurement_supplier_approval_category
-#: model:ir.ui.menu,name:dw_supplier_approval.menu_supplier_approval
-#: model:ir.ui.menu,name:dw_supplier_approval.menu_supplier_approval_root
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
 msgid "approval"
 msgstr "approbation"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.product_template_search_view_inherit
-msgid "approval expires less than 18 month"
-msgstr "l'approbation expire moins de 18 mois"
+msgid "approval expiration < 18 month"
+msgstr "Expiration approbation < 18 mois"
 
 #. module: dw_supplier_approval
+#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_category__need_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__need_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_product_template__need_approval
 msgid "approval required"
@@ -599,23 +593,13 @@ msgstr "approuvé"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.product_template_search_view_inherit
-msgid "contract expires less than 18 month"
-msgstr "le contrat expire moins de 18 mois"
+msgid "contract expiration < 18 month"
+msgstr "Expiration contrat < 18 mois"
 
 #. module: dw_supplier_approval
 #: model:ir.model,name:dw_supplier_approval.model_dw_document_wizard
 msgid "dw.document.wizard"
 msgstr ""
-
-#. module: dw_supplier_approval
-#: model:ir.model.fields,field_description:dw_supplier_approval.field_product_category__need_approval
-msgid "homologué"
-msgstr ""
-
-#. module: dw_supplier_approval
-#: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_identification_besoin_product_tree
-msgid "launch market"
-msgstr "marché de lancement"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
@@ -652,10 +636,10 @@ msgstr "retour au projet"
 #: code:addons/dw_supplier_approval/models/procurement_supplier_approval.py:0
 #, python-format
 msgid "start date can't be greater that end date"
-msgstr "la date de début ne peut être supérieure à la date de fin"
+msgstr ""
 
 #. module: dw_supplier_approval
-#: model:ir.actions.act_window,name:dw_supplier_approval.action_procurement_supplier_approval
+#: model:ir.actions.act_window,name:dw_supplier_approval.action_supplier_approval
 #: model:ir.model,name:dw_supplier_approval.model_procurement_supplier_approval
 msgid "supplier approval"
 msgstr "approbation du fournisseur"

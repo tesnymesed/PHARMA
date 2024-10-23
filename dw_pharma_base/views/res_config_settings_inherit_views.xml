@@ -12,6 +12,10 @@
                         <field name="module_dw_auto_generate_lot_number"/>
 
                     </setting>
+                    <setting id="dw_auto_lot_number" help="Auto generate Lot number"  invisible="not group_stock_production_lot">
+                        <field name="module_dw_supplier_reference"/>
+
+                    </setting>
                 </setting>
 
             </field>

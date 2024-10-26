@@ -19,9 +19,9 @@ class StockLot(models.Model):
         ('reanalyzed','reanalyzed')
         ],string="Analyse Status", default='draft')
     
-    compiliance_check = fields.Boolean(related='product_id.requires_lot_compliance_check',readonly=True)
+    compliance_check = fields.Boolean(related='product_id.requires_lot_compliance_check',readonly=True)
     lot_status_history_ids = fields.One2many('stock.lot.history', 'lot_id', string="Status History")
-    initial_qty = fields.Float(string="Initial Quanit",readonly=True)
+    initial_qty = fields.Float(string="Initial Quantity",readonly=True)
     
     def _create_history_record(self, previous_status, new_status, is_quarantine=False):
         '''This function creates stock.lot.history record'''
@@ -87,19 +87,33 @@ class StockLot(models.Model):
     def action_set_reanalyzed(self):
         self._create_history_record(self.lot_quarantine_status, 'reanalyzed', is_quarantine=True)
         self.lot_quarantine_status = 'reanalyzed'
+        return {
+                'type': 'ir.actions.act_window',
+                'name': 'Reanalyze Lot',
+                'res_model': 'stock.lot.reanalyse.wizard',
+                'view_mode': 'form',
+                'target': 'new',
+                'context': {'default_lot_id': self.id, 'default_company_id': self.company_id.id}
+            }
     
     
     def write(self, vals):
         if 'expiration_date' in vals:
+            change_date = fields.Datetime.now()
+            user_id = self.env.user.id
+            history_vals_list = []
             for record in self:
-                self.env['stock.lot.history'].sudo().create({
+                history_vals_list.append({
                     'lot_id': record.id,
                     'previous_date_expiration': record.expiration_date,
                     'new_date_expiration': vals.get('expiration_date'),
-                    'user_id': self.env.user.id,
-                    'change_date': fields.Datetime.now(),
+                    'user_id': user_id,
+                    'change_date': change_date,
                 })
-        return super(StockLot, self).write(vals)
-    
+            
+            if history_vals_list:
+                self.env['stock.lot.history'].sudo().create(history_vals_list)
+        
+        return super(StockLot, self).write(vals)  
 
-    
+

@@ -1,4 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access.stock.lot.history,access.stock.lot.history,model_stock_lot_history,check_compiliance_lot_configuration_group,1,0,0,0
-access.stock.lot.cancel.reason,access.stock.lot.cancel.reason,model_stock_lot_cancel_reason,check_compiliance_lot_configuration_group,1,1,1,1
-access.stock.lot.cancel.wizard,access.stock.lot.cancel.wizard,model_stock_lot_cancel_wizard,check_compiliance_lot_configuration_group,1,1,1,1
+access_stock_lot_history_user,access.stock.lot.history,model_stock_lot_history,base.group_user,1,1,1,1
+access_stock_lot_cancel_reason_user,access.stock.lot.cancel.reason,model_stock_lot_cancel_reason,base.group_user,1,1,1,1
+access_stock_lot_cancel_wizard_user,access.stock.lot.cancel.wizard,model_stock_lot_cancel_wizard,base.group_user,1,1,1,1
+access_stock_lot_status_user, access.stock.lot.status,model_stock_lot_status,base.group_user,1,1,1,1
+access_stock_lot_reanalyse_wizard_user, access.stock.lot.reanalyse.wizard,model_stock_lot_reanalyse_wizard,base.group_user,1,1,1,1
+access_stock_lot_reanalyse_line_wizard_user, access.stock.lot.reanalyse.line.wizard,model_stock_lot_reanalyse_line_wizard,base.group_user,1,1,1,1

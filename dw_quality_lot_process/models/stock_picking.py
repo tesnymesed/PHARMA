@@ -1,5 +1,6 @@
 from odoo.exceptions import UserError
-from odoo import _,models
+from odoo import _, models
+
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
@@ -7,32 +8,61 @@ class StockPicking(models.Model):
     def button_validate(self):
         for picking in self:
             picking_type = picking.picking_type_id.code if picking.picking_type_id else False
-            if picking_type in ['incoming', 'mrp_operation']:
-                self._check_lot_compliance(picking.move_ids, 'location_dest_id')
-                
+            move_ids = picking.move_ids.filtered(
+                lambda m: m.product_id and m.product_id.requires_lot_compliance_check)
+            if picking_type == 'internal':
+                self._check_internal_transfer(move_ids)
+            elif picking_type == 'mrp_operation':
+                self._check_lot_mrp_operation_compliance(move_ids)
             elif picking_type == 'outgoing':
-                self._check_lot_compliance(picking.move_ids, 'location_id')
-                
-            elif picking_type == 'internal':
-                self._check_internal_transfer(picking.move_ids)
+                self._check_lot_outgoing_compliance(move_ids)
 
         return super(StockPicking, self).button_validate()
 
-    def _check_lot_compliance(self, move_ids, location_field):
+    def _check_lot_outgoing_compliance(self, move_ids):
         for move_id in move_ids:
             for move_line in move_id.move_line_ids:
-                location = getattr(move_line, location_field)
-                if location.perform_transfer:
-                    if move_id.product_id and move_id.product_id.requires_lot_compliance_check:
-                        self._validate_lot_conformity(move_line.lot_id, move_id.product_id)
+                location_id = move_line.location_id
+                if location_id:
+                    self._check_transfer_compliance(location_id, move_line.lot_id,
+                                                    move_id.product_id, 'out')
+
+    def _check_lot_mrp_operation_compliance(self, move_ids):
+        for move_id in move_ids:
+            for move_line in move_id.move_line_ids:
+                location_dest = move_line.location_dest_id
+                if location_dest:
+                    self._check_transfer_compliance(location_dest, move_line.lot_id,
+                                                    move_id.product_id, 'in')
 
     def _check_internal_transfer(self, move_ids):
         for move_id in move_ids:
             for move_line in move_id.move_line_ids:
-                if not move_line.location_id.perform_transfer or not move_line.location_dest_id.perform_transfer:
-                    if move_id.product_id and move_id.product_id.requires_lot_compliance_check:
-                        self._validate_lot_conformity(move_line.lot_id, move_id.product_id)
+                location_source = move_line.location_id
+                location_dest = move_line.location_dest_id
+                if location_source and location_dest:
+                    self._check_transfer_compliance(location_source, move_line.lot_id,
+                                                    move_id.product_id, 'in')
+                    self._check_transfer_compliance(location_dest, move_line.lot_id,
+                                                    move_id.product_id, 'out')
 
-    def _validate_lot_conformity(self, lot, product):
-        if lot.lot_status != 'conform':
-            raise UserError(_(f"The transfer for {product.name} cannot be performed for non-conform lot: {lot.name}"))
+    def _check_transfer_compliance(self, location, lot, product, direction):
+        if not location.perform_transfer and location.must_check_lot_compliance:
+            if direction == 'in':
+                authorized_lot_status = location.allowed_lot_status_in.mapped(
+                    'name') if location.allowed_lot_status_in else None
+            else:  # direction == 'out'
+                authorized_lot_status = location.allowed_lot_status_out.mapped(
+                    'name') if location.allowed_lot_status_out else None
+
+            if authorized_lot_status is not None:
+                self._validate_lot_conformity(authorized_lot_status, lot, product)
+            # If authorized_lot_status is None, all lot statuses are accepted, so no validation is needed.
+
+    def _validate_lot_conformity(self, authorized_lot_status, lot, product):
+        lot_status = lot.lot_status
+        if lot_status not in authorized_lot_status:
+            lot_status_display = dict(lot._fields['lot_status'].selection).get(lot_status, lot_status)
+            raise UserError(
+                _(f"The transfer for {product.name} cannot be performed for lot: {lot.name} with status: {lot_status_display}")
+            )

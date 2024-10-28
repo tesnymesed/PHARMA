@@ -13,11 +13,13 @@
     'data': [
         'security/ir.model.access.csv',
         'security/security.xml',
+        'data/sample_sequence.xml',
         'views/quality_check_model_views.xml',
         'views/product_views.xml',
         'views/quality_check_views.xml',
         'views/stock_location.xml',
         'views/stock_warehouse.xml',
+        'views/sample_request_view.xml',
         'views/res_config_settings_inherit_views.xml',
 
         'wizard/dw_quality_lot_approval_views.xml',

@@ -5,4 +5,5 @@ access_quality.check.line,quality check line,model_quality_check_line,base.group
 access_quality.dw.quality.reload,dw quality reload,model_dw_quality_reload,base.group_user,1,1,1,1
 access_quality.dw.quality.reload.location,dw quality reload location,model_dw_quality_reload_location,base.group_user,1,1,1,1
 access_quality.dw.quality.lot.approval,dw.quality.lot.approval,model_dw_quality_lot_approval,base.group_user,1,1,1,1
-
+access_sample_request,sample_request,model_sample_request,base.group_user,1,1,1,1
+access_sample_request_lines,sample_request_lines,model_sample_request_lines,base.group_user,1,1,1,1

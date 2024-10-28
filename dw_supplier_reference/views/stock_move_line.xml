@@ -1,0 +1,29 @@
+<odoo>
+    <data>
+        <record id="view_stock_move_line_tree_inherit" model="ir.ui.view">
+            <field name="name">stock.move.line.tree.inherit</field>
+            <field name="model">stock.move.line</field>
+            <field name="inherit_id" ref="stock.view_stock_move_line_detailed_operation_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='product_id']" position="after">
+                    <field name="tracking" column_invisible="1"/>
+                    <field name="dw_supplier_ref" force_save="1" invisible="not lots_visible" readonly="state in ('done', 'cancel') and is_locked"  groups="stock.group_production_lot"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_stock_move_line_operation_tree_reference_supplier" model="ir.ui.view">
+            <field name="name">stock.move.line.inherit.tree</field>
+            <field name="model">stock.move.line</field>
+            <field name="inherit_id" ref="stock.view_stock_move_line_operation_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='lot_name']" position="after">
+                    <field name="dw_supplier_ref" force_save="1" groups="stock.group_production_lot"
+                           column_invisible="parent.has_tracking == 'none' or parent.picking_code != 'incoming'"/>
+
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

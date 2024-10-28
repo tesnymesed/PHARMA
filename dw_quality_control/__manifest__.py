@@ -18,6 +18,7 @@
         'views/quality_check_views.xml',
         'views/stock_location.xml',
         'views/stock_warehouse.xml',
+        'views/res_config_settings_inherit_views.xml',
 
         'wizard/dw_quality_lot_approval_views.xml',
         'wizard/dw_quality_reload_views.xml',

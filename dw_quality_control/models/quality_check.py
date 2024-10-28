@@ -63,6 +63,7 @@ class QualityCheck(models.Model):
     lot_domain_reception = fields.Many2many('stock.lot', 'rel_lot_quality', 'quality_id', 'lot_id',
                                             string='lots', compute="compute_lot_domain_reception", store=1, readonly=0)
     dw_route_no_origin = fields.Boolean(default=False, related="picking_id.dw_route_no_origin")
+    simple_request_ids = fields.Many2one('sample.request', string='Simple Request')
 
     @api.depends('dw_check_ids')
     def _compute_count_dw_check_ids(self):
@@ -310,3 +311,25 @@ class QualityCheck(models.Model):
         picking_id = self.picking_id
         if picking_id:
             picking_id.dw_recompute_state()
+
+    def button_sample_request(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Sample Request',
+            'view_mode': 'form',
+            'res_model': 'sample.request',
+            'res_id': self.simple_request_ids.id if self.simple_request_ids else False,
+            'context': {'default_quality_check_id': self.id},
+        }
+
+    def action_sample_request(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Sample Request',
+            'view_mode': 'tree,form',
+            'res_model': 'sample.request',
+            "domain": [('quality_check_id', '=', self.id)],
+            'context': {'default_quality_check_id': self.id},
+        }

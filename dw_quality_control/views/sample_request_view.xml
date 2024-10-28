@@ -27,6 +27,11 @@
                             class="btn-secondary"/>
                 </header>
                 <sheet>
+                    <div name="button_box">
+                <button class="oe_stat_button" type="object" name="action_quality_check" icon="fa-list-alt">
+                    <field name="quality_check_id" string="Quality Check" widget="statinfo"/>
+                </button>
+            </div>
                     <h1>
                         <field name="name" readonly="state not in ['draft','confirm']"/>
                     </h1>
@@ -34,6 +39,7 @@
                         <group>
                             <field name="product_id" readonly="state not in ['draft','confirm']"
                                    options='{"no_create":True}'/>
+                            <field name="quality_check_id" invisible="1"/>
                             <field name="lot_id" readonly="state not in ['draft','confirm']"/>
                             <field name="user_id" readonly="state not in ['draft','confirm']"/>
                             <field name="request_time" readonly="state not in ['draft','confirm']"/>
@@ -75,6 +81,7 @@
             <tree>
                 <field name="name" optional="show"/>
                 <field name="product_id" optional="show"/>
+                <field name="quality_check_id" optional="hide"/>
                 <field name="lot_id" optional="show"/>
                 <field name="user_id" optional="show"/>
                 <field name="request_time" optional="show"/>

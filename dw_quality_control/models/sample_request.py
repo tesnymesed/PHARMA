@@ -14,6 +14,7 @@ class SampleRequest(models.Model):
     product_id = fields.Many2one('product.product',string='Product',required=True)
     lot_id = fields.Many2one('stock.lot',string='Lot/Serial')
     line_ids = fields.One2many('sample.request.lines','simple_request_id')
+    quality_check_id =fields.Many2one('quality.check', string='Quality Check')
     validation_time = fields.Datetime(string='Validate Time', tracking=True)
     validation_by = fields.Many2one('res.users',string='Validate By', tracking=True)
     state = fields.Selection([
@@ -48,3 +49,14 @@ class SampleRequest(models.Model):
                 seq_name = IrSequence.next_by_code('sample.request.seq')
                 vals['name'] = seq_name or _('New')
         return super().create(vals_list)
+
+    def action_quality_check(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Quality check',
+            'view_mode': 'form',
+            'res_model': 'quality.check',
+            'res_id': self.quality_check_id.id if self.quality_check_id else False,
+            'context': {'simple_request_ids': self.id},
+        }

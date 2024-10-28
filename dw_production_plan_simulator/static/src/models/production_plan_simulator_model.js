@@ -509,7 +509,6 @@ export class ProductionPlanSimulatorModel extends EventBus {
   }
 
   async _openMPS(ids, state) {
-
     const action = await this.orm.call(
       "dw.production.plan.simulation",
       "dw_action_open_mps_view",

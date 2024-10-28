@@ -96,7 +96,7 @@ export default class ProductionPlanSimulatorLine extends Component {
       res_model: ev.currentTarget.dataset.model,
       res_id: Number(ev.currentTarget.dataset.resId),
       views: [[false, "form"]],
-      target: "current",
+      target: "new",
     });
   }
 

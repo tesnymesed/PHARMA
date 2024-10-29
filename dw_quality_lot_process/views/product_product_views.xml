@@ -19,7 +19,7 @@
             <field name="inherit_id" ref="dw_location_transfer_limit.product_normal_form_view_inherited"/>
             <field name="arch" type="xml">
                 <field name="restrict_transfer" position="after">
-                    <field name="requires_lot_compliance_check"
+                    <field name="requires_lot_compliance_check" invisible="detailed_type=='consu'"
                            groups="dw_quality_lot_process.check_compliance_lot_configuration_group"/>
                 </field>
 

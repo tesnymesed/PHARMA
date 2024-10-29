@@ -37,17 +37,15 @@ class StockLotReanalyseWizard(models.TransientModel):
 
         lot = self.env['stock.lot'].browse(lot_id)
         
-        # Get company_id from context
         company_id = self.env.context.get('default_company_id')
+        company = self.env['res.company'].browse(company_id)
         
-        # Filter quant_ids based on the logic
         quant_ids = lot.quant_ids.filtered(
             lambda l: l.location_id.usage == 'internal' 
             and l.location_id.perform_quality_lot_reanalyze 
             and l.quantity > 0
         )
         
-        # Create line_ids for the wizard lines
         line_vals = []
         for quant in quant_ids:
             line_vals.append({
@@ -58,10 +56,8 @@ class StockLotReanalyseWizard(models.TransientModel):
                 'quantity': quant.quantity
             })
         
-        # Create the records in the 'stock.lot.reanalyse.line.wizard' model
         line_records = self.env['stock.lot.reanalyse.line.wizard'].create(line_vals)
         
-        # Assign the line records to 'line_ids' many2many field
         res["line_ids"] = [(6, 0, line_records.ids)]
         
         return res
@@ -78,8 +74,6 @@ class StockLotReanalyseWizard(models.TransientModel):
         StockPicking = self.env['stock.picking']
         StockMove = self.env['stock.move']
         StockMoveLine = self.env['stock.move.line']
-
-        
         warehouse_groups = {}
         for line in self.line_ids:
             warehouse = line.location_id.warehouse_id
@@ -96,26 +90,33 @@ class StockLotReanalyseWizard(models.TransientModel):
 
             picking = StockPicking.sudo().create({
                 'picking_type_id': picking_type.id,
-                'location_id': location_location_id,  
+                'location_id': location_location_id,
                 'location_dest_id': location_dest_id,
                 'company_id': self.company_id.id,
             })
 
+            move_vals = []
+            move_line_vals = []
+            
             for line in lines:
-                move_id = StockMove.sudo().create({
+                move_vals.append({
                     'picking_id': picking.id,
                     'product_id': self.lot_id.product_id.id,
                     'product_uom_qty': line.quantity,
                     'product_uom': line.uom_id.id,
                     'location_id': line.location_id.id,
                     'location_dest_id': location_dest_id,
-                    'name':'test',
+                    'name': 'test',
                 })
-                StockMoveLine.sudo().create({
-                    'move_id': move_id.id,
-                    'quant_id':line.quant_id.id
+            moves = StockMove.sudo().create(move_vals)
+
+            for move, line in zip(moves, lines):
+                move_line_vals.append({
+                    'move_id': move.id,
+                    'quant_id': line.quant_id.id,
                 })
 
-            
+            StockMoveLine.sudo().create(move_line_vals)
             picking.action_confirm()
             picking.button_validate()
+

@@ -15,9 +15,9 @@
                 <notebook>
                     <page string="Lines">
                         <field name="line_ids" nolabel="1">
-                            <tree editable="bottom" key="id" >
+                            <tree>
                                 <field name="location_id" readonly="1"/>
-                                <field name="quantity"/>
+                                <field name="quantity" readonly="1"/>
                                 <field name="uom_id" readonly="1"/>
                                 <field name="company_id" invisible="1"/>
                             </tree>

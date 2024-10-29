@@ -13,7 +13,7 @@
                 </group>
                 <footer>
                     <button string="Confirm" type="object" name="action_cancel_reason_lot" class="btn-primary"/>
-                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>
         </field>

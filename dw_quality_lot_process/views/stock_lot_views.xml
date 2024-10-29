@@ -58,9 +58,18 @@
                             </tree>
                         </field>
                     </page>
+                    <page string="Children Lots" groups="dw_quality_lot_process.check_compliance_lot_configuration_group">
+                        <field name="children_lot_ids">
+                            <tree>
+                                <field name="name"/>
+                            </tree>
+                        </field>
+                    </page>
                 </xpath>
                 <xpath expr="//form/sheet/group/group//field[@name='product_id']" position="after">
                     <field name="initial_qty"/>
+                    <field name="is_child"/>
+                    <field name="parent_lot_id" invisible="is_child==False"/>
                 </xpath>
                     
             </field>

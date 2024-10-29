@@ -22,6 +22,12 @@ class StockLot(models.Model):
     compliance_check = fields.Boolean(related='product_id.requires_lot_compliance_check',readonly=True)
     lot_status_history_ids = fields.One2many('stock.lot.history', 'lot_id', string="Status History")
     initial_qty = fields.Float(string="Initial Quantity",readonly=True)
+    is_child = fields.Boolean(string="Is Child ?")
+    parent_lot_id = fields.Many2one(
+        'stock.lot',
+        string='Parent Lot',
+        )
+    children_lot_ids = fields.One2many('stock.lot', 'parent_lot_id', string="Children Lots")
     
     def _create_history_record(self, previous_status, new_status, is_quarantine=False):
         '''This function creates stock.lot.history record'''

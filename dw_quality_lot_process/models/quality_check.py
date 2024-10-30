@@ -14,9 +14,6 @@ class QualityCheck(models.Model):
         if res.lot_id:
             if res.lot_id.compliance_check:
                 res.lot_id.action_set_in_progress()
-            res.initial_qty = res.lot_id.product_qty
-            res.lot_id.initial_qty = res.lot_id.product_qty
-
         return res
 
     def do_pass(self):

@@ -231,11 +231,15 @@ patch(MainComponent.prototype, {
           " item)</span>"
         );
       },
-      pagination: true,
-      paginationSize: 15,
-      paginationSizeSelector: [15, 30, 45, 60, true],
+      history: true,
+      pagination: "local",
+      paginationSize: 12,
+      // paginationSizeSelector: [12, 18, 24, 30],
       paginationCounter: "rows",
-      paginationAddRow: "table",
+      movableColumns: true,
+      columnDefaults: {
+        tooltip: true,
+      },
     });
     return table;
   },

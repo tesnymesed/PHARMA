@@ -418,10 +418,15 @@ class ProductionPlanSimulatorComponent extends Component {
           " item)</span>"
         );
       },
+      history: true,
       pagination: "local",
       paginationSize: 12,
-      paginationSizeSelector: [12, 18, 24, 30],
+      // paginationSizeSelector: [12, 18, 24, 30],
       paginationCounter: "rows",
+      movableColumns: true,
+      columnDefaults: {
+        tooltip: true,
+      },
     });
     return table;
   }

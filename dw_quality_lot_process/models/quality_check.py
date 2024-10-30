@@ -5,7 +5,7 @@ class QualityCheck(models.Model):
     _inherit = "quality.check"
 
     check_lot_compliance = fields.Boolean(related='product_id.requires_lot_compliance_check')
-    initial_qty = fields.Float(string="Initial Quanity", readonly=True)
+    #initial_qty = fields.Float(string="Initial Quanity", readonly=True,)
 
     @api.model
     def create(self, vals):

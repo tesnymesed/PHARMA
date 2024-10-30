@@ -22,7 +22,7 @@
             </xpath>
         </field>
     </record>
-    <record id="check_quality_form2" model="ir.ui.view">
+    <!-- <record id="check_quality_form2" model="ir.ui.view">
         <field name="name">quality.check.form</field>
         <field name="model">quality.check</field>
         <field name="inherit_id" ref="dw_quality_control.quality_check_view_form_inherit" />
@@ -31,5 +31,5 @@
                 <field name="initial_qty"/>
             </xpath>
         </field>
-    </record>
+    </record> -->
 </odoo>

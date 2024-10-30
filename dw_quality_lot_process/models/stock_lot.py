@@ -21,7 +21,7 @@ class StockLot(models.Model):
     
     compliance_check = fields.Boolean(related='product_id.requires_lot_compliance_check',readonly=True)
     lot_status_history_ids = fields.One2many('stock.lot.history', 'lot_id', string="Status History")
-    initial_qty = fields.Float(string="Initial Quantity",readonly=True)
+    #initial_qty = fields.Float(string="Initial Quantity",readonly=True)
     is_child = fields.Boolean(string="Is Child ?")
     parent_lot_id = fields.Many2one(
         'stock.lot',
@@ -122,4 +122,19 @@ class StockLot(models.Model):
         
         return super(StockLot, self).write(vals)  
 
+""" class StockQuant(models.Model):
+    _inherit = 'stock.quant'
 
+    initial_qty = fields.Float(default=0.0)
+
+    def create(self, vals_list):
+        res = super().create(vals_list)
+        if 'quantity' in vals_list :
+            res.initial_qty = vals_list['quantity']
+            domain_lot = [('id','=',res.lot_id.id),('location_id','=',res.location_id.id)]
+            domain_quality = [('lot_id','=',res.lot_id.id),('location_id','=',res.location_id.id)]
+            lot = self.env['stock.lot'].search(domain_lot)
+            check_quality = self.env['quality.check'].search(domain_quality)
+            lot.initial_qty = vals_list['quantity']
+            check_quality.initial_qty = vals_list['quantity']
+        return res """

@@ -13,6 +13,8 @@
             ]"/>
             <field name="search_view_id" ref="dw_supplier_approval.product_template_search_view_inherit"/>
 
+
+            <field name="domain">[('purchase_ok', '=', True)] </field>
         </record>
 
         <record id="action_view_article_need_approval" model="ir.actions.act_window">

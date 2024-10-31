@@ -1,7 +1,7 @@
 <odoo>
     <data>
         <record model="ir.module.category" id="dw_quality">
-            <field name="name">DW Quality</field>
+            <field name="name">Quality Control</field>
             <field name="description">Helps you manage your quality-related processes.</field>
             <field name="sequence">8</field>
         </record>

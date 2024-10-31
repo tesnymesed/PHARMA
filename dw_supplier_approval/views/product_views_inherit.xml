@@ -14,15 +14,15 @@
                     <field name="expired_contract2"/>
                 </xpath>
                 <xpath expr="//filter[@name='favorites']" position="after">
-                     <separator/>
+                    <separator/>
 
                     <filter string="Has blacklisted supplier" name="has_blacklist" domain="['|', '|',('need_approval', '=', True), ('categ_id.need_approval', '=', True),
                 ('product_tmpl_id.need_approval', '=', True),('has_blacklisted_supplier2','=',True),('purchase_ok', '=', True)]"/>
-                    <filter string="approval expires less than 18 month" name="expired_approval" domain="['|', '|',('need_approval', '=', True), ('categ_id.need_approval', '=', True),
+                    <filter string="approval expiration &lt; 18 month" name="expired_approval" domain="['|', '|',('need_approval', '=', True), ('categ_id.need_approval', '=', True),
                 ('product_tmpl_id.need_approval', '=', True),('expired_approval2','=',True),('purchase_ok', '=', True)]"/>
 
 
-                            <filter string="contract expires less than 18 month" name="expired_contract" domain="['|', '|',('need_approval', '=', True), ('categ_id.need_approval', '=', True),
+                    <filter string="contract expiration &lt; 18 month" name="expired_contract" domain="['|', '|',('need_approval', '=', True), ('categ_id.need_approval', '=', True),
                 ('product_tmpl_id.need_approval', '=', True),('expired_contract2','=',True),('purchase_ok', '=', True)]"/>
                 </xpath>
 

@@ -220,7 +220,7 @@ class ProcurementSupplierApproval(models.Model):
             existing_record = self.search([
                 ('supplier_id', '=', rec.supplier_id.id),
                 ('product_id', '=', rec.product_id.id),
-                ('company_id', '=', rec.company_id.id),
+                ('company_id', '=', rec.company_id.id),('state', 'in', ['approval']),
                 ('id', '!=', rec.id)
             ],)
             if existing_record:

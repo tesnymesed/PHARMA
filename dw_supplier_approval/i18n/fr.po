@@ -47,7 +47,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.product_normal_form_view_inherited
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_product_template_inherited
 msgid "<span class=\"o_stat_text\">approval</span>"
-msgstr "<span class=\"o_stat_text\">approbation</span>"
+msgstr "<span class=\"o_stat_text\">Homologation</span>"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__message_needaction
@@ -88,7 +88,7 @@ msgstr ""
 #: model:ir.ui.menu,name:dw_supplier_approval.menu_approval_parent_purchase
 #: model:ir.ui.menu,name:dw_supplier_approval.menu_approval_purchase
 msgid "Approval"
-msgstr "Approbation"
+msgstr "Homologation"
 
 #. module: dw_supplier_approval
 #: model:ir.actions.act_window,name:dw_supplier_approval.action_view_article_need_approval
@@ -572,19 +572,19 @@ msgstr ""
 #: model:ir.module.category,name:dw_supplier_approval.module_procurement_supplier_approval_category
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
 msgid "approval"
-msgstr "approbation"
+msgstr "Homologation"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.product_template_search_view_inherit
 msgid "approval expiration < 18 month"
-msgstr "Expiration approbation < 18 mois"
+msgstr "Homologation <18 mois"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_product_category__need_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_product_product__need_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_product_template__need_approval
 msgid "approval required"
-msgstr "approbation requise"
+msgstr "Homologation requise"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields.selection,name:dw_supplier_approval.selection__procurement_supplier_approval__state__approval
@@ -594,7 +594,7 @@ msgstr "approuvé"
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.product_template_search_view_inherit
 msgid "contract expiration < 18 month"
-msgstr "Expiration contrat < 18 mois"
+msgstr "contrat < 18 mois"
 
 #. module: dw_supplier_approval
 #: model:ir.model,name:dw_supplier_approval.model_dw_document_wizard
@@ -642,9 +642,9 @@ msgstr ""
 #: model:ir.actions.act_window,name:dw_supplier_approval.action_supplier_approval
 #: model:ir.model,name:dw_supplier_approval.model_procurement_supplier_approval
 msgid "supplier approval"
-msgstr "approbation du fournisseur"
+msgstr "Homologation fournisseur"
 
 #. module: dw_supplier_approval
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_supplier_approval_form
 msgid "supplier_approval"
-msgstr "approbation du fournisseur"
+msgstr "Homlogation fournisseur"

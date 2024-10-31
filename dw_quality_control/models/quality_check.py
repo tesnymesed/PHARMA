@@ -314,21 +314,30 @@ class QualityCheck(models.Model):
 
     def button_sample_request(self):
         self.ensure_one()
+        line_ids_data = [
+            (0, 0, {'product_id': self.product_id.id, 'lot_id':self.lot_id.id,})
+
+        ]
         return {
             'type': 'ir.actions.act_window',
             'name': 'Sample Request',
             'view_mode': 'form',
             'res_model': 'sample.request',
             'res_id': self.simple_request_ids.id if self.simple_request_ids else False,
-            'context': {'default_quality_check_id': self.id},
-        }
+            'context': {'default_quality_check_id': self.id,
+                        'default_location_id':self.location_id.id,
+                        'default_product_id':self.product_id.id,
+                        'default_user_id':self.user_id.id,
+                        'default_lot_id':self.lot_id.id,
+                        'default_line_ids': line_ids_data
+                        },}
 
     def action_sample_request(self):
         self.ensure_one()
         return {
             'type': 'ir.actions.act_window',
             'name': 'Sample Request',
-            'view_mode': 'tree,form',
+            'view_mode': 'tree',
             'res_model': 'sample.request',
             "domain": [('quality_check_id', '=', self.id)],
             'context': {'default_quality_check_id': self.id},

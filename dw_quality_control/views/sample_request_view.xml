@@ -28,12 +28,15 @@
                 </header>
                 <sheet>
                     <div name="button_box">
-                <button class="oe_stat_button" type="object" name="action_quality_check" icon="fa-list-alt">
-                    <field name="quality_check_id" string="Quality Check" widget="statinfo"/>
-                </button>
-            </div>
+                        <button class="oe_stat_button" type="object" name="action_quality_check" icon="fa-list-alt">
+                            <field name="quality_check_id" string="Quality Check" widget="statinfo"/>
+                        </button>
+                        <button class="oe_stat_button" type="object" name="action_stock_picking" icon="fa-exchange">
+                            <field name="picking_id" string="Trancfer" widget="statinfo"/>
+                        </button>
+                    </div>
                     <h1>
-                        <field name="name" readonly="state not in ['draft','confirm']"/>
+                        <field name="name" />
                     </h1>
                     <group>
                         <group>
@@ -45,8 +48,10 @@
                             <field name="request_time" readonly="state not in ['draft','confirm']"/>
                         </group>
                         <group>
-                            <field name="validation_time" readonly="state not in ['draft','confirm']"/>
-                            <field name="validation_by" readonly="state not in ['draft','confirm']"/>
+                            <field name="location_id" />
+                            <field name="location_dest_id" />
+                            <field name="validation_time" invisible="state in ['draft','confirm']"/>
+                            <field name="validation_by" invisible="state in ['draft','confirm']"/>
                             <field name="company_id" readonly="state not in ['draft','confirm']"
                                    options='{"no_create":True}'/>
                         </group>
@@ -56,8 +61,9 @@
                                     <tree editable="bottom">
                                         <field name="product_id"/>
                                         <field name="lot_id"/>
-                                        <field name="product_uom_qty"/>
-                                        <field name="product_uom"/>
+                                        <field name="product_quantity"/>
+                                        <field name="uom_id"/>
+                                        <field name="company_id" invisible='1'/>
                                         <field name="simple_request_id" column_invisible="True"/>
                                     </tree>
                                 </field>

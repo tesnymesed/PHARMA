@@ -310,8 +310,7 @@ class ProductionPlanSimulatorComponent extends Component {
           self.state[key] = self.formatStringDate(value, _type);
         } catch (error) {
           console.error(
-            "��� ~ ProductionPlanSimulatorComponent ~ jSuites.calendar ~ error:",
-            error
+            "��� ~ ProductionPlanSimulatorComponent ~ jSuites.calendar ~ error:"
           );
         }
       },

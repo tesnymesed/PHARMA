@@ -240,6 +240,7 @@
                                           <ProductionPlanSimulatorLine
                                             data="productionSimulation"
                                             groups="groups"
+                                            isVisible="productionSimulation.isVisible"
                                           />
                                         </t>
                                       </table>

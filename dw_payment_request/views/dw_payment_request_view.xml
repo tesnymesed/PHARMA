@@ -39,10 +39,10 @@
                                 type="object"/>
                         <button name="action_cancel" string="Cancel"
                                 class="btn-primary"
-invisible="state in ['draft','cancelled'] "                                type="object"/>
+invisible="state not in ['confirm','rejected'] "                                type="object"/>
                         <button name="action_to_draft" string="return to draft"
                                 class="btn-primary"
-                                invisible="state != 'cancelled' "
+                                invisible="state == 'cancelled' "
                                 type="object"/>
                         <field name="state" widget="statusbar"
                                statusbar_visible="draft,confirm"/>

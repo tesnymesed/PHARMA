@@ -3,7 +3,7 @@
     <data noupdate="0">
         <record id="seq_sample_request" model="ir.sequence">
             <field name="name">Sample Request</field>
-            <field name="code">sample.request.seq</field>
+            <field name="code">quality.sample.request.seq</field>
             <field name="prefix">SPR/</field>
             <field name="padding">4</field>
            <field name="company_id" eval="False"/>

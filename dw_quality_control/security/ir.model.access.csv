@@ -2,5 +2,5 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_quality.check.product.model,quality check product model,model_quality_check_product_model,base.group_user,1,1,1,1
 access_quality.check.model,quality check model,model_quality_check_model,base.group_user,1,1,1,1
 access_quality.check.line,quality check line,model_quality_check_line,base.group_user,1,1,1,1
-access_sample_request,sample_request,model_sample_request,base.group_user,1,1,1,1
-access_sample_request_lines,sample_request_lines,model_sample_request_lines,base.group_user,1,1,1,1
+access_quality_sample_request,quality_sample_request,model_quality_sample_request,base.group_user,1,1,1,1
+access_quality_sample_request_lines,quality_sample_request_lines,model_quality_sample_request_lines,base.group_user,1,1,1,1

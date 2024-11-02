@@ -1,18 +1,20 @@
 <odoo>
 
     <record id="sample_request_form_view" model="ir.ui.view">
-        <field name="name">sample.request.form</field>
-        <field name="model">sample.request</field>
+        <field name="name">quality.sample.request.form</field>
+        <field name="model">quality.sample.request</field>
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <field name="state" widget="statusbar"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,confirm,validate"/>
+
 
                     <button name="action_confirm" string="Confirm"
                             class="btn-primary"
                             invisible="state not in  ['draft']"
                             type="object"/>
-                    <button name="action_validate" string="Valid"
+                    <button name="action_validate" string="Validate"
                             class="btn-primary"
                             invisible="state not in  ['confirm']"
                             type="object"/>
@@ -28,42 +30,45 @@
                 </header>
                 <sheet>
                     <div name="button_box">
-                        <button class="oe_stat_button" type="object" name="action_quality_check" icon="fa-list-alt">
+                        <button class="oe_stat_button" type="object" name="action_quality_check" icon="fa-list-alt"
+                                invisible="not quality_check_id">
                             <field name="quality_check_id" string="Quality Check" widget="statinfo"/>
                         </button>
-                        <button class="oe_stat_button" type="object" name="action_stock_picking" icon="fa-exchange">
-                            <field name="picking_id" string="Trancfer" widget="statinfo"/>
+                        <button class="oe_stat_button" type="object" name="action_stock_picking" icon="fa-exchange"
+                                invisible="not picking_id">
+                            <field name="picking_id" string="Transfer" widget="statinfo"/>
                         </button>
                     </div>
                     <h1>
-                        <field name="name" />
+                        <field name="name"/>
                     </h1>
                     <group>
                         <group>
-                            <field name="product_id" readonly="state not in ['draft','confirm']"
+                            <field name="product_id" readonly="state not in ['draft','confirm'] or quality_check_id"
                                    options='{"no_create":True}'/>
                             <field name="quality_check_id" invisible="1"/>
-                            <field name="lot_id" readonly="state not in ['draft','confirm']"/>
+                            <field name="lot_id" readonly="state not in ['draft','confirm'] or quality_check_id"/>
                             <field name="user_id" readonly="state not in ['draft','confirm']"/>
                             <field name="request_time" readonly="state not in ['draft','confirm']"/>
                         </group>
                         <group>
-                            <field name="location_id" />
-                            <field name="location_dest_id" />
-                            <field name="validation_time" invisible="state in ['draft','confirm']"/>
-                            <field name="validation_by" invisible="state in ['draft','confirm']"/>
-                            <field name="company_id" readonly="state not in ['draft','confirm']"
+                            <field name="type_id" readonly="state not in ['draft']"/>
+                            <field name="location_id" readonly="state not in ['draft'] or quality_check_id"/>
+                            <field name="location_dest_id" readonly="state not in ['draft']"/>
+                            <field name="validation_time" invisible="state not in ['validate']"/>
+                            <field name="validation_by" invisible="state not in ['validate']"/>
+                            <field name="company_id" readonly="state not in ['draft'] or quality_check_id"
                                    options='{"no_create":True}'/>
                         </group>
                         <notebook>
-                            <page string="Sample Information">
+                            <page string="Sample Information" readonly="state not in ['draft','confirm']">
                                 <field name="line_ids">
                                     <tree editable="bottom">
                                         <field name="product_id"/>
                                         <field name="lot_id"/>
                                         <field name="product_quantity"/>
                                         <field name="uom_id"/>
-                                        <field name="company_id" invisible='1'/>
+                                        <field name="company_id" column_invisible='1'/>
                                         <field name="simple_request_id" column_invisible="True"/>
                                     </tree>
                                 </field>
@@ -81,8 +86,8 @@
     </record>
 
     <record id="sample_request_tree_view" model="ir.ui.view">
-        <field name="name">sample.request.tree</field>
-        <field name="model">sample.request</field>
+        <field name="name">quality.sample.request.tree</field>
+        <field name="model">quality.sample.request</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="name" optional="show"/>
@@ -101,7 +106,7 @@
     <record id="action_quality_sample_request" model="ir.actions.act_window">
         <field name="name">Sample Request</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">sample.request</field>
+        <field name="res_model">quality.sample.request</field>
     </record>
 
     <menuitem

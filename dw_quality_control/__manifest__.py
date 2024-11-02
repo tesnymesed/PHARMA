@@ -2,13 +2,13 @@
 {
     'name': 'Quality Control - PHARMA',
     'version': '1.0.0',
-    'category': 'Localization',
+    'category': 'Manufacturing/Quality',
     'description': """
 =        """,
     'author': 'DIGIWAVES - ALGERIA',
     'website': 'www.digiwaves.io',
     'depends': [
-        'quality_control','mrp_workorder'
+        'quality_control', 'mrp_workorder', 'product_expiry', 'purchase'
     ],
     'data': [
         'security/ir.model.access.csv',
@@ -21,9 +21,6 @@
         'views/stock_warehouse.xml',
         'views/sample_request_view.xml',
         'views/res_config_settings_inherit_views.xml',
-
-        'wizard/dw_quality_lot_approval_views.xml',
-        'wizard/dw_quality_reload_views.xml',
 
     ],
     'installable': True,

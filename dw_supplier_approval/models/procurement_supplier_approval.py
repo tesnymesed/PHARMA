@@ -213,3 +213,15 @@ class ProcurementSupplierApproval(models.Model):
                         'searchpanel_default_folder_id': self.env.ref("dw_supplier_approval.folder_supplier_approval").id,
                         'limit_folders_to_lead': True},
         }
+
+    @api.constrains('supplier_id', 'product_id', 'company_id')
+    def _single_engoing_approval(self):
+        for rec in self:
+            existing_record = self.search([
+                ('supplier_id', '=', rec.supplier_id.id),
+                ('product_id', '=', rec.product_id.id),
+                ('company_id', '=', rec.company_id.id),('state', 'in', ['approval']),
+                ('id', '!=', rec.id)
+            ],)
+            if existing_record:
+                raise ValidationError("A record with this Supplier, company and Product already exists.")

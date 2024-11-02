@@ -13,10 +13,8 @@
             ]"/>
             <field name="search_view_id" ref="dw_supplier_approval.product_template_search_view_inherit"/>
 
-            <field name="domain">['|', '|',('need_approval', '=', True), ('categ_id.need_approval', '=', True),
-                ('product_tmpl_id.need_approval', '=', True),('purchase_ok', '=',
-                True),'|','|','|',('number_supplier2', '&lt;',2),('has_blacklisted_supplier2','=',True),('expired_approval2','=',True),('expired_contract2','=',True)]
-            </field>
+
+            <field name="domain">[('purchase_ok', '=', True)] </field>
         </record>
 
         <record id="action_view_article_need_approval" model="ir.actions.act_window">

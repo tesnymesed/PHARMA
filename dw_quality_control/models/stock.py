@@ -1,10 +1,5 @@
-from odoo import api, fields, models
-
-
-class DwStockProductionLot(models.Model):
-    _inherit = 'stock.lot'
-
-    dw_num_supplier = fields.Char(string="Ref Fournisseur")
+from odoo import api, Command, fields, models, _
+from odoo.exceptions import MissingError
 
 
 class DwStockLocation(models.Model):
@@ -16,38 +11,86 @@ class DwStockLocation(models.Model):
 class DwStockPicking(models.Model):
     _inherit = 'stock.quant'
 
-    ref = fields.Char(
-        related='lot_id.ref'
-    )
-
-
-class StockMove(models.Model):
-    _inherit = 'stock.move'
-
-    def _search_picking_for_assignation_domain(self):
-        domain = super()._search_picking_for_assignation_domain()
-        domain.append(("dw_picking_to_merge", "=", False))
-        return domain
+    ref = fields.Char(related='lot_id.ref', store=1)
 
 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
-    
-    dw_picking_to_merge = fields.Boolean(default=False)
-    dw_route_no_origin = fields.Boolean(default=False, compute="compute_dw_route_no_origin")
 
-    # @api.depends("move_ids_without_package", "state")
-    def compute_dw_route_no_origin(self):
-        for record in self:
-            if any(line.procure_method in ['make_to_order'] and not line.move_orig_ids for line in
-                   record.move_ids_without_package):
-                record.dw_route_no_origin = True
-            else:
-                record.dw_route_no_origin = False
+    dw_qc_picking_origin_id = fields.Many2one("stock.picking")
 
-    def dw_recompute_state(self):
-        self.ensure_one()
-        lines_with_make_to_order_no_origin = self.move_ids_without_package.filtered(
-            lambda line: line.procure_method in ['make_to_order'] and not line.move_orig_ids)
-        lines_with_make_to_order_no_origin.sudo().write({"procure_method": 'make_to_stock'})
-        self.sudo().action_assign()
+    def button_validate(self):
+        for picking in self:
+            res = super(StockPicking, self).button_validate()
+            if picking.picking_type_id.code == 'incoming':
+                move_line_ids = picking.move_line_ids.filtered(
+                    lambda m: m.location_dest_id.dw_is_quarantine and m.product_id.auto_qc_gen)
+                if not move_line_ids:
+                    return res
+                warehouse_id = picking.location_dest_id.warehouse_id
+                quality_operation_id = warehouse_id.dw_quality_operation_id
+                if not quality_operation_id:
+                    raise MissingError(
+                        _("You can’t validate this picking without quality operation."))
+                quality_picking_list = []
+                for move in move_line_ids:
+                    quality_picking = self._prepare_quality_picking_data(picking, quality_operation_id)
+                    quality_picking["move_ids"] = self._create_quality_move(move, quality_operation_id)
+                    quality_picking["move_line_ids"] = self._create_quality_move_line(move)
+                    quality_picking_list.append(quality_picking)
+                    # quality_move = picking._create_quality_move(quality_picking, move, quality_operation_id)
+                    # picking._create_quality_move_line(quality_move, move, quality_operation_id)
+                    # msg = _("Automatically generated from %(origin)s.", origin=picking.name, )
+                    # quality_picking.message_post(body=msg,
+                    #                              author_id=self.env.ref("base.partner_root").id, )
+                quality_picking_ids = self.env["stock.picking"].sudo().create(quality_picking_list)
+                # quality_picking_ids.action_confirm()
+            return res
+
+    def _prepare_quality_picking_data(self, picking, quality_operation_id):
+        location_dest_id = quality_operation_id.default_location_dest_id.id
+        if not location_dest_id:
+            raise MissingError(
+                _("You can’t validate this picking without default destination location for your quality operation."))
+
+        return {
+            'picking_type_id': quality_operation_id.id,
+            'location_id': picking.location_dest_id.id,
+            'location_dest_id': quality_operation_id.default_location_dest_id.id,
+            'origin': picking.name,
+            'dw_qc_picking_origin_id': picking.id,
+        }
+
+    def _prepare_quality_move_data(self, move, quality_operation_id):
+        location_dest_id = quality_operation_id.default_location_dest_id
+        if not location_dest_id:
+            raise MissingError(
+                _("You can’t validate this picking without default destination location for your quality operation."))
+        return {
+            'name': move.product_id.name,
+            'product_id': move.product_id.id,
+            'product_uom_qty': move.quantity,
+            'product_uom': move.product_uom_id.id,
+            'location_id': move.location_id.id,
+            'location_dest_id': location_dest_id.id,
+        }
+
+    def _create_quality_move(self, move, quality_operation_id):
+        location_dest_id = quality_operation_id.default_location_dest_id
+        if not location_dest_id:
+            raise MissingError(
+                _("You can’t validate this picking without default destination location for your quality operation."))
+        return [Command.create(self._prepare_quality_move_data(move, quality_operation_id))]
+
+    def _prepare_quality_move_line_data(self, move_line):
+
+        return {
+            'quantity': move_line.quantity,
+            'quant_id': move_line.lot_id.quant_ids.filtered_domain([
+                ('location_id', '=', move_line.location_dest_id.id)
+            ]).id,
+        }
+
+    def _create_quality_move_line(self, move_line):
+
+        return [Command.create(self._prepare_quality_move_line_data(move_line))]

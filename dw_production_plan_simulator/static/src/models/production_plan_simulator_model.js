@@ -21,6 +21,13 @@ export class ProductionPlanSimulatorModel extends EventBus {
     this.mutex = new Mutex();
   }
 
+  get workCenters() {
+    return d3
+      .nest()
+      .key((d) => d.workcenter_id)
+      .entries(this?.data?.production_simulation_ids);
+  }
+
   saveDateRange(companyId, startDate, endDate) {
     return this.mutex.exec(() => {
       this.orm
@@ -153,7 +160,7 @@ export class ProductionPlanSimulatorModel extends EventBus {
   }
 
   notify() {
-    this.unselectAll();
+    // this.selectAll();
     this.trigger("update");
   }
 
@@ -195,8 +202,6 @@ export class ProductionPlanSimulatorModel extends EventBus {
   replenishSelectedRecords() {
     this._actionReplenish(Array.from(this.selectedRecords), false);
   }
-
-  _;
 
   /**
    * Save the forecasted quantity and reload the current schedule in order
@@ -770,21 +775,78 @@ export class ProductionPlanSimulatorModel extends EventBus {
     this.trigger("mouse-out");
   }
 
+  isSelected(recordId) {
+    return this.selectedRecords.has(recordId);
+  }
+
+  selectRecord(recordId) {
+    this.selectedRecords.add(recordId);
+    // this.trigger("selection-updated", Array.from(this.selectedRecords));
+    this.trigger("update");
+  }
+
+  deselectRecord(recordId) {
+    this.selectedRecords.delete(recordId);
+    // this.trigger("selection-updated", Array.from(this.selectedRecords));
+    this.trigger("update");
+  }
+
+  toggleRecordSelection(recordId) {
+    if (this.isSelected(recordId)) {
+      this.deselectRecord(recordId);
+    } else {
+      this.selectRecord(recordId);
+    }
+    // this.trigger("update");
+  }
+
   selectAll() {
-    this.data.production_simulation_ids.map(({ id }) =>
-      this.selectedRecords.add(id)
-    );
+    this.selectRecord("ALL");
+
+    this.workCenters.forEach((workCenter) => {
+      this.selectRecord(workCenter.key);
+      workCenter.values.forEach((product) => this.selectRecord(product.id));
+    });
+    // this.data.production_simulation_ids.map(({ id }) =>
+    //   this.selectedRecords.add(id)
+    // );
+    // this.trigger("update");
   }
 
   unselectAll() {
-    this.selectedRecords.clear();
+    this.deselectRecord("ALL");
+    this.workCenters.forEach((workCenter) => {
+      this.deselectRecord(workCenter.key);
+      workCenter.values.forEach((product) => this.deselectRecord(product.id));
+    });
+    // this.selectedRecords.clear();
+    this.trigger("update");
   }
 
-  toggleRecordSelection(productionSimulationId) {
-    if (this.selectedRecords.has(productionSimulationId)) {
-      this.selectedRecords.delete(productionSimulationId);
+  _toggleAll() {
+    const allSelected = this.isSelected("ALL");
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorModel ~ _toggleAll ~ allSelected:",
+      allSelected
+    );
+    if (allSelected) {
+      this.unselectAll();
+      // this.deselectRecord("ALL");
+      // this.workCenters.forEach((workCenter) => {
+      //   this.deselectRecord(workCenter.key);
+      //   workCenter.values.forEach((product) =>
+      //     this.deselectRecord(product.id)
+      //   );
+      // });
     } else {
-      this.selectedRecords.add(productionSimulationId);
+      this.selectAll();
+      // this.selectRecord("ALL");
+      // this.workCenters.forEach((workCenter) => {
+      //   this.selectRecord(workCenter.key);
+      //   workCenter.values.forEach((product) =>
+      //     this.selectRecord(product.id)
+      //   );
+      // });
     }
     this.trigger("update");
   }
@@ -798,5 +860,23 @@ export class ProductionPlanSimulatorModel extends EventBus {
       this.selectAll();
     }
     this.trigger("update");
+  }
+  isWorkCenterVisible(wcKey) {
+    return (
+      this.isSelected(wcKey) ||
+      this.workCenters
+        .find((wc) => wc.key === wcKey)
+        .values.some((pr) => this.isSelected(pr.id))
+    );
+
+    // return this.workCenters.some(
+    //   (workCenter) => workCenter.key === wcKey
+    // );
+    // this.isSelected(wcKey) &&
+  }
+
+  sendData(ev) {
+    console.log("🚀 ~ ProductionPlanSimulatorModel ~ sendData ~ ev:", ev);
+    this.trigger("send-data");
   }
 }

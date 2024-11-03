@@ -33,10 +33,11 @@
                       <div class="row mb-3">
                         <div class="col-sm-4">
                           <label for="select-company" class="form-label"
-                            >Company</label>
+                            >Company</label
+                          >
                           <select
                             id="select-company"
-                            class="form-select"
+                            class="form-select sim-state-toggle"
                             data-placeholder="Company ..."
                             t-on-change.stop="(ev) => this._onChangeCompany(ev)"
                           ></select>
@@ -68,18 +69,20 @@
                             <label
                               for="plan-date-range-start"
                               class="form-label"
-                              >Planning Period Start</label>
+                              >Planning Period Start</label
+                            >
                             <input
                               id="plan-date-range-start"
-                              class="form-select"
+                              class="form-select sim-state-toggle"
                             />
                           </div>
                           <div class="col-6">
                             <label for="plan-date-range-end" class="form-label"
-                              >Planning Period End</label>
+                              >Planning Period End</label
+                            >
                             <input
                               id="plan-date-range-end"
-                              class="form-select"
+                              class="form-select sim-state-toggle"
                             />
                           </div>
                         </div>
@@ -88,19 +91,21 @@
                             <label
                               for="sales-avg-range-start"
                               class="form-label"
-                              >Sales AVG Period Start</label>
+                              >Sales AVG Period Start</label
+                            >
                             <input
                               id="sales-avg-range-start"
-                              class="form-select"
+                              class="form-select sim-state-toggle"
                             />
                           </div>
 
                           <div class="col-6">
                             <label for="sales-avg-range-end" class="form-label"
-                              >Sales AVG Period End</label>
+                              >Sales AVG Period End</label
+                            >
                             <input
                               id="sales-avg-range-end"
-                              class="form-select"
+                              class="form-select sim-state-toggle"
                             />
                           </div>
                         </div>
@@ -125,9 +130,9 @@
                       <div class="row justify-content-end">
                         <div class="col-sm">
                           <button
-                            type="submit"
                             id="submit"
-                            class="btn btn-primary"
+                            class="btn btn-primary sim-state-toggle"
+                            type="submit"
                           >
                             Simulate
                           </button>
@@ -138,7 +143,7 @@
                             <button
                               type="show-alerts"
                               id="show-alerts"
-                              class="btn btn-primary"
+                              class="btn btn-primary sim-state-toggle"
                               t-on-click="toggleModal"
                               t-on-mouseover.stop="_onMouseOverCapacityAlert"
                               t-on-mouseout.stop="_onMouseOutCapacityAlert"
@@ -153,7 +158,7 @@
                             <button
                               type="create-mps"
                               id="create-mps"
-                              class="btn btn-primary"
+                              class="btn btn-primary sim-state-toggle"
                               t-on-click="_createMasterProductionSchedule"
                             >
                               Create MRP Plan
@@ -171,8 +176,23 @@
                   <div class="col-xxl">
                     <div class="card mb-4" style="max-height: 90%">
                       <div
-                        class="card-header d-flex align-items-center justify-content-between"
+                        class="card-header d-flex align-items-center justify-content-start gap-2"
                       >
+                        <t t-if="simulationLines.length > 1">
+                          <button
+                            class="btn sidenav-button"
+                            type="button"
+                            data-bs-toggle="offcanvas"
+                            data-bs-target="#settingsSidePanel"
+                            aria-controls="settingsSidePanel"
+                          >
+                            <img
+                              class="sidenav-button-img"
+                              src="dw_production_plan_simulator/static/description/filter.png"
+                              alt="Filter"
+                            />
+                          </button>
+                        </t>
                         <h5 class="mb-0">Planner</h5>
                       </div>
                       <div class="o_prod_sim o_content bg-view">
@@ -189,16 +209,22 @@
                                     <tr>
                                       <th
                                         scope="row"
-                                        t-attf-colspan="{{manufacturingPeriods.length + 3}}"
-                                        style="float: none;"
+                                        t-attf-colspan="{{
+                                          manufacturingPeriods.length + 3
+                                        }}"
+                                        style="float: none"
                                       >
                                         <a
                                           href="#"
-                                          class="o_prod_sim_record_url"
-                                          t-attf-data-id="{{workCenter.key}}"
+                                          class="o_prod_sim_record_url sim-state-toggle"
+                                          t-attf-data-id="{{ workCenter.key }}"
                                           t-att-data-model="'mrp.workcenter'"
                                           t-on-click.prevent="(ev) => this._onClickWorkCenterLink(ev, workCenter.key)"
-                                          style="font-size: 1.5em; display: inline-block; text-decoration: none;"
+                                          style="
+                                            font-size: 1.5em;
+                                            display: inline-block;
+                                            text-decoration: none;
+                                          "
                                         >
                                           <t
                                             t-esc="workCenter.key.split(',')[1]"
@@ -207,45 +233,54 @@
                                       </th>
                                     </tr>
                                   </thead>
-
-                                  <tbody>
-                                    <tr>
-                                      <table class="table o_mps_product_table">
-                                        <thead class="table-light">
-                                          <tr class="o_mps_period">
-                                            <th></th>
-                                            <th />
-                                            <th />
-                                            <th
-                                              class="text-end pe-4"
-                                              scope="col"
-                                              t-foreach="manufacturingPeriods"
-                                              t-as="period"
-                                              t-key="period_index"
-                                            >
-                                              <div
-                                                t-att-data-date_index="period_index"
-                                              >
-                                                <t t-esc="period" />
-                                              </div>
-                                            </th>
-                                          </tr>
-                                        </thead>
-
-                                        <t
-                                          t-foreach="workCenter.values"
-                                          t-as="productionSimulation"
-                                          t-key="productionSimulation.id"
+                                  <t
+                                    t-if="this.model.isWorkCenterVisible(workCenter.key)"
+                                  >
+                                    <tbody>
+                                      <tr>
+                                        <table
+                                          class="table o_mps_product_table"
                                         >
-                                          <ProductionPlanSimulatorLine
-                                            data="productionSimulation"
-                                            groups="groups"
-                                            isVisible="productionSimulation.isVisible"
-                                          />
-                                        </t>
-                                      </table>
-                                    </tr>
-                                  </tbody>
+                                          <thead class="table-light">
+                                            <tr class="o_mps_period">
+                                              <th></th>
+                                              <th />
+                                              <th />
+                                              <th
+                                                class="text-end pe-4"
+                                                scope="col"
+                                                t-foreach="manufacturingPeriods"
+                                                t-as="period"
+                                                t-key="period_index"
+                                              >
+                                                <div
+                                                  t-att-data-date_index="period_index"
+                                                >
+                                                  <t t-esc="period" />
+                                                </div>
+                                              </th>
+                                            </tr>
+                                          </thead>
+
+                                          <t
+                                            t-foreach="workCenter.values"
+                                            t-as="productionSimulation"
+                                            t-key="productionSimulation.id"
+                                          >
+                                            <t
+                                              t-if="this.model.isSelected(productionSimulation.id)"
+                                            >
+                                              <ProductionPlanSimulatorLine
+                                                data="productionSimulation"
+                                                groups="groups"
+                                                isVisible="productionSimulation.isVisible"
+                                              />
+                                            </t>
+                                          </t>
+                                        </table>
+                                      </tr>
+                                    </tbody>
+                                  </t>
                                 </t>
                               </table>
                             </div>
@@ -273,6 +308,50 @@
                   </div>
                 </div>
               </t>
+            </div>
+
+            <!-- Offcanvas Sidebar -->
+            <div
+              id="settingsSidePanel"
+              class="offcanvas offcanvas-end"
+              tabindex="-1"
+              aria-labelledby="settingsSidePanelLabel"
+              aria-hidden="true"
+              data-bs-backdrop="false"
+            >
+              <div class="offcanvas-header">
+                <img
+                  src="dw_production_plan_simulator/static/description/settings-1.png"
+                  alt="Icon"
+                  style="width: 40px"
+                />
+                <h5 class="offcanvas-title" id="settingsSidePanelLabel">
+                  Settings
+                </h5>
+
+                <button
+                  type="button"
+                  class="btn-danger btn-close"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="offcanvas-body my-auto mx-0 flex-grow-0">
+                <p>Filter Products</p>
+                <NestedProductList />
+                <!-- <button
+                  type="button"
+                  t-attf-class="{{ 'btn d-grid w-10' }}"
+                  data-bs-dismiss="offcanvas"
+                >
+                  t-on-click.stop="_onClickCreate"
+                  <img
+                    src="dw_production_plan_simulator/static/description/filter.png"
+                    alt="Icon"
+                    style="width: 24px"
+                  />
+                </button> -->
+              </div>
             </div>
           </div>
         </div>
@@ -332,6 +411,7 @@
               type="button"
               t-on-click="closeAlertsModal"
               id="save"
+              data-bs-dismiss="modal"
               class="btn btn-primary"
             >
               Validate
@@ -361,7 +441,7 @@
             <button
               type="submit"
               id="add-products"
-              class="btn btn-primary"
+              class="btn btn-primary sim-state-toggle"
               t-on-click.stop="_onClickCreate"
             >
               Load Products

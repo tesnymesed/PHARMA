@@ -37,6 +37,9 @@
         'web.assets_backend': [
             'dw_production_plan_simulator/static/src/models/production_plan_simulator_model.js',
 
+            'dw_production_plan_simulator/static/src/components/product_list_filter.js',
+            'dw_production_plan_simulator/static/src/components/product_list_filter.xml',
+
             'dw_production_plan_simulator/static/src/components/line.js',
             'dw_production_plan_simulator/static/src/components/line.xml',
             'dw_production_plan_simulator/static/src/components/line.scss',

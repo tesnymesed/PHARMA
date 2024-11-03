@@ -6,6 +6,7 @@ import { _t } from "@web/core/l10n/translation";
 //   MrpMpsSearchBar,
 // } from "../search/mrp_mps_control_panel";
 // import { MrpMpsSearchModel } from "../search/mrp_mps_search_model";
+import NestedProductList from "@dw_production_plan_simulator/components/product_list_filter";
 import ProductionPlanSimulatorLine from "@dw_production_plan_simulator/components/line";
 import { ProductionPlanSimulatorModel } from "@dw_production_plan_simulator/models/production_plan_simulator_model";
 import { registry } from "@web/core/registry";
@@ -21,14 +22,15 @@ import MainComponent from "@mrp_mps/components/main";
 
 import {
   Component,
-  onWillStart,
-  useSubEnv,
-  useRef,
-  onPatched,
+  useComponent,
   onMounted,
+  onPatched,
+  onWillStart,
   useState,
+  useSubEnv,
 } from "@odoo/owl";
 import { loadJS, loadCSS } from "@web/core/assets";
+
 class ProductionPlanSimulatorComponent extends Component {
   //--------------------------------------------------------------------------
   // Lifecycle
@@ -67,7 +69,10 @@ class ProductionPlanSimulatorComponent extends Component {
     });
     this.withSearchProps = null;
 
+    const _component = useComponent();
+
     useSubEnv({
+      parent: { component: _component },
       manufacturingPeriods: [],
       model: this.model,
       defaultPageLimit: 20,
@@ -85,6 +90,10 @@ class ProductionPlanSimulatorComponent extends Component {
       },
     });
 
+    this.handleData = this.handleData.bind(this);
+
+    useBus(this.model, "send-data", (ev) => this.handleData);
+    useBus(this.model, "selection-updated", (ev) => this.handleData);
     useBus(this.model, "update", () => this.render(true));
 
     onWillStart(async () => {
@@ -149,6 +158,7 @@ class ProductionPlanSimulatorComponent extends Component {
 
     onMounted(async () => {
       var self = this;
+
       this.initFilterSettings();
       //      this.initAlertsTable();
       this.captureInputSettings();
@@ -191,7 +201,11 @@ class ProductionPlanSimulatorComponent extends Component {
         "apply.daterangepicker",
         function (ev, picker) {}
       );
+
+      this.setupEventHandlers();
     });
+
+    onPatched(() => {});
 
     usePager(() => {
       return {
@@ -207,6 +221,49 @@ class ProductionPlanSimulatorComponent extends Component {
     });
   }
 
+  setupEventHandlers() {
+    const elts = document.querySelectorAll(
+      ".sim-state-toggle, .o_mps_product_table"
+    );
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorComponent ~ setupEventHandlers ~ elts:",
+      elts
+    );
+
+    document
+      .getElementById("settingsSidePanel")
+      .addEventListener("show.bs.offcanvas", () => {
+        elts.forEach((element) => {
+          element.setAttribute("disabled", true);
+          element.classList.add("overlay-disabled");
+          element.style.pointerEvents = "none";
+        });
+      });
+
+    document
+      .getElementById("settingsSidePanel")
+      .addEventListener("hide.bs.offcanvas", () => {
+        elts.forEach((element) => {
+          element.removeAttribute("disabled");
+          element.classList.remove("overlay-disabled");
+          element.style.pointerEvents = "";
+        });
+      });
+  }
+
+  handleData(event) {
+    console.log(
+      "🚀 ~ ProductionPlanSimulatorComponent ~ handleData ~ event:",
+      event
+    );
+    // Access the data sent from the child
+    // const data = event.data;
+    // console.log(
+    //   "🚀 ~ ProductionPlanSimulatorComponent ~ handleData ~ data.message:",
+    //   data.message
+    // );
+    // Handle the data as needed
+  }
   initCompaniesSelect(id) {
     var companiesData = this.getCompanies();
     companiesData
@@ -608,6 +665,7 @@ class ProductionPlanSimulatorComponent extends Component {
   get isSelected() {
     return this.model.selectedRecords.size === this.simulationLines.length;
   }
+
   //
   toggleSelection() {
     this.model.toggleSelection();
@@ -874,6 +932,57 @@ class ProductionPlanSimulatorComponent extends Component {
     this.model._editWorkCenter(id);
   }
 
+  generateDropdown(products) {
+    const dropdownMenu = document.getElementById("productDropdown");
+    dropdownMenu.innerHTML = ""; // Clear any existing content
+
+    products.forEach((product, index) => {
+      // Create the list item
+      const listItem = document.createElement("li");
+
+      // Create the dropdown item link
+      const dropdownItem = document.createElement("a");
+      dropdownItem.classList.add("dropdown-item");
+      dropdownItem.href = "#";
+
+      // Create the checkbox container
+      const formCheck = document.createElement("div");
+      formCheck.classList.add("form-check");
+
+      // Create the checkbox input
+      const checkbox = document.createElement("input");
+      checkbox.classList.add("form-check-input");
+      checkbox.type = "checkbox";
+      checkbox.id = `Check${index}`;
+      checkbox.value = product;
+
+      // Create the label for the checkbox
+      const label = document.createElement("label");
+      label.classList.add("form-check-label");
+      label.htmlFor = `Check${index}`;
+      label.textContent = product;
+
+      // Append the checkbox and label to the form-check container
+      formCheck.appendChild(checkbox);
+      formCheck.appendChild(label);
+
+      // Append form-check to the dropdown item
+      dropdownItem.appendChild(formCheck);
+
+      // Append the dropdown item to the list item
+      listItem.appendChild(dropdownItem);
+
+      // Append the list item to the dropdown menu
+      dropdownMenu.appendChild(listItem);
+    });
+  }
+
+  // // Sample products array
+  // const products = ['Product 1', 'Product 2', 'Product 3', 'Product 4'];
+
+  // // Generate dropdown with products
+  // generateDropdown(products);
+
   //
   //    get actionMenuItems() {
   //        return {
@@ -947,6 +1056,7 @@ class ProductionPlanSimulatorComponent extends Component {
 ProductionPlanSimulatorComponent.template =
   "production_plan_simulator.prod_plan_sim_template";
 ProductionPlanSimulatorComponent.components = {
+  NestedProductList,
   //  MainComponent,
   // WithSearch,
   ProductionPlanSimulatorLine,

@@ -17,8 +17,16 @@
             <xpath expr="//header/button[@name='do_fail'][2]" position="attributes">
                 <attribute name="invisible">quality_state != 'pass' or check_lot_compliance == True</attribute>
             </xpath>
+            <xpath expr="//header/button[@name='do_pass'][1]" position="attributes">
+                <attribute name="invisible">quality_state != 'none' or check_lot_compliance == True</attribute>
+            </xpath>
+
+            <xpath expr="//header/button[@name='do_pass'][2]" position="attributes">
+                <attribute name="invisible">quality_state != 'fail' or check_lot_compliance == True</attribute>
+            </xpath>
             <xpath expr="//header" position="inside">
                 <button name="do_fail_process" type="object" class="btn-primary" invisible="check_lot_compliance == False or quality_state =='fail' " string="Fail" data-hotkey="q" groups="dw_quality_lot_process.check_compliance_lot_configuration_group"/>
+                <button name="do_pass_process" type="object" class="btn-primary" invisible="check_lot_compliance == False or quality_state =='passed' " string="Pass" data-hotkey="q" groups="dw_quality_lot_process.check_compliance_lot_configuration_group"/>
             </xpath>
         </field>
     </record>

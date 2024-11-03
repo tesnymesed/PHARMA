@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_stock_lot_sub_lot_register_form" model="ir.ui.view">
+        <field name="name">stock.lot.sub.lot.register.form</field>
+        <field name="model">stock.lot.sub.lot.register</field>
+        <field name="arch" type="xml">
+            <form string="Sub-Lot Registration">
+                <group>
+                    <group name="non_conform" string="Reason">
+                        <field name="reason_id" required="1"/>
+                        <field name="status" required="1"/>
+                    </group>
+                    <group name="sub_lot" string="Sub-Lot">
+                        <field name="non_conform_qty" />
+                        <field name="non_conform_lot" invisible="non_conform_qty==0" required="non_conform_qty!=0"/>
+                        <field name="non_conform_lot" invisible="non_conform_qty==0"/>
+
+                    </group>
+                    
+                </group>
+                <footer>
+                    <button string="Confirm" type="object" name="action_confirm_sub_lot" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
+
+

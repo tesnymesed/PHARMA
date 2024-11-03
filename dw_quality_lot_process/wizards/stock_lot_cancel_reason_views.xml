@@ -11,9 +11,7 @@
                         <field name="reason_id" required="1"/>
                         <field name="note"/>
                     </group>
-                    <group name="name" string="string">
-                        <field name="non_conform_qty" />
-                        <field name="non_conform_lot" invisible="non_conform_qty==0" required="non_conform_qty!=0"/>
+                    <group name="transfer" string="Transfer">
                         <field name="fail_location_id"/>
                     </group>
                     

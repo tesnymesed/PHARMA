@@ -7,14 +7,13 @@ class QualityCheck(models.Model):
     check_lot_compliance = fields.Boolean(related='product_id.requires_lot_compliance_check')
     #initial_qty = fields.Float(string="Initial Quanity", readonly=True,)
 
-    @api.model
-    def create(self, vals):
-        """override create method and make its status to quarantine and its analyse status to in progress"""
-        res = super(QualityCheck, self).create(vals)
-        if res.lot_id:
-            if res.lot_id.compliance_check:
-                res.lot_id.action_set_in_progress()
-        return res
+    def write(self, vals):
+        if 'lot_id' in vals:
+            for record in self :
+                if record.check_lot_compliance :
+                    record.lot_id.action_set_in_progress()
+
+        return super(QualityCheck, self).write(vals)
 
     def do_pass(self):
         if self.lot_id and self.lot_id.compliance_check:
@@ -34,3 +33,14 @@ class QualityCheck(models.Model):
                 'target': 'new',
                 'context': {'default_lot_id': self.lot_id.id, 'default_check_quality_id': self.id}
             }
+    def do_pass_process(self):
+        if self.lot_id and self.lot_id.compliance_check:
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Sub Lot REgister',
+                'res_model': 'stock.lot.sub.lot.register',
+                'view_mode': 'form',
+                'target': 'new',
+                'context': {'default_lot_id': self.lot_id.id, 'default_check_quality_id': self.id}
+            }
+

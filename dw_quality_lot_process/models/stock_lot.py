@@ -29,6 +29,12 @@ class StockLot(models.Model):
         )
     children_lot_ids = fields.One2many('stock.lot', 'parent_lot_id', string="Children Lots")
     
+    def set_lot_status(self,status):
+        self.lot_status = status
+    
+    def set_lot_analyse_status(self,analyse_status):
+        self.lot_quarantine_status = analyse_status
+
     def _create_history_record(self, previous_status, new_status, is_quarantine=False):
         '''This function creates stock.lot.history record'''
         history_vals = {

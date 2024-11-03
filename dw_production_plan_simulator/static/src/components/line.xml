@@ -43,7 +43,7 @@
           <button
             type="button"
             t-attf-class="{{
-              'btn btn-link text-muted o_no_padding o_prod_sim_edit'
+              'btn btn-link text-muted o_no_padding o_prod_sim_edit '
             }}"
             t-on-click.stop="(ev) => this._onClickProductLineEdit(ev, productionSimulation.id)"
           >
@@ -114,7 +114,7 @@
             <input
               type="text"
               t-att-data-date_index="simulation_index"
-              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty"
+              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty "
               t-att-value="formatFloat(simulation.sale_objective_qty)"
               t-on-change.stop="(ev) => this.onChangeSalesObjectiveQty(ev, productionSimulation.id)"
               t-on-focus.prevent="_onFocusInput"
@@ -139,7 +139,7 @@
             <input
               type="text"
               t-att-data-date_index="simulation_index"
-              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty"
+              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty "
               t-att-value="formatFloat(simulation.production_objective_qty)"
               t-on-change.stop="(ev) => this.onChangeProductionObjectiveQty(ev, productionSimulation.id)"
               t-on-focus.prevent="_onFocusInput"
@@ -164,7 +164,7 @@
             <input
               type="text"
               t-att-data-date_index="simulation_index"
-              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty o_mps_inline"
+              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty o_mps_inline "
               t-att-value="formatFloat(simulation.sold_qty)"
               t-on-change.stop="(ev) => this.onChangeSoldQty(ev, productionSimulation.id)"
               t-on-focus.prevent="_onFocusInput"
@@ -311,7 +311,7 @@
             <input
               type="text"
               t-att-data-date_index="simulation_index"
-              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty o_mps_inline"
+              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty o_mps_inline "
               t-att-value="formatFloat(simulation.batch_count)"
               t-on-change.stop="(ev) => this.onChangeBatchCount(ev, productionSimulation.id)"
               t-on-focus.prevent="_onFocusInput"
@@ -351,7 +351,7 @@
                 t-att-data-date_index="simulation_index"
                 t-att-data-date_start="simulation.date_start"
                 t-att-data-date_stop="simulation.date_stop"
-                t-attf-class="{{simulation.batch_count * simulation.lot_size &lt; simulation.production_objective_qty and 'text-danger' or ''}}"
+                t-attf-class="{{simulation.batch_count * simulation.lot_size &lt; simulation.production_objective_qty and 'text-danger' or ''}} "
                 t-esc="formatFloat(simulation.batch_count * simulation.lot_size)"
               />
               <span
@@ -459,11 +459,11 @@
               />
 
               <span
-                t-attf-class="{{simulation.capacity_utilisation &gt; 90.0 and 'text-warning' or ''}}"
+                t-attf-class="{{simulation.capacity_utilisation &gt; 90.0 and 'text-warning' or ''}} "
                 t-esc="formatFloat(simulation.required_capacity)"
               />
               <span
-                t-attf-class="{{simulation.capacity_utilisation &gt; 90.0 and 'text-warning' or ''}}"
+                t-attf-class="{{simulation.capacity_utilisation &gt; 90.0 and 'text-warning' or ''}} "
                 t-esc="' ( ' + formatFloat(simulation.capacity_utilisation)+ ' % )'"
               />
             </div>
@@ -538,7 +538,7 @@
               t-att-data-date_index="simulation_index"
               t-att-data-date_start="simulation.date_start"
               t-att-data-date_stop="simulation.date_stop"
-              t-attf-class="{{ 'o_prod_sim_open_details' }}"
+              t-attf-class="{{ 'o_prod_sim_open_details' }} "
             >
               <t t-esc="formatFloat(simulation.outgoing_qty)" />
             </a>
@@ -546,7 +546,7 @@
             <input
               type="text"
               t-att-data-date_index="simulation_index"
-              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty {{
+              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty  {{
                 'o_mps_inline'
               }}"
               t-att-value="formatFloat(simulation.forecasted_demand_qty)"
@@ -584,7 +584,7 @@
           t-key="simulation_index"
         >
           <th
-            t-attf-class="o_forecast_stock text-end pe-4 {{
+            t-attf-class="o_forecast_stock text-end pe-4  {{
                         simulation.to_replenish and 'o_prod_sim_to_replenish' or ''
                         }} {{
                         simulation.forced_replenish and 'o_prod_sim_forced_replenish' or ''
@@ -598,7 +598,7 @@
               t-att-data-date_index="simulation_index"
               t-att-data-date_start="simulation.date_start"
               t-att-data-date_stop="simulation.date_stop"
-              t-attf-class="o_prod_sim_open_details {{
+              t-attf-class="o_prod_sim_open_details  {{
                             simulation.to_replenish and 'o_prod_sim_to_replenish' or ''
                             }} {{
                             simulation.forced_replenish and 'o_prod_sim_forced_replenish' or ''
@@ -618,7 +618,7 @@
               <input
                 type="text"
                 t-att-data-date_index="simulation_index"
-                t-attf-class="form-control text-end
+                t-attf-class="form-control text-end 
                                 o_prod_sim_input_replenish_qty
                                 {{simulation.state == 'launched' and 'alert-dark' or
                                 simulation.state == 'to_relaunch' and 'alert-warning' or

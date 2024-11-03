@@ -3,7 +3,7 @@
 import { CheckBox } from "@web/core/checkbox/checkbox";
 import { useService, useBus } from "@web/core/utils/hooks";
 import { formatFloat } from "@web/core/utils/numbers";
-import { Component, useRef, onPatched } from "@odoo/owl";
+import { Component, useRef, onMounted, onPatched } from "@odoo/owl";
 import ProductionPlanBatchesNotesEditor from "@dw_production_plan_simulator/components/notes_editor";
 
 import { _t } from "@web/core/l10n/translation";
@@ -51,6 +51,9 @@ export default class ProductionPlanSimulatorLine extends Component {
           el.classList.add("o_prod_sim_hover");
         }
       }
+    });
+    onMounted(() => {
+      this.env?.parent?.component?.setupEventHandlers();
     });
 
     useBus(this.model, "mouse-over", () => this._onMouseOverProdPlanAlert());

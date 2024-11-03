@@ -66,10 +66,10 @@
             </field>
             <xpath expr="//notebook" position="before">
                 <group>
-                    <group string="Reception Information" invisible="1">
-                        <field name="dw_reception_id" readonly="1" force_save="1"/>
-                        <field name="dw_purchase_id" readonly="1" force_save="1"/>
-                        <field name="partner_supplier_id" readonly="1" force_save="1"/>
+                    <group string="Reception Information" invisible="not dw_reception_id and not dw_purchase_id and not partner_supplier_id">
+                        <field name="dw_reception_id" invisible="not dw_reception_id" force_save="1"/>
+                        <field name="dw_purchase_id" invisible="not dw_purchase_id" force_save="1"/>
+                        <field name="partner_supplier_id" invisible="not partner_supplier_id" force_save="1"/>
                     </group>
                     <group string="Picking Information">
                         <field name="location_id"/>
@@ -93,7 +93,7 @@
                 <button class="oe_highlight" type="object" name="button_sample_request" string="Sample Request" invisible="quality_state not in ('none')"/>
             </xpath>
             <div name="button_box" position="inside">
-                <button class="oe_stat_button" type="object" name="action_view_sample_request" icon="fa-list-alt">
+                <button class="oe_stat_button" type="object" name="action_view_sample_request" icon="fa-list-alt" invisible="not simple_request_ids">
                     <field name="simple_request_ids" string="Sample Request" widget="statinfo"/>
                 </button>
             </div>

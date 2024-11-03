@@ -3,7 +3,7 @@
 import { CheckBox } from "@web/core/checkbox/checkbox";
 import { useService, useBus } from "@web/core/utils/hooks";
 import { formatFloat } from "@web/core/utils/numbers";
-import { Component, useRef, onPatched } from "@odoo/owl";
+import { Component, useRef, onMounted, onPatched } from "@odoo/owl";
 import ProductionPlanBatchesNotesEditor from "@dw_production_plan_simulator/components/notes_editor";
 
 import { _t } from "@web/core/l10n/translation";
@@ -52,6 +52,9 @@ export default class ProductionPlanSimulatorLine extends Component {
         }
       }
     });
+    onMounted(() => {
+      this.env?.parent?.component?.setupEventHandlers();
+    });
 
     useBus(this.model, "mouse-over", () => this._onMouseOverProdPlanAlert());
     useBus(this.model, "mouse-out", () => this._onMouseOutProdPlanAlert());
@@ -96,7 +99,7 @@ export default class ProductionPlanSimulatorLine extends Component {
       res_model: ev.currentTarget.dataset.model,
       res_id: Number(ev.currentTarget.dataset.resId),
       views: [[false, "form"]],
-      target: "current",
+      target: "new",
     });
   }
 

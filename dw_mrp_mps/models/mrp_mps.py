@@ -123,7 +123,7 @@ class DWMrpProductionSchedule(models.Model):
 
         indirect_ratio_mps = schedules_to_compute._get_indirect_demand_ratio_mps(indirect_demand_trees)
 
-        # Get the schedules that do not depends from other in first position in
+        # Get the schedules that do not depend on one another in first position in
         # order to compute the schedule state only once.
         indirect_demand_order = schedules_to_compute._get_indirect_demand_order(indirect_demand_trees)
         indirect_demand_qty = defaultdict(float)

@@ -982,7 +982,8 @@ class DwProductionPlanSimulator(models.Model):
                 for index, forecast_state in enumerate(forecasts_state):
                     production_simulation_state['product_plan_sim_ids'][index].update(forecast_state)
 
-        return [p for p in production_simulation_states if p['id'] in self.ids]
+        _states = sorted([p for p in production_simulation_states if p['id'] in self.ids], key=lambda p: p['id'])
+        return _states
 
     def remove_replenish_qty(self, date_index):
         """ Remove the quantity to replenish on the simulation cell.

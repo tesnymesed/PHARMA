@@ -5,3 +5,5 @@ from . import stock
 from . import quality_check_line
 from . import stock_warehouse
 from . import res_config_settings_inherit
+from . import sample_request
+from . import sample_request_line

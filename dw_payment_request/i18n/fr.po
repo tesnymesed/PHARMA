@@ -1,0 +1,526 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* dw_payment_request
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-10-22 10:10+0000\n"
+"PO-Revision-Date: 2024-10-22 10:10+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_reject_reason_wizard__payment_request_id
+msgid " Payment request"
+msgstr "Demande de paiement"
+
+#. module: dw_payment_request
+#: model:ir.actions.report,print_report_name:dw_payment_request.action_report_payment_request
+msgid "'Payement request N° %s '%(object.name)"
+msgstr "Demande de paiement N° %s '%(object.name) "
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid ""
+"<b>La photocopie de ce document est interdite, document non valable en l'absence du tampon rouge «\n"
+"                        Copie contrôlée Assurance qualité »\n"
+"                    </b>"
+msgstr ""
+"<b>La photocopie de ce document est interdite, document non valable en l'absence du tampon rouge «\n"
+"                        Copie contrôlée Assurance qualité »\n"
+"                    </b>"
+
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid ""
+"<br/>\n"
+"                            <span style=\"margin-left:2%\">Le :</span>"
+msgstr ""
+"<br/>\n"
+"                            <span style=\"margin-left:2%\">Le :</span>"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid ""
+"<br/>\n"
+"                            <span style=\"margin-left:2%\">Montant :</span>"
+msgstr ""
+"<br/>\n"
+"                            <span style=\"margin-left:2%\">Montant :</span>"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid ""
+"<br/>\n"
+"                        <br/>\n"
+"                        <span>N° :</span>"
+msgstr ""
+"<br/>\n"
+"                        <br/>\n"
+"                        <span>N° :</span>"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid ""
+"<br/>\n"
+"                        <span>En règlement de (s):.................. Référence de la facture/proforma</span>\n"
+"\n"
+"                        <br/>\n"
+"                        <span>Se rapportant au :................... Référence du BC/Contrat/Avenant</span>\n"
+"                        <br/>\n"
+"                        <span>Livraison partielle : ...........................................</span>\n"
+"                        <br/>\n"
+"                        <br/>"
+msgstr ""
+"<br/>\n"
+"                        <span>En règlement de (s):.................. Référence de la facture/proforma</span>\n"
+"\n"
+"                        <br/>\n"
+"                        <span>Se rapportant au :................... Référence du BC/Contrat/Avenant</span>\n"
+"                        <br/>\n"
+"                        <span>Livraison partielle : ...........................................</span>\n"
+"                        <br/>\n"
+"                        <br/>"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid ""
+"<br/>\n"
+"                        lettre :"
+msgstr ""
+"<br/>\n"
+"                        lettre :"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid "<span style=\"margin-left:2%\">Ordre de virement : </span>"
+msgstr "<span style=\"margin-left:2%\">Ordre de virement : </span>"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid "<span style=\"margin-left:5%\">Chèque N° :</span>"
+msgstr "<span style=\"margin-left:5%\">checks N° :</span>"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid "<span>&amp;nbsp;,&amp;nbsp;</span>"
+msgstr "<span>&amp;nbsp;,&amp;nbsp;</span>"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid "<span>Adresse :&amp;nbsp;</span>"
+msgstr "<span>Adresse :&amp;nbsp;</span>"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid "<span>Date d’établissement :</span>"
+msgstr "<span>Date d’établissement :</span>"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid "<span>IMPRIME</span>"
+msgstr "<span>IMPRIME</span>"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid "<span>N° :</span>"
+msgstr "<span>N° :</span>"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid "<span>Veuillez payer à l’ordre</span>"
+msgstr "<span>Veuillez payer à l’ordre</span>"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid ""
+"<strong>Page:</strong>\n"
+"                                <span class=\"page\"/>\n"
+"                                sur\n"
+"                                <span class=\"topage\"/>"
+msgstr ""
+"<strong>Page:</strong>\n"
+"                                <span class=\"page\"/>\n"
+"                                sur\n"
+"                                <span class=\"topage\"/>"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid ""
+"<strong>Paiement\n"
+"                                    </strong>"
+msgstr ""
+"<strong>Paiement\n"
+"                                    </strong>"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid ""
+"<strong>Signature de l’initiateur\n"
+"                                        De l’achat/prestation\n"
+"                                    </strong>"
+msgstr ""
+"<strong>Signature de l’initiateur\n"
+"                                        De l’achat/prestation\n"
+"                                    </strong>"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid "<u>LE BENEFICIAIRE :</u>"
+msgstr "<u>LE BENEFICIAIRE :</u>"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__dw_account_move_id
+msgid "Account move"
+msgstr "Déplacement de compte"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_payment_request_type__active
+msgid "Active"
+msgstr "Actif"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__user_id
+msgid "Agent"
+msgstr "Agent"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__montant
+msgid "Amount"
+msgstr "Montant"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__amount_in_text
+msgid "Amount in Text"
+msgstr "Montant dans le texte"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.dw_reject_reason_form
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.view_dw_payment_request
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: dw_payment_request
+#: model:ir.model.fields.selection,name:dw_payment_request.selection__dw_payment_request__state__cancelled
+msgid "Cancelled"
+msgstr "Annulé"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__check_num
+msgid "Check N°"
+msgstr "Chèque N°"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__company_id
+msgid "Company"
+msgstr "Entreprise"
+
+#. module: dw_payment_request
+#: model:ir.model.fields.selection,name:dw_payment_request.selection__dw_payment_request__state__confirm
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.view_dw_payment_request
+msgid "Confirm"
+msgstr "Confirmer"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__confirmed_by_id
+msgid "Confirmed by"
+msgstr "COmfirmer par"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_reason__create_uid
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__create_uid
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_reject_reason__create_uid
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_reject_reason_wizard__create_uid
+#: model:ir.model.fields,field_description:dw_payment_request.field_payment_request_type__create_uid
+msgid "Created by"
+msgstr "crée par"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_reason__create_date
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__create_date
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_reject_reason__create_date
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_reject_reason_wizard__create_date
+#: model:ir.model.fields,field_description:dw_payment_request.field_payment_request_type__create_date
+msgid "Created on"
+msgstr "Crée le"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__currency_id
+msgid "Currency"
+msgstr "Devise"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid "DEMANDE DE PAIEMENT"
+msgstr "DEMANDE DE PAIEMENT"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__date
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_reject_reason_wizard__date
+msgid "Date"
+msgstr "Date"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_payment_request_type__description
+msgid "Description"
+msgstr "Description"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_reason__display_name
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__display_name
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_reject_reason__display_name
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_reject_reason_wizard__display_name
+#: model:ir.model.fields,field_description:dw_payment_request.field_payment_request_type__display_name
+msgid "Display Name"
+msgstr "Nom d'affichage"
+
+#. module: dw_payment_request
+#: model:ir.model.fields.selection,name:dw_payment_request.selection__dw_payment_request__state__draft
+msgid "Draft"
+msgstr "Brouillon"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_reason__id
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__id
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_reject_reason__id
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_reject_reason_wizard__id
+#: model:ir.model.fields,field_description:dw_payment_request.field_payment_request_type__id
+msgid "ID"
+msgstr "ID"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__journal_id
+msgid "Journal"
+msgstr "Journal"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid "La somme:"
+msgstr "La somme:"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_reason__write_uid
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__write_uid
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_reject_reason__write_uid
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_reject_reason_wizard__write_uid
+#: model:ir.model.fields,field_description:dw_payment_request.field_payment_request_type__write_uid
+msgid "Last Updated by"
+msgstr "Dernière mise à jour par"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_reason__write_date
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__write_date
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_reject_reason__write_date
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_reject_reason_wizard__write_date
+#: model:ir.model.fields,field_description:dw_payment_request.field_payment_request_type__write_date
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid "Mode de paiement :"
+msgstr "Mode de paiement :"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_reason__name
+msgid "Name"
+msgstr "Nom"
+
+#. module: dw_payment_request
+#. odoo-python
+#: code:addons/custom_addons/DW_PHARMA/dw_payment_request/models/dw_payment_request.py:0
+#: code:addons/custom_addons/DW_PHARMA/dw_payment_request/models/dw_payment_request.py:0
+#: code:addons/custom_addons/DW_PHARMA/dw_payment_request/models/dw_payment_request.py:0
+#: code:addons/dw_payment_request/models/dw_payment_request.py:0
+#: code:addons/dw_payment_request/models/dw_payment_request.py:0
+#: code:addons/dw_payment_request/models/dw_payment_request.py:0
+#, python-format
+msgid "New"
+msgstr "Nouveau"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_payment_request_type__name
+msgid "Nom"
+msgstr "Nom"
+
+#. module: dw_payment_request
+#: model:ir.model,name:dw_payment_request.model_payment_request_type
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.view_dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.view_payment_request_type_form
+msgid "Payment Request Type"
+msgstr "Type de demande de paiement"
+
+#. module: dw_payment_request
+#: model:ir.actions.act_window,name:dw_payment_request.action_payment_request_type
+#: model:ir.ui.menu,name:dw_payment_request.menu_payment_request_type
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.view_payment_request_type_tree
+msgid "Payment Request Types"
+msgstr "Types de demandes de paiement"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__Payment_order
+msgid "Payment order"
+msgstr "Ordre de paiement"
+
+#. module: dw_payment_request
+#: model:ir.actions.act_window,name:dw_payment_request.action_payment_reason
+#: model:ir.ui.menu,name:dw_payment_request.menu_payment_reason
+msgid "Payment reason"
+msgstr "Motif du paiement"
+
+#. module: dw_payment_request
+#: model:ir.actions.act_window,name:dw_payment_request.action_payment_request
+#: model:ir.actions.report,name:dw_payment_request.action_report_payment_request
+#: model:ir.ui.menu,name:dw_payment_request.menu_payment_request
+msgid "Payment request"
+msgstr "Demande de paiement"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__name
+msgid "Reference"
+msgstr "Référence"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_reject_reason__name
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.dw_reject_reason_form
+msgid "Reject Reason"
+msgstr "Raison du rejet"
+
+#. module: dw_payment_request
+#: model:ir.actions.act_window,name:dw_payment_request.action_reject_reason
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__reject_motif_id
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_reject_reason_wizard__reject_motif_id
+#: model:ir.ui.menu,name:dw_payment_request.menu_payment_request_configuration
+msgid "Reject reason"
+msgstr "Raison du rejet"
+
+#. module: dw_payment_request
+#: model:ir.model.fields.selection,name:dw_payment_request.selection__dw_payment_request__state__rejected
+msgid "Rejected"
+msgstr "Rejeté"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__request_type_id
+msgid "Request Type"
+msgstr "Type de demande"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__request_date
+msgid "Request date"
+msgstr "Date de la demande"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid "Reçu le :"
+msgstr "Reçu le :"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid ""
+"Référence :\n"
+"                                IMP.04 (PR.G.DFC.05)"
+msgstr ""
+"Référence :\n"
+"                                IMP.04 (PR.G.DFC.05)"
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__state
+msgid "State"
+msgstr "État"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.dw_reject_reason_form
+msgid "Submit"
+msgstr "Soumettre"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__validation_date
+msgid "Validation date "
+msgstr "Date de validation"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid "Vérifiée par:"
+msgstr "Vérifiée par:"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.view_dw_payment_request
+msgid "approval"
+msgstr "agrément"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid "de :"
+msgstr "de :"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__date_limit
+msgid "deadline"
+msgstr "date limite"
+
+#. module: dw_payment_request
+#: model:ir.model,name:dw_payment_request.model_dw_payment_reason
+msgid "dw.payment.reason"
+msgstr "dw.payment.reason"
+
+#. module: dw_payment_request
+#: model:ir.model,name:dw_payment_request.model_dw_payment_request
+msgid "dw.payment.request"
+msgstr "dw.payment.request"
+
+#. module: dw_payment_request
+#: model:ir.model,name:dw_payment_request.model_dw_reject_reason
+msgid "dw.reject.reason"
+msgstr "dw.reject.reason"
+
+#. module: dw_payment_request
+#: model:ir.model,name:dw_payment_request.model_dw_reject_reason_wizard
+msgid "dw.reject.reason.wizard"
+msgstr "dw.reject.reason.wizard"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.view_dw_payment_request
+msgid "e.g. Form .."
+msgstr "e.g. Form .."
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid "en"
+msgstr "en
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid "mentionné selon le mode de paiement éditer sur le bon de commande"
+msgstr "mentionné selon le mode de paiement éditer sur le bon de commande"
+
+#. module: dw_payment_request
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__payment_request_type
+msgid "payment method"
+msgstr "mode de paiement"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.view_dw_payment_request
+msgid "reject"
+msgstr "rejeter"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.view_dw_payment_request
+msgid "return to draft"
+msgstr "retour au brouillon"
+
+#. module: dw_payment_request
+#: model_terms:ir.ui.view,arch_db:dw_payment_request.report_dw_payment_request
+msgid ""
+"version :\n"
+"                                02\n"
+"                                <br/>"
+msgstr ""
+"version :\n"
+"                                02\n"
+"                                <br/>"

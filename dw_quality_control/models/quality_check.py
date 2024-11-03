@@ -33,6 +33,7 @@ class QualityCheck(models.Model):
     )
     partner_supplier_id = fields.Many2one('res.partner', string="Supplier", related="dw_purchase_id.partner_id",
                                           store=1)
+    dw_num_supplier = fields.Char(string='Lot Ref', related="lot_id.ref",  store=1)
     check_number = fields.Char(string='Check Number')
     dw_reception_id = fields.Many2one('stock.picking', string="Reception", compute="_compute_supplier_information",
                                       store=1)

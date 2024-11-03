@@ -23,8 +23,8 @@
             <field name="lot_id" position="after">
                 <field name="dw_reception_id" string="Picking"
                        filter_domain="['|',('lot_id', 'ilike', self), ('dw_reception_id', 'ilike', self)]"/>
-<!--                <field name="dw_num_supplier"-->
-<!--                       filter_domain="[ ('dw_num_supplier', 'ilike', self)]"/>-->
+                <field name="dw_num_supplier"
+                       filter_domain="[ ('dw_num_supplier', 'ilike', self)]"/>
                 <field name="production_id" string="Ordre de Fabrication"
                        filter_domain="[ ('production_id.name', 'ilike', self)]"/>
             </field>
@@ -60,7 +60,7 @@
             </xpath>
 
             <field name="lot_id" position="after">
-<!--                <field name="dw_num_supplier"/>-->
+                <field name="dw_num_supplier"/>
                 <field name="use_expiration_date" invisible="1"/>
                 <field name="expiration_date" invisible="not use_expiration_date"/>
             </field>

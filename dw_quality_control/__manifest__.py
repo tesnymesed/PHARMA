@@ -8,7 +8,7 @@
     'author': 'DIGIWAVES - ALGERIA',
     'website': 'www.digiwaves.io',
     'depends': [
-        'quality_control', 'mrp_workorder', 'product_expiry', 'purchase_stock'
+        'quality_control', 'mrp_workorder', 'product_expiry', 'purchase_stock', 'mail'
     ],
     'data': [
         'security/ir.model.access.csv',

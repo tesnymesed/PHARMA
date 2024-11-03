@@ -25,7 +25,7 @@
                        filter_domain="['|',('lot_id', 'ilike', self), ('dw_reception_id', 'ilike', self)]"/>
                 <field name="dw_num_supplier"
                        filter_domain="[ ('dw_num_supplier', 'ilike', self)]"/>
-                <field name="production_id" string="Ordre de Fabrication"
+                <field name="production_id" string="Manufacturing Order"
                        filter_domain="[ ('production_id.name', 'ilike', self)]"/>
             </field>
             <field name="lot_id" position="attributes">
@@ -46,7 +46,7 @@
                 <field name="product_tracking"/>
             </xpath>
             <xpath expr="//field[@name='product_id']" position="before">
-                <field name="create_date" string="Date de Réception"/>
+                <field name="create_date" string="Reception Date"/>
                 <field name="check_number" required="1"/>
             </xpath>
             <xpath expr="//field[@name='lot_id']" position="before">

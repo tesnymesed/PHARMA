@@ -7,7 +7,8 @@
             <field name="inherit_id" ref="stock.res_config_settings_view_form"/>
             <field name="arch" type="xml">
                 <setting id="quality_control" position="after">
-                    <setting id="quality_control_compliance_lot" help="Lot quality Compliance Process"  invisible="not module_quality_control">
+                    <setting id="quality_control_compliance_lot" help="Lot quality Compliance Process"
+                             invisible="not module_quality_control">
                         <field name="module_dw_quality_lot_process"/>
                     </setting>
                 </setting>

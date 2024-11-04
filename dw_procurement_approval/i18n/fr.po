@@ -41,7 +41,7 @@ msgstr "Marché de %(market_name)"
 #: code:addons/dw_procurement_approval/models/procurement_market.py:0
 #, python-format
 msgid "%(market_name)s's approval"
-msgstr "Approbation de %(market_name)"
+msgstr "Homologation de %(market_name)"
 
 #. module: dw_procurement_approval
 #: model_terms:ir.ui.view,arch_db:dw_procurement_approval.procurement_supplier_approval_form
@@ -61,23 +61,23 @@ msgstr "<span class=\"o_stat_text\">Échantillon de PO</span>"
 #. module: dw_procurement_approval
 #: model_terms:ir.ui.view,arch_db:dw_procurement_approval.dw_consultation_form_view_inherit
 msgid "<span class=\"o_stat_text\">approval</span>"
-msgstr "<span class=\"o_stat_text\">approbation</span>"
+msgstr "<span class=\"o_stat_text\">Homologation</span>"
 
 #. module: dw_procurement_approval
 #: model_terms:ir.ui.view,arch_db:dw_procurement_approval.view_market_form_inherit
 msgid "<span class=\"o_stat_text\">approvals</span>"
-msgstr "<span class=\"o_stat_text\">approbations</span>"
+msgstr "<span class=\"o_stat_text\">Homologations</span>"
 
 #. module: dw_procurement_approval
 #: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_approval_market_wizard__approval_id
 #: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_consult_approval__approval_id
 msgid "Approval"
-msgstr "Approbation"
+msgstr "Homologation"
 
 #. module: dw_procurement_approval
 #: model:ir.model.fields.selection,name:dw_procurement_approval.selection__procurement_market_dw__state__approval_consultation
 msgid "Approval/consultation"
-msgstr "Approbation/consultation"
+msgstr "Homologation/consultation"
 
 #. module: dw_procurement_approval
 #: model:ir.ui.menu,name:dw_procurement_approval.menu_article_supplier_approval
@@ -121,7 +121,7 @@ msgstr "Société"
 #. module: dw_procurement_approval
 #: model:ir.model,name:dw_procurement_approval.model_procurement_consult_approval
 msgid "Consult Approval"
-msgstr "Consulter l'approbation"
+msgstr "Consulter l'Homologation"
 
 #. module: dw_procurement_approval
 #: model:ir.model,name:dw_procurement_approval.model_procurement_dw_consultation
@@ -137,7 +137,7 @@ msgstr "Créer un bon de commande"
 #. module: dw_procurement_approval
 #: model_terms:ir.ui.view,arch_db:dw_procurement_approval.dw_procurement_market_supplier_wizard_tree_view
 msgid "Create approval"
-msgstr "Créer une approbation"
+msgstr "Créer une Homologation"
 
 #. module: dw_procurement_approval
 #: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_approval_market_wizard__create_uid
@@ -206,7 +206,7 @@ msgstr "Ligne de marché"
 #. module: dw_procurement_approval
 #: model_terms:ir.ui.view,arch_db:dw_procurement_approval.dw_procurement_market_supplier_wizard_tree_view
 msgid "Link approval"
-msgstr "Lien d'approbation"
+msgstr "Lien d'Homologation"
 
 #. module: dw_procurement_approval
 #: model_terms:ir.ui.view,arch_db:dw_procurement_approval.dw_procurement_market_supplier_wizard_tree_view
@@ -237,7 +237,7 @@ msgstr "Marché"
 #: model:ir.actions.act_window,name:dw_procurement_approval.action_supplier_approval_with
 #: model:ir.ui.menu,name:dw_procurement_approval.menu_market_with_supplier_approval
 msgid "Market with approval"
-msgstr "Marché avec approbation"
+msgstr "Marché avec Homologation"
 
 #. module: dw_procurement_approval
 #: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_approval_market_wizard__quantity
@@ -290,7 +290,7 @@ msgstr "Fournisseur"
 #: model:ir.model,name:dw_procurement_approval.model_procurement_market_dw
 #: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_market_dw__supplier_approval_ids
 msgid "Supplier Approval"
-msgstr "Approbation du fournisseur"
+msgstr "Homologation du fournisseur"
 
 #. module: dw_procurement_approval
 #. odoo-python
@@ -318,7 +318,7 @@ msgstr "Il n'y a plus de fournisseur à approuver pour ce marché %(market_name)
 #. module: dw_procurement_approval
 #: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_market_dw__for_approval
 msgid "This market is used for approval"
-msgstr "Ce marché est utilisé pour l'approbation"
+msgstr "Ce marché est utilisé pour l'Homologation"
 
 #. module: dw_procurement_approval
 #. odoo-python
@@ -334,7 +334,7 @@ msgstr "Ce fournisseur %%(supplier_name) n'est pas agréé pour ce produit %(pro
 #: code:addons/dw_procurement_approval/wizard/dw_homologate_market.py:0
 #, python-format
 msgid "You must choose an approval to go further"
-msgstr "Vous devez choisir une approbation pour aller plus loin"
+msgstr "Vous devez choisir une Homologation pour aller plus loin"
 
 #. module: dw_procurement_approval
 #: model:ir.model.fields,field_description:dw_procurement_approval.field_procurement_dw_consultation__approval_id
@@ -345,7 +345,7 @@ msgstr "Vous devez choisir une approbation pour aller plus loin"
 #: model:ir.ui.menu,name:dw_procurement_approval.menu_supplier_approval_root
 #: model_terms:ir.ui.view,arch_db:dw_procurement_approval.view_market_form_inherit
 msgid "approval"
-msgstr "approbation"
+msgstr "Homologation"
 
 #. module: dw_procurement_approval
 #: model:ir.model.fields.selection,name:dw_procurement_approval.selection__procurement_market_dw__state__consultation
@@ -355,7 +355,7 @@ msgstr "consultation"
 #. module: dw_procurement_approval
 #: model_terms:ir.ui.view,arch_db:dw_procurement_approval.dw_procurement_market_supplier_wizard_tree_view
 msgid "create approval"
-msgstr "créer une approbation"
+msgstr "créer une Homologation"
 
 #. module: dw_procurement_approval
 #: model_terms:ir.ui.view,arch_db:dw_procurement_approval.view_product_product_tree_inherit
@@ -365,7 +365,7 @@ msgstr "Charger marché"
 #. module: dw_procurement_approval
 #: model:ir.model,name:dw_procurement_approval.model_procurement_approval_market_wizard
 msgid "procurement.approval.market.wizard"
-msgstr "marché.d'approvisionnement.d'approbation"
+msgstr "marché.d'approvisionnement.d'homologation"
 
 #. module: dw_procurement_approval
 #: model:ir.model,name:dw_procurement_approval.model_procurement_market_dw_assign_wizard
@@ -385,4 +385,4 @@ msgstr "prospection"
 #. module: dw_procurement_approval
 #: model:ir.model,name:dw_procurement_approval.model_procurement_supplier_approval
 msgid "supplier approval"
-msgstr "approbation du fournisseur"
+msgstr "Homologation du fournisseur"

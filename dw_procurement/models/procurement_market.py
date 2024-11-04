@@ -120,6 +120,8 @@ class DwMarket(models.Model):
     start_date = fields.Date(string="Start Date", default=fields.Date.today)
     end_date = fields.Date(string="End Date", default=fields.Date.today)
     for_approval = fields.Boolean("for approval")
+    _sql_constraints = [
+        ('unique_market_name', 'unique(name)', 'The market reference must be unique')]
 
     def action_done(self):
 

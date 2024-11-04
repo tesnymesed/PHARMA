@@ -19,6 +19,8 @@ class DwConsultationCriteria(models.Model):
         ('period', 'Based on Period'),
         ('boolean', 'Based on boolean'),
         ('text', 'Based on Text'),
+        ('supplier offer ', 'Based on supplier offer'),
+        ('criteria tco ', 'Based on TCO'),
     ],
         string="Criteria Type",
         default="amount", )

@@ -44,7 +44,7 @@ class DwPaymentRequest(models.Model):
     dw_account_move_id = fields.Many2one('account.move', string='Account move')
 
     amount_in_text = fields.Char(string="Amount in Text",)
-    check_num = fields.Char(string="Check N°")
+    payment_reference = fields.Char(string="payment reference")
     Payment_order = fields.Char(string="Payment order")
     company_id = fields.Many2one(
         'res.company',

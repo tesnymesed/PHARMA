@@ -7,14 +7,13 @@
             <form string="Sub-Lot Registration">
                 <group>
                     <group name="non_conform" string="Reason">
-                        <field name="reason_id" required="1"/>
-                        <field name="status" required="1"/>
+                        <field name="reason_id"/>
+                        <field name="status" required="non_conform_qty!=0"/>
                     </group>
                     <group name="sub_lot" string="Sub-Lot">
                         <field name="non_conform_qty" />
                         <field name="non_conform_lot" invisible="non_conform_qty==0" required="non_conform_qty!=0"/>
-                        <field name="non_conform_lot" invisible="non_conform_qty==0"/>
-
+                        <field name="location_id" invisible="non_conform_qty==0"/>
                     </group>
                     
                 </group>

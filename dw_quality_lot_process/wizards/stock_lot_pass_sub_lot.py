@@ -6,7 +6,6 @@ class StockLotSubLotWizard(models.TransientModel):
     _description = 'Stock Lot Sub Lot Register'
 
     reason_id = fields.Many2one('stock.lot.cancel.reason', string='Reason')
-    note = fields.Text(string='Note')
     lot_id = fields.Many2one('stock.lot', string='Stock Lot', required=True)
     status = fields.Selection([
         ('not_conform', 'Not Conform'),
@@ -17,11 +16,13 @@ class StockLotSubLotWizard(models.TransientModel):
         string='Check Quality',
         )
     location_id = fields.Many2one(
-        'stock.lot',
+        'stock.location',
         string='Location Lot',
         )
     non_conform_qty = fields.Float(string='Quantity Non-Conform')
     non_conform_lot = fields.Char()
+  
+    
     def _create_history_record(self,lot,status,with_reason=False):
         '''This function creates record in stock.lot.history
         the parameter with_reason is set to false in case the user does not provide a reason
@@ -81,6 +82,4 @@ class StockLotSubLotWizard(models.TransientModel):
         message = f"Lot cancelled. Reason: {self.reason_id.name if self.reason_id else 'No reason provided'}"
         self.lot_id.message_post(body=message)
 
-        return True
-    def action_cancel(self):
         return True

@@ -7,14 +7,6 @@ class QualityCheck(models.Model):
     check_lot_compliance = fields.Boolean(related='product_id.requires_lot_compliance_check')
     #initial_qty = fields.Float(string="Initial Quanity", readonly=True,)
 
-    def write(self, vals):
-        if 'lot_id' in vals:
-            for record in self :
-                if record.check_lot_compliance :
-                    record.lot_id.action_set_in_progress()
-
-        return super(QualityCheck, self).write(vals)
-
     def do_pass(self):
         if self.lot_id and self.lot_id.compliance_check:
             if self.lot_id.lot_quarantine_status != 'analyzed':

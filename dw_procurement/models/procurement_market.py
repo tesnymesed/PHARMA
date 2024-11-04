@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 from odoo import fields, models, api, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 
 
 class DwMarketLine(models.Model):
@@ -262,8 +262,11 @@ class DwMarket(models.Model):
         })
 
     def action_prospecting(self):
+        for rec in self:
+            if not rec.market_line_ids:
+                raise UserError("You can’t prospecting an empty Market. Please add some products ")
 
-        self.write({"state": "prospecting"})
+            rec.write({"state": "prospecting"})
 
     def action_show_consultations(self):
 

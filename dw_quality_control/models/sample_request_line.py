@@ -4,7 +4,7 @@ from odoo import models, fields
 
 class SampleLineRequest(models.Model):
     _name = 'quality.sample.request.lines'
-    _description = 'Simple Line Request'
+    _description = 'Sample Request Line'
 
     product_id = fields.Many2one('product.product',string='Product', check_company=True, required=True)
     product_quantity = fields.Float(string="Quantity",digits='Qty', required=True)

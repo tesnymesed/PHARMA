@@ -1,5 +1,6 @@
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError, ValidationError
+from odoo.models import fix_import_export_id_paths
 
 
 class DwConsultationCriteria(models.Model):
@@ -56,6 +57,7 @@ class DwConsultationCriteria(models.Model):
     reject_motif_id = fields.Many2one('procurement.reject.cancel.reason', string='Reject Reason',
                                       domain=[('reason_type', '=', 'reject')],
                                       )
+    dw_manufacturer = fields.Char(string='Manufacturer')
 
     @api.constrains('end_date', 'start_date')
     def _check_date_start_end(self):

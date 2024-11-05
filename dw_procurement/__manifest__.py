@@ -15,6 +15,7 @@
         'data/procurement_market_type_data.xml',
         'data/procurement_consultation_criteria_data.xml',
         'data/procurement_reject_cancel_reason_data.xml',
+        'data/purchase_requisition_type.xml',
         # report
         # security
         'security/security.xml',

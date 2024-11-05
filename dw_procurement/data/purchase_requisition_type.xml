@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+         <record id="purchase_requisition_type_assignment_contract" model="purchase.requisition.type">
+            <field name="name">Assignment Contract</field>
+            <field name="exclusive">multiple</field>
+            <field name="line_copy">copy</field>
+            <field name="quantity_copy">none</field>
+        </record>
+    </data>
+</odoo>

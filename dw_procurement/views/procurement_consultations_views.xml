@@ -80,8 +80,8 @@
                                         <field name="criteria_type" column_invisible="1"/>
                                         <field name="period_type" column_invisible="1"/>
                                         <field name="criteria_id" readonly="1"/>
-                                        <field name="amount" readonly="criteria_type  != 'amount'"
-                                               required="criteria_type  == 'amount'"/>
+                                        <field name="amount" readonly="criteria_type  not in ['amount', 'monetary']"
+                                               required="criteria_type  in ['amount', 'monetary']"/>
                                         <field name="percentage" readonly="criteria_type  != 'percentage'"
                                                required="criteria_type  == 'percentage'"/>
                                         <field name="number_days"
@@ -110,8 +110,8 @@
                                         <field name="criteria_type" column_invisible="1"/>
                                         <field name="period_type" column_invisible="1"/>
                                         <field name="criteria_id"/>
-                                        <field name="amount" readonly="criteria_type  != 'amount'"
-                                               required="criteria_type  == 'amount'"/>
+                                        <field name="amount" readonly="criteria_type  not in ['amount', 'monetary']"
+                                               required="criteria_type in ['amount', 'monetary']"/>
                                         <field name="percentage" readonly="criteria_type  != 'percentage'"
                                                required="criteria_type  == 'percentage'"/>
                                         <field name="number_days"

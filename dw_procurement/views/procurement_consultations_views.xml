@@ -91,7 +91,10 @@
                                                required="criteria_type  == 'boolean'"/>
                                         <field name="observation" readonly="criteria_type  != 'text'"
                                                required="criteria_type  == 'text'"/>
-
+                                        <field name="currency_id" readonly="criteria_type  != 'monetary'"
+                                               required="criteria_type  == 'monetary'"/>
+                                        <field name="incoterm_id" readonly="criteria_type  != 'monetary'"
+                                               required="criteria_type  == 'monetary'"/>
 
                                         <!--                                        <field name="number_months"-->
                                         <!--                                               readonly="criteria_type  != 'period' or period_type != 'months' "-->
@@ -116,6 +119,10 @@
                                                required="criteria_type  == 'period' and period_type == 'days' "/>
                                         <field name="completed" readonly="criteria_type  != 'boolean'"
                                                required="criteria_type  == 'boolean'"/>
+                                        <field name="currency_id" readonly="criteria_type  != 'monetary'"
+                                               required="criteria_type  == 'monetary'"/>
+                                        <field name="incoterm_id" readonly="criteria_type  != 'monetary'"
+                                               required="criteria_type  == 'monetary'"/>
 
                                         <!--                                        <field name="number_months"-->
                                         <!--                                               readonly="criteria_type  != 'period' or period_type != 'months' "-->

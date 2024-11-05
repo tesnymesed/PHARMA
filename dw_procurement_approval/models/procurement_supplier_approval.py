@@ -12,7 +12,7 @@ class ProcurementSupplierApproval(models.Model):
     def action_market_assign(self):
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Market assign',
+            'name': 'link to market',
             'res_model': 'procurement.market.dw.assign.wizard',
             'views': [[self.env.ref('dw_procurement_approval.dw_market_assign_form_view').id, 'form']],
             'target': 'new',

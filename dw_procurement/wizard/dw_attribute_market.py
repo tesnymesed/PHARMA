@@ -15,6 +15,7 @@ class DwAttributeMarket(models.TransientModel):
         store=1, related="criteria_line_ids.criteria_type")
     period_type = fields.Selection(store=1, related="criteria_line_ids.period_type")
 
+    note = fields.Char(string="Note")
     def action_confirm(self):
         market_id = self.market_id
         consultation_id = self.consultation_id

@@ -47,7 +47,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.product_normal_form_view_inherited
 #: model_terms:ir.ui.view,arch_db:dw_supplier_approval.view_product_template_inherited
 msgid "<span class=\"o_stat_text\">approval</span>"
-msgstr "<span class=\"o_stat_text\">Homologation</span>"
+msgstr "<span class=\"o_stat_text\">Homologation </span>"
 
 #. module: dw_supplier_approval
 #: model:ir.model.fields,field_description:dw_supplier_approval.field_procurement_supplier_approval__message_needaction

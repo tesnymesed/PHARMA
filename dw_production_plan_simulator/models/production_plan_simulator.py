@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
 from collections import OrderedDict, defaultdict, namedtuple
@@ -92,6 +91,11 @@ class DwProductionPlanSimulator(models.Model):
         'Maximum to Replenish', default=1000,
         help="The maximum replenishment you would like to launch for each period in the MPS. Note that if the demand is higher than that amount, the remaining quantity will be transferred to the next period automatically.")
 
+    # @bislem: [ADD] Nov 2nd, 2024
+    simulation_version_id = fields.Many2one('dw.production.plan.simulation.version',
+                                            string='Production Plan Simulation Version',
+                                            help="Reference to the simulation version.")
+
     # replenish_state = fields.Selection([
     #     ('to_replenish', 'To Replenish'),
     #     ('under_replenishment', 'Under Replenishment'),
@@ -150,6 +154,7 @@ class DwProductionPlanSimulator(models.Model):
         #   //          res_model: "dw.production.plan.simulation",
         #   //          res_id: productionSimulationId,
         # }
+
     @api.depends('company_id.dw_prod_sim_date_sales_range_start',
                  'company_id.dw_prod_sim_date_sales_range_end',
                  'product_plan_sim_ids.sold_qty',
@@ -541,47 +546,75 @@ class DwProductionPlanSimulator(models.Model):
 
     @api.model
     def create_product_simulations(self, company_id):
-        # Get the final products with BOMs for the given company
-        products_list = self.env['product.product'].search([
-            ('product_tmpl_id.type', '=', 'product'),
-            ('product_tmpl_id.categ_id.is_final_product', '=', True),
-            # ('product_tmpl_id.bom_ids', '!=', False),
-            # '|',
-            ('product_tmpl_id.company_id', '=', company_id),
-            # ('product_tmpl_id.company_id', '=', False)
-        ])
-
         # Create the simulation records
         ids = []
         existing_pps = []
 
-        for i, product in enumerate(products_list):
+        # Get the final products with BOMs for the given company
+        products_list = self.env['product.product'].search([
+            ('product_tmpl_id.type', '=', 'product'),
+            ('product_tmpl_id.categ_id.is_final_product', '=', True),
+            ('product_tmpl_id.company_id', '=', company_id),
+        ])
+
+        for product in products_list:
+            # Check for existing simulation records
             pps = self.env['dw.production.plan.simulation'].search([
                 ('company_id', '=', company_id),
                 ('product_id', '=', product.id),
-                # ('bom_id', '=', product.product_tmpl_id.bom_ids[0].id),
+                # Check for BOM
+                ('bom_id', '=', product.product_tmpl_id.bom_ids[0].id) if product.product_tmpl_id.bom_ids
+                else ('bom_id', '=', False)
             ], limit=1)
+
             if pps:
-                existing_pps.append((i, pps.id))
+                # If we found an existing simulation, store it
+                existing_pps.append(pps.id)
+                continue  # Skip to the next product if a match is found
 
-            # for i_remove, __ in reversed(existing_pps):
-            #     del products_list[i_remove]
-            else:
-                vals = {
+            # Prepare values for the new simulation record
+            vals = {
+                'company_id': company_id,
+                'product_id': product.id,
+                'warehouse_id': self._get_warehouse_id(company_id).id,
+            }
+
+            if product.product_tmpl_id.bom_ids:
+                vals['bom_id'] = product.product_tmpl_id.bom_ids[0].id
+                vals['lot_size'] = product.product_tmpl_id.bom_ids[0].product_qty
+
+            # Create new simulation record
+            pps = self.env['dw.production.plan.simulation'].create([vals])
+            existing_pps.append(pps.id)  # Store the newly created simulation
+
+        # After processing all products, handle simulation_version_id logic
+        if existing_pps:
+            # Check existing records for simulation_version_id
+            existing_versions = self.env['dw.production.plan.simulation'].search([
+                ('id', 'in', existing_pps)
+            ]).mapped('simulation_version_id')
+
+            if not any(existing_versions):  # If none have a version
+                # Create a new version and link all records
+                new_version = self.env['dw.production.plan.simulation.version'].create({
+                    'name': self.env['dw.production.plan.simulation.version'].format_name(company_id),
                     'company_id': company_id,
-                    'product_id': product.id,
-                    'warehouse_id': self._get_warehouse_id(company_id).id,
-                    # 'bom_id': product.product_tmpl_id.bom_ids[0].id if product.product_tmpl_id.bom_ids else None,
-                    # 'lot_size': product.product_tmpl_id.bom_ids[0].product_qty
-                }
-
-                if product.product_tmpl_id.bom_ids:
-                    vals['bom_id'] = product.product_tmpl_id.bom_ids[0].id
-                    vals['lot_size'] = product.product_tmpl_id.bom_ids[0].product_qty
-
-                pps = self.env['dw.production.plan.simulation'].create(vals)
-
-            ids.append(pps)
+                    # Add other necessary fields for the version
+                })
+                for existing_pp_id in existing_pps:
+                    existing_pp = self.env['dw.production.plan.simulation'].browse(existing_pp_id)
+                    existing_pp.simulation_version_id = new_version.id
+            else:
+                # If some have a version, check if they are all the same
+                unique_versions = set(existing_versions)
+                if len(unique_versions) > 1:
+                    # If they are not all the same, link those without a version to the existing version
+                    for existing_pp_id in existing_pps:
+                        existing_pp = self.env['dw.production.plan.simulation'].browse(existing_pp_id)
+                        if not existing_pp.simulation_version_id:
+                            # Link to the first version found
+                            existing_pp.simulation_version_id = existing_versions[0]
+                # If all have the same version, do nothing
 
         return ids
 
@@ -672,17 +705,16 @@ class DwProductionPlanSimulator(models.Model):
         """ If the BoM is pass at the creation, create MPS for its components """
         existing_mps = []
         for i, vals in enumerate(vals_list):
-            # Allow to add components of a BoM for MPS already created
-            # if vals.get('bom_id'):
-            mps = self.search([
-                ('product_id', '=', vals.get('product_id')),
-                ('bom_id', '=', vals.get('bom_id')),
-                ('warehouse_id', '=', vals.get('warehouse_id', self._default_warehouse_id().id)),
-                ('company_id', '=', vals.get('company_id', self.env.company.id)),
-            ], limit=1)
-            if mps:
-                # mps.bom_id = vals.get('bom_id')
-                existing_mps.append((i, mps.id))
+            if vals.get('bom_id'):
+                mps = self.search([
+                    ('product_id', '=', vals.get('product_id')),
+                    # ('bom_id', '=', vals.get('bom_id')),
+                    ('warehouse_id', '=', vals.get('warehouse_id', self._default_warehouse_id().id)),
+                    ('company_id', '=', vals.get('company_id', self.env.company.id)),
+                ], limit=1)
+                if mps:
+                    mps.bom_id = vals.get('bom_id')
+                    existing_mps.append((i, mps.id))
 
         for i_remove, __ in reversed(existing_mps):
             del vals_list[i_remove]

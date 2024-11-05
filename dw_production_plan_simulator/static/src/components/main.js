@@ -61,6 +61,17 @@ class ProductionPlanSimulatorComponent extends Component {
     });
     this.data = {};
 
+    this.planningCycleOptions = [
+      {
+        id: "monthly",
+        name: "Monthly",
+      },
+      {
+        id: "annual",
+        name: "Annual",
+      },
+    ];
+
     const { orm, action, dialog } = this;
     this.model = new ProductionPlanSimulatorModel(this.props, {
       orm,
@@ -327,20 +338,9 @@ class ProductionPlanSimulatorComponent extends Component {
   }
 
   initPlanningCycleSelect(id) {
-    var planningCycleOptions = [
-      {
-        id: "monthly",
-        name: "Monthly",
-      },
-      {
-        id: "annual",
-        name: "Annual",
-      },
-    ];
-
     var planCycleSelect = document.getElementById(id);
     planCycleSelect.innerHTML = "";
-    planningCycleOptions.forEach(
+    this.planningCycleOptions.forEach(
       function (opt, i) {
         var option = this.addSelectOption(opt["name"], opt["id"]);
         option.selected = i === 0 ? true : false;

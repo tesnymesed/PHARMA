@@ -196,10 +196,20 @@ class DwProductionPlanSimulator(models.Model):
         for record in self:
             record.safety_stock_target_qty = record.safety_stock_target * record.sales_average
 
+    # def _default_warehouse_id(self):
+    #     return self.env['stock.warehouse'].search(self.env['stock.warehouse']._check_company_domain(self.env.company),
+    #                                               limit=1)
+
     @api.model
-    def _default_warehouse_id(self):
-        return self.env['stock.warehouse'].search(self.env['stock.warehouse']._check_company_domain(self.env.company),
-                                                  limit=1)
+    def _default_warehouse_id(self, company_id=None):
+        # Ensure company_id is provided
+        if not company_id:
+            company_id = self.env.company
+        # Search for the warehouse based on the company_id
+        return self.env['stock.warehouse'].search(
+            self.env['stock.warehouse']._check_company_domain(company_id),
+            limit=1
+        )
 
     @api.model
     def _default_workcenter_id(self):
@@ -705,12 +715,16 @@ class DwProductionPlanSimulator(models.Model):
         """ If the BoM is pass at the creation, create MPS for its components """
         existing_mps = []
         for i, vals in enumerate(vals_list):
+            vals['company_id'] = vals.get('company_id', self.env.company.id)
+            if not vals.get('warehouse_id'):
+                vals['warehouse_id'] = self._default_warehouse_id(vals.get('company_id')).id
+
             if vals.get('bom_id'):
                 mps = self.search([
                     ('product_id', '=', vals.get('product_id')),
                     # ('bom_id', '=', vals.get('bom_id')),
-                    ('warehouse_id', '=', vals.get('warehouse_id', self._default_warehouse_id().id)),
-                    ('company_id', '=', vals.get('company_id', self.env.company.id)),
+                    ('warehouse_id', '=', vals.get('warehouse_id')),
+                    ('company_id', '=', vals.get('company_id')),
                 ], limit=1)
                 if mps:
                     mps.bom_id = vals.get('bom_id')

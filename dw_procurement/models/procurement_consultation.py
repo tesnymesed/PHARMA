@@ -1,6 +1,5 @@
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError, ValidationError
-from odoo.models import fix_import_export_id_paths
 
 
 class DwConsultationCriteria(models.Model):

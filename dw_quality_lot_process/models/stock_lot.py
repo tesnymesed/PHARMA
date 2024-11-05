@@ -21,7 +21,7 @@ class StockLot(models.Model):
     
     compliance_check = fields.Boolean(related='product_id.requires_lot_compliance_check',readonly=True)
     lot_status_history_ids = fields.One2many('stock.lot.history', 'lot_id', string="Status History")
-    #initial_qty = fields.Float(string="Initial Quantity",readonly=True)
+    initial_qty = fields.Float(string="Initial Quantity",readonly=True, default=lambda self:self.product_qty)
     is_child = fields.Boolean(string="Is Child ?")
     parent_lot_id = fields.Many2one(
         'stock.lot',

@@ -20,10 +20,7 @@ class StockLotCancelWizard(models.TransientModel):
         'stock.location',string = 'Location'
         )
     def _create_history_record(self,with_reason=False):
-        '''This function creates record in stock.lot.history
-        the parameter with_reason is set to false in case the user does not provide a reason
-        if it's set to true a new record is created with reason and note if exit'''
-
+      
         history_vals = {
             'lot_id': self.lot_id.id,
             'user_id': self.env.user.id,
@@ -47,6 +44,4 @@ class StockLotCancelWizard(models.TransientModel):
         message = f"Lot cancelled. Reason: {self.reason_id.name if self.reason_id else 'No reason provided'}"
         self.lot_id.message_post(body=message)
 
-        return True
-    def action_cancel(self):
         return True

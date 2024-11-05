@@ -1,26 +1,5 @@
-from odoo import models, fields, api,Command, _
-import datetime
-from odoo.exceptions import UserError, ValidationError
-
-
-class StockLotReanalyseLineWizard(models.TransientModel):
-    _name = 'stock.lot.reanalyse.line.wizard'
-    _description = 'Stock Lot reanalyse line Wizard'
-
-    quant_id = fields.Many2one(
-        'stock.quant',
-        )
-    location_id = fields.Many2one(
-        'stock.location', string='Location', domain=[('perform_quality_lot_reanalyze', '=', True)], check_company=True
-    )
-    quantity = fields.Float(string="Qte", default=1)
-    uom_id = fields.Many2one(
-        'uom.uom',
-    )
-    company_id = fields.Many2one(
-        'res.company',readonly=0
-    )
-
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 
 class StockLotReanalyseWizard(models.TransientModel):
     _name = 'stock.lot.reanalyse.wizard'
@@ -120,3 +99,20 @@ class StockLotReanalyseWizard(models.TransientModel):
             picking.action_confirm()
             picking.button_validate()
 
+class StockLotReanalyseLineWizard(models.TransientModel):
+    _name = 'stock.lot.reanalyse.line.wizard'
+    _description = 'Stock Lot reanalyse line Wizard'
+
+    quant_id = fields.Many2one(
+        'stock.quant',
+        )
+    location_id = fields.Many2one(
+        'stock.location', string='Location', domain=[('perform_quality_lot_reanalyze', '=', True)], check_company=True
+    )
+    quantity = fields.Float(string="Qte", default=1)
+    uom_id = fields.Many2one(
+        'uom.uom',
+    )
+    company_id = fields.Many2one(
+        'res.company',readonly=0
+    )

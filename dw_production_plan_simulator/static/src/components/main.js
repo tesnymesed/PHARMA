@@ -236,10 +236,6 @@ class ProductionPlanSimulatorComponent extends Component {
     const elts = document.querySelectorAll(
       ".sim-state-toggle, .o_mps_product_table"
     );
-    console.log(
-      "🚀 ~ ProductionPlanSimulatorComponent ~ setupEventHandlers ~ elts:",
-      elts
-    );
 
     document
       .getElementById("settingsSidePanel")

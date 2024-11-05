@@ -7,7 +7,7 @@ import datetime
 class DwPaymentRequest(models.Model):
     _name = "dw.payment.request"
 
-    name = fields.Char(string="Reference", required=True, copy=False, readonly=True, default=lambda self: _('New'))
+    name = fields.Char(string="Reference", required=True, copy=False, readonly=True, default=lambda self: _('New') )
     state = fields.Selection(
         selection=[
             ("draft", "Draft"),
@@ -20,19 +20,20 @@ class DwPaymentRequest(models.Model):
         store=True,
         group_expand='_expand_states'
     )
-    user_id = fields.Many2one('res.users', 'Agent', default=lambda self: self.env.user)
+    user_id = fields.Many2one('res.users', 'Agent', default=lambda self: self.env.user , required="true")
     confirmed_by_id = fields.Many2one('res.users', 'Confirmed by')
     request_date = fields.Date(
         string="Request date",
         default=fields.Date.context_today,
+        required=True,
     )
     date_limit = fields.Date(
         string="deadline",
     )
     validation_date = fields.Date(
-        string="Validationd date ",
+        string="Validation date ",
     )
-    payment_request_type = fields.Many2one('account.payment.method.line', string="payment method")
+    payment_request_type = fields.Many2one('account.payment.method.line', string="payment method",required=True)
     date = fields.Date("Date")
     reject_motif_id = fields.Many2one('dw.reject.reason', string='Reject reason')
     journal_id = fields.Many2one(
@@ -42,7 +43,7 @@ class DwPaymentRequest(models.Model):
     )
     dw_account_move_id = fields.Many2one('account.move', string='Account move')
 
-    amount_in_text = fields.Char(string="Amount in Text")
+    amount_in_text = fields.Char(string="Amount in Text",)
     check_num = fields.Char(string="Check N°")
     Payment_order = fields.Char(string="Payment order")
     company_id = fields.Many2one(
@@ -50,16 +51,16 @@ class DwPaymentRequest(models.Model):
         default=lambda self: self.env.company,
     )
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', store=True)
-    montant = fields.Monetary(string="Amount", currency_field="currency_id")
+    montant = fields.Monetary(string="Amount", currency_field="currency_id", required=True)
 
     request_type_id = fields.Many2one('payment.request.type',string='Request Type',required=True)
 
-    @api.depends('dw_account_move_id.amount_total')  # Replace 'your_field_dependency' with the actual field dependency
+    @api.depends('dw_account_move_id.amount_total')  
+    #must be improved
     def _compute_amount_in_text(self):
         for rec in self:
             currency = self.env['res.currency'].search([('name', '=', rec.dw_account_move_id.currency_id.name)],
                                                        limit=1)
-            # set the context to text
             ctx = self._context.copy()
             ctx['lang'] = 'fr_FR'
 
@@ -68,7 +69,13 @@ class DwPaymentRequest(models.Model):
             rec.amount_in_text = currency.with_context(ctx).amount_to_text(amount_net)
 
     def action_confirm(self):
-        self.write({'state': 'confirm'})
+            today=fields.Date.today()
+            user_id=fields.Date.today()
+            self.write({
+                'state': 'confirm',
+                'confirmed_by_id': user_id,
+                'validation_date': today,
+            })
 
     def action_reject(self):
 

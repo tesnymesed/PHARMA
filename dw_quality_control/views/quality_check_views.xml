@@ -5,22 +5,12 @@
         <field name="model">quality.check</field>
         <field name="inherit_id" ref="quality_control.quality_check_view_tree"/>
         <field name="arch" type="xml">
-            <xpath expr="//tree" position="inside">
-                <header>
-                    <button name="compute_lot_id" string="Affecter Le lot"
-                            type="object" class="oe_highlight" groups="base.group_user"/>
-                    <button name="compute_lot_domain_reception" string="Ramener les lots de réception"
-                            type="object" class="oe_highlight" groups="base.group_no_one"/>
-                </header>
-            </xpath>
-
             <field name="product_id" position="after">
+                <field name="lot_domain" column_invisible="1" widget="many2many_tags"/>
+                <field name="dw_reception_id" column_invisible="1"/>
+                <field name="quality_state" column_invisible="1"/>
+                <field name="picking_id"/>
                 <field name="production_id"/>
-                <field name="lot_domain" invisible="1" widget="many2many_tags"/>
-                <field name="picking_id" invisible="1"/>
-                <field name="quality_state" invisible="1"/>
-                <field name="dw_reception_id"/>
-                <field name="lot_domain_reception" invisible="0" widget="many2many_tags"/>
             </field>
         </field>
     </record>
@@ -31,18 +21,15 @@
         <field name="inherit_id" ref="quality_control.quality_check_view_search"/>
         <field name="arch" type="xml">
             <field name="lot_id" position="after">
-                <field name="dw_reception_id" string="Transfert"
-                       filter_domain="['|','|', ('lot_id', 'ilike', self), ('dw_reception_id', 'ilike', self), ('lot_domain_reception',
-                        'ilike',self)]"/>
-                <field name="dw_num_supplier" string="Référence Fournisseur"
+                <field name="dw_reception_id" string="Picking"
+                       filter_domain="['|',('lot_id', 'ilike', self), ('dw_reception_id', 'ilike', self)]"/>
+                <field name="dw_num_supplier"
                        filter_domain="[ ('dw_num_supplier', 'ilike', self)]"/>
                 <field name="production_id" string="Ordre de Fabrication"
                        filter_domain="[ ('production_id.name', 'ilike', self)]"/>
             </field>
             <field name="lot_id" position="attributes">
-                <attribute name="filter_domain">['|', ('lot_id', 'ilike', self), ('lot_domain_reception',
-                    'ilike',self)]
-                </attribute>
+                <attribute name="filter_domain">[('lot_id', 'ilike', self)]</attribute>
             </field>
         </field>
     </record>
@@ -58,58 +45,35 @@
             <xpath expr="//field[@name='product_id']" position="after">
                 <field name="product_tracking"/>
             </xpath>
-            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
-                <field name="count_dw_check_ids" invisible="1"/>
-                <button name="action_open_extra_check_ids" string="Extra Checks" type="object" class="oe_stat_button"
-                        invisible="count_dw_check_ids == 0"
-                        icon="fa-arrows-v"/>
-            </xpath>
             <xpath expr="//field[@name='product_id']" position="before">
                 <field name="create_date" string="Date de Réception"/>
                 <field name="check_number" required="1"/>
             </xpath>
             <xpath expr="//field[@name='lot_id']" position="before">
-                <field name="picking_id" invisible="0"/>
-                <field name="lot_id" invisible="0"/>
                 <field name="lot_domain" invisible="1"/>
+                <field name="lot_id"
+                       invisible="0"
+                       options="{'no_create': True}"
+                       required="product_tracking == 'lot'"
+                       readonly="quality_state in ['pass','fail']"
+                       domain="[('id', 'in', lot_domain)]"/>
             </xpath>
-            <xpath expr="//field[@name='lot_id']" position="attributes">
-                <attribute name="required">[('product_tracking', '=', 'lot')]</attribute>
-                <attribute name="domain">[('id', 'in', lot_domain)]</attribute>
-            </xpath>
-            <button name="do_pass" position="before">
-                <field name="dw_route_no_origin" invisible="1"/>
-                <button name="dw_recompute_state" type="object" class="btn-primary"
-                        string="Corriger Réservation"
-                        invisible="dw_route_no_origin == False"/>
-                <field name="quality_state" invisible="1"/>
-<!--                <button name="action_reload" type="object" class="btn-primary"-->
-<!--                        string="Reload"-->
-<!--                        invisible="dw_quality_id != False or picking_id == False or quality_state not in ['none'] or lot_id == False"/>-->
-            </button>
-            <field name="team_id" position="after">
-                <field name="dw_quality_id" invisible="dw_quality_id == False"/>
-            </field>
+
             <field name="lot_id" position="after">
                 <field name="dw_num_supplier"/>
                 <field name="use_expiration_date" invisible="1"/>
-                <field name="expiration_date" invisible="use_expiration_date == False"/>
+                <field name="expiration_date" invisible="not use_expiration_date"/>
             </field>
             <xpath expr="//notebook" position="before">
                 <group>
-                    <group string="Reception Information">
-                        <field name="dw_reception_id" readonly="1" force_save="1"/>
-                        <field name="dw_purchase_id" readonly="1" force_save="1"/>
-                        <field name="partner_supplier_id" readonly="1" force_save="1"/>
+                    <group string="Reception Information" invisible="not dw_reception_id and not dw_purchase_id and not partner_supplier_id">
+                        <field name="dw_reception_id" invisible="not dw_reception_id" force_save="1"/>
+                        <field name="dw_purchase_id" invisible="not dw_purchase_id" force_save="1"/>
+                        <field name="partner_supplier_id" invisible="not partner_supplier_id" force_save="1"/>
                     </group>
                     <group string="Picking Information">
                         <field name="location_id"/>
                         <field name="picking_lot_quantity"/>
-                    </group>
-                </group>
-                <group>
-                    <group string="Verdict">
-                        <field name="verdict" widget="radio"/>
                     </group>
                 </group>
             </xpath>
@@ -125,6 +89,15 @@
                     </field>
                 </page>
             </xpath>
+            <xpath expr="//button[@name='do_alert'][2]" position="after">
+                <button class="oe_highlight" type="object" name="button_sample_request" string="Sample Request" invisible="quality_state not in ('none')"/>
+            </xpath>
+            <div name="button_box" position="inside">
+                <button class="oe_stat_button" type="object" name="action_view_sample_request" icon="fa-list-alt" invisible="not simple_request_ids">
+                    <field name="simple_request_ids" string="Sample Request" widget="statinfo"/>
+                </button>
+            </div>
+
         </field>
     </record>
 

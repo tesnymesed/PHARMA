@@ -8,6 +8,7 @@
             <field name="arch" type="xml">
                 <field name="in_type_id" position="before">
                     <field name="dw_quality_operation_id"/>
+                    <field name="dw_quality_sample_id"/>
                 </field>
             </field>
         </record>

@@ -201,3 +201,9 @@ class DwConsultationCriteria(models.Model):
                       product_name=product_id.name)
 
                 )
+
+    def unlink(self):
+        for rec in self:
+            if rec.state != 'draft':
+                raise UserError("You can only delete consultations in draft status.")
+        return super(DwConsultationCriteria, self).unlink()

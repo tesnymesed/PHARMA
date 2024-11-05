@@ -9,7 +9,7 @@
             <field name="arch" type="xml">
                 <tree string="Consultation Criteria" expand="1" >
                     <header>
-                        <button name="generate_xlsx_report" string="TCO" type="object" class="oe_highlight"/>
+                        <button name="generate_xlsx_report" string="TCO" type="object" class="oe_highlight" invisible ="1"/>
                     </header>
                     <field name="criteria_id"/>
                     <field name="supplier_id"/>

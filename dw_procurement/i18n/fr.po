@@ -914,7 +914,7 @@ msgstr "Fournisseur"
 #. module: dw_procurement
 #: model:ir.model,name:dw_procurement.model_dw_market
 msgid "Supplier Approval"
-msgstr "Approbation du fournisseur"
+msgstr "Homologation du fournisseur"
 
 #. module: dw_procurement
 #: model:ir.model.fields,field_description:dw_procurement.field_dw_consultation__supplier_domain_ids

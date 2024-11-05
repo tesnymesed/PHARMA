@@ -44,7 +44,7 @@ class DwPaymentRequest(models.Model):
     dw_account_move_id = fields.Many2one('account.move', string='Account move')
 
     amount_in_text = fields.Char(string="Amount in Text",)
-    check_num = fields.Char(string="Check N°")
+    payment_reference = fields.Char(string="payment reference")
     Payment_order = fields.Char(string="Payment order")
     company_id = fields.Many2one(
         'res.company',
@@ -53,7 +53,7 @@ class DwPaymentRequest(models.Model):
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', store=True)
     montant = fields.Monetary(string="Amount", currency_field="currency_id", required=True)
 
-    request_type_id = fields.Many2one('payment.request.type',string='Request Type',required=True)
+    request_type_ids = fields.Many2many('payment.request.type',string='Request Type',required=True)
 
     @api.depends('dw_account_move_id.amount_total')  
     #must be improved

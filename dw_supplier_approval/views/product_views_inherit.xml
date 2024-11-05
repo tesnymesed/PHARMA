@@ -74,8 +74,11 @@
                         </div>
                     </button>
                 </div>
-                <xpath expr="//field[@name='product_tooltip']" position="after">
-                    <field name="need_priority" />
+                <xpath expr="//form/sheet/div[@name='options']/span[2]" position="after">
+                    <span class="d-inline-block">
+                        <field name="need_priority"/>
+                        <label for="need_priority"/>
+                    </span>
                 </xpath>
             </field>
         </record>
@@ -102,12 +105,12 @@
 
 
                 <xpath expr="//field[@name='name']" position="after">
+                    <field name="need_priority" optional="show"/>
+                    <field name="number_supplier2" optional="hide"/>
+                    <field name="has_blacklisted_supplier" optional="hide"/>
+                    <field name="expired_approval" optional="hide"/>
+                    <field name="expired_contract" optional="hide"/>
 
-                     <field name="number_supplier2" optional="hide"/>
-                     <field name="has_blacklisted_supplier" optional="hide"/>
-                     <field name="expired_approval" optional="hide"/>
-                     <field name="expired_contract" optional="hide"/>
-                     <field name="need_priority" optional="show"/>
                 </xpath>
                 <xpath expr="//tree" position="attributes">
                     <attribute name="create">0</attribute>

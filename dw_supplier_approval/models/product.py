@@ -45,6 +45,11 @@ class DwProduct(models.Model):
 
     expired_contract = fields.Boolean('Expired contract', compute="_compute_expired_contract")
     expired_contract2 = fields.Boolean('Expired contract', related="expired_contract", store=True)
+    need_priority = fields.Selection([
+        ('1', '⭐'),
+        ('2', '⭐⭐'),
+        ('3', '⭐⭐⭐'),
+    ], string="Need Priority", default='1')
 
     @api.depends('number_supplier')
     def _compute_number_supplier2(self):

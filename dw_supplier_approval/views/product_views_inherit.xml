@@ -24,7 +24,11 @@
 
                     <filter string="contract expiration &lt; 18 month" name="expired_contract" domain="['|', '|',('need_approval', '=', True), ('categ_id.need_approval', '=', True),
                 ('product_tmpl_id.need_approval', '=', True),('expired_contract2','=',True),('purchase_ok', '=', True)]"/>
-                    <filter string="The product to be approved" name="need_approval" domain="[('need_approval', '=', True)]"/>
+                    <filter string="The product to be approved" name="need_approval"
+                            domain="[('need_approval', '=', True)]"/>
+                    <filter string="Important Need" name="need_priority" domain="[('need_priority', '=', '3')]"/>
+                    <filter string="Average Need" name="need_priority" domain="[('need_priority', '=', '2')]"/>
+                    <filter string="Low Need" name="need_priority" domain="[('need_priority', '=', '1')]"/>
                 </xpath>
 
             </field>
@@ -70,6 +74,9 @@
                         </div>
                     </button>
                 </div>
+                <xpath expr="//field[@name='product_tooltip']" position="after">
+                    <field name="need_priority" />
+                </xpath>
             </field>
         </record>
 
@@ -100,6 +107,7 @@
                      <field name="has_blacklisted_supplier" optional="hide"/>
                      <field name="expired_approval" optional="hide"/>
                      <field name="expired_contract" optional="hide"/>
+                     <field name="need_priority" optional="show"/>
                 </xpath>
                 <xpath expr="//tree" position="attributes">
                     <attribute name="create">0</attribute>

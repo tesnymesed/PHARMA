@@ -76,7 +76,7 @@
                 </div>
                 <xpath expr="//form/sheet/div[@name='options']/span[2]" position="after">
                     <span class="d-inline-block">
-                        <field name="need_priority"/>
+                        <field name="need_priority"  widget="priority"/>
                         <label for="need_priority"/>
                     </span>
                 </xpath>
@@ -105,7 +105,7 @@
 
 
                 <xpath expr="//field[@name='name']" position="after">
-                    <field name="need_priority" optional="show"/>
+                    <field name="need_priority" optional="show"  widget="priority"/>
                     <field name="number_supplier2" optional="hide"/>
                     <field name="has_blacklisted_supplier" optional="hide"/>
                     <field name="expired_approval" optional="hide"/>

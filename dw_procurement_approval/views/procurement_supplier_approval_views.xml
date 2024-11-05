@@ -41,7 +41,7 @@
                             class="btn-primary"
                             invisible="state != 'approval'"
                             type="object"/>
-                    <button name="action_market_assign" string="Assign market"
+                    <button name="action_market_assign" string="link to market"
                             type="object" class="btn-primary" data-hotkey="q"
                             invisible="state in ['prospecting','cancel','qualification','rejected'] "/>
                 </xpath>

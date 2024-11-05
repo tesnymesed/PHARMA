@@ -34,14 +34,14 @@ class DwMrpProductSupplyPlan(models.Model):
     product_supply_plan_id = fields.Many2one('dw.mrp.supply.plan.lines', ondelete='cascade')
 
     supply_plan_id = fields.Many2one('dw.mrp.supply.plan', ondelete='cascade',
-                                     related='product_supply_plan_id.supply_plan_id', store=1)
+                                     related='product_supply_plan_id.supply_plan_id', store=True)
 
     company_id = fields.Many2one('res.company', related="product_supply_plan_id.company_id",
-                                 default=lambda self: self.env.company, store=1)
+                                 default=lambda self: self.env.company, store=True)
 
     product_id = fields.Many2one('product.product', required=True,
                                  related="product_supply_plan_id.product_id",
-                                 store=1,
+                                 store=True,
                                  domain=lambda self: _domain_supply_products())
 
     uom_id = fields.Many2one('uom.uom', related='product_id.product_tmpl_id.uom_id')
@@ -50,7 +50,7 @@ class DwMrpProductSupplyPlan(models.Model):
                                  change_default=True,
                                  tracking=True,
                                  related="product_supply_plan_id.partner_id",
-                                 store=1,
+                                 store=True,
                                  domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
                                  help="You can find a vendor by its Name, TIN, Email or Internal Reference.")
 

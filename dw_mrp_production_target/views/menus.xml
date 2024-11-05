@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!--        &lt;!&ndash; Top menu item &ndash;&gt;-->
+        <!--        <menuitem name="Production Targets"-->
+        <!--            id="menu_dw_mrp_production_targets_root"-->
+        <!--            groups="dw_mrp_production_target_group_user,dw_mrp_production_target_group_manager"-->
+        <!--            web_icon="dw_mrp_production_target,static/description/icon.png"-->
+        <!--            sequence="170"-->
+        <!--        />-->
+
+        <menuitem
+                id="menu_dw_mrp_production_targets"
+                name="Production Targets"
+                parent="dw_production_plan_simulator.menu_dw_production_plan_simulator_root"
+                sequence="40"
+                action="dw_mrp_production_target.dw_mrp_production_targets_action"
+        />
+
+        <!--        <menuitem-->
+        <!--            id="menu_dw_mrp_product_target_id"-->
+        <!--            name="Production's Products Targets"-->
+        <!--            parent="dw_production_plan_simulator.menu_dw_production_plan_simulator_root"-->
+        <!--            sequence="50"-->
+        <!--            action="dw_mrp_production_target.dw_mrp_product_monthly_target_items"-->
+        <!--        />-->
+
+
+    </data>
+</odoo>

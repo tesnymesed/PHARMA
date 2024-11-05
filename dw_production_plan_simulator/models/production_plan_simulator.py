@@ -900,10 +900,17 @@ class DwProductionPlanSimulator(models.Model):
                     replenish_qty_updated = any(existing_forecasts.mapped('replenish_qty_updated'))
                     forecast_values['replenish_qty_updated'] = replenish_qty_updated
                 else:
+
                     forecast_values['forecasted_demand_qty'] = 0.0
                     forecast_values['sold_qty'] = 0.0
-                    forecast_values['sale_objective_qty'] = 0.0
-                    forecast_values['production_objective_qty'] = 0.0
+                    # forecast_values['sale_objective_qty'] = 0.0
+                    # forecast_values['production_objective_qty'] = 0.0
+                    sale_objective_qty, production_objective_qty = self._get_objective_qty(
+                        production_simulation.company_id,
+                        production_simulation.product_id,
+                        date_start)
+                    forecast_values['sale_objective_qty'] = sale_objective_qty
+                    forecast_values['production_objective_qty'] = production_objective_qty
                     # forecast_values['planned_production_qty'] = 0.0+
                     # forecast_values['stock_level'] = 0.0
                     forecast_values['batch_count'] = 0.0
@@ -1951,8 +1958,8 @@ class DwProductPlanSimulation(models.Model):
     replenish_qty_updated = fields.Boolean('Replenish_qty has been manually updated')
     # procurement_launched = fields.Boolean('Procurement has been run for this simulation')
 
-    sale_objective_qty = fields.Float('Sales Objective Qty', default=0.0)
-    production_objective_qty = fields.Float('Production Objective Qty', default=0.0)
+    production_objective_qty = fields.Float('Production Objective Qty', compute='_compute_objective_qty', default=0.0)
+    sale_objective_qty = fields.Float('Sales Objective Qty', compute='_compute_objective_qty', default=0.0)
 
     planned_production_qty = fields.Float('Planned Production Qty', default=0.0,
                                           compute='_compute_planned_production_qty')
@@ -1979,3 +1986,47 @@ class DwProductPlanSimulation(models.Model):
                                                                              record.production_simulation_id.safety_stock_target_qty,
                                                                              record.production_simulation_id.sales_average,
                                                                              record.production_simulation_id.safety_stock_target)
+
+    @api.onchange('date')
+    def _onchange_date(self):
+        if self.date:
+            target = self.env['dw.mrp.product.monthly.target'].search([
+                ('date', '=', self.date),
+                ('product_id', '=', self.production_simulation_id.product_id.id)
+                # Assuming product_id is available in the simulation
+            ], limit=1)
+
+            if target:
+                self.production_objective_qty = target.production_objective_qty
+                self.sale_objective_qty = target.sale_objective_qty
+            else:
+                self.production_objective_qty = 0.0
+                self.sale_objective_qty = 0.0
+
+    @api.depends('date', 'production_simulation_id.product_id')
+    def _compute_objective_qty(self):
+        for record in self:
+            sale_objective_qty, production_objective_qty = self._get_objective_qty(
+                record.production_simulation_id.company_id,
+                record.production_simulation_id.product_id,
+                record.date)
+
+            record.sale_objective_qty, record.production_objective_qty = sale_objective_qty, production_objective_qty
+
+    def _get_objective_qty(self, company_id, product_id, date):
+        target = self.env['dw.mrp.product.monthly.target'].search([
+            ('company_id', '=', company_id.id),
+            ('product_id', '=', product_id.id),
+            ('date', '>=', date.replace(day=1)),
+            ('date', '<=', (date + relativedelta(months=1)).replace(day=1) - datetime.timedelta(days=1)),
+
+        ], limit=1)
+
+        if target:
+            sale_objective_qty = target.sale_objective_qty
+            production_objective_qty = target.production_objective_qty
+        else:
+            sale_objective_qty = 0.0
+            production_objective_qty = 0.0
+
+        return sale_objective_qty, production_objective_qty

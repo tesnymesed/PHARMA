@@ -71,7 +71,7 @@ class DwPaymentRequest(models.Model):
 
     def action_confirm(self):
         today = fields.Date.today()
-        user_id = fields.Date.today()
+        user_id = self.env.user.id
         self.write({
             'state': 'confirm',
             'confirmed_by_id': user_id,

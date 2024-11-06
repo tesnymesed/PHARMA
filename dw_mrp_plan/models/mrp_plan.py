@@ -294,7 +294,7 @@ class ProductMrpPlan(models.Model):
     roadmap_done = fields.Boolean(
         compute="_compute_roadmap_done"
     )
-    company_id = fields.Many2one('res.company', related="product_plan_id.company_id", store=1)
+    company_id = fields.Many2one('res.company', related="product_plan_id.company_id", store=True)
     pdp_validation = fields.Boolean(
         default=False
     )

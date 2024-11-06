@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+dw_mrp_production_target_access_right_user,MRP Production Target,model_dw_mrp_production_target,base.group_user,1,1,1,1
+dw_mrp_product_target_access_right_user,MRP Product Production Target Lines,model_dw_mrp_product_target,base.group_user,1,1,1,1
+dw_mrp_product_monthly_target_access_right_user,MRP Monthly Product Target Plan,model_dw_mrp_product_monthly_target,base.group_user,1,1,1,1

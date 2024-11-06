@@ -54,7 +54,7 @@ class DwMrpSupplyPlanLines(models.Model):
     # )
 
     company_id = fields.Many2one('res.company', related="supply_plan_id.company_id",
-                                 default=lambda self: self.env.company, store=1)
+                                 default=lambda self: self.env.company, store=True)
 
     partner_id = fields.Many2one('res.partner', string='Supplier',
                                  change_default=True,

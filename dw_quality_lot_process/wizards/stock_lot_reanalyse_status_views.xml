@@ -15,9 +15,9 @@
                 <notebook>
                     <page string="Lines">
                         <field name="line_ids" nolabel="1">
-                            <tree  create="0"  edit="1">
+                            <tree>
                                 <field name="location_id" readonly="1"/>
-                                <field name="quantity"/>
+                                <field name="quantity" readonly="1"/>
                                 <field name="uom_id" readonly="1"/>
                                 <field name="company_id" invisible="1"/>
                             </tree>
@@ -25,6 +25,7 @@
                     </page>
                 </notebook>
                 <footer>
+                    <button name="confirm" type="object" string="Confirm" class="btn-primary"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>

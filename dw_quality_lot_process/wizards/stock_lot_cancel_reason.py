@@ -1,4 +1,5 @@
-from odoo import models, fields, api
+from odoo import models, fields, _
+from odoo.exceptions import UserError
 
 class StockLotCancelWizard(models.TransientModel):
     _name = 'stock.lot.cancel.wizard'
@@ -19,10 +20,7 @@ class StockLotCancelWizard(models.TransientModel):
         'stock.location',string = 'Location'
         )
     def _create_history_record(self,with_reason=False):
-        '''This function creates record in stock.lot.history
-        the parameter with_reason is set to false in case the user does not provide a reason
-        if it's set to true a new record is created with reason and note if exit'''
-
+      
         history_vals = {
             'lot_id': self.lot_id.id,
             'user_id': self.env.user.id,
@@ -37,7 +35,7 @@ class StockLotCancelWizard(models.TransientModel):
     def action_cancel_reason_lot(self):
         if self.check_quality_id :
             if self.fail_location_id :
-                self.check_quality_id.picking_id.location_dest_id = self.fail_location_id.id 
+                self.check_quality_id.picking_id.location_dest_id = self.fail_location_id.id
             self.check_quality_id.do_fail()
         if self.lot_id and self.lot_id.lot_quarantine_status !='analyzed' :
             self.lot_id.action_set_analyzed()    
@@ -46,6 +44,4 @@ class StockLotCancelWizard(models.TransientModel):
         message = f"Lot cancelled. Reason: {self.reason_id.name if self.reason_id else 'No reason provided'}"
         self.lot_id.message_post(body=message)
 
-        return True
-    def action_cancel(self):
         return True

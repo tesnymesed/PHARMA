@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
+<odoo noupdate="1">
     <record id="check_quality_form" model="ir.ui.view">
         <field name="name">quality.check.form</field>
         <field name="model">quality.check</field>
@@ -17,8 +17,16 @@
             <xpath expr="//header/button[@name='do_fail'][2]" position="attributes">
                 <attribute name="invisible">quality_state != 'pass' or check_lot_compliance == True</attribute>
             </xpath>
+            <xpath expr="//header/button[@name='do_pass'][1]" position="attributes">
+                <attribute name="invisible">quality_state != 'none' or check_lot_compliance == True</attribute>
+            </xpath>
+
+            <xpath expr="//header/button[@name='do_pass'][2]" position="attributes">
+                <attribute name="invisible">quality_state != 'fail' or check_lot_compliance == True</attribute>
+            </xpath>
             <xpath expr="//header" position="inside">
                 <button name="do_fail_process" type="object" class="btn-primary" invisible="check_lot_compliance == False or quality_state =='fail' " string="Fail" data-hotkey="q" groups="dw_quality_lot_process.check_compliance_lot_configuration_group"/>
+                <button name="do_pass_process" type="object" class="btn-primary" invisible="check_lot_compliance == False or quality_state =='passed' " string="Pass" data-hotkey="q" groups="dw_quality_lot_process.check_compliance_lot_configuration_group"/>
             </xpath>
         </field>
     </record>

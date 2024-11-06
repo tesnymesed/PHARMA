@@ -170,15 +170,6 @@ msgstr ""
 msgid "In progress"
 msgstr "En cours"
 
-#. module: dw_quality_lot_process
-#: model:ir.model.fields,field_description:dw_quality_lot_process.field_quality_check__initial_qty
-msgid "Initial Quanity"
-msgstr "Quantité Initiale"
-
-#. module: dw_quality_lot_process
-#: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot__initial_qty
-msgid "Initial Quantity"
-msgstr "Quantité Initiale"
 
 #. module: dw_quality_lot_process
 #: model:ir.model,name:dw_quality_lot_process.model_stock_location

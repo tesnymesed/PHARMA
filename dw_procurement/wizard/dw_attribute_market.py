@@ -38,6 +38,7 @@ class DwAttributeMarket(models.TransientModel):
                                         lambda line: line.criteria_id.id == self.env.ref(
                                             "dw_procurement.procurement_dw_criteria_consultation_price_unit_ht").id).amount or 0,
 
-                                    })]
+                                    })],
+                        'default_type_id': self.env.ref('dw_procurement.purchase_requisition_type_assignment_contract').id,
                         }
         }

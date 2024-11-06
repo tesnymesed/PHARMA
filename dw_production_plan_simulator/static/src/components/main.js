@@ -871,21 +871,44 @@ class ProductionPlanSimulatorComponent extends Component {
     this.model
       ._createMPSEntries(this.state.currentCompanyId, this.simulationLines)
       .then((res) => {
-        var createMPSentriesNotif = this.notificationService.add(
-          _t("You will be redirected shortly..."),
-          {
-            title: _t(
-              this.state.currentCompanyName +
-                "'s site Master production schedule (MRP) update successful"
-            ),
-            type: "success",
-          }
+        console.log(
+          "🚀 ~ ProductionPlanSimulatorComponent ~ .then ~ res:",
+          res
         );
-        setTimeout(createMPSentriesNotif, 3000);
-        // setTimeout(function () {
-        //   location.reload(true);
-        // }, 3000);
-        this.model._openMPS(res, this.state);
+        if (res && res.length) {
+          console.log(
+            "🚀 ~ FOUND ProductionPlanSimulatorComponent ~ .then ~ res:",
+            res
+          );
+          var createMPSentriesNotif = this.notificationService.add(
+            _t("You will be redirected shortly..."),
+            {
+              title: _t(
+                this.state.currentCompanyName +
+                  "'s site Master production schedule (MRP) update successful"
+              ),
+              type: "success",
+            }
+          );
+          setTimeout(createMPSentriesNotif, 3000);
+          // setTimeout(function () {
+          //   location.reload(true);
+          // }, 3000);
+          this.model._openMPS(res, this.state);
+        } else {
+          var createMPSentriesNotif = this.notificationService.add(
+            _t(
+              this.state.currentCompanyName +
+                "'s site Master production schedule (MRP) creation couldn't be created"
+            ),
+            {
+              title: _t("MRP Plan Creation unsuccessful"),
+              type: "danger",
+            }
+          );
+          setTimeout(createMPSentriesNotif, 3000);
+        }
+
         // this.load([["company_id", "=", state.currentCompanyId]]);
         // return this.data;
         //                if (productionSimulationIds.length === 1) {

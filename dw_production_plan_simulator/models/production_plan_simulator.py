@@ -647,9 +647,16 @@ class DwProductionPlanSimulator(models.Model):
 
             # mps = self.env['mrp.production.schedule'].with_context(dw_pharma_simulation=True).create([vals])
             mps = self.env['mrp.production.schedule'].create([vals])
+
+            # mps.write({
+            #     'forecast_target_qty': prod_sim.get('safety_stock_target_qty'),
+            #     'min_to_replenish_qty': pps.lot_size,
+            #     'max_to_replenish_qty': 1000 * pps.lot_size,
+            # })
+
             mps.write({
-                'forecast_target_qty': prod_sim.get('safety_stock_target_qty'),
-                'min_to_replenish_qty': pps.lot_size,
+                'forecast_target_qty': 0,
+                'min_to_replenish_qty': 0,
                 'max_to_replenish_qty': 1000 * pps.lot_size,
             })
 
@@ -662,8 +669,17 @@ class DwProductionPlanSimulator(models.Model):
                 _qty = float_round(prdct_sim_i.get('suggested_production_plan_qty'),
                                    precision_rounding=mps.product_uom_id.rounding)
 
+                stock_coverage = round(prdct_sim_i.get('updated_stock_coverage', 0.0), 2)
+
+                # forecast_vals = {
+                #     'forecast_qty': _qty
+                # }
+
                 forecast_vals = {
-                    'forecast_qty': _qty
+                    'forecast_qty': 0,
+                    'replenish_qty': _qty,
+                    'replenish_qty_updated': True,
+                    'dw_stock_coverage': stock_coverage
                 }
 
                 # Production plan Changes

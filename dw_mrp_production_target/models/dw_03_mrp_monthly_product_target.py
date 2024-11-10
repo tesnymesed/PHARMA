@@ -1,7 +1,5 @@
 from odoo import models, fields, api, _
 
-from .utils import _domain_pf_products
-
 
 class DwMrpProductMonthlyTarget(models.Model):
     _name = 'dw.mrp.product.monthly.target'
@@ -29,7 +27,13 @@ class DwMrpProductMonthlyTarget(models.Model):
     product_id = fields.Many2one('product.product', required=True,
                                  related="product_target_id.product_id",
                                  store=True,
-                                 domain=lambda self: _domain_pf_products()
+                                 domain=[('product_tmpl_id.categ_id.is_final_product', '=', True),
+                                         '|',
+                                         ('product_tmpl_id.company_id', '=', company_id),
+                                         ('product_tmpl_id.company_id', '=', False)
+                                         ],
+                                 # domain=lambda self: _domain_pf_products()
+                                 # domain="[('product_tmpl_id.categ_id.is_final_product', '=', True),('product_tmpl_id.company_id', '=', company_id)]"
                                  )
 
     uom_id = fields.Many2one('uom.uom', related='product_id.product_tmpl_id.uom_id')

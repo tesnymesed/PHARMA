@@ -257,13 +257,14 @@ class DwProductionPlanSimulator(models.Model):
         ])
 
         decision_action_ids = self.env['dw.mrp.alert.decision'].get_decision_action_items()
-
+        simulation_version_id = production_simulations.mapped('simulation_version_id')
         return {
             'dates': self.env.company._date_range_to_str(start_date_range=start_date,
                                                          end_date_range=end_date),
             # 'production_simulation_ids': proxy.get('production_simulation_ids'),
             'production_simulation_ids': production_simulations_states,
             'workcenter_capacities': workcenter_capacities,
+            'simulation_version_id': simulation_version_id.id,
             'decision_action_ids': decision_action_ids,
             'company_id': self.env.company.id,
             'groups': company_groups,
@@ -651,13 +652,13 @@ class DwProductionPlanSimulator(models.Model):
             # mps.write({
             #     'forecast_target_qty': prod_sim.get('safety_stock_target_qty'),
             #     'min_to_replenish_qty': pps.lot_size,
-            #     'max_to_replenish_qty': 1000 * pps.lot_size,
+            #     'max_to_replenish_qty': 999999999999999,
             # })
 
             mps.write({
                 'forecast_target_qty': 0,
                 'min_to_replenish_qty': 0,
-                'max_to_replenish_qty': 1000 * pps.lot_size,
+                'max_to_replenish_qty': 999999999999999,
             })
 
             product_plan_sim_ids = prod_sim.get('product_plan_sim_ids')

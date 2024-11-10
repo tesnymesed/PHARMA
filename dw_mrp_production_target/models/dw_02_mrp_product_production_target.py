@@ -28,14 +28,28 @@ class DwMrpProductTarget(models.Model):
     company_id = fields.Many2one('res.company', related="target_id.company_id",
                                  default=lambda self: self.env.company, store=True)
 
-    product_id = fields.Many2one('product.product', required=True, domain=[
-        # ('product_tmpl_id.type', '=', 'product'),
-        # ('product_tmpl_id.categ_id.is_final_product', '=', True),
-        # ('product_tmpl_id.bom_ids', '!=', False),
-        '|',
-        ('product_tmpl_id.company_id', '=', company_id),
-        ('product_tmpl_id.company_id', '=', False)
-    ])
+    product_id = fields.Many2one('product.product', required=True,
+                                 #                              domain=[
+                                 #     # ('product_tmpl_id.type', '=', 'product'),
+                                 #     # ('product_tmpl_id.categ_id.is_final_product', '=', True),
+                                 #     # ('product_tmpl_id.bom_ids', '!=', False),
+                                 #     '|',
+                                 #     ('product_tmpl_id.company_id', '=', company_id),
+                                 #     ('product_tmpl_id.company_id', '=', False)
+                                 # ],
+                                 domain=[('product_tmpl_id.categ_id.is_final_product', '=', True),
+                                  '|',
+                                      ('product_tmpl_id.company_id', '=', company_id),
+                                      ('product_tmpl_id.company_id', '=', False)
+                                  ],
+                                 # domain="[('product_tmpl_id.categ_id.is_final_product', '=', True),('product_tmpl_id.company_id', '=', company_id)]"
+
+    # domain=[
+    #                                  ('product_tmpl_id.type', '=', 'product'),
+    #                                  ('product_tmpl_id.categ_id.is_final_product', '=', True),
+    #                                  ('product_tmpl_id.company_id', '=', company_id),
+    #                              ]
+    )
     uom_id = fields.Many2one('uom.uom', related='product_id.product_tmpl_id.uom_id')
 
     company_id = fields.Many2one('res.company', related="target_id.company_id",

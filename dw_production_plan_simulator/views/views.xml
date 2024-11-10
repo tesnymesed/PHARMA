@@ -90,11 +90,11 @@
             </p>
         </field>
     </record>
-<!--    <field name="view_id" ref="mrp.mrp_workcenter_tree_view"/>-->
-<!--        <field name="view_ids" eval="[(5, 0, 0),-->
-<!--                (0, 0, {'view_mode': 'list', 'view_id': ref('mrp.mrp_workcenter_tree_view')}),-->
-<!--                (0, 0, {'view_mode': 'kanban', 'view_id': ref('mrp.mrp_workcenter_view_kanban')}),-->
-<!--                (0, 0, {'view_mode': 'form', 'view_id': ref('mrp.mrp_workcenter_view')})]"/>-->
-<!--        <field name="search_view_id" ref="mrp.view_mrp_workcenter_search"/>-->
+    <!--    <field name="view_id" ref="mrp.mrp_workcenter_tree_view"/>-->
+    <!--        <field name="view_ids" eval="[(5, 0, 0),-->
+    <!--                (0, 0, {'view_mode': 'list', 'view_id': ref('mrp.mrp_workcenter_tree_view')}),-->
+    <!--                (0, 0, {'view_mode': 'kanban', 'view_id': ref('mrp.mrp_workcenter_view_kanban')}),-->
+    <!--                (0, 0, {'view_mode': 'form', 'view_id': ref('mrp.mrp_workcenter_view')})]"/>-->
+    <!--        <field name="search_view_id" ref="mrp.view_mrp_workcenter_search"/>-->
 
 </odoo>

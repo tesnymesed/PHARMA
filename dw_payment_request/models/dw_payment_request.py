@@ -6,8 +6,9 @@ import datetime
 
 class DwPaymentRequest(models.Model):
     _name = "dw.payment.request"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    name = fields.Char(string="Reference", required=True, copy=False, readonly=True, default=lambda self: _('New') )
+    name = fields.Char(string="Reference", required=True, copy=False, readonly=True, default=lambda self: _('New'))
     state = fields.Selection(
         selection=[
             ("draft", "Draft"),
@@ -20,7 +21,7 @@ class DwPaymentRequest(models.Model):
         store=True,
         group_expand='_expand_states'
     )
-    user_id = fields.Many2one('res.users', 'Agent', default=lambda self: self.env.user , required="true")
+    user_id = fields.Many2one('res.users', 'Agent', default=lambda self: self.env.user, required="true")
     confirmed_by_id = fields.Many2one('res.users', 'Confirmed by')
     request_date = fields.Date(
         string="Request date",
@@ -33,7 +34,7 @@ class DwPaymentRequest(models.Model):
     validation_date = fields.Date(
         string="Validation date ",
     )
-    payment_request_type = fields.Many2one('account.payment.method.line', string="payment method",required=True)
+    payment_request_type = fields.Many2one('account.payment.method.line', string="payment method", required=True)
     date = fields.Date("Date")
     reject_motif_id = fields.Many2one('dw.reject.reason', string='Reject reason')
     journal_id = fields.Many2one(
@@ -43,7 +44,7 @@ class DwPaymentRequest(models.Model):
     )
     dw_account_move_id = fields.Many2one('account.move', string='Account move')
 
-    amount_in_text = fields.Char(string="Amount in Text",)
+    amount_in_text = fields.Char(string="Amount in Text", )
     payment_reference = fields.Char(string="payment reference")
     Payment_order = fields.Char(string="Payment order")
     company_id = fields.Many2one(
@@ -53,10 +54,10 @@ class DwPaymentRequest(models.Model):
     currency_id = fields.Many2one('res.currency', related='company_id.currency_id', store=True)
     montant = fields.Monetary(string="Amount", currency_field="currency_id", required=True)
 
-    request_type_ids = fields.Many2many('payment.request.type',string='Request Type',required=True)
+    request_type_ids = fields.Many2many('payment.request.type', string='Request Type', required=True)
 
-    @api.depends('dw_account_move_id.amount_total')  
-    #must be improved
+    @api.depends('dw_account_move_id.amount_total')
+    # must be improved
     def _compute_amount_in_text(self):
         for rec in self:
             currency = self.env['res.currency'].search([('name', '=', rec.dw_account_move_id.currency_id.name)],
@@ -69,13 +70,13 @@ class DwPaymentRequest(models.Model):
             rec.amount_in_text = currency.with_context(ctx).amount_to_text(amount_net)
 
     def action_confirm(self):
-            today=fields.Date.today()
-            user_id=fields.Date.today()
-            self.write({
-                'state': 'confirm',
-                'confirmed_by_id': user_id,
-                'validation_date': today,
-            })
+        today = fields.Date.today()
+        user_id = self.env.user.id
+        self.write({
+            'state': 'confirm',
+            'confirmed_by_id': user_id,
+            'validation_date': today,
+        })
 
     def action_reject(self):
 
@@ -105,4 +106,43 @@ class DwPaymentRequest(models.Model):
         for vals in vals_list:
             if 'name' not in vals or vals['name'] == _('New'):
                 vals['name'] = self.env['ir.sequence'].next_by_code('dw.payment.request') or _('New')
-        return super().create(vals_list)
+                central_folder = self.env['documents.folder'].search(
+                    [('name', '=', 'demandes de paiement')], limit=1)
+
+
+                # Si le dossier central n'existe pas, le créer
+                if not central_folder:
+                    central_folder = self.env['documents.folder'].create({
+                        'name': 'demandes de paiement',
+                        'parent_folder_id': False,  # Vous pouvez spécifier un parent si nécessaire
+                    })
+
+                # Créer les demandes de paiement et leur associer le dossier central
+                records = super().create(vals_list)
+                for record in records:
+                    record.folder_id = central_folder.id
+                return records
+
+    folder_id = fields.Many2one(
+        'documents.folder',
+        string="Document Folder",
+        ondelete='set null',
+        help="Folder to store documents related to this payment request."
+    )
+
+    def action_view_documents(self):
+        """Ouvre le dossier de documents lié à cette demande de paiement."""
+
+        central_folder = self.env['documents.folder'].search([('name', '=', 'demandes de paiement')],limit=1)
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Documents',
+            'res_model': 'documents.document',
+            'view_mode': 'kanban,tree,form',
+            'domain': [('folder_id', '=', central_folder.id)],
+            'context': {
+                'default_folder_id': central_folder.id,
+                'default_res_model': self._name,
+                'default_res_id': self.id,
+            },
+        }

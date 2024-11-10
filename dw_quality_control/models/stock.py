@@ -22,7 +22,7 @@ class StockPicking(models.Model):
     def button_validate(self):
         for picking in self:
             res = super(StockPicking, self).button_validate()
-            if picking.picking_type_id.code == 'incoming':
+            if picking.picking_type_id.code in ['incoming','internal']:
                 move_line_ids = picking.move_line_ids.filtered(
                     lambda m: m.location_dest_id.dw_is_quarantine and m.product_id.auto_qc_gen)
                 if not move_line_ids:

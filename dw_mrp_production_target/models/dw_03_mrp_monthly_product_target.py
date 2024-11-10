@@ -18,8 +18,8 @@ class DwMrpProductMonthlyTarget(models.Model):
         ('cancelled', 'Cancelled')
     ], string="Status", default='draft', readonly=True)
 
-    production_objective_qty = fields.Float(string="Production Objective Qty", default=0.0)
-    sales_objective_qty = fields.Float(string="Sales Objective Qty", default=0.0)
+    production_objective_qty = fields.Float(string="Production Objective Qty", default=19000.0)
+    sales_objective_qty = fields.Float(string="Sales Objective Qty", default=19000.0)
 
     company_id = fields.Many2one('res.company', related="product_target_id.company_id",
                                  default=lambda self: self.env.company, store=True)
@@ -27,11 +27,11 @@ class DwMrpProductMonthlyTarget(models.Model):
     product_id = fields.Many2one('product.product', required=True,
                                  related="product_target_id.product_id",
                                  store=True,
-                                 domain=[('product_tmpl_id.categ_id.is_final_product', '=', True),
-                                         '|',
-                                         ('product_tmpl_id.company_id', '=', company_id),
-                                         ('product_tmpl_id.company_id', '=', False)
-                                         ],
+                                 # domain=[('product_tmpl_id.categ_id.is_final_product', '=', True),
+                                 #         '|',
+                                 #         ('product_tmpl_id.company_id', '=', company_id),
+                                 #         ('product_tmpl_id.company_id', '=', False)
+                                 #         ],
                                  # domain=lambda self: _domain_pf_products()
                                  # domain="[('product_tmpl_id.categ_id.is_final_product', '=', True),('product_tmpl_id.company_id', '=', company_id)]"
                                  )
@@ -45,24 +45,24 @@ class DwMrpProductMonthlyTarget(models.Model):
                                 related='product_target_id.target_id', store=True)
 
     def action_approve(self):
-        for record in self:
-            record.write({
-                'state': 'approved',
-            })
+        # for record in self:
+        self.write({
+            'state': 'approved',
+        })
 
     def action_reject(self):
-        for record in self:
-            record.write({
+        # for record in self:
+        self.write({
                 'state': 'rejected',
             })
 
     def action_done(self):
-        for record in self:
-            record.write({'state': 'done'})
+        # for record in self:
+        self.write({'state': 'done'})
 
     def action_cancel(self):
-        for record in self:
-            record.write({'state': 'cancelled'})
+        # for record in self:
+        self.write({'state': 'cancelled'})
 
     @api.model
     def create(self, vals):

@@ -505,7 +505,7 @@
       <!--        </t>-->
       <!--      </tr>-->
 
-      <tr t-ref="forecastRow" name="demand_forecast" t-attf-class="{{ '' }}">
+      <!-- <tr t-ref="forecastRow" name="demand_forecast" t-attf-class="{{ '' }}">
         <th />
         <th scope="row">
           -
@@ -678,7 +678,7 @@
             />
           </th>
         </t>
-      </tr>
+      </tr> -->
       <!-- <ProductionPlanBatchesNotesEditor
           data="this.formVals"
         /> -->

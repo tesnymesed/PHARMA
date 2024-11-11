@@ -73,13 +73,13 @@
                             </group>
                         </group>
                         <notebook>
-                            <page name="consultation_criteria" string="Consultation Criteria">
-                                <field name="criteria_line_ids" mode="tree" nolabel="1" invisible="not market_id">
+                            <page name="consultation_criteria" string="Supplier Offer">
+                                <field name="criteria_line_ids" mode="tree" nolabel="1" invisible="not market_id" >
                                     <tree string="Criteria Consultation" multi_edit="1" duplicate="false" create="0"
                                           editable="bottom">
                                         <field name="criteria_type" column_invisible="1"/>
                                         <field name="period_type" column_invisible="1"/>
-                                        <field name="criteria_id" readonly="1"/>
+                                        <field name="criteria_id" readonly="1" domain="[('type', '=', 'supplier_offer')]"/>
                                         <field name="amount" readonly="criteria_type  not in ['amount', 'monetary']"
                                                required="criteria_type  in ['amount', 'monetary']"/>
                                         <field name="percentage" readonly="criteria_type  != 'percentage'"
@@ -95,6 +95,7 @@
                                                required="criteria_type  == 'monetary'"/>
                                         <field name="incoterm_id" readonly="criteria_type  != 'monetary'"
                                                required="criteria_type  == 'monetary'"/>
+                                        <field name="type" column_invisible="1"/>
 
                                         <!--                                        <field name="number_months"-->
                                         <!--                                               readonly="criteria_type  != 'period' or period_type != 'months' "-->
@@ -104,12 +105,12 @@
                                         <!--                                               required="criteria_type  == 'period' and period_type == 'years' "/>-->
                                     </tree>
                                 </field>
-                                <field name="criteria_line_ids" mode="tree" nolabel="1" invisible="market_id">
+                                <field name="criteria_line_ids" mode="tree" nolabel="1" invisible="market_id" >
                                     <tree string="Criteria Consultation" multi_edit="1" duplicate="false" create="1"
                                           editable="bottom">
                                         <field name="criteria_type" column_invisible="1"/>
                                         <field name="period_type" column_invisible="1"/>
-                                        <field name="criteria_id"/>
+                                        <field name="criteria_id" domain="[('type', '=', 'supplier_offer')]"/>
                                         <field name="amount" readonly="criteria_type  not in ['amount', 'monetary']"
                                                required="criteria_type in ['amount', 'monetary']"/>
                                         <field name="percentage" readonly="criteria_type  != 'percentage'"
@@ -123,6 +124,69 @@
                                                required="criteria_type  == 'monetary'"/>
                                         <field name="incoterm_id" readonly="criteria_type  != 'monetary'"
                                                required="criteria_type  == 'monetary'"/>
+                                        <field name="type" column_invisible="1"/>
+
+                                        <!--                                        <field name="number_months"-->
+                                        <!--                                               readonly="criteria_type  != 'period' or period_type != 'months' "-->
+                                        <!--                                               required="criteria_type  == 'period' and period_type == 'months' "/>-->
+                                        <!--                                        <field name="number_years"-->
+                                        <!--                                               readonly="criteria_type  != 'period' or period_type != 'years' "-->
+                                        <!--                                               required="criteria_type  == 'period' and period_type == 'years' "/>-->
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name="consultation_criteria" string="TCO Criteria ">
+                                <field name="criteria_line_ids" mode="tree" nolabel="1" invisible="not market_id" >
+                                    <tree string="Criteria Consultation" multi_edit="1" duplicate="false" create="0"
+                                          editable="bottom">
+                                        <field name="criteria_type" column_invisible="1"/>
+                                        <field name="period_type" column_invisible="1"/>
+                                        <field name="criteria_id" readonly="1" domain="[('type', '=', 'criteria_tco')]"/>
+                                        <field name="amount" readonly="criteria_type  not in ['amount', 'monetary']"
+                                               required="criteria_type  in ['amount', 'monetary']"/>
+                                        <field name="percentage" readonly="criteria_type  != 'percentage'"
+                                               required="criteria_type  == 'percentage'"/>
+                                        <field name="number_days"
+                                               readonly="criteria_type  != 'period' or period_type != 'days' "
+                                               required="criteria_type  == 'period' and period_type == 'days' "/>
+                                        <field name="completed" readonly="criteria_type  != 'boolean'"
+                                               required="criteria_type  == 'boolean'"/>
+                                        <field name="observation" readonly="criteria_type  != 'text'"
+                                               required="criteria_type  == 'text'"/>
+                                        <field name="currency_id" readonly="criteria_type  != 'monetary'"
+                                               required="criteria_type  == 'monetary'"/>
+                                        <field name="incoterm_id" readonly="criteria_type  != 'monetary'"
+                                               required="criteria_type  == 'monetary'"/>
+                                        <field name="type" column_invisible="1"/>
+
+                                        <!--                                        <field name="number_months"-->
+                                        <!--                                               readonly="criteria_type  != 'period' or period_type != 'months' "-->
+                                        <!--                                               required="criteria_type  == 'period' and period_type == 'months' "/>-->
+                                        <!--                                        <field name="number_years"-->
+                                        <!--                                               readonly="criteria_type  != 'period' or period_type != 'years' "-->
+                                        <!--                                               required="criteria_type  == 'period' and period_type == 'years' "/>-->
+                                    </tree>
+                                </field>
+                                <field name="criteria_line_ids" mode="tree" nolabel="1" invisible="market_id" >
+                                    <tree string="Criteria Consultation" multi_edit="1" duplicate="false" create="1"
+                                          editable="bottom">
+                                        <field name="criteria_type" column_invisible="1"/>
+                                        <field name="period_type" column_invisible="1"/>
+                                        <field name="criteria_id" domain="[('type', '=', 'criteria_tco')]"/>
+                                        <field name="amount" readonly="criteria_type  not in ['amount', 'monetary']"
+                                               required="criteria_type in ['amount', 'monetary']"/>
+                                        <field name="percentage" readonly="criteria_type  != 'percentage'"
+                                               required="criteria_type  == 'percentage'"/>
+                                        <field name="number_days"
+                                               readonly="criteria_type  != 'period' or period_type != 'days' "
+                                               required="criteria_type  == 'period' and period_type == 'days' "/>
+                                        <field name="completed" readonly="criteria_type  != 'boolean'"
+                                               required="criteria_type  == 'boolean'"/>
+                                        <field name="currency_id" readonly="criteria_type  != 'monetary'"
+                                               required="criteria_type  == 'monetary'"/>
+                                        <field name="incoterm_id" readonly="criteria_type  != 'monetary'"
+                                               required="criteria_type  == 'monetary'"/>
+                                        <field name="type" column_invisible="1"/>
 
                                         <!--                                        <field name="number_months"-->
                                         <!--                                               readonly="criteria_type  != 'period' or period_type != 'months' "-->

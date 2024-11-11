@@ -13,13 +13,13 @@ class DwMrpProductTarget(models.Model):
         ('approved', 'Approved'),
         ('done', 'Done'),
         ('cancelled', 'Cancelled')
-    ], string='Status', default='draft', readonly=True)
+    ], string='Status', default=lambda self: self._compute_default_state(), readonly=True, store=True, )
 
-    production_objective_qty = fields.Float(string="Production Objective Qty", default=0.0,
+    production_objective_qty = fields.Float(string="Production Objective Qty", default=19000.0,
                                             compute=lambda self: self._compute_product_monthly_target_total_quantity(
                                                 'production_objective_qty')
                                             )
-    sales_objective_qty = fields.Float(string="Sales Objective Qty", default=0.0,
+    sales_objective_qty = fields.Float(string="Sales Objective Qty", default=19000.0,
                                        compute=lambda self: self._compute_product_monthly_target_total_quantity(
                                            'sales_objective_qty'))
 
@@ -28,20 +28,38 @@ class DwMrpProductTarget(models.Model):
     company_id = fields.Many2one('res.company', related="target_id.company_id",
                                  default=lambda self: self.env.company, store=True)
 
-    product_id = fields.Many2one('product.product', required=True, domain=[
-        # ('product_tmpl_id.type', '=', 'product'),
-        # ('product_tmpl_id.categ_id.is_final_product', '=', True),
-        # ('product_tmpl_id.bom_ids', '!=', False),
-        '|',
-        ('product_tmpl_id.company_id', '=', company_id),
-        ('product_tmpl_id.company_id', '=', False)
-    ])
+    product_id = fields.Many2one('product.product', required=True,
+                                 #                              domain=[
+                                 #     # ('product_tmpl_id.type', '=', 'product'),
+                                 #     # ('product_tmpl_id.categ_id.is_final_product', '=', True),
+                                 #     # ('product_tmpl_id.bom_ids', '!=', False),
+                                 #     '|',
+                                 #     ('product_tmpl_id.company_id', '=', company_id),
+                                 #     ('product_tmpl_id.company_id', '=', False)
+                                 # ],
+                                 # domain=[('product_tmpl_id.categ_id.is_final_product', '=', True),
+                                 #  '|',
+                                 #      ('product_tmpl_id.company_id', '=', company_id),
+                                 #      ('product_tmpl_id.company_id', '=', False)
+                                 #  ],
+                                 # domain="[('product_tmpl_id.categ_id.is_final_product', '=', True),('product_tmpl_id.company_id', '=', company_id)]"
+
+    # domain=[
+    #                                  ('product_tmpl_id.type', '=', 'product'),
+    #                                  ('product_tmpl_id.categ_id.is_final_product', '=', True),
+    #                                  ('product_tmpl_id.company_id', '=', company_id),
+    #                              ]
+    )
     uom_id = fields.Many2one('uom.uom', related='product_id.product_tmpl_id.uom_id')
 
     company_id = fields.Many2one('res.company', related="target_id.company_id",
                                  default=lambda self: self.env.company, store=True)
 
     product_monthly_target_ids = fields.One2many('dw.mrp.product.monthly.target', 'product_target_id')
+
+    def _compute_default_state(self):
+        # self.state = self.target_id.state
+        return 'draft'
 
     def get_product_monthly_target_lines(self):
         datas = []
@@ -93,12 +111,18 @@ class DwMrpProductTarget(models.Model):
 
     def action_approve(self):
         self.state = 'approved'
+        for line in self.product_monthly_target_ids:
+            line.action_approve()
 
     def action_done(self):
         self.state = 'done'
+        for line in self.product_monthly_target_ids:
+            line.action_done()
 
     def action_cancel(self):
         self.state = 'cancelled'
+        for line in self.product_monthly_target_ids:
+            line.action_cancel()
 
     @api.model
     def create(self, vals):

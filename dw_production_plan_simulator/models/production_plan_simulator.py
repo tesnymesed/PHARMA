@@ -257,13 +257,14 @@ class DwProductionPlanSimulator(models.Model):
         ])
 
         decision_action_ids = self.env['dw.mrp.alert.decision'].get_decision_action_items()
-
+        simulation_version_id = production_simulations.mapped('simulation_version_id')
         return {
             'dates': self.env.company._date_range_to_str(start_date_range=start_date,
                                                          end_date_range=end_date),
             # 'production_simulation_ids': proxy.get('production_simulation_ids'),
             'production_simulation_ids': production_simulations_states,
             'workcenter_capacities': workcenter_capacities,
+            'simulation_version_id': simulation_version_id.id,
             'decision_action_ids': decision_action_ids,
             'company_id': self.env.company.id,
             'groups': company_groups,
@@ -651,7 +652,7 @@ class DwProductionPlanSimulator(models.Model):
             # mps.write({
             #     'forecast_target_qty': prod_sim.get('safety_stock_target_qty'),
             #     'min_to_replenish_qty': pps.lot_size,
-            #     'max_to_replenish_qty': 1000 * pps.lot_size,
+            #     'max_to_replenish_qty': 999999999999999,
             # })
 
             mps.write({
@@ -1974,8 +1975,10 @@ class DwProductPlanSimulation(models.Model):
     replenish_qty_updated = fields.Boolean('Replenish_qty has been manually updated')
     # procurement_launched = fields.Boolean('Procurement has been run for this simulation')
 
-    production_objective_qty = fields.Float('Production Objective Qty', compute='_compute_objective_qty', default=0.0)
-    sale_objective_qty = fields.Float('Sales Objective Qty', compute='_compute_objective_qty', default=0.0)
+    production_objective_qty = fields.Float('Production Objective Qty', compute='_compute_objective_qty', default=0.0,
+                                            readonly=False)
+    sale_objective_qty = fields.Float('Sales Objective Qty', compute='_compute_objective_qty', default=0.0,
+                                      readonly=False)
 
     planned_production_qty = fields.Float('Planned Production Qty', default=0.0,
                                           compute='_compute_planned_production_qty')
@@ -2004,6 +2007,7 @@ class DwProductPlanSimulation(models.Model):
                                                                              record.production_simulation_id.safety_stock_target)
 
     @api.onchange('date')
+    @api.depends('date')
     def _onchange_date(self):
         if self.date:
             target = self.env['dw.mrp.product.monthly.target'].search([
@@ -2027,10 +2031,16 @@ class DwProductPlanSimulation(models.Model):
                 record.production_simulation_id.product_id,
                 record.date)
 
-            record.sale_objective_qty, record.production_objective_qty = sale_objective_qty, production_objective_qty
+            # record.write({
+            #     'sale_objective_qty': sale_objective_qty,
+            #     'production_objective_qty': production_objective_qty
+            # })
+            record.sale_objective_qty = sale_objective_qty
+            record.production_objective_qty = production_objective_qty
 
     def _get_objective_qty(self, company_id, product_id, date):
         target = self.env['dw.mrp.product.monthly.target'].search([
+            ('target_id', '=', self.production_simulation_id.simulation_version_id.target_id.id),
             ('company_id', '=', company_id.id),
             ('product_id', '=', product_id.id),
             ('date', '>=', date.replace(day=1)),
@@ -2039,7 +2049,7 @@ class DwProductPlanSimulation(models.Model):
         ], limit=1)
 
         if target:
-            sale_objective_qty = target.sale_objective_qty
+            sale_objective_qty = target.sales_objective_qty
             production_objective_qty = target.production_objective_qty
         else:
             sale_objective_qty = 0.0

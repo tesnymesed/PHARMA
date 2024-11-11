@@ -206,8 +206,7 @@ export default class ProductionPlanSimulatorLine extends Component {
         ._saveSalesObjectiveQty(productionSimulationId, dateIndex, saleObjQty)
         .then(
           () => {
-            const inputSelector =
-              'input[data-date_index="' + (dateIndex + 1) + '"]';
+            const inputSelector = this._formatInputElSelector(dateIndex + 1);
             const nextInput = this.salesObjRow.el.querySelector(inputSelector);
             if (nextInput) {
               nextInput.select();
@@ -242,8 +241,7 @@ export default class ProductionPlanSimulatorLine extends Component {
         )
         .then(
           () => {
-            const inputSelector =
-              'input[data-date_index="' + (dateIndex + 1) + '"]';
+            const inputSelector = this._formatInputElSelector(dateIndex + 1);
             const nextInput = this.prodObjRow.el.querySelector(inputSelector);
             if (nextInput) {
               nextInput.select();
@@ -487,7 +485,7 @@ export default class ProductionPlanSimulatorLine extends Component {
     const dateIndex = parseInt(ev.target.dataset.date_index);
 
     const inputEl = this.prodObjRow.el.querySelector(
-      'input[data-date_index="' + dateIndex + '"]'
+      this._formatInputElSelector(dateIndex)
     );
 
     if (inputEl) {
@@ -505,7 +503,7 @@ export default class ProductionPlanSimulatorLine extends Component {
     const dateIndex = parseInt(ev.target.dataset.date_index);
 
     const inputEl = this.prodObjRow.el.querySelector(
-      'input[data-date_index="' + dateIndex + '"]'
+      this._formatInputElSelector(dateIndex)
     );
 
     if (inputEl) {
@@ -635,7 +633,7 @@ export default class ProductionPlanSimulatorLine extends Component {
     const dateIndex = parseInt(ev.target.dataset.date_index);
 
     const inputEl = this.prodObjRow.el.querySelector(
-      'input[data-date_index="' + dateIndex + '"]'
+      this._formatInputElSelector(dateIndex)
     );
 
     if (inputEl) {
@@ -653,7 +651,7 @@ export default class ProductionPlanSimulatorLine extends Component {
     const dateIndex = parseInt(ev.target.dataset.date_index);
 
     const inputEl = this.prodObjRow.el.querySelector(
-      'input[data-date_index="' + dateIndex + '"]'
+      this._formatInputElSelector(dateIndex)
     );
 
     if (inputEl) {
@@ -671,7 +669,7 @@ export default class ProductionPlanSimulatorLine extends Component {
     const dateIndex = parseInt(ev.target.dataset.date_index);
 
     const el = this.suggProdPlanRow.el.querySelector(
-      'span[data-date_index="' + dateIndex + '"]'
+      this._formatInputElSelector(dateIndex)
     );
 
     if (el) {
@@ -692,7 +690,7 @@ export default class ProductionPlanSimulatorLine extends Component {
     const dateIndex = parseInt(ev.target.dataset.date_index);
 
     const el = this.suggProdPlanRow.el.querySelector(
-      'span[data-date_index="' + dateIndex + '"]'
+      this._formatInputElSelector(dateIndex)
     );
 
     if (el) {
@@ -707,6 +705,10 @@ export default class ProductionPlanSimulatorLine extends Component {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  _formatInputElSelector(dateIndex) {
+    return 'span[data-date_index="' + dateIndex + '"]';
   }
 }
 

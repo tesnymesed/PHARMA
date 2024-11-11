@@ -111,10 +111,11 @@
         >
           <th class="text-end pe-4">
             <!--            <span t-esc="formatFloat(simulation.sale_objective_qty)" />-->
-            <input
+            <span
               type="text"
               t-att-data-date_index="simulation_index"
-              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty "
+              t-attf-class="text-end o_prod_sim_input_forcast_qty "
+              t-esc="formatFloat(simulation.sale_objective_qty)"
               t-att-value="formatFloat(simulation.sale_objective_qty)"
               t-on-change.stop="(ev) => this.onChangeSalesObjectiveQty(ev, productionSimulation.id)"
               t-on-focus.prevent="_onFocusInput"
@@ -136,10 +137,11 @@
         >
           <th class="text-end pe-4">
             <!--            <span t-esc="formatFloat(simulation.production_objective_qty)" />-->
-            <input
+            <span
               type="text"
               t-att-data-date_index="simulation_index"
-              t-attf-class="text-end form-control o_prod_sim_input_forcast_qty "
+              t-attf-class="text-end o_prod_sim_input_forcast_qty "
+              t-esc="formatFloat(simulation.production_objective_qty)"
               t-att-value="formatFloat(simulation.production_objective_qty)"
               t-on-change.stop="(ev) => this.onChangeProductionObjectiveQty(ev, productionSimulation.id)"
               t-on-focus.prevent="_onFocusInput"
@@ -503,7 +505,7 @@
       <!--        </t>-->
       <!--      </tr>-->
 
-      <tr t-ref="forecastRow" name="demand_forecast" t-attf-class="{{ '' }}">
+      <!-- <tr t-ref="forecastRow" name="demand_forecast" t-attf-class="{{ '' }}">
         <th />
         <th scope="row">
           -
@@ -676,7 +678,7 @@
             />
           </th>
         </t>
-      </tr>
+      </tr> -->
       <!-- <ProductionPlanBatchesNotesEditor
           data="this.formVals"
         /> -->

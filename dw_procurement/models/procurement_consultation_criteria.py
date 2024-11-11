@@ -25,8 +25,8 @@ class DwConsultationCriteria(models.Model):
         default="amount", )
     type = fields.Selection(selection=[
 
-        ('supplier_offer ', 'supplier offer'),
-        ('criteria_tco ', 'criteria TCO'),
+        ('supplier_offer', 'supplier offer'),
+        ('criteria_tco', 'criteria TCO'),
     ],
         string="Type")
 
@@ -62,6 +62,7 @@ class DwConsultationCriteriaLine(models.Model):
     period_type = fields.Selection(store=1, related="criteria_id.period_type")
     currency_id = fields.Many2one('res.currency', string='Currency')
     incoterm_id = fields.Many2one('account.incoterms', string='Incoterm')
+    type = fields.Selection(store=1, related="criteria_id.type")
 
     @api.onchange('period_type', 'number_years')
     def onchange_number_years(self):

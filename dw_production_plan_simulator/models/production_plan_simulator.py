@@ -123,9 +123,7 @@ class DwProductionPlanSimulator(models.Model):
         _domain = state.get('domain')
 
         if _domain and not action.get('domain'):
-            print('_domain', _domain)
             action['domain'] = _domain
-            print(action, action.get('domain'))
 
         return action
 
@@ -161,9 +159,11 @@ class DwProductionPlanSimulator(models.Model):
                  'safety_stock_target')
     def compute_sales_average(self):
         for record in self:
+            if not record.company_id or not record.product_plan_sim_ids:
+                continue
+
             found_in_range = False
 
-            print(record)
             start = record.company_id.dw_prod_sim_date_sales_range_start
             end = record.company_id.dw_prod_sim_date_sales_range_end
             d = relativedelta(end, start)
@@ -185,7 +185,6 @@ class DwProductionPlanSimulator(models.Model):
 
     def calculate_sales_average(self, company_id, start_date=None, end_date=None):
         for record in self:
-            print(record)
             qr = self._query(record.product_id.id)
             sales = self._sales_query(qr)
 
@@ -1934,9 +1933,6 @@ class DwProductionPlanSimulator(models.Model):
 
         result = {}
         _results = self.env.cr.dictfetchall()
-
-        for row in _results:
-            print(row)
 
         return _results
 

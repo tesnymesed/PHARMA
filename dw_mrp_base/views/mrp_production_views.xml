@@ -5,8 +5,12 @@
         <field name="model">mrp.production</field>
         <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
         <field name="arch" type="xml">
+
             <xpath expr="//notebook//field[@name='origin']" position="after">
                 <field name="extra_cost" readonly="state in ['done']"/>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button string="Add Sublot" type="object" name="action_addsublot" invisible="'state' , '!="/>
             </xpath>
             <xpath expr="//header" position="after">
                 <field name="lot_dates_set" invisible="1"/>

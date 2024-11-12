@@ -60,3 +60,12 @@ class MrpProduction(models.Model):
     def _compute_extra_cost(self):
         for prod in self:
             prod.extra_cost = prod.bom_id.dw_majoration if prod.bom_id else 0
+
+    def action_addsublot(self):
+        return {
+            'name': _('Wizard Upload Workforce'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'mrp.production.sublot',
+            'view_mode': 'form',
+            'target': 'new',
+        }

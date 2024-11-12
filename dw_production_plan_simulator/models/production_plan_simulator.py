@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import datetime
 from collections import OrderedDict, defaultdict, namedtuple
@@ -92,6 +91,11 @@ class DwProductionPlanSimulator(models.Model):
         'Maximum to Replenish', default=1000,
         help="The maximum replenishment you would like to launch for each period in the MPS. Note that if the demand is higher than that amount, the remaining quantity will be transferred to the next period automatically.")
 
+    # @bislem: [ADD] Nov 2nd, 2024
+    simulation_version_id = fields.Many2one('dw.production.plan.simulation.version',
+                                            string='Production Plan Simulation Version',
+                                            help="Reference to the simulation version.")
+
     # replenish_state = fields.Selection([
     #     ('to_replenish', 'To Replenish'),
     #     ('under_replenishment', 'Under Replenishment'),
@@ -150,6 +154,7 @@ class DwProductionPlanSimulator(models.Model):
         #   //          res_model: "dw.production.plan.simulation",
         #   //          res_id: productionSimulationId,
         # }
+
     @api.depends('company_id.dw_prod_sim_date_sales_range_start',
                  'company_id.dw_prod_sim_date_sales_range_end',
                  'product_plan_sim_ids.sold_qty',
@@ -191,10 +196,20 @@ class DwProductionPlanSimulator(models.Model):
         for record in self:
             record.safety_stock_target_qty = record.safety_stock_target * record.sales_average
 
+    # def _default_warehouse_id(self):
+    #     return self.env['stock.warehouse'].search(self.env['stock.warehouse']._check_company_domain(self.env.company),
+    #                                               limit=1)
+
     @api.model
-    def _default_warehouse_id(self):
-        return self.env['stock.warehouse'].search(self.env['stock.warehouse']._check_company_domain(self.env.company),
-                                                  limit=1)
+    def _default_warehouse_id(self, company_id=None):
+        # Ensure company_id is provided
+        if not company_id:
+            company_id = self.env.company
+        # Search for the warehouse based on the company_id
+        return self.env['stock.warehouse'].search(
+            self.env['stock.warehouse']._check_company_domain(company_id),
+            limit=1
+        )
 
     @api.model
     def _default_workcenter_id(self):
@@ -242,13 +257,14 @@ class DwProductionPlanSimulator(models.Model):
         ])
 
         decision_action_ids = self.env['dw.mrp.alert.decision'].get_decision_action_items()
-
+        simulation_version_id = production_simulations.mapped('simulation_version_id')
         return {
             'dates': self.env.company._date_range_to_str(start_date_range=start_date,
                                                          end_date_range=end_date),
             # 'production_simulation_ids': proxy.get('production_simulation_ids'),
             'production_simulation_ids': production_simulations_states,
             'workcenter_capacities': workcenter_capacities,
+            'simulation_version_id': simulation_version_id.id,
             'decision_action_ids': decision_action_ids,
             'company_id': self.env.company.id,
             'groups': company_groups,
@@ -541,47 +557,75 @@ class DwProductionPlanSimulator(models.Model):
 
     @api.model
     def create_product_simulations(self, company_id):
-        # Get the final products with BOMs for the given company
-        products_list = self.env['product.product'].search([
-            ('product_tmpl_id.type', '=', 'product'),
-            ('product_tmpl_id.categ_id.is_final_product', '=', True),
-            # ('product_tmpl_id.bom_ids', '!=', False),
-            # '|',
-            ('product_tmpl_id.company_id', '=', company_id),
-            # ('product_tmpl_id.company_id', '=', False)
-        ])
-
         # Create the simulation records
         ids = []
         existing_pps = []
 
-        for i, product in enumerate(products_list):
+        # Get the final products with BOMs for the given company
+        products_list = self.env['product.product'].search([
+            ('product_tmpl_id.type', '=', 'product'),
+            ('product_tmpl_id.categ_id.is_final_product', '=', True),
+            ('product_tmpl_id.company_id', '=', company_id),
+        ])
+
+        for product in products_list:
+            # Check for existing simulation records
             pps = self.env['dw.production.plan.simulation'].search([
                 ('company_id', '=', company_id),
                 ('product_id', '=', product.id),
-                # ('bom_id', '=', product.product_tmpl_id.bom_ids[0].id),
+                # Check for BOM
+                ('bom_id', '=', product.product_tmpl_id.bom_ids[0].id) if product.product_tmpl_id.bom_ids
+                else ('bom_id', '=', False)
             ], limit=1)
+
             if pps:
-                existing_pps.append((i, pps.id))
+                # If we found an existing simulation, store it
+                existing_pps.append(pps.id)
+                continue  # Skip to the next product if a match is found
 
-            # for i_remove, __ in reversed(existing_pps):
-            #     del products_list[i_remove]
-            else:
-                vals = {
+            # Prepare values for the new simulation record
+            vals = {
+                'company_id': company_id,
+                'product_id': product.id,
+                'warehouse_id': self._get_warehouse_id(company_id).id,
+            }
+
+            if product.product_tmpl_id.bom_ids:
+                vals['bom_id'] = product.product_tmpl_id.bom_ids[0].id
+                vals['lot_size'] = product.product_tmpl_id.bom_ids[0].product_qty
+
+            # Create new simulation record
+            pps = self.env['dw.production.plan.simulation'].create([vals])
+            existing_pps.append(pps.id)  # Store the newly created simulation
+
+        # After processing all products, handle simulation_version_id logic
+        if existing_pps:
+            # Check existing records for simulation_version_id
+            existing_versions = self.env['dw.production.plan.simulation'].search([
+                ('id', 'in', existing_pps)
+            ]).mapped('simulation_version_id')
+
+            if not any(existing_versions):  # If none have a version
+                # Create a new version and link all records
+                new_version = self.env['dw.production.plan.simulation.version'].create({
+                    'name': self.env['dw.production.plan.simulation.version'].format_name(company_id),
                     'company_id': company_id,
-                    'product_id': product.id,
-                    'warehouse_id': self._get_warehouse_id(company_id).id,
-                    # 'bom_id': product.product_tmpl_id.bom_ids[0].id if product.product_tmpl_id.bom_ids else None,
-                    # 'lot_size': product.product_tmpl_id.bom_ids[0].product_qty
-                }
-
-                if product.product_tmpl_id.bom_ids:
-                    vals['bom_id'] = product.product_tmpl_id.bom_ids[0].id
-                    vals['lot_size'] = product.product_tmpl_id.bom_ids[0].product_qty
-
-                pps = self.env['dw.production.plan.simulation'].create(vals)
-
-            ids.append(pps)
+                    # Add other necessary fields for the version
+                })
+                for existing_pp_id in existing_pps:
+                    existing_pp = self.env['dw.production.plan.simulation'].browse(existing_pp_id)
+                    existing_pp.simulation_version_id = new_version.id
+            else:
+                # If some have a version, check if they are all the same
+                unique_versions = set(existing_versions)
+                if len(unique_versions) > 1:
+                    # If they are not all the same, link those without a version to the existing version
+                    for existing_pp_id in existing_pps:
+                        existing_pp = self.env['dw.production.plan.simulation'].browse(existing_pp_id)
+                        if not existing_pp.simulation_version_id:
+                            # Link to the first version found
+                            existing_pp.simulation_version_id = existing_versions[0]
+                # If all have the same version, do nothing
 
         return ids
 
@@ -604,9 +648,16 @@ class DwProductionPlanSimulator(models.Model):
 
             # mps = self.env['mrp.production.schedule'].with_context(dw_pharma_simulation=True).create([vals])
             mps = self.env['mrp.production.schedule'].create([vals])
+
+            # mps.write({
+            #     'forecast_target_qty': prod_sim.get('safety_stock_target_qty'),
+            #     'min_to_replenish_qty': pps.lot_size,
+            #     'max_to_replenish_qty': 999999999999999,
+            # })
+
             mps.write({
-                'forecast_target_qty': prod_sim.get('safety_stock_target_qty'),
-                'min_to_replenish_qty': pps.lot_size,
+                'forecast_target_qty': 0,
+                'min_to_replenish_qty': 0,
                 'max_to_replenish_qty': 1000 * pps.lot_size,
             })
 
@@ -619,8 +670,17 @@ class DwProductionPlanSimulator(models.Model):
                 _qty = float_round(prdct_sim_i.get('suggested_production_plan_qty'),
                                    precision_rounding=mps.product_uom_id.rounding)
 
+                stock_coverage = round(prdct_sim_i.get('updated_stock_coverage', 0.0), 2)
+
+                # forecast_vals = {
+                #     'forecast_qty': _qty
+                # }
+
                 forecast_vals = {
-                    'forecast_qty': _qty
+                    'forecast_qty': 0,
+                    'replenish_qty': _qty,
+                    'replenish_qty_updated': True,
+                    'dw_stock_coverage': stock_coverage
                 }
 
                 # Production plan Changes
@@ -672,17 +732,20 @@ class DwProductionPlanSimulator(models.Model):
         """ If the BoM is pass at the creation, create MPS for its components """
         existing_mps = []
         for i, vals in enumerate(vals_list):
-            # Allow to add components of a BoM for MPS already created
-            # if vals.get('bom_id'):
-            mps = self.search([
-                ('product_id', '=', vals.get('product_id')),
-                ('bom_id', '=', vals.get('bom_id')),
-                ('warehouse_id', '=', vals.get('warehouse_id', self._default_warehouse_id().id)),
-                ('company_id', '=', vals.get('company_id', self.env.company.id)),
-            ], limit=1)
-            if mps:
-                # mps.bom_id = vals.get('bom_id')
-                existing_mps.append((i, mps.id))
+            vals['company_id'] = vals.get('company_id', self.env.company.id)
+            if not vals.get('warehouse_id'):
+                vals['warehouse_id'] = self._default_warehouse_id(vals.get('company_id')).id
+
+            if vals.get('bom_id'):
+                mps = self.search([
+                    ('product_id', '=', vals.get('product_id')),
+                    # ('bom_id', '=', vals.get('bom_id')),
+                    ('warehouse_id', '=', vals.get('warehouse_id')),
+                    ('company_id', '=', vals.get('company_id')),
+                ], limit=1)
+                if mps:
+                    mps.bom_id = vals.get('bom_id')
+                    existing_mps.append((i, mps.id))
 
         for i_remove, __ in reversed(existing_mps):
             del vals_list[i_remove]
@@ -854,10 +917,17 @@ class DwProductionPlanSimulator(models.Model):
                     replenish_qty_updated = any(existing_forecasts.mapped('replenish_qty_updated'))
                     forecast_values['replenish_qty_updated'] = replenish_qty_updated
                 else:
+
                     forecast_values['forecasted_demand_qty'] = 0.0
                     forecast_values['sold_qty'] = 0.0
-                    forecast_values['sale_objective_qty'] = 0.0
-                    forecast_values['production_objective_qty'] = 0.0
+                    # forecast_values['sale_objective_qty'] = 0.0
+                    # forecast_values['production_objective_qty'] = 0.0
+                    sale_objective_qty, production_objective_qty = self._get_objective_qty(
+                        production_simulation.company_id,
+                        production_simulation.product_id,
+                        date_start)
+                    forecast_values['sale_objective_qty'] = sale_objective_qty
+                    forecast_values['production_objective_qty'] = production_objective_qty
                     # forecast_values['planned_production_qty'] = 0.0+
                     # forecast_values['stock_level'] = 0.0
                     forecast_values['batch_count'] = 0.0
@@ -982,7 +1052,8 @@ class DwProductionPlanSimulator(models.Model):
                 for index, forecast_state in enumerate(forecasts_state):
                     production_simulation_state['product_plan_sim_ids'][index].update(forecast_state)
 
-        return [p for p in production_simulation_states if p['id'] in self.ids]
+        _states = sorted([p for p in production_simulation_states if p['id'] in self.ids], key=lambda p: p['id'])
+        return _states
 
     def remove_replenish_qty(self, date_index):
         """ Remove the quantity to replenish on the simulation cell.
@@ -1904,8 +1975,10 @@ class DwProductPlanSimulation(models.Model):
     replenish_qty_updated = fields.Boolean('Replenish_qty has been manually updated')
     # procurement_launched = fields.Boolean('Procurement has been run for this simulation')
 
-    sale_objective_qty = fields.Float('Sales Objective Qty', default=0.0)
-    production_objective_qty = fields.Float('Production Objective Qty', default=0.0)
+    production_objective_qty = fields.Float('Production Objective Qty', compute='_compute_objective_qty', default=0.0,
+                                            readonly=False)
+    sale_objective_qty = fields.Float('Sales Objective Qty', compute='_compute_objective_qty', default=0.0,
+                                      readonly=False)
 
     planned_production_qty = fields.Float('Planned Production Qty', default=0.0,
                                           compute='_compute_planned_production_qty')
@@ -1932,3 +2005,54 @@ class DwProductPlanSimulation(models.Model):
                                                                              record.production_simulation_id.safety_stock_target_qty,
                                                                              record.production_simulation_id.sales_average,
                                                                              record.production_simulation_id.safety_stock_target)
+
+    @api.onchange('date')
+    @api.depends('date')
+    def _onchange_date(self):
+        if self.date:
+            target = self.env['dw.mrp.product.monthly.target'].search([
+                ('date', '=', self.date),
+                ('product_id', '=', self.production_simulation_id.product_id.id)
+                # Assuming product_id is available in the simulation
+            ], limit=1)
+
+            if target:
+                self.production_objective_qty = target.production_objective_qty
+                self.sale_objective_qty = target.sale_objective_qty
+            else:
+                self.production_objective_qty = 0.0
+                self.sale_objective_qty = 0.0
+
+    @api.depends('date', 'production_simulation_id.product_id')
+    def _compute_objective_qty(self):
+        for record in self:
+            sale_objective_qty, production_objective_qty = self._get_objective_qty(
+                record.production_simulation_id.company_id,
+                record.production_simulation_id.product_id,
+                record.date)
+
+            # record.write({
+            #     'sale_objective_qty': sale_objective_qty,
+            #     'production_objective_qty': production_objective_qty
+            # })
+            record.sale_objective_qty = sale_objective_qty
+            record.production_objective_qty = production_objective_qty
+
+    def _get_objective_qty(self, company_id, product_id, date):
+        target = self.env['dw.mrp.product.monthly.target'].search([
+            ('target_id', '=', self.production_simulation_id.simulation_version_id.target_id.id),
+            ('company_id', '=', company_id.id),
+            ('product_id', '=', product_id.id),
+            ('date', '>=', date.replace(day=1)),
+            ('date', '<=', (date + relativedelta(months=1)).replace(day=1) - datetime.timedelta(days=1)),
+
+        ], limit=1)
+
+        if target:
+            sale_objective_qty = target.sales_objective_qty
+            production_objective_qty = target.production_objective_qty
+        else:
+            sale_objective_qty = 0.0
+            production_objective_qty = 0.0
+
+        return sale_objective_qty, production_objective_qty

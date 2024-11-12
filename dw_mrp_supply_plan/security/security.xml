@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!-- Groups -->
-    <record id="module_dw_mrp_supply_plan" model="ir.module.category">
-        <field name="name">MRP Supply Plan</field>
-        <field name="sequence">120</field>
-    </record>
-
-    <record id="dw_mrp_supply_plan_group_user" model="res.groups">
-        <field name="name">Officer: Manage Supply Plans</field>
-        <field name="category_id" ref="dw_mrp_supply_plan.module_dw_mrp_supply_plan"/>
-        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
-    </record>
-
-    <record id="dw_mrp_supply_plan_group_manager" model="res.groups">
-        <field name="name">Supply Plan Administrator</field>
-        <field name="implied_ids" eval="[(4, ref('dw_mrp_supply_plan_group_user'))]"/>
-        <field name="category_id" ref="dw_mrp_supply_plan.module_dw_mrp_supply_plan"/>
-        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
-    </record>
-
-    <!-- Rules  -->
     <data noupdate="1">
+        <!-- Groups -->
+        <record id="module_dw_mrp_supply_plan" model="ir.module.category">
+            <field name="name">MRP Supply Plan</field>
+            <field name="sequence">120</field>
+        </record>
+
+        <record id="dw_mrp_supply_plan_group_user" model="res.groups">
+            <field name="name">Officer: Manage Supply Plans</field>
+            <field name="category_id" ref="dw_mrp_supply_plan.module_dw_mrp_supply_plan"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="dw_mrp_supply_plan_group_manager" model="res.groups">
+            <field name="name">Supply Plan Administrator</field>
+            <field name="implied_ids" eval="[(4, ref('dw_mrp_supply_plan_group_user'))]"/>
+            <field name="category_id" ref="dw_mrp_supply_plan.module_dw_mrp_supply_plan"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
 
         <record id="dw_mrp_supply_plan_company_rule" model="ir.rule">
             <field name="name">MRP Supply Plan Multi Company Rule</field>

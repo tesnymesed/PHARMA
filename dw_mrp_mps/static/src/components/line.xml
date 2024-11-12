@@ -17,7 +17,7 @@
           t-key="forecast_index"
         >
           <th class="text-end pe-4">
-            <span t-esc="formatFloat(forecast.safety_stock_qty)" />
+            <span t-esc="formatFloat(forecast.dw_stock_coverage)" />
           </th>
         </t>
       </tr>

@@ -407,7 +407,7 @@ msgid "Rejected"
 msgstr "Rejeté"
 
 #. module: dw_payment_request
-#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__request_type_id
+#: model:ir.model.fields,field_description:dw_payment_request.field_dw_payment_request__request_type_ids
 msgid "Request Type"
 msgstr "Type de demande"
 

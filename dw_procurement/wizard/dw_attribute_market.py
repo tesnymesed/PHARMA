@@ -15,6 +15,7 @@ class DwAttributeMarket(models.TransientModel):
         store=1, related="criteria_line_ids.criteria_type")
     period_type = fields.Selection(store=1, related="criteria_line_ids.period_type")
 
+    note = fields.Char(string="Note")
     def action_confirm(self):
         market_id = self.market_id
         consultation_id = self.consultation_id
@@ -37,6 +38,7 @@ class DwAttributeMarket(models.TransientModel):
                                         lambda line: line.criteria_id.id == self.env.ref(
                                             "dw_procurement.procurement_dw_criteria_consultation_price_unit_ht").id).amount or 0,
 
-                                    })]
+                                    })],
+                        'default_type_id': self.env.ref('dw_procurement.purchase_requisition_type_assignment_contract').id,
                         }
         }

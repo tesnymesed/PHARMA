@@ -123,7 +123,7 @@ class DWMrpProductionSchedule(models.Model):
 
         indirect_ratio_mps = schedules_to_compute._get_indirect_demand_ratio_mps(indirect_demand_trees)
 
-        # Get the schedules that do not depends from other in first position in
+        # Get the schedules that do not depend on one another in first position in
         # order to compute the schedule state only once.
         indirect_demand_order = schedules_to_compute._get_indirect_demand_order(indirect_demand_trees)
         indirect_demand_qty = defaultdict(float)
@@ -195,6 +195,7 @@ class DWMrpProductionSchedule(models.Model):
                                                                      precision_rounding=rounding, rounding_method='UP')
                 replenish_qty_updated = False
                 if existing_forecasts:
+                    forecast_values['dw_stock_coverage'] = existing_forecasts[0].dw_stock_coverage or 0.0
                     forecast_values['notes'] = existing_forecasts[0].notes or ''
                     forecast_values['decision'] = existing_forecasts[0].dw_alert_decision_id.id or -1
 
@@ -213,6 +214,7 @@ class DWMrpProductionSchedule(models.Model):
                     replenish_qty_updated = any(existing_forecasts.mapped('replenish_qty_updated'))
                     forecast_values['replenish_qty_updated'] = replenish_qty_updated
                 else:
+                    forecast_values['dw_stock_coverage'] = 0.0
                     forecast_values['forecast_qty'] = 0.0
                     forecast_values['notes'] = ''
                     # forecast_values['notes'] = -1
@@ -359,3 +361,5 @@ class DWMrpProductForecast(models.Model):
     dw_pps_capacity_notes = fields.Text('Capacity Observations')
 
     dw_pps_capacity_decision_id = fields.Many2one('dw.mrp.alert.decision', string='Capacity Observation Decision')
+
+    dw_stock_coverage = fields.Float('Stock coverage', default=0.0)

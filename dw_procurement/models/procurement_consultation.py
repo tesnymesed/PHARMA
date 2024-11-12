@@ -48,7 +48,7 @@ class DwConsultationCriteria(models.Model):
     end_date = fields.Date(string="End Date", default=fields.Date.today)
     dw_supplier_nature = fields.Selection(
         [('fabricant', 'Fabricant'), ('regroupeur', 'Regroupeur')],
-        string="Supplier nature", related="supplier_id.dw_supplier_nature", readonly=False, store=True,
+        string="Supplier nature", related="supplier_id.dw_supplier_nature", readonly=False, store=True, required=True
     )
     canceled_motif_id = fields.Many2one('procurement.reject.cancel.reason', string='Reason',
                                         domain=[('reason_type', '=', 'cancel')],
@@ -56,6 +56,7 @@ class DwConsultationCriteria(models.Model):
     reject_motif_id = fields.Many2one('procurement.reject.cancel.reason', string='Reject Reason',
                                       domain=[('reason_type', '=', 'reject')],
                                       )
+    dw_manufacturer = fields.Char(string='Manufacturer')
 
     @api.constrains('end_date', 'start_date')
     def _check_date_start_end(self):

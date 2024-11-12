@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="dw_production_plan_simulator_production_plan_simulation_version_form_view_inherit" model="ir.ui.view">
+        <field name="name">dw.production.plan.simulation.version.form.inherit</field>
+        <field name="model">dw.production.plan.simulation.version</field>
+        <field name="inherit_id"
+               ref="dw_saidal_simulator_production_plan_link.dw_production_plan_simulator_production_plan_simulation_version_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='prms_grp']" position="inside">
+                <field name="company_id" invisible="1"/>
+                <field name="target_id" required="1" context="{'default_company_id': company_id}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

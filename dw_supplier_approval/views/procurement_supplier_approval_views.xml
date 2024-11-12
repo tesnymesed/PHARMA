@@ -137,7 +137,7 @@
                                 <field name="start_date" required="1" readonly="state != 'draft'"/>
                                 <field name="end_date" required="1" readonly="0"/>
                                 <field name="product_ids" invisible="1"/>
-                                <field name="company_id" readonly="state != 'prospecting'"/>
+                                <field name="company_id" readonly="state != 'draft'"/>
                                 <field name="lot_validation" readonly="state not in ['analyse','prospecting','audit']"/>
                                 <field name="phone" widget="phone" required="1" readonly="state == 'approval'"/>
                                 <field name="email" widget="email" required="1" readonly="state == 'approval'"/>

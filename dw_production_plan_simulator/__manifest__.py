@@ -19,7 +19,10 @@
     - Determine the feasibility of the production plan
     - Display alert messages for capacity and material constraints
     """,
-    'depends': ['web', 'shared_assets', 'sale', 'stock', 'mrp', 'mrp_mps', 'dw_mrp_mps', 'dw_mrp_alert_decision'],
+    'depends': [
+        'web', 'shared_assets', 'sale', 'stock', 'mrp', 'mrp_mps',
+        'dw_mrp_mps', 'dw_mrp_alert_decision'
+    ],
     'data': [
         # data
 
@@ -36,6 +39,9 @@
     'assets': {
         'web.assets_backend': [
             'dw_production_plan_simulator/static/src/models/production_plan_simulator_model.js',
+
+            'dw_production_plan_simulator/static/src/components/product_list_filter.js',
+            'dw_production_plan_simulator/static/src/components/product_list_filter.xml',
 
             'dw_production_plan_simulator/static/src/components/line.js',
             'dw_production_plan_simulator/static/src/components/line.xml',

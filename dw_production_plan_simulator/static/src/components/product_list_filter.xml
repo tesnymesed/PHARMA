@@ -1,0 +1,66 @@
+<templates xml:space="preserve">
+  <t t-name="production_plan_simulator.NestedProductListTemplate">
+    <ul class="list-group">
+      <!-- "ALL" checkbox to control all sections and products -->
+      <li class="list-group-item">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            t-att-id="'allCheckbox'"
+            t-att-checked="this.model.isSelected('ALL')"
+            t-on-click="toggleAll"
+          />
+          <label class="form-check-label fw-bold" t-att-for="'allCheckbox'">
+            ALL
+          </label>
+        </div>
+      </li>
+      <!-- Loop through each workCenter -->
+      <t t-foreach="workCenters" t-as="workCenter" t-key="workCenter.key">
+        <li class="list-group-item">
+          <div class="form-check">
+            <!-- workCenter checkbox for cascading selection -->
+            <input
+              class="form-check-input"
+              type="checkbox"
+              t-att-id="'workCenterCheckbox' + workCenter.key"
+              t-att-checked="this.model.isSelected(workCenter.key) ? 'checked' : false"
+              t-on-click="() => this.toggleWorkCenter(workCenter.key)"
+            />
+            <label
+              class="form-check-label fw-bold"
+              t-att-for="'workCenterCheckbox' + workCenter.key"
+            >
+              <t t-esc="workCenter.key.split(',')[1]" />
+            </label>
+          </div>
+        </li>
+
+        <!-- Loop through each product in the workCenter -->
+        <t t-foreach="workCenter.values" t-as="product" t-key="product.id">
+          <li class="list-group-item ms-3">
+            <!--
+            Indent to visually nest products -->
+            <div class="form-check">
+              <!-- Product checkbox with cascading effect -->
+              <input
+                class="form-check-input"
+                type="checkbox"
+                t-att-id="'productCheckbox' + product.id"
+                t-att-checked="this.model.isSelected(product.id) ? 'checked' : false"
+                t-on-click="() => this.toggleProduct(workCenter.key, product.id)"
+              />
+              <label
+                class="form-check-label"
+                t-att-for="'productCheckbox' + product.id"
+              >
+                <t t-esc="product.product_id[1]" />
+              </label>
+            </div>
+          </li>
+        </t>
+      </t>
+    </ul>
+  </t>
+</templates>

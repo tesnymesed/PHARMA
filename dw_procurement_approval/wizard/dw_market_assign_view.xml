@@ -20,7 +20,7 @@
 
                             <button
                                     name="action_market_assign_confirm"
-                                    string="Assign"
+                                    string="Link"
                                     type="object"
                                     class="btn-primary"/>
                             <button special="cancel" string="Cancel" class="oe_link"/>

@@ -14,7 +14,7 @@
                             <field name="market_id" invisible="1"/>
                             <field name="criteria_type" invisible="1"/>
                             <field name="consultation_id" required="1"/>
-
+                            <field name="note"/>
                         </group>
                          <notebook>
                             <page name="consultation_criteria" string="Consultation Criteria">

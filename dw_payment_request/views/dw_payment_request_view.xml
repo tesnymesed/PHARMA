@@ -39,7 +39,7 @@
                                 type="object"/>
                         <button name="action_cancel" string="Cancel"
                                 class="btn-primary"
-invisible="state not in ['confirm','rejected'] "                                type="object"/>
+                                invisible="state not in ['confirm','rejected'] " type="object"/>
                         <button name="action_to_draft" string="return to draft"
                                 class="btn-primary"
                                 invisible="state == 'cancelled' "
@@ -48,6 +48,15 @@ invisible="state not in ['confirm','rejected'] "                                
                                statusbar_visible="draft,confirm"/>
                     </header>
                     <sheet>
+                        <!-- Section button_box pour les smart buttons -->
+                    <div class="oe_button_box" name="button_box">
+                        <!-- Smart Button Documents -->
+                        <button name="action_view_documents"
+                                type="object"
+                                string="Documents"
+                                icon="fa-folder-open"
+                                class="oe_stat_button"/>
+                    </div>
                         <div class="oe_title">
                             <div>
                                 <label for="name"/>
@@ -76,10 +85,10 @@ invisible="state not in ['confirm','rejected'] "                                
                         </group>
                         <group>
                             <group>
-                                <field name="check_num"/>
+                                <field name="payment_reference"/>
                                 <field name="Payment_order"/>
                                 <field name="montant" widget="monetary"/>
-                                <field name="request_type_id" string="Payment Request Type"/>
+                                <field name="request_type_ids" string="Payment Request Type"/>
                             </group>
 
                         </group>

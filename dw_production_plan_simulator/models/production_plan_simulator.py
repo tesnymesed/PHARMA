@@ -657,7 +657,7 @@ class DwProductionPlanSimulator(models.Model):
             mps.write({
                 'forecast_target_qty': 0,
                 'min_to_replenish_qty': 0,
-                'max_to_replenish_qty': 1000 * pps.lot_size,
+                'max_to_replenish_qty': 999999999999999,
             })
 
             product_plan_sim_ids = prod_sim.get('product_plan_sim_ids')

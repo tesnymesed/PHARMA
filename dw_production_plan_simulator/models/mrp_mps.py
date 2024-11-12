@@ -15,6 +15,15 @@ class DWMrpProductionSchedule(models.Model):
          'The combination of warehouse and product must be unique!'),
     ]
 
+
+    max_to_replenish_qty = fields.Float(
+        'Maximum to Replenish', default=999999999999999,
+        help="The maximum replenishment you would like to launch for each period in the MPS. Note that if the demand is higher than that amount, the remaining quantity will be transferred to the next period automatically.")
+
+    forecast_target_qty = fields.Float(
+        'Safety Stock Target', related='product_id.dw_safety_stock_qty', readonly=False,
+        store=True, help="This is the minimum free stock you want to keep for that product at all times.")
+
     # def _get_global_context(self, action_id=None):
     #     # context = super().with_context(action_type='client')._get_global_context(action_id)
     #     context = super(DWMrpProductionSchedule, self)._get_global_context(action_id, action_type='client')

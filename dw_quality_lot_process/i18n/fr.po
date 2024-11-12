@@ -92,6 +92,11 @@ msgid "Check Lot Conformity"
 msgstr "Vérifier la conformité du lot"
 
 #. module: dw_quality_lot_process
+#: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_location__perform_quality_lot_reanalyze
+msgid "Perform Quality lot reanalyze"
+msgstr "Réaliser une réanalyse de la qualité du lot"
+
+#. module: dw_quality_lot_process
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_cancel_wizard__check_quality_id
 msgid "Check Quality"
 msgstr "Controle qualité"
@@ -377,6 +382,12 @@ msgstr ""
 "localité."
 
 #. module: dw_quality_lot_process
+#: model:ir.model.fields,help:dw_quality_lot_process.field_stock_location__perform_quality_lot_reanalyze
+msgid "Check this box to perform a quality reanalysis for lots."
+msgstr ""
+"Cochez cette case pour effectuer une réanalyse de la qualité des lots."
+
+#. module: dw_quality_lot_process
 #: model:ir.model.fields,help:dw_quality_lot_process.field_stock_location__allowed_lot_status_in
 msgid ""
 "This field indicates the authorized lot status to transfer in the current "
@@ -406,3 +417,8 @@ msgstr "Statut du lot"
 #: model:ir.model.fields.selection,name:dw_quality_lot_process.selection__stock_lot_history__previous_lot_quarantine_status__reanalyzed
 msgid "reanalyzed"
 msgstr "Réanalysé"
+
+#. module: dw_quality_lot_process
+#: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_warehouse__quality_reanalyze_op_id
+msgid "Reanalyze quality operation"
+msgstr "Opération réanalyse de qualité"

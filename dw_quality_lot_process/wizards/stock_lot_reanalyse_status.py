@@ -95,6 +95,7 @@ class StockLotReanalyseWizard(models.TransientModel):
                 move_line_vals.append({
                     'move_id': move.id,
                     'quant_id': line.quant_id.id,
+                    'picking_id':picking.id
                 })
 
             StockMoveLine.sudo().create(move_line_vals)

@@ -7,6 +7,7 @@ from math import log10
 
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
+from odoo.exceptions import MissingError
 from odoo.osv.expression import OR, AND
 from odoo.tools.date_utils import add
 from odoo.tools.float_utils import float_round
@@ -638,35 +639,53 @@ class DwProductionPlanSimulator(models.Model):
             }
 
             _id = prod_sim.get('id')
-
             pps = self.search([('id', '=', _id)], limit=1)
+            product_name = prod_sim.get('product_id')[1] or 'Unknown Product'
 
             if pps:
-                vals['bom_id'] = pps.bom_id.id if pps.bom_id else False
-                vals['warehouse_id'] = pps.warehouse_id.id
+                # Check for BOM
+                if pps.bom_id:
+                    vals['bom_id'] = pps.bom_id.id
+                else:
+                    raise MissingError(
+                        _('The BOM for the product "{}" is missing. Please refresh and try again.')
+                        .format(product_name)
+                    )
 
-            # mps = self.env['mrp.production.schedule'].with_context(dw_pharma_simulation=True).create([vals])
+                # Check for Warehouse
+                if pps.warehouse_id:
+                    vals['warehouse_id'] = pps.warehouse_id.id
+                else:
+                    raise MissingError(
+                        _('The warehouse information for the product "{}" is missing. Please refresh and try again.')
+                        .format(product_name)
+                    )
+
+            # Create MPS (Manufacturing Production Schedule)
             mps = self.env['mrp.production.schedule'].create([vals])
+
+            # Initialize MPS fields with default values
 
             # mps.write({
             #     'forecast_target_qty': prod_sim.get('safety_stock_target_qty'),
             #     'min_to_replenish_qty': pps.lot_size,
             #     'max_to_replenish_qty': 999999999999999,
             # })
-
             mps.write({
                 'forecast_target_qty': 0,
                 'min_to_replenish_qty': 0,
                 'max_to_replenish_qty': 999999999999999,
             })
 
+            # Process product plan simulations
             product_plan_sim_ids = prod_sim.get('product_plan_sim_ids')
             for prdct_sim_i in product_plan_sim_ids:
                 date_start = datetime.datetime.strptime(prdct_sim_i.get('date_start'), "%Y-%m-%d").date()
                 date_stop = datetime.datetime.strptime(prdct_sim_i.get('date_stop'), "%Y-%m-%d").date()
 
+                # Check if a forecast already exists within the date range
                 existing_forecast = mps.forecast_ids.filtered(lambda f: date_start <= f.date <= date_stop)
-                _qty = float_round(prdct_sim_i.get('suggested_production_plan_qty'),
+                _qty = float_round(prdct_sim_i.get('suggested_production_plan_qty', 0.0),
                                    precision_rounding=mps.product_uom_id.rounding)
 
                 stock_coverage = round(prdct_sim_i.get('updated_stock_coverage', 0.0), 2)
@@ -679,10 +698,10 @@ class DwProductionPlanSimulator(models.Model):
                     'forecast_qty': 0,
                     'replenish_qty': _qty,
                     'replenish_qty_updated': True,
-                    'dw_stock_coverage': stock_coverage
+                    'dw_stock_coverage': stock_coverage,
                 }
 
-                # Production plan Changes
+                # Add optional notes and capacity information if available
                 if prdct_sim_i.get('notes'):
                     forecast_vals['dw_pps_production_notes'] = prdct_sim_i.get('notes')
 

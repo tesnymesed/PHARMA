@@ -6,8 +6,9 @@
         <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
         <field name="arch" type="xml">
 
+
             <xpath expr="//form/sheet/group/group[1]/div" position="after">
-                <field name="tacking_type" string="Tracking By"/>
+                <field name="tracking_type" string="Tracking By"/>
             </xpath>
 
             <field name="code" position="before">

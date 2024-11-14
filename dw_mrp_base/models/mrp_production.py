@@ -1,7 +1,4 @@
-import datetime
-
 from odoo import fields, api, models, _
-from odoo.exceptions import UserError, ValidationError
 
 
 class MrpProduction(models.Model):
@@ -13,6 +10,9 @@ class MrpProduction(models.Model):
         related='product_id.use_expiration_date'
     )
     extra_cost = fields.Float(readonly=False, compute="_compute_extra_cost", store=1)
+
+
+    tracking_type = fields.Selection(related='bom_id.tracking_type',store=1)
 
     @api.depends('lot_producing_id', 'lot_producing_id.expiration_date')
     def _compute_lot_dates_set(self):
@@ -61,11 +61,24 @@ class MrpProduction(models.Model):
         for prod in self:
             prod.extra_cost = prod.bom_id.dw_majoration if prod.bom_id else 0
 
+
+    def _get_backorder_mo_vals(self):
+        res = super()._get_backorder_mo_vals()
+
+        if self.env.context.get('lot_id', False):
+            lot = self.env['stock.lot'].create({
+                'name': self.env.context.get('lot_id', False),
+                'product_id': self.product_id.id,
+            })
+            res['lot_producing_id'] = lot.id
+        return res
+
     def action_addsublot(self):
         return {
             'name': _('Wizard Upload Workforce'),
             'type': 'ir.actions.act_window',
             'res_model': 'mrp.production.sublot',
+            'context': {'default_mrp_production_id': self.id},
             'view_mode': 'form',
             'target': 'new',
         }

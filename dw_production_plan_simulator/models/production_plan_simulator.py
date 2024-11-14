@@ -7,7 +7,7 @@ from math import log10
 
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
-from odoo.exceptions import MissingError
+from odoo.exceptions import UserError
 from odoo.osv.expression import OR, AND
 from odoo.tools.date_utils import add
 from odoo.tools.float_utils import float_round
@@ -647,16 +647,32 @@ class DwProductionPlanSimulator(models.Model):
                 if pps.bom_id:
                     vals['bom_id'] = pps.bom_id.id
                 else:
-                    raise MissingError(
+                    raise UserError(
                         _('The BOM for the product "{}" is missing. Please refresh and try again.')
                         .format(product_name)
                     )
+                    # Notify
+                    # return {
+                    #     'warning': {
+                    #         'title': "Missing BOM ",
+                    #         'message': _('The BOM for the product "{}" is missing. Please refresh and try again.')
+                    #     .format(product_name)
+                    #     }
+                    # }
 
                 # Check for Warehouse
                 if pps.warehouse_id:
                     vals['warehouse_id'] = pps.warehouse_id.id
                 else:
-                    raise MissingError(
+                    # return {
+                    #     'warning': {
+                    #         'title': "Missing Warehouse ",
+                    #         'message': _(
+                    #             'The warehouse information for the product "{}" is missing. Please refresh and try again.')
+                    #         .format(product_name)
+                    #     }
+                    # }
+                    raise UserError(
                         _('The warehouse information for the product "{}" is missing. Please refresh and try again.')
                         .format(product_name)
                     )
@@ -2038,7 +2054,7 @@ class DwProductPlanSimulation(models.Model):
                 self.production_objective_qty = 0.0
                 self.sale_objective_qty = 0.0
 
-    @api.depends('date', 'production_simulation_id.product_id')
+    @api.depends('date', 'production_simulation_id.simulation_version_id')
     def _compute_objective_qty(self):
         for record in self:
             sale_objective_qty, production_objective_qty = self._get_objective_qty(

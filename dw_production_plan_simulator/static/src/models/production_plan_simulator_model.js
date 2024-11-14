@@ -4,6 +4,7 @@ import { _t } from "@web/core/l10n/translation";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { Mutex } from "@web/core/utils/concurrency";
 import { EventBus } from "@odoo/owl";
+import { RPCError } from "@web/core/network/rpc_service";
 
 export class ProductionPlanSimulatorModel extends EventBus {
   constructor(params, services) {
@@ -65,10 +66,20 @@ export class ProductionPlanSimulatorModel extends EventBus {
           endDate,
         ])
         .then((res) => {
-          console.log("Updated sales average ", res);
+          if (res instanceof RPCError) {
+            this._displayErrorDialog(res?.data?.name, res?.data?.message);
+          } else {
+            console.log("Updated sales average ", res);
+            return res;
+          }
         })
         .catch((error) => {
-          console.error("error", error);
+          if (error instanceof RPCError) {
+            this._displayErrorDialog(error.data.name, error?.data?.message);
+          } else {
+            console.error(error);
+            return error;
+          }
         });
     });
   }
@@ -143,8 +154,13 @@ export class ProductionPlanSimulatorModel extends EventBus {
             );
             this.data.workcenter_capacities = workcentersCapacities;
           })
-          .catch((err) => {
-            console.log(err);
+          .catch((error) => {
+            if (error instanceof RPCError) {
+              this._displayErrorDialog(error.data.name, error.data.message);
+            } else {
+              console.error(error);
+              return error;
+            }
           });
         console.log(
           "this.data.production_simulation_ids",
@@ -474,7 +490,12 @@ export class ProductionPlanSimulatorModel extends EventBus {
           //                }
         })
         .catch((error) => {
-          console.error("error", error);
+          if (error instanceof RPCError) {
+            this._displayErrorDialog(error.data.name, error.data.message);
+          } else {
+            console.error(error);
+            return error;
+          }
         });
     });
   }
@@ -494,21 +515,29 @@ export class ProductionPlanSimulatorModel extends EventBus {
           [companyId, productionSimulations]
         )
         .then((res) => {
-          console.log("🚀 ~ ProductionPlanSimulatorModel ~ .then ~ res:", res);
+          console.log(
+            "🚀 ~ ProductionPlanSimulatorModel ~ .then ~ res:",
+            res,
+            typeof res
+          );
           // this.load([["company_id", "=", state.currentCompanyId]]);
           // return this.data;
           //                if (productionSimulationIds.length === 1) {
           //                    this.reload(productionSimulationIds[0]);
           //                } else {
           //                    this.load();
-          //                }
+          //                }typeof
 
           this.notify();
           return res;
         })
         .catch((error) => {
-          console.error("error", error);
-          return error;
+          if (error instanceof RPCError) {
+            this._displayErrorDialog(error.data.name, error.data.message);
+          } else {
+            console.error(error);
+            return error;
+          }
         });
     });
   }
@@ -878,5 +907,12 @@ export class ProductionPlanSimulatorModel extends EventBus {
   sendData(ev) {
     console.log("🚀 ~ ProductionPlanSimulatorModel ~ sendData ~ ev:", ev);
     this.trigger("send-data");
+  }
+
+  _displayErrorDialog(title, errorMessage = "") {
+    this.dialog.add(ConfirmationDialog, {
+      title: _t(title),
+      body: _t(errorMessage) || "",
+    });
   }
 }

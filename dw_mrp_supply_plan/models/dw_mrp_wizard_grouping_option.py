@@ -9,4 +9,10 @@ class MRPSupplyWizardGroupingOption(models.Model):
         ('partner', 'Supplier'),
         ('incoterm', 'Incoterm'),
         ('company', 'Company')
-    ], string='Grouping Criteria', required=True)
+    ], string='Grouping Criteria', required=False)
+
+    name2 = fields.Char('Grouping Criteria', required=True)
+
+    sequence = fields.Integer(
+        'Sequence', default=1, required=True,
+        help="Gives the sequence order when displaying a list of criteria.")

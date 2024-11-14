@@ -155,7 +155,7 @@
         </field>
     </record>
 
-    <record id="dw_mrp_supply_wizard_action" model="ir.actions.act_window">
+    <record id="dw_mrp_supply_purchase_drafts_wizard_action" model="ir.actions.act_window">
         <field name="name">MRP Supply Wizard</field>
         <field name="res_model">dw.mrp.supply.wizard</field>
         <field name="view_mode">form</field>
@@ -170,19 +170,25 @@
     </record>
 
     <menuitem
-            id="dw_mrp_supply_wizard_menu"
-            name="MRP Supply Wizard"
+            id="dw_mrp_supply_plan_purchase_drafts_menu"
+            name="Purchase Drafts"
             parent="menu_dw_mrp_supply_plan_root"
             sequence="2"
-            action="dw_mrp_supply_wizard_action"
+    />
+    <menuitem
+            id="dw_mrp_supply_plan_purchase_drafts_generator_menu"
+            name="Purchase Drafts Planner"
+            parent="dw_mrp_supply_plan_purchase_drafts_menu"
+            sequence="10"
+            action="dw_mrp_supply_purchase_drafts_wizard_action"
     />
 
     <!-- Menu item for dw.purchase.order.preview.wizard -->
     <menuitem
             id="dw_purchase_order_preview_menu"
-            name="Purchase Orders Plan"
-            parent="menu_dw_mrp_supply_plan_root"
+            name="Planned Purchase Drafts"
+            parent="dw_mrp_supply_plan_purchase_drafts_menu"
+            sequence="20"
             action="action_dw_purchase_order_preview"
-            sequence="5"
     />
 </odoo>

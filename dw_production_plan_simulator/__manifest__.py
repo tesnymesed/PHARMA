@@ -31,6 +31,7 @@
         'security/ir.model.access.csv',
         #
         # views
+        'views/product_template_views.xml',
         'views/views.xml',
         'views/menus.xml',
 

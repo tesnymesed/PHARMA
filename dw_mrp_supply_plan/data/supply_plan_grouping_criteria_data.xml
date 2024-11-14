@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="dw_mrp_supply_wizard_grouping_option_supplier" model="dw.mrp.supply.wizard.grouping.option">
+            <field name="name2">Supplier</field>
+            <field name="sequence">1</field>
+        </record>
+        <record id="dw_mrp_supply_wizard_grouping_option_incoterm" model="dw.mrp.supply.wizard.grouping.option">
+            <field name="name2">Incoterm</field>
+            <field name="sequence">2</field>
+        </record>
+        <record id="dw_mrp_supply_wizard_grouping_option_company" model="dw.mrp.supply.wizard.grouping.option">
+            <field name="name2">Company</field>
+            <field name="sequence">3</field>
+        </record>
+
+    </data>
+</odoo>

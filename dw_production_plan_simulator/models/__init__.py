@@ -2,6 +2,7 @@
 
 from . import dw_pharma_resource_access_mixin
 from . import dw_mrp_workcenter
+from . import product
 from . import mrp_mps
 from . import production_plan_simulator
 from . import production_plan_simulation_version

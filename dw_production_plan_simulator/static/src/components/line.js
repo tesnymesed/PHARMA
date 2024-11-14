@@ -5,6 +5,7 @@ import { useService, useBus } from "@web/core/utils/hooks";
 import { formatFloat } from "@web/core/utils/numbers";
 import { Component, useRef, onMounted, onPatched } from "@odoo/owl";
 import ProductionPlanBatchesNotesEditor from "@dw_production_plan_simulator/components/notes_editor";
+import { RPCError } from "@web/core/network/rpc_service";
 
 import { _t } from "@web/core/l10n/translation";
 
@@ -611,16 +612,28 @@ export default class ProductionPlanSimulatorLine extends Component {
         );
         setTimeout(notesNotif, 3000);
       })
-      .catch((err) => {
-        var notesNotif = this.notificationService.add(
-          _t(this.formVals.title + " failed"),
-          {
-            title: _t(this.formVals.title + " failed"),
-            type: "danger",
+      .catch(
+        (error) => {
+          if (error instanceof RPCError) {
+            this.model._displayErrorDialog(
+              error.data.name,
+              error?.data?.message
+            );
+          } else {
+            console.error(error);
           }
-        );
-        setTimeout(notesNotif, 3000);
-      });
+        }
+        //   {
+        //   var notesNotif = this.notificationService.add(
+        //     _t(this.formVals.title + " failed"),
+        //     {
+        //       title: _t(this.formVals.title + " failed"),
+        //       type: "danger",
+        //     }
+        //   );
+        //   setTimeout(notesNotif, 3000);
+        // }
+      );
     $(`#prodPlanBatchNotesModal-${id}`).modal("hide");
   }
 
@@ -703,7 +716,11 @@ export default class ProductionPlanSimulatorLine extends Component {
     try {
       this.model.toggleRecordSelection(productionSimulationId);
     } catch (error) {
-      console.error(error);
+      if (error instanceof RPCError) {
+        this.model._displayErrorDialog(error.data.name, error?.data?.message);
+      } else {
+        console.error(error);
+      }
     }
   }
 

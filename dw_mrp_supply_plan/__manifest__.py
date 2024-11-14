@@ -16,6 +16,7 @@
         # data
         'data/supply_plan_data.xml',
         'data/sequence.xml',
+        'data/supply_plan_grouping_criteria_data.xml',
 
         # security
         'security/security.xml',

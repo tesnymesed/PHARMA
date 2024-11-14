@@ -7,6 +7,7 @@ from math import log10
 
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 from odoo.osv.expression import OR, AND
 from odoo.tools.date_utils import add
 from odoo.tools.float_utils import float_round
@@ -123,9 +124,7 @@ class DwProductionPlanSimulator(models.Model):
         _domain = state.get('domain')
 
         if _domain and not action.get('domain'):
-            print('_domain', _domain)
             action['domain'] = _domain
-            print(action, action.get('domain'))
 
         return action
 
@@ -161,9 +160,11 @@ class DwProductionPlanSimulator(models.Model):
                  'safety_stock_target')
     def compute_sales_average(self):
         for record in self:
+            if not record.company_id or not record.product_plan_sim_ids:
+                continue
+
             found_in_range = False
 
-            print(record)
             start = record.company_id.dw_prod_sim_date_sales_range_start
             end = record.company_id.dw_prod_sim_date_sales_range_end
             d = relativedelta(end, start)
@@ -185,7 +186,6 @@ class DwProductionPlanSimulator(models.Model):
 
     def calculate_sales_average(self, company_id, start_date=None, end_date=None):
         for record in self:
-            print(record)
             qr = self._query(record.product_id.id)
             sales = self._sales_query(qr)
 
@@ -639,35 +639,69 @@ class DwProductionPlanSimulator(models.Model):
             }
 
             _id = prod_sim.get('id')
-
             pps = self.search([('id', '=', _id)], limit=1)
+            product_name = prod_sim.get('product_id')[1] or 'Unknown Product'
 
             if pps:
-                vals['bom_id'] = pps.bom_id.id if pps.bom_id else False
-                vals['warehouse_id'] = pps.warehouse_id.id
+                # Check for BOM
+                if pps.bom_id:
+                    vals['bom_id'] = pps.bom_id.id
+                else:
+                    raise UserError(
+                        _('The BOM for the product "{}" is missing. Please refresh and try again.')
+                        .format(product_name)
+                    )
+                    # Notify
+                    # return {
+                    #     'warning': {
+                    #         'title': "Missing BOM ",
+                    #         'message': _('The BOM for the product "{}" is missing. Please refresh and try again.')
+                    #     .format(product_name)
+                    #     }
+                    # }
 
-            # mps = self.env['mrp.production.schedule'].with_context(dw_pharma_simulation=True).create([vals])
+                # Check for Warehouse
+                if pps.warehouse_id:
+                    vals['warehouse_id'] = pps.warehouse_id.id
+                else:
+                    # return {
+                    #     'warning': {
+                    #         'title': "Missing Warehouse ",
+                    #         'message': _(
+                    #             'The warehouse information for the product "{}" is missing. Please refresh and try again.')
+                    #         .format(product_name)
+                    #     }
+                    # }
+                    raise UserError(
+                        _('The warehouse information for the product "{}" is missing. Please refresh and try again.')
+                        .format(product_name)
+                    )
+
+            # Create MPS (Manufacturing Production Schedule)
             mps = self.env['mrp.production.schedule'].create([vals])
+
+            # Initialize MPS fields with default values
 
             # mps.write({
             #     'forecast_target_qty': prod_sim.get('safety_stock_target_qty'),
             #     'min_to_replenish_qty': pps.lot_size,
             #     'max_to_replenish_qty': 999999999999999,
             # })
-
             mps.write({
                 'forecast_target_qty': 0,
                 'min_to_replenish_qty': 0,
-                'max_to_replenish_qty': 1000 * pps.lot_size,
+                'max_to_replenish_qty': 999999999999999,
             })
 
+            # Process product plan simulations
             product_plan_sim_ids = prod_sim.get('product_plan_sim_ids')
             for prdct_sim_i in product_plan_sim_ids:
                 date_start = datetime.datetime.strptime(prdct_sim_i.get('date_start'), "%Y-%m-%d").date()
                 date_stop = datetime.datetime.strptime(prdct_sim_i.get('date_stop'), "%Y-%m-%d").date()
 
+                # Check if a forecast already exists within the date range
                 existing_forecast = mps.forecast_ids.filtered(lambda f: date_start <= f.date <= date_stop)
-                _qty = float_round(prdct_sim_i.get('suggested_production_plan_qty'),
+                _qty = float_round(prdct_sim_i.get('suggested_production_plan_qty', 0.0),
                                    precision_rounding=mps.product_uom_id.rounding)
 
                 stock_coverage = round(prdct_sim_i.get('updated_stock_coverage', 0.0), 2)
@@ -680,10 +714,10 @@ class DwProductionPlanSimulator(models.Model):
                     'forecast_qty': 0,
                     'replenish_qty': _qty,
                     'replenish_qty_updated': True,
-                    'dw_stock_coverage': stock_coverage
+                    'dw_stock_coverage': stock_coverage,
                 }
 
-                # Production plan Changes
+                # Add optional notes and capacity information if available
                 if prdct_sim_i.get('notes'):
                     forecast_vals['dw_pps_production_notes'] = prdct_sim_i.get('notes')
 
@@ -1935,9 +1969,6 @@ class DwProductionPlanSimulator(models.Model):
         result = {}
         _results = self.env.cr.dictfetchall()
 
-        for row in _results:
-            print(row)
-
         return _results
 
     def calculate_average_qty_to_deliver(self, data, start_date=None, end_date=None):
@@ -2023,7 +2054,7 @@ class DwProductPlanSimulation(models.Model):
                 self.production_objective_qty = 0.0
                 self.sale_objective_qty = 0.0
 
-    @api.depends('date', 'production_simulation_id.product_id')
+    @api.depends('date', 'production_simulation_id.simulation_version_id')
     def _compute_objective_qty(self):
         for record in self:
             sale_objective_qty, production_objective_qty = self._get_objective_qty(

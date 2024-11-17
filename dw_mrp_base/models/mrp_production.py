@@ -1,6 +1,7 @@
 import datetime
 
 from odoo import fields, api, models, _
+from odoo.addons.test_convert.tests.test_env import record
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -8,7 +9,7 @@ class MrpProduction(models.Model):
     _inherit = 'mrp.production'
 
     lot_dates_set = fields.Boolean(default=False
-    )
+                                   )
     use_expiration_date = fields.Boolean(
         related='product_id.use_expiration_date'
     )
@@ -60,3 +61,16 @@ class MrpProduction(models.Model):
     def _compute_extra_cost(self):
         for prod in self:
             prod.extra_cost = prod.bom_id.dw_majoration if prod.bom_id else 0
+
+    can_edit_move = fields.Boolean(compute="_compute_is_in_group")
+
+    @api.depends_context('uid')
+    def _compute_is_in_group(self):
+        group = self.env.ref('dw_mrp_base.group_bom_mo_manager')
+        for record in self:
+            # On verifie si user fait partie du groupe ou pas
+            record.can_edit_move = group in self.env.user.groups_id
+
+
+
+    tracking_type = fields.Char()

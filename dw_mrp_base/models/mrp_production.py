@@ -70,7 +70,3 @@ class MrpProduction(models.Model):
         for record in self:
             # On verifie si user fait partie du groupe ou pas
             record.can_edit_move = group in self.env.user.groups_id
-
-
-
-    tracking_type = fields.Char()

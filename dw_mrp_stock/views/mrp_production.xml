@@ -8,18 +8,18 @@
             <xpath expr="//button[@name='button_mark_done']" position="after">
                 <field name="dw_transfer_pf_done" invisible="1"/>
                 <field name="mrp_production_source_count" invisible="1"/>
-                <button name="action_create_picking_transfer_pf" class="btn-info" type="object" string="Transférer PF"
+                <button name="action_create_picking_transfer_pf" class="btn-info" type="object" string="Transfer FP"
                         invisible="mrp_production_source_count != 0 or dw_transfer_pf_done or state != 'done'"/>
             </xpath>
             <xpath expr="//div[hasclass('oe_button_box')]" position="after">
                 <field name="dw_is_colture" invisible="1"/>
                 <field name="dw_leftover_done" invisible="1"/>
                 <field name="dw_transfer_pf_done" invisible="1"/>
-                <widget name="web_ribbon" title="Cloturé"
+                <widget name="web_ribbon" title="closed"
                         invisible="not dw_is_colture or not dw_transfer_pf_done or not dw_leftover_done or state != 'done'"/>
-                <widget name="web_ribbon" title="Non Cloturé" bg_color="bg-danger"
+                <widget name="web_ribbon" title="Not Closed" bg_color="bg-danger"
                         invisible="dw_is_colture or state != 'done' "/>
-                <button name="action_confirm_mp_colture" class="btn-info" type="object" string="Cloturer"
+                <button name="action_confirm_mp_colture" class="btn-info" type="object" string="closed"
                         invisible="dw_is_colture or state != 'done'"/>
             </xpath>
         </field>

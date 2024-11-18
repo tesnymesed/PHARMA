@@ -19,7 +19,7 @@ class MrpProduction(models.Model):
                 'name': product_id.display_name,
                 'product_uom_qty': self.qty_producing,
                 'product_uom': self.product_uom_id.id,
-                'company_id': self.env.company.id,
+                'company_id': self.company_id.id,
                 'date': fields.Datetime.now(),
                 'location_id': location_id.id,
                 'location_dest_id': location_dest_id.id,

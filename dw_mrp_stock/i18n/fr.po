@@ -47,16 +47,16 @@ msgstr "non fermé"
 
 #. module: dw_mrp_stock
 #. odoo-python
-#: code:addons/custom_addons/DW_PHARMA/dw_mrp_stock/models/mrp_production.py:0
+#: code:addons/dw_mrp_stock/models/mrp_production.py:0
 #: code:addons/dw_mrp_stock/models/mrp_production.py:0
 #, python-format
 msgid "PF Picking(s)"
-msgstr "Prélèvement(s) PF"
+msgstr "Transfert(s) PF"
 
 #. module: dw_mrp_stock
 #: model:ir.model,name:dw_mrp_stock.model_stock_picking_type
 msgid "Picking Type"
-msgstr "Type de prélèvement"
+msgstr "Type de Transfert"
 
 #. module: dw_mrp_stock
 #: model:ir.model.fields,field_description:dw_mrp_stock.field_stock_picking__production_id
@@ -83,7 +83,7 @@ msgstr "Production en stock"
 #: code:addons/custom_addons/DW_PHARMA/dw_mrp_stock/models/mrp_production.py:0
 #: code:addons/dw_mrp_stock/models/mrp_production.py:0
 #, python-format
-msgid "There are no transit location selected"
+msgid "There is no transit location selected"
 msgstr "Aucun emplacement de transit sélectionné"
 
 #. module: dw_mrp_stock

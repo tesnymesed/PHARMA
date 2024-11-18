@@ -19,7 +19,7 @@
                         invisible="not dw_is_colture or not dw_transfer_pf_done or not dw_leftover_done or state != 'done'"/>
                 <widget name="web_ribbon" title="Not Closed" bg_color="bg-danger"
                         invisible="dw_is_colture or state != 'done' "/>
-                <button name="action_confirm_mp_colture" class="btn-info" type="object" string="closed"
+                <button name="action_confirm_mp_colture" class="btn-info" type="object" string="Mark as Closed"
                         invisible="dw_is_colture or state != 'done'"/>
             </xpath>
         </field>

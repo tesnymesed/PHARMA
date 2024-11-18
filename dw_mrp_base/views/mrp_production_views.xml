@@ -10,7 +10,7 @@
             </xpath>
 
             <xpath expr="//form/sheet/group/group[1]/label[1]" position="before">
-                <field name="can_edit_move" invisible="False"/>
+                <field name="can_edit_move" invisible="True"/>
             </xpath>
 
             <xpath expr="//field[@name='move_raw_ids']" position="attributes">

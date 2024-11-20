@@ -42,9 +42,9 @@ class StockPicking(models.Model):
                 location_dest = move_line.location_dest_id
                 if location_source and location_dest:
                     self._check_transfer_compliance(location_source, move_line.lot_id,
-                                                    move_id.product_id, 'in')
-                    self._check_transfer_compliance(location_dest, move_line.lot_id,
                                                     move_id.product_id, 'out')
+                    self._check_transfer_compliance(location_dest, move_line.lot_id,
+                                                    move_id.product_id, 'in')
 
     def _check_transfer_compliance(self, location, lot, product, direction):
         if not location.perform_transfer and location.must_check_lot_compliance:
@@ -56,13 +56,13 @@ class StockPicking(models.Model):
                     'name') if location.allowed_lot_status_out else None
 
             if authorized_lot_status is not None:
-                self._validate_lot_conformity(authorized_lot_status, lot, product)
+                self._validate_lot_conformity(authorized_lot_status, lot, product,location)
             # If authorized_lot_status is None, all lot statuses are accepted, so no validation is needed.
 
-    def _validate_lot_conformity(self, authorized_lot_status, lot, product):
+    def _validate_lot_conformity(self, authorized_lot_status, lot, product,location=False):
         lot_status = lot.lot_status
         if lot_status not in authorized_lot_status:
             lot_status_display = dict(lot._fields['lot_status'].selection).get(lot_status, lot_status)
             raise UserError(
-                _(f"The transfer for {product.name} cannot be performed for lot: {lot.name} with status: {lot_status_display}")
+                _(f"The transfer for {product.name} cannot be performed for lot: {lot.name} with status: {lot_status_display} in locaation : {location.name or False}")
             )

@@ -43,12 +43,14 @@ msgstr "Bloquer"
 #: model:ir.model.fields.selection,name:dw_quality_lot_process.selection__stock_lot_history__new_status__blocked
 #: model:ir.model.fields.selection,name:dw_quality_lot_process.selection__stock_lot_history__previous_status__blocked
 #: model:ir.model.fields.selection,name:dw_quality_lot_process.selection__stock_lot_status__name__blocked
+#: model:ir.model.fields.selection,name:dw_quality_lot_process.selection__stock_lot_sub_lot_register__status__blocked
 msgid "Blocked"
 msgstr "Bloqué"
 
 #. module: dw_quality_lot_process
 #: model_terms:ir.ui.view,arch_db:dw_quality_lot_process.stock_lot_form_view_inherited
 #: model_terms:ir.ui.view,arch_db:dw_quality_lot_process.view_stock_lot_cancel_wizard_form
+#: model_terms:ir.ui.view,arch_db:dw_quality_lot_process.view_stock_lot_sub_lot_register_form
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -73,6 +75,7 @@ msgstr "Raisons de l'annulation"
 #: model:ir.model.fields.selection,name:dw_quality_lot_process.selection__stock_lot_history__new_status__cancelled
 #: model:ir.model.fields.selection,name:dw_quality_lot_process.selection__stock_lot_history__previous_status__cancelled
 #: model:ir.model.fields.selection,name:dw_quality_lot_process.selection__stock_lot_status__name__cancelled
+#: model:ir.model.fields.selection,name:dw_quality_lot_process.selection__stock_lot_sub_lot_register__status__cancelled
 msgid "Cancelled"
 msgstr "Annulé"
 
@@ -92,7 +95,13 @@ msgid "Check Lot Conformity"
 msgstr "Vérifier la conformité du lot"
 
 #. module: dw_quality_lot_process
+#: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_location__perform_quality_lot_reanalyze
+msgid "Perform Quality lot reanalyze"
+msgstr "Réaliser une réanalyse de la qualité du lot"
+
+#. module: dw_quality_lot_process
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_cancel_wizard__check_quality_id
+#: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_sub_lot_register__check_quality_id
 msgid "Check Quality"
 msgstr "Controle qualité"
 
@@ -103,6 +112,7 @@ msgstr "Vérifier la configuration de conformité du lot"
 
 #. module: dw_quality_lot_process
 #: model_terms:ir.ui.view,arch_db:dw_quality_lot_process.view_stock_lot_cancel_wizard_form
+#: model_terms:ir.ui.view,arch_db:dw_quality_lot_process.view_stock_lot_sub_lot_register_form
 msgid "Confirm"
 msgstr "Confirmer"
 
@@ -120,6 +130,7 @@ msgstr "Conforme"
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_cancel_wizard__create_uid
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_history__create_uid
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_status__create_uid
+#: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_sub_lot_register__create_uid
 msgid "Created by"
 msgstr "Créé par"
 
@@ -138,6 +149,7 @@ msgstr "Créé le"
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_cancel_wizard__display_name
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_history__display_name
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_status__display_name
+#: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_sub_lot_register__display_name
 msgid "Display Name"
 msgstr "Nom d'affichage"
 
@@ -159,6 +171,7 @@ msgstr "Échec"
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_cancel_wizard__id
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_history__id
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_status__id
+#: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_sub_lot_register__id
 msgid "ID"
 msgstr ""
 
@@ -182,6 +195,7 @@ msgstr "Emplacements de l'inventaire"
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_cancel_wizard__write_uid
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_history__write_uid
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_status__write_uid
+#: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_sub_lot_register__write_uid
 msgid "Last Updated by"
 msgstr "Dernière mise à jour par"
 
@@ -191,6 +205,7 @@ msgstr "Dernière mise à jour par"
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_cancel_wizard__write_date
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_history__write_date
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_status__write_date
+#: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_sub_lot_register__write_date
 msgid "Last Updated on"
 msgstr "Dernière mise à jour le"
 
@@ -200,12 +215,18 @@ msgid "Location"
 msgstr "Emplacement"
 
 #. module: dw_quality_lot_process
+#: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_sub_lot_register__location_id
+msgid "Location Lot"
+msgstr "Emplacement du lot"
+
+#. module: dw_quality_lot_process
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_history__lot_id
 msgid "Lot"
 msgstr ""
 
 #. module: dw_quality_lot_process
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_cancel_wizard__status
+#: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_sub_lot_register__status
 msgid "Lot Failed Status"
 msgstr "Statut d'échec du lot"
 
@@ -261,11 +282,24 @@ msgid "New Status"
 msgstr "Nouveau statut"
 
 #. module: dw_quality_lot_process
+#: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_sub_lot_register__non_conform_lot
+msgid "Non Conform Lot"
+msgstr "Lot d'annulation"
+
+#. module: dw_quality_lot_process
+#. odoo-python
+#: code:addons/dw_quality_lot_process/wizards/stock_lot_pass_sub_lot.py:0
+#, python-format
+msgid "Non Conform quantity should not be grater than lot quantity"
+msgstr "La quantité annulée ne doit pas dépassé la quantité du lot"
+
+#. module: dw_quality_lot_process
 #: model:ir.model.fields.selection,name:dw_quality_lot_process.selection__stock_lot__lot_status__not_conform
 #: model:ir.model.fields.selection,name:dw_quality_lot_process.selection__stock_lot_cancel_wizard__status__not_conform
 #: model:ir.model.fields.selection,name:dw_quality_lot_process.selection__stock_lot_history__new_status__not_conform
 #: model:ir.model.fields.selection,name:dw_quality_lot_process.selection__stock_lot_history__previous_status__not_conform
 #: model:ir.model.fields.selection,name:dw_quality_lot_process.selection__stock_lot_status__name__not_conform
+#: model:ir.model.fields.selection,name:dw_quality_lot_process.selection__stock_lot_sub_lot_register__status__not_conform
 msgid "Not Conform"
 msgstr "Non Conforme"
 
@@ -322,6 +356,8 @@ msgstr "Réanalyser"
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_cancel_reason__name
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_cancel_wizard__reason_id
 #: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_history__reason_id
+#: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_sub_lot_register__reason_id
+#: model_terms:ir.ui.view,arch_db:dw_quality_lot_process.view_stock_lot_sub_lot_register_form
 msgid "Reason"
 msgstr "Motif"
 
@@ -367,7 +403,7 @@ msgstr "Lot de stock"
 #. module: dw_quality_lot_process
 #: model:ir.model,name:dw_quality_lot_process.model_stock_lot_cancel_wizard
 msgid "Stock Lot Cancel Wizard"
-msgstr ""
+msgstr "Processus d'annulation du lot"
 
 #. module: dw_quality_lot_process
 #: model:ir.model.fields,help:dw_quality_lot_process.field_stock_location__must_check_lot_compliance
@@ -375,6 +411,12 @@ msgid "This field indicates if we should check lot conformity in the location"
 msgstr ""
 "Ce champ indique si nous devons vérifier la confirmation des lots dans la "
 "localité."
+
+#. module: dw_quality_lot_process
+#: model:ir.model.fields,help:dw_quality_lot_process.field_stock_location__perform_quality_lot_reanalyze
+msgid "Check this box to perform a quality reanalysis for lots."
+msgstr ""
+"Cochez cette case pour effectuer une réanalyse de la qualité des lots."
 
 #. module: dw_quality_lot_process
 #: model:ir.model.fields,help:dw_quality_lot_process.field_stock_location__allowed_lot_status_in
@@ -406,3 +448,24 @@ msgstr "Statut du lot"
 #: model:ir.model.fields.selection,name:dw_quality_lot_process.selection__stock_lot_history__previous_lot_quarantine_status__reanalyzed
 msgid "reanalyzed"
 msgstr "Réanalysé"
+
+#. module: dw_quality_lot_process
+#: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_warehouse__quality_reanalyze_op_id
+msgid "Reanalyze quality operation"
+msgstr "Opération réanalyse de qualité"
+
+#. module: dw_quality_lot_process
+#: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot_sub_lot_register__non_conform_qty
+msgid "Quantity Non-Conform"
+msgstr "Quantité annulée"
+
+#. module: dw_quality_lot_process
+#: model_terms:ir.ui.view,arch_db:dw_quality_lot_process.view_stock_lot_sub_lot_register_form
+msgid "Sub-Lot"
+msgstr "Sous-Lot"
+
+#. module: dw_quality_lot_process
+#: model:ir.model.fields,field_description:dw_quality_lot_process.field_stock_lot__children_lot_ids
+#: model_terms:ir.ui.view,arch_db:dw_quality_lot_process.stock_lot_form_view_inherited
+msgid "Children Lots"
+msgstr "Lot Fils"

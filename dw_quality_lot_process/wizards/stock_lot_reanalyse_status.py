@@ -50,6 +50,8 @@ class StockLotReanalyseWizard(models.TransientModel):
         'stock.lot.reanalyse.line.wizard', string='lines'
     )
     def confirm(self):
+        self.lot_id._create_history_record(self.lot_id.lot_quarantine_status, 'reanalyzed', is_quarantine=True)
+        self.lot_id.set_lot_analyse_status('reanalyzed') 
         StockPicking = self.env['stock.picking']
         StockMove = self.env['stock.move']
         StockMoveLine = self.env['stock.move.line']
@@ -93,6 +95,7 @@ class StockLotReanalyseWizard(models.TransientModel):
                 move_line_vals.append({
                     'move_id': move.id,
                     'quant_id': line.quant_id.id,
+                    'picking_id':picking.id
                 })
 
             StockMoveLine.sudo().create(move_line_vals)

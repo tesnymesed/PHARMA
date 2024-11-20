@@ -42,9 +42,9 @@ class StockPicking(models.Model):
                 location_dest = move_line.location_dest_id
                 if location_source and location_dest:
                     self._check_transfer_compliance(location_source, move_line.lot_id,
-                                                    move_id.product_id, 'in')
-                    self._check_transfer_compliance(location_dest, move_line.lot_id,
                                                     move_id.product_id, 'out')
+                    self._check_transfer_compliance(location_dest, move_line.lot_id,
+                                                    move_id.product_id, 'in')
 
     def _check_transfer_compliance(self, location, lot, product, direction):
         if not location.perform_transfer and location.must_check_lot_compliance:

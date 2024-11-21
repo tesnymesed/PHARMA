@@ -20,6 +20,7 @@
 
             <xpath expr="//button[@name='action_update_bom']" position="attributes">
                 <attribute name="groups">dw_mrp_base.group_bom_mo_manager</attribute>
+            </xpath>
             <xpath expr="//form/header/button[1]">
                 <field name="tracking_type" invisible="1"/>
                 <button name="button_mark_done" string="Produce" type="object" class="oe_highlight"

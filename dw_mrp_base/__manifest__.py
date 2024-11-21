@@ -21,6 +21,7 @@
         'views/mrp_workorder_views.xml',
         'views/mrp_production_views.xml',
         'wizard/mrp_production_lot_views.xml',
+        'wizard/mrp_production_sublot_wizard_views.xml',
         # 'wizard/mrp_workorder_tracking_wizard_views.xml',
 
         'views/menus.xml',

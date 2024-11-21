@@ -8,6 +8,9 @@ class MrpProduction(models.Model):
     extra_cost = fields.Float(readonly=False, compute="_compute_extra_cost", store=1)
     can_edit_move = fields.Boolean(compute="_compute_is_in_group")
 
+
+    tracking_type = fields.Selection(related='bom_id.tracking_type',store=1)
+
     @api.depends('lot_producing_id', 'lot_producing_id.expiration_date')
     def _compute_lot_dates_set(self):
         for record in self:
@@ -62,3 +65,23 @@ class MrpProduction(models.Model):
         for record in self:
             # On verifie si user fait partie du groupe ou pas
             record.can_edit_move = group in self.env.user.groups_id
+    def _get_backorder_mo_vals(self):
+        res = super()._get_backorder_mo_vals()
+
+        if self.env.context.get('lot_id', False):
+            lot = self.env['stock.lot'].create({
+                'name': self.env.context.get('lot_id', False),
+                'product_id': self.product_id.id,
+            })
+            res['lot_producing_id'] = lot.id
+        return res
+
+    def action_addsublot(self):
+        return {
+            'name': _('Wizard Upload Workforce'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'mrp.production.sublot',
+            'context': {'default_mrp_production_id': self.id},
+            'view_mode': 'form',
+            'target': 'new',
+        }

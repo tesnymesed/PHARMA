@@ -1,0 +1,28 @@
+<odoo>
+    <record id="view_mrp_production_sublot_wizard_form" model="ir.ui.view">
+        <field name="name">mrp.production.backorder.wizard.form</field>
+        <field name="model">mrp.production.backorder</field>
+        <field name="inherit_id" ref="mrp.view_mrp_production_backorder_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//group" position="after">
+                <group>
+                    <field name="new_sublot" string="add sublot "/>
+                    <field name="sublot_id" String="Sublot number" invisible=" new_sublot == False "/>
+                </group>
+            </xpath>
+
+
+        </field>
+    </record>
+
+    <record id="action_mrp_production_sublot_wizard" model="ir.actions.act_window">
+        <field name="name">Create Sublot</field>
+        <field name="res_model">mrp.production.backorder</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_mrp_production_sublot_wizard_form"/>
+        <field name="target">new</field>
+        <field name="context">{'default_bom_id': active_id}</field>
+    </record>
+
+</odoo>

@@ -5,6 +5,7 @@
         <field name="model">mrp.production</field>
         <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
         <field name="arch" type="xml">
+
             <xpath expr="//notebook//field[@name='origin']" position="after">
                 <field name="extra_cost" readonly="state in ['done']"/>
             </xpath>
@@ -19,6 +20,29 @@
 
             <xpath expr="//button[@name='action_update_bom']" position="attributes">
                 <attribute name="groups">dw_mrp_base.group_bom_mo_manager</attribute>
+            <xpath expr="//form/header/button[1]">
+                <field name="tracking_type" invisible="1"/>
+                <button name="button_mark_done" string="Produce" type="object" class="oe_highlight"
+                        invisible="tracking_type == 'sublot'"/>
+            </xpath>
+
+            <xpath expr="//form/header/button[2]">
+                <button name="button_mark_done" string="Produce All" type="object" class="oe_highlight"
+                        invisible="tracking_type == 'sublot'"/>
+            </xpath>
+
+            <xpath expr="//form/header/button[3]">
+                <button name="button_mark_done" string="Produce" type="object" class="oe_highlight"
+                        invisible="tracking_type == 'sublot'"/>
+            </xpath>
+
+            <xpath expr="//form/header/button[4]">
+                <button name="button_mark_done" string="Produce All" type="object" class="oe_highlight"
+                        invisible="tracking_type == 'sublot'"/>
+            </xpath>
+
+            <xpath expr="//header" position="inside">
+                <button string="Add Sublot" type="object" name="button_mark_done" invisible=" tracking_type == 'lot'"/>
             </xpath>
 
             <xpath expr="//header" position="after">

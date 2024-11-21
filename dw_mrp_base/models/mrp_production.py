@@ -3,13 +3,10 @@ from odoo import fields, api, models, _
 
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
-
-    lot_dates_set = fields.Boolean(default=False
-    )
-    use_expiration_date = fields.Boolean(
-        related='product_id.use_expiration_date'
-    )
+    lot_dates_set = fields.Boolean(default=False)
+    use_expiration_date = fields.Boolean(related='product_id.use_expiration_date', store=1)
     extra_cost = fields.Float(readonly=False, compute="_compute_extra_cost", store=1)
+    can_edit_move = fields.Boolean(compute="_compute_is_in_group")
 
 
     tracking_type = fields.Selection(related='bom_id.tracking_type',store=1)
@@ -62,6 +59,12 @@ class MrpProduction(models.Model):
             prod.extra_cost = prod.bom_id.dw_majoration if prod.bom_id else 0
 
 
+    @api.depends_context('uid')
+    def _compute_is_in_group(self):
+        group = self.env.ref('dw_mrp_base.group_bom_mo_manager')
+        for record in self:
+            # On verifie si user fait partie du groupe ou pas
+            record.can_edit_move = group in self.env.user.groups_id
     def _get_backorder_mo_vals(self):
         res = super()._get_backorder_mo_vals()
 

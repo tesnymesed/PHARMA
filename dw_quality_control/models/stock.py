@@ -36,7 +36,7 @@ class StockPicking(models.Model):
                 for move in move_line_ids:
                     quality_picking = self._prepare_quality_picking_data(picking, quality_operation_id)
                     quality_picking["move_ids"] = self._create_quality_move(move, quality_operation_id)
-                    quality_picking["move_line_ids"] = self._create_quality_move_line(move)
+                    #quality_picking["move_line_ids"] = self._create_quality_move_line(move,quality_operation_id)
                     quality_picking_list.append(quality_picking)
                     # quality_move = picking._create_quality_move(quality_picking, move, quality_operation_id)
                     # picking._create_quality_move_line(quality_move, move, quality_operation_id)
@@ -44,7 +44,7 @@ class StockPicking(models.Model):
                     # quality_picking.message_post(body=msg,
                     #                              author_id=self.env.ref("base.partner_root").id, )
                 quality_picking_ids = self.env["stock.picking"].sudo().create(quality_picking_list)
-                # quality_picking_ids.action_confirm()
+                quality_picking_ids.action_confirm()
             return res
 
     def _prepare_quality_picking_data(self, picking, quality_operation_id):
@@ -56,7 +56,7 @@ class StockPicking(models.Model):
         return {
             'picking_type_id': quality_operation_id.id,
             'location_id': picking.location_dest_id.id,
-            'location_dest_id': quality_operation_id.default_location_dest_id.id,
+            'location_dest_id': location_dest_id,
             'origin': picking.name,
             'dw_qc_picking_origin_id': picking.id,
         }
@@ -71,7 +71,7 @@ class StockPicking(models.Model):
             'product_id': move.product_id.id,
             'product_uom_qty': move.quantity,
             'product_uom': move.product_uom_id.id,
-            'location_id': move.location_id.id,
+            'location_id': move.location_dest_id.id,
             'location_dest_id': location_dest_id.id,
         }
 
@@ -82,15 +82,19 @@ class StockPicking(models.Model):
                 _("You can’t validate this picking without default destination location for your quality operation."))
         return [Command.create(self._prepare_quality_move_data(move, quality_operation_id))]
 
-    def _prepare_quality_move_line_data(self, move_line):
+    def _prepare_quality_move_line_data(self, move_line,quality_operation_id):
+        location_dest_id = quality_operation_id.default_location_dest_id
 
         return {
+            'location_id': move_line.location_dest_id.id,
+            'location_dest_id': location_dest_id.id,
             'quantity': move_line.quantity,
-            'quant_id': move_line.lot_id.quant_ids.filtered_domain([
-                ('location_id', '=', move_line.location_dest_id.id)
-            ]).id,
+            'lot_id': move_line.lot_id.id,
+            'product_uom_id':move_line.product_uom_id.id,
+            'product_id': move_line.product_id.id,
+            
         }
 
-    def _create_quality_move_line(self, move_line):
+    def _create_quality_move_line(self, move_line,quality_operation_id):
 
-        return [Command.create(self._prepare_quality_move_line_data(move_line))]
+        return [Command.create(self._prepare_quality_move_line_data(move_line,quality_operation_id))]

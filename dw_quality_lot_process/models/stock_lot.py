@@ -97,8 +97,6 @@ class StockLot(models.Model):
         self.lot_quarantine_status = 'analyzed'
 
     def action_set_reanalyzed(self):
-        self._create_history_record(self.lot_quarantine_status, 'reanalyzed', is_quarantine=True)
-        self.lot_quarantine_status = 'reanalyzed'
         return {
                 'type': 'ir.actions.act_window',
                 'name': 'Reanalyze Lot',

@@ -10,6 +10,16 @@
                 <field name="extra_cost" readonly="state in ['done']"/>
             </xpath>
 
+            <xpath expr="//form/sheet/group/group[1]/label[1]" position="before">
+                <field name="can_edit_move" invisible="True"/>
+            </xpath>
+
+            <xpath expr="//field[@name='move_raw_ids']" position="attributes">
+                <attribute name="readonly">not can_edit_move</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_update_bom']" position="attributes">
+                <attribute name="groups">dw_mrp_base.group_bom_mo_manager</attribute>
             <xpath expr="//form/header/button[1]">
                 <field name="tracking_type" invisible="1"/>
                 <button name="button_mark_done" string="Produce" type="object" class="oe_highlight"
@@ -57,6 +67,7 @@
             <xpath expr="//field[@name='location_src_id']" position="attributes">
                 <attribute name="force_save">1</attribute>
             </xpath>
+
         </field>
     </record>
 </odoo>

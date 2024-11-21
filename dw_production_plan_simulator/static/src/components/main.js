@@ -19,6 +19,7 @@ import { ActionMenus } from "@web/search/action_menus/action_menus";
 import { download } from "@web/core/network/download";
 import { ExportDataDialog } from "@web/views/view_dialogs/export_data_dialog";
 import MainComponent from "@mrp_mps/components/main";
+import { RPCError } from "@web/core/network/rpc_service";
 
 import {
   Component,
@@ -186,7 +187,14 @@ class ProductionPlanSimulatorComponent extends Component {
           self.data = result;
         })
         .catch((error) => {
-          console.error(error);
+          if (error instanceof RPCError) {
+            this.model._displayErrorDialog(
+              error.data.name,
+              error?.data?.message
+            );
+          } else {
+            console.error(error);
+          }
         });
 
       $("#submit").click(
@@ -287,7 +295,11 @@ class ProductionPlanSimulatorComponent extends Component {
         );
       })
       .catch((error) => {
-        console.error(error); // Handle any errors
+        if (error instanceof RPCError) {
+          this.model._displayErrorDialog(error.data.name, error?.data?.message);
+        } else {
+          console.error(error);
+        }
       });
   }
 
@@ -438,7 +450,11 @@ class ProductionPlanSimulatorComponent extends Component {
         this.state.companies = result;
       })
       .catch((error) => {
-        console.error(error);
+        if (error instanceof RPCError) {
+          this.model._displayErrorDialog(error.data.name, error?.data?.message);
+        } else {
+          console.error(error);
+        }
       });
     return res;
   }
@@ -850,7 +866,13 @@ class ProductionPlanSimulatorComponent extends Component {
         notes
       )
       .then((result) => {})
-      .catch((err) => {});
+      .catch((error) => {
+        if (error instanceof RPCError) {
+          this.model._displayErrorDialog(error.data.name, error?.data?.message);
+        } else {
+          console.error(error);
+        }
+      });
   }
 
   async alertDecisionCellEdited(cell) {
@@ -864,7 +886,13 @@ class ProductionPlanSimulatorComponent extends Component {
         decision
       )
       .then((result) => {})
-      .catch((err) => {});
+      .catch((error) => {
+        if (error instanceof RPCError) {
+          this.model._displayErrorDialog(error.data.name, error?.data?.message);
+        } else {
+          console.error(error);
+        }
+      });
   }
 
   _createMasterProductionSchedule() {
@@ -875,6 +903,7 @@ class ProductionPlanSimulatorComponent extends Component {
           "🚀 ~ ProductionPlanSimulatorComponent ~ .then ~ res:",
           res
         );
+
         if (res && res.length) {
           console.log(
             "🚀 ~ FOUND ProductionPlanSimulatorComponent ~ .then ~ res:",
@@ -918,20 +947,27 @@ class ProductionPlanSimulatorComponent extends Component {
         //                }
       })
       .catch((error) => {
-        console.error("error", error);
-        var createMPSentriesNotif = this.notificationService.add(
-          _t(
-            this.state.currentCompanyName +
-              "'s site Master production schedule (MRP) creation error: \n" +
-              error
-          ),
-          {
-            title: _t("Error"),
-            type: "danger",
-          }
-        );
-        setTimeout(createMPSentriesNotif, 3000);
-        return error;
+        if (error instanceof RPCError) {
+          this.model._displayErrorDialog(
+            error?.data?.name,
+            error?.data?.message
+          );
+        } else {
+          console.error("error", error);
+          var createMPSentriesNotif = this.notificationService.add(
+            _t(
+              this.state.currentCompanyName +
+                "'s site Master production schedule (MRP) creation error: \n" +
+                error
+            ),
+            {
+              title: _t("Error"),
+              type: "danger",
+            }
+          );
+          setTimeout(createMPSentriesNotif, 3000);
+          return error;
+        }
       });
   }
 
